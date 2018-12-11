@@ -1,0 +1,28 @@
+h32085
+s 00016/00000/00000
+d D 1.1 98/10/15 13:47:10 clyde 1 0
+c date and time created 98/10/15 13:47:10 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+
+How to apply npasswd patches
+
+1. Extract the patch archive into the top level npasswd directory:
+
+	tar xpvf patch-YY.tar
+
+2. Read "PATCH-YY/NEWS" to see what this patch does and if
+   you want it.
+
+3. To apply patches and replace changed sources:
+
+	sh PATCH-YY/COMMANDS
+
+Document %W% %G% 
+
+E 1

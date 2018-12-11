@@ -1,0 +1,2940 @@
+head	1.45;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.45
+date	2002.10.02.15.55.11;	author clyde;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2000.01.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	99.07.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	98.11.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	98.08.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	98.07.21.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	98.04.21.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	97.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	97.06.18.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	97.05.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	97.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	96.09.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	96.08.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	96.04.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	96.03.27.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	94.10.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	94.09.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	94.06.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	94.05.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	94.03.31.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	94.03.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	94.03.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	94.03.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	93.12.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	93.12.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.45
+log
+@Put under GPL
+@
+text
+@/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ *	This program duplicates the manual page behavior of the 4.XBSD
+ *	passwd(1) command.  It can be configured for use with a variety
+ *	of passwd systems (/etc/passwd, /etc/shadow, databases).
+ */
+
+#include "npasswd.h"
+#include "pw_svc.h"
+#include "pwm_defs.h"
+#include "checkpassword.h"
+
+#if	defined(OS_HPUX)
+/*
+ * HP-UX code from Mike Stute <mstute@@compucom.com>
+ */
+# include <hpsecurity.h>
+# include <prot.h>
+#endif
+
+#ifdef	AIX_AUTH
+# include <userpw.h>
+# include <usersec.h>
+#endif
+
+#ifndef lint
+static char sccsid[] = "$Id: passwd.c,v 1.44 2000/01/17 00:00:00 clyde Exp clyde $";
+#endif
+
+/* Local routines */
+private char	*random_string _((char *, int));
+private enum chg_perm	can_change_pw _((struct mpasswd *, struct mpasswd *));
+
+/*
+ * Configuration settings
+ */
+Config_Value char	*Passwd_Help = PASSWD_HELP,
+			*Passwd_Motd = PASSWD_MOTD;
+
+private	struct	pw_svc		*svc;	/* Service config */
+
+/*
+ * passwd - The password change command
+ *
+ * Usage:
+ *	passwd(user, caller)
+ */
+public void
+passwd(theUser, theCaller)
+	struct mpasswd	*theUser,
+			*theCaller;
+{
+#if	(CDEBUG >= CDEBUG_NOEXEC)
+	Uid_t	myuid = 0;
+#else
+	Uid_t	myuid = CallerUid;	/* Userid of invoker */
+#endif
+	enum	chg_perm	perm;	/* Change permission */
+	int	changes = CHG_NONE;	/* What was changed */
+	char	newpw1[STRINGLEN],	/* New password 1 */
+		newpw2[STRINGLEN];	/* New password 2 */
+	
+	struct pw_opaque *aux = theUser->opaque;
+	struct mpasswd	*newUser;
+ 
+	newUser = copympwent(theUser, (struct mpasswd *)0);
+	svc = get_pwsvc();
+	/*
+	 * This section replicates some of the options
+	 * for vendor-specific passwd programs.
+	 */
+#if	defined(OS_SUNOS_4)
+	if (Switches['d']) {	/* Print aging information */
+		struct tm	*lt;
+
+		lt = gmtime(&theUser->pwage.last_change);
+		if (theUser->pwage.last_change == 0) {
+			lt->tm_mon = -1;
+			lt->tm_mday = lt->tm_year = 0;
+		}
+		printf("%-10s %02d/%02d/%02d %3d %3d\n", theUser->mpw_name,
+			lt->tm_mon + 1, lt->tm_mday, lt->tm_year,
+			theUser->pwage.can_change / SEC_DAY,
+			theUser->pwage.must_change / SEC_DAY);
+		return;
+	}
+	if (Switches['e']) {	/* Expire this password */
+		if (myuid)
+			die("Permission denied.\n");
+		if (!theUser->mpw_age)
+			die("Must set password age using the -x option first.\n");
+		newUser->pwage.last_change = 0;
+		changes |= CHG_PWAGE;
+	}
+	if (Switches['n']) {	/* Set maturity */
+		int	days;
+
+		if (myuid)
+			die("Permission denied.\n");
+		if (!theUser->mpw_age)
+			die("Must set password age using the -x option first.\n");
+		if (xatoi(Switches['n'], 0, &days) == 0)
+			die("Invalid argument to option -n\n");
+		newUser->pwage.can_change =
+			((days + DAYS_WEEK - 1) / DAYS_WEEK) * SEC_WEEK;
+		changes |= CHG_PWAGE;
+	}
+	if (Switches['x']) {	/* Set expiration time */
+		int	days;
+
+		if (myuid)
+			die("Permission denied.\n");
+		if (xatoi(Switches['x'], 0, &days) == 0)
+			die("Invalid argument to option -x\n");
+		newUser->pwage.must_change = 
+                       ((days + DAYS_WEEK - 1) / DAYS_WEEK) * SEC_WEEK;
+		changes |= CHG_PWAGE;
+	}
+	if (changes & CHG_PWAGE)
+		goto updatepw;
+		
+#endif /* OS_SUNOS_4 */
+#ifdef OS_HPUX
+	if (Switches['d']) { /* Print aging information */
+		struct tm *lt;
+		time_t timen = theUser->pwage.last_change * SEC_WEEK;
+		
+		lt = (struct tm *)gmtime(&timen);
+		if (theUser->pwage.last_change == 0) {
+			lt->tm_mon = -1;
+			lt->tm_mday = lt->tm_year = 0;
+		}
+		printf("%-10s %02d/%02d/%02d %3d %3d\n", theUser->mpw_name,
+			lt->tm_mon+1, lt->tm_mday, lt->tm_year,
+			theUser->pwage.can_change,
+			theUser->pwage.must_change);
+		return;
+	}
+	if(Switches['e']) { /* Expire password */
+		if (myuid)
+			die("Permission denied.\n");
+		if (!theUser->mpw_age)
+			die("Must set password age using the -x option first.\n");
+		newUser->pwage.last_change = 0;
+		changes |= CHG_PWAGE;
+	}
+	if (Switches['n']) { /* Set maturity */
+		int days;
+		
+		if (myuid)
+			die("Permission denied.\n");
+		if (theUser->mpw_age)
+			die("Must set password age using the -x option first.\n");
+		if (xatoi(Switches['n'], 0, &days) == 0)
+			die("Invalid argument to option -n\n");
+		newUser->pwage.can_change =
+		((days + DAYS_WEEK -1 ) / DAYS_WEEK);
+		changes |= CHG_PWAGE;
+	}
+	if(Switches['x']) { /* Set expiration time */
+		int days;
+
+		if (myuid)
+			die("Permission denied\n");
+		if (xatoi(Switches['x'],0,&days)==0)
+			die("Invalid argument to option -n\n");
+		newUser->pwage.can_change=
+			((days + DAYS_WEEK - 1) / DAYS_WEEK);
+		changes |= CHG_PWAGE;
+	}
+	if (changes & CHG_PWAGE)
+		goto updatepw;
+#endif /* OS_HPUX */
+	if ((perm = can_change_pw(theUser, theCaller)) == deny)
+		die("Permission denied.\n");
+
+	if (perm == self || XSwitches[Xsw_AskAlways]) {
+		if (theUser->mpw_passwd[0]) {
+			char	cpw[STRINGLEN];
+
+			get_password("Current password: ", theUser->mpw_passwd,
+				cpw, sizeof(cpw));
+#ifdef	HAS_SECURE_RPC
+			if (svc->SecurityLevel == sec_sunC2) {
+				char	*rpcpw;
+
+				rpcpw = cpw;
+				while (!check_rpc_key(theUser, rpcpw)) {
+					rpcpw = np_getpass("Secure RPC password: ");
+				}
+				if (rpcpw)
+					(void) strcpy(theUser->key, rpcpw);
+			}
+#endif
+			/* Obsfugate and stash current password */
+			(void) strcpy(theUser->password, zncrypt(cpw));
+		}
+	}
+	motd(Passwd_Motd, 0);
+
+	printf("Changing password for %s on %s\n",
+		theUser->mpw_name, theUser->pws_loc);
+
+	for (;;) {
+		char	*px;		/* Temp */
+		int	tries = 0;	/* Password match counter */
+		char	salt[8];
+		extern int PasswdMatchTries;
+
+		if ((px = np_getpass("New password (? for help): ")) == NULL)
+			die("Password unchanged.\n");
+		if (!*px)
+			continue;
+		(void) strcpy(newpw1, px);
+		if (strcmp(newpw1, "?") == 0) {
+			motd(Passwd_Help, "Sorry, there is no help.\n");
+			continue;
+		}
+#if	0
+		if (strcmp(newpw1, "^") == 0) {
+			px = generate_password();
+			/* Print and request them to type it in twice */
+			/* Skip the checks and break the loop */
+		}
+#endif
+		/*
+		 * See if its the current password
+		 */
+		if (theUser->mpw_passwd &&
+		    *theUser->mpw_passwd &&
+		     password_cmp(theUser->mpw_passwd, newpw1)) {
+			printf("That is your current password.\n");
+			if (XSwitches[Xsw_AskOnce]) {
+				die("");
+				/*NOTREACHED*/
+			}
+			return;
+		}
+		/*
+		 * Sanity check the new password
+		 */
+		if (XSwitches[Xsw_ForcePWChange] == 0) {
+			char	*checkmsg;
+
+			if (checkmsg = checkpassword(newpw1, &theUser->pw)) {
+				printf("\nThat password cannot be used because %s.\n",
+					checkmsg);
+				if (XSwitches[Xsw_AskOnce])
+					die("");
+				printf("Try a different password.\n\n");
+				continue;
+			}
+		}
+		/*
+		 * Get confirmation
+		 */
+		if ((px = np_getpass("New password (again): ")) == NULL) {
+			die("Password unchanged.\n");
+			/*NOTREACHED*/
+		}
+		(void) strcpy(newpw2, px);
+		if (strcmp(newpw1, newpw2)) {
+			if (XSwitches[Xsw_AskOnce] ||
+			    XSwitches[Xsw_UseStdin]) {
+				printf("Passwords do not match.\n\n");
+				die("");
+				/*NOTREACHED*/
+			} else {
+				if (tries++ > PasswdMatchTries) {
+					die("Too many attempts.\n");
+					/*NOTREACHED*/
+				}
+			 	printf("Passwords do not match; try again.\n\n");
+			}
+			continue;
+		}
+		/* Obsfugate and stash current password */
+		(void) strcpy(newUser->password, zncrypt(newpw1));
+
+		(void) random_string(salt, sizeof(salt));
+		newUser->mpw_passwd = strdup((*svc->PasswdCrypt)(newpw1, salt));
+		changes |= CHG_PW;
+#ifdef	PWAGE
+		/*
+		 * If password has aging, update it and tell the user
+		 */
+		if (newUser->mpw_age)
+			changes |= CHG_PWAGE;
+		break;
+#endif
+	}
+
+updatepw:		/* Ugh */
+	/*
+	 * Stuff the bits back into the password file
+	 */
+	debug(DB_UPDATE, "pw_replace(%s, %s)\n",
+		theUser->mpw_name,
+		newUser->mpw_passwd ? newUser->mpw_passwd : "<null>");
+	pw_replace(theUser, newUser, changes);
+
+	/* If pw_replace() failed, this code will not be reached */
+	if (changes & CHG_PW) {
+		printf("%s password changed for %s on %s\n",
+			theUser->pws_name, theUser->mpw_name, theUser->pws_loc);
+		syslog(LOG_INFO,
+			"Password changed on %s for %s by %s\n",
+			theUser->pws_loc, theUser->mpw_name,
+			theCaller->mpw_name);
+
+		if (! in_history(theUser->mpw_name, theUser->mpw_passwd))
+			password_history_update(theUser->mpw_name,
+				theUser->mpw_passwd, 0);
+
+		password_history_update(theUser->mpw_name,
+			newUser->mpw_passwd, 0);
+#ifdef	AUX_PASSWORD_CHANGE
+		/* Invoke auxillary password change program here */
+#endif
+	}
+#ifdef	PWAGE
+	if (changes & CHG_PWAGE) {
+		printf("%s password aging changed for %s on %s\n",
+			 theUser->pws_name, theUser->mpw_name, theUser->pws_loc);
+		syslog(LOG_INFO,
+			"Password aging changed on %s for %s by %s\n",
+			theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+	}
+#endif
+}
+
+/*
+ *	can_change - check password change permission
+ *
+ *	Returns 1 if password can be changed
+ *		0 if not
+ */
+private enum chg_perm
+can_change_pw(theUser, theCaller)
+	struct mpasswd	*theUser,
+			*theCaller;
+{
+#ifdef	USE_NIS
+	/*
+	 * %%POLICY - Changing other users' passwd info via NIS.
+	 *
+	 * In order to use the RPC interface to replace a passwd entry,
+	 * the plaintext of the current password is required.
+	 *
+	 * This is ok for the user but not the system administrator.
+	 * I assume that because the super-user is changing someone else's
+	 * password, the current password is not available.  This assumption
+	 * is implicitly extended to chsh and chfn also.
+	 *
+	 * So disallow the change if the caller is root and not changing
+	 * their own password.
+	 */
+	{
+		struct ypinfo ypinfo;
+
+		ypwhich(PASSWD_BYNAME, &ypinfo);
+		if (CallerUid == 0 &&			/* Caller is root */
+		    ypinfo.status == is_yp_client &&	/* On NIS client */
+		    XSwitches[Xsw_AskAlways] == 0 &&	/* ! -XA option */
+		    theUser->pws_remote) {		/* Passwd not local */
+			printf("Information can only be changed on NIS master %s.\n",
+				ypinfo.master);
+			return(deny);
+		}
+	}
+#endif	/* USE_NIS */
+
+	if (CallerUid == 0)		/* Su can change any passwd */
+		return(other);
+
+	if (strcmp(theCaller->mpw_name, theUser->mpw_name))
+		return(deny);		/* I'm not root and target isn't me */
+
+	/*
+ 	 * Check password age
+	 */
+	if (theUser->mpw_age) {
+		time_t	now;
+
+		(void) time(&now);
+		if (theUser->pwage.last_change <= now && CallerUid) {
+
+			debug(DB_UPDATE,
+				"can_change_pw: Age check last=%d can=%d\n",
+				theUser->pwage.last_change,
+				theUser->pwage.can_change
+			);
+
+			if (now < (theUser->pwage.last_change + theUser->pwage.can_change)) {
+				printf("You may not change your password for %d more days.\n",
+				(theUser->pwage.last_change +
+				 theUser->pwage.can_change - now) / SEC_DAY);
+				return(deny);
+			}
+			if (theUser->pwage.can_change > theUser->pwage.must_change) {
+				printf("You may not change your password.\n");
+				return(deny);
+			}
+		}
+	}
+	/*
+	 * Call the method auth check routine
+	 */
+	if (check_auth(theUser) == deny)
+		return(deny);
+
+	/*
+	 * Other checks can be put here to determine if the invoker should
+	 * be allowed to change this password.
+	 */
+	return(pw_permission(theUser, theCaller));
+}
+
+/* 
+ *	random_string - create a string of random characters
+ */
+private char *
+random_string(buf, buflen)
+	char	*buf;		/* String buffer */
+	int	buflen;		/* Length of buf */
+{
+	int	i,		/* Temp */
+		n;		/* Temp */
+	unsigned int	tv;	/* Srand seed */
+	char	proto[128];	/* Build buffer */
+
+	buflen--;		/* Avoid overflowing <buf> */
+	tv = (unsigned int) time((time_t *)0);
+	(void) srand ( (tv & 0x07201969) ^ getpid ());
+	for (i = 0; i < sizeof(proto); i++) {	/* fill proto vector */
+		int	c;		/* Temp */
+
+		for (;;) {
+			c = rand() % 0x7f;	/* turn into ASCII */
+			if (isalnum(c))
+				break;
+		}
+		proto[i] = (char )c;
+	}
+	(void) srand((tv & 0x11201972) ^ getpid());
+	for (i = 0; i < buflen; i++) {
+		n = rand() % sizeof proto;
+		buf[i] = proto[n];
+	}
+	buf[buflen] = 0;
+	return(buf);
+}
+
+/* End $RCSfile: passwd.c,v $ */
+@
+
+
+1.44
+log
+@1. Add option -XA (always ask for old password) 2. Add option -XO (ask for new password only once) 3. Don't print password aging message if aging not active
+@
+text
+@d2 1
+a2 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d4 4
+a7 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d9 4
+a12 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d14 6
+a19 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d47 1
+a47 1
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+d474 1
+a474 1
+/* End $RCSfile$ */
+@
+
+
+1.43
+log
+@Add the current password to history if not present
+@
+text
+@a136 1
+		goto updatepw;
+a149 1
+		goto updatepw;
+d161 2
+d164 1
+a164 1
+	}
+d183 1
+a183 1
+		if(myuid)
+a188 1
+		goto updatepw;
+d193 1
+a193 1
+		if(myuid)
+d195 1
+a195 1
+		if(theUser->mpw_age)
+a201 1
+		goto updatepw;
+d213 2
+a215 1
+	}
+d220 1
+a220 1
+	if (perm == self || XSwitches[Xsw_AskAll]) {
+d276 4
+d291 2
+d300 1
+a300 1
+		if ((px = np_getpass("New password (again): ")) == NULL)
+d302 2
+d306 3
+a308 5
+			if (tries++ > PasswdMatchTries) 
+				die("Too many attempts.\n");
+			else
+				printf("They don't match; try again.\n\n");
+			if (XSwitches[Xsw_UseStdin])
+d310 9
+a318 2
+			else
+				continue;
+d325 7
+a331 1
+		changes |= (CHG_PW | CHG_PWAGE);
+d333 1
+d336 1
+a336 1
+updatepw:
+d360 3
+d364 1
+d372 1
+d405 4
+a408 4
+		if (CallerUid == 0 &&
+		    ypinfo.status == is_yp_client &&
+		    XSwitches[Xsw_AskAll] == 0 &&
+		    theUser->pws_remote) {
+d430 7
+@
+
+
+1.42
+log
+@Add -XA (always ask for current password)
+@
+text
+@d332 9
+a340 2
+			theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+		password_history_update(theUser->mpw_name, newUser->mpw_passwd, 0);
+@
+
+
+1.41
+log
+@1. Change use of zncrypt() and zdcrypt() 2. Add stub for password generator
+@
+text
+@d221 1
+a221 1
+	if (perm == self) {
+d376 1
+@
+
+
+1.40
+log
+@Obsfugate copy of plaintext password
+@
+text
+@d53 1
+a53 1
+#include "Methods/pwm_defs.h"
+d223 2
+d226 1
+a226 1
+				theUser->password, sizeof(theUser->password));
+d231 1
+a231 1
+				rpcpw = theUser->password;
+d235 2
+a236 1
+				if (rpcpw) (void) strcpy(theUser->key, rpcpw);
+d239 2
+a240 1
+			zncrypt(theUser->password); /* Obsfugate password */
+d263 7
+d308 3
+a310 2
+		(void) strcpy(newUser->password, strdup(newpw1));
+		zncrypt(newUser->password);
+@
+
+
+1.39
+log
+@Move method change permission code to Method routines
+@
+text
+@d236 1
+a296 3
+		/* XXX newUser->password needs to be encrypted somehow */
+		/* XXX or not set unless really needed (e.g. NIS) */
+
+d298 1
+@
+
+
+1.38
+log
+@Changes for new pwsvc() routines
+@
+text
+@a55 4
+#if	defined(OS_ULTRIX_4)
+# include <auth.h>
+#endif
+
+d298 1
+a398 2
+#ifdef	ULTRIX_AUTH
+	debug(DB_LOOKUP,"svc->SecurityLevel (Ultrix)= %d\n",svc->SecurityLevel);
+d400 1
+a400 1
+	 * Check the authorization data for password change permission.
+d402 2
+a403 4
+	if ((svc->SecurityLevel == sec_u4enhanced) ||
+	    (SecurityLevel == sec_u4upgrade &&
+	     strcmp(theUser->mpw_opasswd, "*") == 0)) {
+		AUTHORIZATION	*a;
+a404 21
+		if ((a = getauthuid(theUser->mpw_uid)) == NULL)
+			logdie("Cannot get auth data.\n");
+		/*
+		 * Can the user change their password?
+		 */
+		if (CallerUid == theUser->mpw_uid &&
+		   !(a->a_authmask & A_CHANGE_PASSWORD)) {
+			printf("Permission denied.\n");
+			return(deny);
+		}
+		/*
+		 * Can the user specify their own password?
+		 */
+		if (CallerUid == theUser->mpw_uid &&
+		   !(a->a_authmask & A_ENTER_PASSWORD)) {
+			printf("You must use a system-generated password.\n");
+			return(deny);
+		}
+	}
+#endif
+#if	defined(OSF1_AUTH) || defined(HPUX_AUTH)
+a405 48
+	 * Check the authorization data for password change permission.
+	 */
+#ifdef	HPUX_AUTH
+	debug(DB_LOOKUP,"svc->SecurityLevel (HPUX) = %d\n", svc->SecurityLevel);
+	if (svc->SecurityLevel == sec_HPtrusted) {
+#endif
+#ifdef	OSF1_AUTH
+	debug(DB_LOOKUP,"svc->SecurityLevel (OSF)= %d\n", svc->SecurityLevel);
+	if (svc->SecurityLevel == sec_OSFenhanced) {
+#endif
+		struct pr_passwd *pw =
+			(struct pr_passwd *)getprpwnam(theUser->mpw_name);
+		int	pick = 1;
+
+		if (pw == NULL)
+			logdie("Cannot get auth data for %s\n",
+     				theUser->mpw_name);
+		if (pw->sflg.fg_pick_pwd) pick = pw->sfld.fd_pick_pwd;
+		if (pw->uflg.fg_pick_pwd) pick = pw->ufld.fd_pick_pwd;
+		if (!pick) {
+			printf("You must use a system-generated password.\n");
+			printf("The system administrator must use dxchpwd to do this.\n");
+			return(deny);
+		}
+	}
+#endif
+
+#ifdef	AIX_AUTH
+        /*
+         * Check the AIX auth datbase for password flags
+         */
+	debug(DB_LOOKUP,"svc->SecurityLevel (AIX)= %d\n",svc->SecurityLevel);
+        if (strcmp(theUser->mpw_opasswd, "!") == 0) {
+                struct userpw   *upw;
+
+                if (setpwdb(S_READ))
+                        logdie("Permission for auth DB access denied.");
+
+                upw = getuserpw(theUser->mpw_name);
+                endpwdb();
+                if (!upw)
+                        logdie("Cannot get password for user %s from auth DB.",
+                                theUser->mpw_name);
+		if ((upw->upw_flags & PW_ADMIN) && CallerUid)
+			die("Password must be changed by root.");
+        }
+#endif
+	/*
+d425 1
+@
+
+
+1.37
+log
+@Tweak password change user messages
+@
+text
+@d52 1
+d54 1
+a54 1
+#include "PasswordCheck/checkpassword.h"
+d87 2
+d114 1
+d230 1
+a230 1
+			if (svc.SecurityLevel == sec_sunC2) {
+d304 1
+a304 1
+		newUser->mpw_passwd = strdup((*svc.PasswdCrypt)(newpw1, salt));
+d403 1
+a403 1
+	debug(DB_LOOKUP,"svc.SecurityLevel (Ultrix)= %d\n",svc.SecurityLevel);
+d407 1
+a407 1
+	if ((svc.SecurityLevel == sec_u4enhanced) ||
+d437 2
+a438 2
+	debug(DB_LOOKUP,"svc.SecurityLevel (HPUX) = %d\n", svc.SecurityLevel);
+	if (svc.SecurityLevel == sec_HPtrusted) {
+d441 2
+a442 2
+	debug(DB_LOOKUP,"svc.SecurityLevel (OSF)= %d\n", svc.SecurityLevel);
+	if (svc.SecurityLevel == sec_OSFenhanced) {
+d465 1
+a465 1
+	debug(DB_LOOKUP,"svc.SecurityLevel (AIX)= %d\n",svc.SecurityLevel);
+@
+
+
+1.36
+log
+@Change checkpasswd.h to checkpassword.h
+@
+text
+@d316 1
+a316 1
+		printf("%s Password changed for %s on %s\n",
+d324 1
+a324 1
+		printf("%s Password aging changed for %s on %s\n",
+@
+
+
+1.35
+log
+@Fix call for password_history_update()
+@
+text
+@d53 1
+a53 1
+#include "PasswordCheck/checkpasswd.h"
+@
+
+
+1.34
+log
+@1. Add copyright notice 2. Change name of some config variable 3. Eliminate password_ok() routine 4. Remove 'punt' code 5. Change debugging ifdef trigger
+@
+text
+@d321 1
+a321 1
+		password_history_update(theUser->mpw_name, newUser->mpw_passwd);
+@
+
+
+1.33
+log
+@Move getpass() and related routines to seperate file in comobj lib
+@
+text
+@d2 44
+a71 4
+#ifndef	VENDOR_PASSWD
+# define	VENDOR_PASSWD	"/usr/bin/passwd"
+#endif
+
+a76 2
+private int	password_ok _((struct mpasswd *, char *, char *, unsigned int));
+private void	punt _((char *));
+d83 2
+a84 6
+Config_Value char	*PasswdHelpFile = PASSWD_HELP,
+			*PasswdMotdFile = PASSWD_MOTD;
+/*
+ * Private variables
+ */
+private char	*vendor_passwd = VENDOR_PASSWD;
+d97 1
+a97 1
+#ifdef	DEBUGX
+d111 4
+d238 1
+a238 1
+	motd(PasswdMotdFile, 0);
+a245 1
+		char	checkmsg[STRINGLEN];
+d247 1
+d255 1
+a255 1
+			motd(PasswdHelpFile, "Sorry, there is no help.\n");
+d270 9
+a278 6
+		if (XSwitches[Xsw_ForcePWChange] == 0 &&
+		    password_ok(theUser, newpw1, checkmsg, sizeof checkmsg) == 0) {
+			printf("\nThat password cannot be used because %s.\n",
+				checkmsg);
+			printf("Try a different password.\n\n");
+			continue;
+d296 3
+a298 1
+		strcpy(newUser->password, strdup(newpw1));
+d321 1
+a321 1
+		password_history_update(&theUser->pw, newUser->mpw_passwd);
+a332 16
+ *      password_ok - sanity check password.
+ *
+ *      Returns result code from checkpassword().
+ */
+private
+password_ok(theUser, newpwd, mesgbuf, mesglen)
+	struct mpasswd	*theUser;
+	char		*newpwd,		/* New password (plaintext) */
+			*mesgbuf;		/* Error message buffer */
+	unsigned int	mesglen;		/* Length of message buffer */
+{
+	int	rc = checkpassword(newpwd, &theUser->pw, mesgbuf, mesglen);
+	return (rc == PWCK_OK);
+}
+
+/*
+a423 1
+			punt("-a");
+d451 1
+a451 1
+			punt("-a");
+a483 18
+/*
+ * punt - execute standard passwd program to do thing that we don't do.
+ */
+private void
+punt(options)
+	char	*options;		/* USE VARARGS */
+{
+#if	0
+	if (!vendor_passwd)
+		return;
+	if (access(vendor_passwd, 1) < 0)
+		return;
+	(void) setgid(getgid());
+	(void) setuid(CallerUid);
+	(void) execl(vendor_passwd, "passwd", options, xxx, 0);
+#endif
+}
+
+@
+
+
+1.32
+log
+@1. Add HP-UX auth support 2. Change password_ok() call sequence 3. Delay after user enters invalid password
+@
+text
+@a39 1
+private int	password_cmp _((char *, char *));
+a46 3
+Config_Value int	PasswdMatchTries = 3;
+Config_Value unsigned int	PasswdMatchWait = PASSWORD_MATCH_WAIT;
+
+a289 87
+ *	get_password -- read password and check against current.
+ */
+public void
+get_password(prompt, pwd_crypt, pwd_plain, pwlen)
+	char	*prompt,
+		*pwd_crypt;	/* Present password (encrypted) */
+	char	*pwd_plain;	/* Present password (plain)  */
+	int	pwlen;		/* Length of present password buffer */
+{
+	int	ntries = 0;	/* Match attempt counter */
+	int	doit = 1;
+	char	*px;		/* Temp */
+	unsigned int naptime = PasswdMatchWait;	/* Sleep after bad entry */
+
+	while (doit) {
+		if ((px = np_getpass(prompt)) == NULL)
+			die("Password unmatched.\n");
+		if (*px == '\0')
+			continue;
+		if (!password_cmp(pwd_crypt, px)) {
+			printf("Password incorrect.\n");
+			if (naptime)
+				sleep(naptime);
+			if (ntries++ == PasswdMatchTries) {
+				if (naptime)
+					sleep(naptime);
+				die("Password not matched.\n");
+			}
+			continue;
+		}
+		doit = 0;
+	}
+	(void) strncpy(pwd_plain, px, pwlen);
+}
+
+/* 
+ *	random_string - create a string of random characters
+ */
+private char *
+random_string(buf, buflen)
+	char	*buf;		/* String buffer */
+	int	buflen;		/* Length of buf */
+{
+	int	i,		/* Temp */
+		n;		/* Temp */
+	unsigned int	tv;	/* Srand seed */
+	char	proto[128];	/* Build buffer */
+
+	tv = (unsigned int) time((time_t *)0);
+	(void) srand ( (tv & 0x07201969) ^ getpid ());
+	for (i = 0; i < sizeof(proto); i++) {	/* fill proto vector */
+		int	c;		/* Temp */
+
+		for (;;) {
+			c = rand() % 0x7f;	/* turn into ASCII */
+			if (isalnum(c))
+				break;
+		}
+		proto[i] = (char )c;
+	}
+	(void) srand((tv & 0x11201972) ^ getpid());
+	for (i = 0; i < buflen; i++) {
+		n = rand() % sizeof proto;
+		buf[i] = proto[n];
+	}
+	buf[buflen] = 0;
+	return(buf);
+}
+
+
+/*
+ *	password_cmp - compare old and new passwords
+ *
+ *	Returns 1 if check = new, 0 if not
+ */
+private 
+password_cmp(current, check)
+	char	*current,
+		*check;
+{
+	if (!*current)
+		return(1);
+
+	return (strcmp(current, (*svc.PasswdCrypt)(check, current)) == 0);
+}
+
+/*
+d476 2
+a477 14
+/*
+ * Terminal handling code.
+ *
+ * The following methods are supported:
+ *	termios via POSIX tc[gs]attr() routines
+ *	termios via TCGETS/TCSETS
+ *	termio via TCGETA/TCSETA
+ *	V7 sgtty
+ *
+ * Configure will set only *one* of the symbols used,  so that
+ * termios takes precedence over termio which suprecedes sgtty..
+ *
+ * This is a bloody damn mess - probably the next revision
+ * will toss most of these options and only support termios
+d479 4
+a482 66
+#ifdef	I_TERMIOS
+/*
+ * Has TERMIOS
+ */
+# include <termios.h>
+static struct termios saved_tty_mode;
+# define	TTY_SAVE	termios
+# define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+# define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+# ifdef	HAS_POSIX_TTY
+#  define	GET_TTY(_fd_, _b_)	tcgetattr(_fd_, (_b_))
+#  define	SET_TTY(_fd_, _b_)	tcsetattr(_fd_, TCSANOW, (_b_))
+# else
+#  define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETS, (_b_))
+#  define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETS, (_b_))
+# endif	/* HAS_POSIX_TTY */
+#endif	/* I_TERMIOS */
+
+#if	(defined(I_TERMIO) && !defined(GET_TTY))
+/*
+ * Has TERMIO
+ */
+#include <sys/termio.h>		/* SUN OS 4.0 termio */
+static struct termio saved_tty_mode;
+# define	TTY_SAVE	termio
+# define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+# define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+# define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETA, (_b_))
+# define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETA, (_b_))
+#endif	/* I_TERMIO */
+
+/*
+ * Neither TERMIOS or TERMIO - use BSD sgtty
+ */
+#if	(defined(I_SGTTY) && !defined(GET_TTY))
+# include <sgtty.h>		/* BSD tty */
+# define	TTY_SAVE	sgttyb
+# define	ECHO_OFF(_b_)		_b_.sg_flags =~ ECHO
+# define	ECHO_ON(_b_)		_b_.sg_flags =| ECHO
+# define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCGETP, (_b_))
+# define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCSETP, (_b_))
+#endif	/* I_SGTTY */
+
+#ifndef	GET_TTY
+/* # ifdef _STDC_ */
+/* #	error Cannot figure out how to do tty stuff */
+/* # endif */
+	ERROR Cannot figure out how to do tty stuff
+#endif
+
+static struct {
+	char		valid;
+	struct TTY_SAVE mode;
+} tty_save = { 0 };
+
+/*
+ * savetty
+ *	Save terminal settings
+ * Usage:
+ *	savetty();
+ * Effects:
+ *	Stores terminal mode in the "tty_save" structure for
+ *	restoration by fixtty()
+ */
+public void
+savetty()
+d484 4
+a487 3
+	(void) GET_TTY(0, &tty_save.mode);
+	tty_save.valid++;
+}
+d489 4
+a492 15
+/*
+ * fixtty
+ *	Restore saved terminal settings
+ * Usage:
+ *	fixtty()
+ * Effects:
+ *	Changes terminal settings from the "tty_save" structure
+ *	if that data is valid
+ */
+public void
+fixtty()
+{
+	if (tty_save.valid)
+		(void) SET_TTY(0, &tty_save.mode);
+}
+d494 6
+a499 43
+/*
+ * np_getpass
+ *	Replacement for libc getpass(3)
+ * Usage:
+ *	pass = np_getpass(prompt);
+ * Returns:
+ *	Password string
+ *	NULL if EOF encountered or error
+ * Comments:
+ *	This routine is used instead of getpass(3):
+ *
+ *	1. The system getpass() throws away all but the first 8 characters
+ *	   of a password string.  On some systems passwords can be longer
+ *	   than 8, but getpass(3) hasn't caught up yet.
+ *
+ *	2. getpass(3) returns a empty string if the user input was empty
+ *	   (blank line), or the /dev/tty read got an EOF or error.
+ *	   There *is* a difference between those conditions and I really
+ *	   want to know it and behave accordingly.  Why make a user
+ *	   start over again if they hit RETURN one time too many?
+ *
+ *	3. The SunOS 4 getpass(3) returns an empty string if the user
+ *	   sent a SIGNIT (control-c).  This is stupid behavior.
+ *
+ *	This code assumes that stdin is the terminal (which has been
+ *	verified upstream), so /dev/tty is NOT used.
+ *	Signals are caught and terminal modes reset upstream.
+ */
+public char	*
+np_getpass(prompt)
+char	*prompt;
+{
+	struct TTY_SAVE	saved,
+			noecho;
+	static char	ib[64];		/* Input buffer */
+	int	nr;
+
+	if (!XSwitches[Xsw_UseStdin]) {
+		(void) GET_TTY(0, &saved);
+		noecho = saved;
+		ECHO_OFF(noecho);
+		(void) write(2, prompt, strlen(prompt));
+		(void) SET_TTY(0, &noecho);
+d501 7
+a507 9
+	ib[0] = 0;
+	nr = read(0, ib, sizeof(ib));
+	if (!XSwitches[Xsw_UseStdin])
+		SET_TTY(0, &saved);
+	(void) write(2, "\n", 1);
+	if (nr <= 0)		/* EOF or error */
+		return(NULL);
+	chop_nl(ib);
+	return(ib);
+d509 1
+@
+
+
+1.31
+log
+@1. Fix SunOS 4 adjunct password check 2. Add AIX auth support
+@
+text
+@a4 1
+ *
+d6 1
+d15 8
+d37 1
+a37 1
+private int	password_ok _((struct mpasswd *, char *, char *));
+d49 1
+d126 2
+a127 1
+		newUser->pwage.must_change = ((days + DAYS_WEEK - 1) / DAYS_WEEK) * SEC_WEEK;
+d132 41
+d174 10
+d212 1
+a212 1
+		char	checkmsg[512];
+d237 1
+a237 1
+		    password_ok(theUser, newpw1, checkmsg) == 0) {
+d250 1
+a250 1
+			if (tries++ >= PasswdMatchTries) 
+d255 1
+a255 1
+				die((char *)0);
+d262 1
+a262 1
+		changes |= CHG_PW;
+a292 1
+
+d306 1
+d315 5
+a319 1
+			if (ntries++ == PasswdMatchTries)
+d321 1
+d356 1
+a356 1
+		n = rand() % sizeof(proto);
+d386 1
+a386 1
+password_ok(theUser, newpwd, mesgbuf)
+d390 1
+d392 1
+a392 1
+	int	rc = checkpassword(newpwd, &theUser->pw, mesgbuf);
+d463 1
+d493 1
+a493 1
+#ifdef	OSF1_AUTH
+d497 6
+d504 3
+a506 1
+		struct pr_passwd *pw = getprpwnam(theUser->mpw_name);
+d511 1
+a511 1
+				theUser->mpw_name);
+d521 1
+d526 1
+@
+
+
+1.30
+log
+@Change getpass() to np_getpass()
+@
+text
+@d15 5
+d367 2
+a368 1
+#endif
+d401 1
+a401 1
+	     strcmp(theUser->mpw_passwd, "*") == 0)) {
+d445 19
+@
+
+
+1.29
+log
+@Fix call of password history routine
+@
+text
+@d131 1
+a131 1
+					rpcpw = getpass("Secure RPC password: ");
+d149 1
+a149 1
+		if ((px = getpass("New password (? for help): ")) == NULL)
+d180 1
+a180 1
+		if ((px = getpass("New password (again): ")) == NULL)
+d243 1
+a243 1
+		if ((px = getpass(prompt)) == NULL)
+d567 1
+a567 1
+ * getpass
+d570 1
+a570 1
+ *	pass = getpass(prompt);
+d595 1
+a595 1
+getpass(prompt)
+@
+
+
+1.28
+log
+@Change missing help file message
+@
+text
+@d216 1
+a216 4
+#ifdef	PASSWORD_HISTORY
+		if (update_password_history(&theUser->pw, newUser->mpw_passwd))
+			warn("Could not update password history database\n");
+#endif
+@
+
+
+1.27
+log
+@Comment out use of #error
+@
+text
+@d155 1
+a155 1
+			motd(PasswdHelpFile, "Missing help file");
+@
+
+
+1.26
+log
+@1. Remove 'const' declarations (too much compiler pain) 2. Make older C compilers happy 3. Compile under SunOS 4 acc 4. Fix use of getpass() 5. Force use of my getpass() 6. Rewrite getpass() - no stdio, honor "use stdin" flag 7. Import CallerUid var from global (can't alway rely on getuid(2) on OSF) 8. Rewrite some comments
+@
+text
+@d526 3
+a528 3
+# ifdef _STDC_
+#	error Cannot figure out how to do tty stuff
+# endif
+@
+
+
+1.25
+log
+@Fix const usess
+@
+text
+@d25 1
+a25 1
+private void	punt _((const char *));
+d27 1
+a27 1
+private int	password_cmp _((const char *, const char *));
+d56 1
+a56 1
+	Uid_t	myuid = getuid();	/* Userid of invoker */
+d85 1
+a85 1
+		if (!theUser->pwage.mpw_age)
+d88 1
+a88 1
+		changes =| CHG_PWAGE;
+d96 1
+a96 1
+		if (!theUser->pwage.mpw_age)
+d98 1
+a98 1
+		if (xatoi(Switches['n'], (char *)0, &days) == 0)
+d102 1
+a102 1
+		changes =| CHG_PWAGE;
+d110 1
+a110 1
+		if (xatoi(Switches['x'], (char *)0, &days) == 0)
+d113 1
+a113 1
+		changes =| CHG_PWAGE;
+d133 1
+a133 1
+				(void) strcpy(theUser->key, rpcpw);
+d149 3
+a151 5
+		px = getpass(XSwitches[Xsw_UseStdin] ? 
+			"" : "New password (? for help): ");
+		if (px == NULL)
+			die("EOF during new password read.\n");
+		if (!*px)		/* User entered nothing */
+d180 2
+a181 4
+		px = getpass(XSwitches[Xsw_UseStdin] ?
+			"" : "New password (again): ");
+		if (px == NULL)
+			die("EOF during new password read.\n");
+d230 1
+d236 4
+a239 4
+	const char	*prompt,
+			*pwd_crypt;	/* Present password (encrypted) */
+	char		*pwd_plain;	/* Present password (plain)  */
+	const int	pwlen;		/* Length of present password buffer */
+d246 2
+a247 3
+		px = getpass(XSwitches[Xsw_UseStdin] ? "" : prompt); 
+		if (px == 0)
+			die("EOF during password read.\n");
+d303 2
+a304 2
+	const char	*current,
+			*check;
+a337 2
+	Uid_t	calluid = getuid();
+
+d357 1
+a357 1
+		if (calluid == 0 &&
+d366 1
+a366 1
+	if (calluid == 0)		/* Su can change any passwd */
+d379 1
+a379 1
+		if (theUser->pwage.last_change <= now && calluid) {
+d406 1
+a406 1
+		if (calluid == theUser->mpw_uid &&
+d414 1
+a414 1
+		if (calluid == theUser->mpw_uid &&
+d454 1
+a454 1
+	const char	*options;		/* USE VARARGS */
+d462 1
+a462 1
+	(void) setuid(getuid());
+d538 7
+a544 1
+ *	savetty - save current terminal settings
+d554 7
+a560 1
+ *	fixtty - restore saved terminal settings
+a568 1
+#ifdef	NEED_GETPASS
+d570 9
+a578 3
+ *	The system getpass() throws away all but the first 8 characters
+ *	of a password string.  If this isn't enough for you, use this
+ *	routine instead.  This code assumes that stdin is the terminal.
+d580 16
+a595 3
+ *	This is different from the libc getpass() which reads from /dev/tty!
+ *	If the "read from stdin" option is enabled, then this code
+ *	is needed instead of the libc version.
+d599 1
+a599 1
+const char	*prompt;
+d604 1
+a604 1
+	char	*rc;			/* Temp */
+d606 13
+a618 11
+	(void) GET_TTY(0, &saved);
+	noecho = saved;
+	ECHO_OFF(noecho);
+	(void) SET_TTY(0, &noecho);
+	fprintf(stderr, "%s", prompt);
+	fflush(stderr);
+	rc = fgets(ib, sizeof(ib), stdin);
+	putc('\n', stderr);
+	fflush(stderr);
+	SET_TTY(0, &saved);
+	if (rc == NULL)
+a622 2
+#endif	/* NEED_GETPASS */
+
+@
+
+
+1.24
+log
+@Fix punctuation for die() strings
+@
+text
+@d239 4
+a242 4
+	char	*prompt,
+		*pwd_crypt,		/* Present password (encrypted) */
+		*pwd_plain;		/* Present password (plain)  */
+	int	pwlen;			/* Length of present password buffer */
+d460 1
+a460 1
+	char	*options;		/* USE VARARGS */
+@
+
+
+1.23
+log
+@beta 3: compiles OSF/1 3.2
+@
+text
+@d86 1
+a86 1
+			die("Must set password age using the -x option first.");
+d97 1
+a97 1
+			die("Must set password age using the -x option first.");
+d408 1
+a408 1
+			logdie("Cannot get auth data.");
+@
+
+
+1.22
+log
+@Change call for copympwent()
+@
+text
+@d27 1
+d307 2
+a308 2
+	char	*current,
+		*check;
+d402 1
+a402 1
+	if ((SecurityLevel == sec_u4enhanced) ||
+d432 1
+a432 1
+	if (SecurityLevel == sec_OSFenhanced) {
+@
+
+
+1.21
+log
+@Use defines from checkpasswd.h
+@
+text
+@d65 1
+a65 1
+	newUser = copympwent(theUser);
+@
+
+
+1.20
+log
+@Beta 3 development checkin 2
+@
+text
+@d9 1
+a232 1
+
+d327 1
+a327 1
+	return (rc == 0);
+@
+
+
+1.19
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d8 1
+a8 1
+#include "pwm_defs.h"
+a24 1
+private void	get_password _((char *, char *, char *, int));
+d124 1
+a124 1
+			if (svc_SecurityLevel == sec_sunC2) {
+d197 1
+a197 1
+		newUser->mpw_passwd = strdup((*svc_PasswdCrypt)(newpw1, salt));
+d218 1
+d221 1
+d236 1
+a236 1
+private void
+d312 1
+a312 1
+	return (strcmp(current, (*svc_PasswdCrypt)(check, current)) == 0);
+@
+
+
+1.18
+log
+@ Reflect new mpasswd structure element names
+@
+text
+@d14 4
+d22 6
+a27 7
+#ifdef	__STDC__
+private int	password_ok(struct mpasswd *, char *, char *);
+private void	punt(const char *);
+#else
+private int	password_ok();
+private void	punt();
+#endif
+d29 6
+a34 3
+#ifndef PASSWD_HELP
+# define	PASSWD_HELP	"/usr/adm/passwd.help"
+#endif
+d36 3
+a38 11
+#ifndef PASSWD_MOTD
+# define	PASSWD_MOTD	"/usr/adm/passwd.motd"
+#endif
+
+public char	PasswdHelpFile[MAXPATHLEN] = { PASSWD_HELP },
+		PasswdMotdFile[MAXPATHLEN] = { PASSWD_MOTD };
+public int	PasswdMatchTries = 3;
+
+#ifndef	VENDOR_PASSWD
+# define	VENDOR_PASSWD	(char *)0
+#endif
+d41 10
+a50 3
+public void passwd(user, caller)
+struct mpasswd	*user,
+		*caller;
+d55 1
+a55 1
+	Uid_t	myuid = getuid();	/* Userid of caller */
+d58 6
+a63 5
+	int	pwchanged = 0;		/* Was the password changed? */
+	char	newpw1[STRINGLEN],	/* Temp */
+		newpw2[STRINGLEN];	/* Temp */
+	char	*crypw = 0;		/* Encrypted current password */
+	struct pw_opaque *aux = user->opaque;
+d65 1
+d67 1
+a67 1
+	if (CommandLineOption['d']) {	/* Print aging information */
+d70 2
+a71 3
+		/* I don't know why localtime() isn't used */
+		lt = gmtime(&user->pwage.last_change);
+		if (user->pwage.last_change == 0) {
+d75 1
+a75 1
+		printf("%-10s %02d/%02d/%02d %3d %3d\n", user->mpw_name,
+d77 2
+a78 2
+			user->pwage.can_change / SEC_PER_DAY,
+			user->pwage.must_change / SEC_PER_DAY);
+d81 1
+a81 1
+	if (CommandLineOption['e']) {	/* Expire this password */
+d84 1
+a84 1
+		if (!user->pwage.do_aging)
+d86 2
+a87 2
+		user->pwage.last_change = 0;
+		crypw = user->mpw_passwd;
+d90 1
+a90 1
+	if (CommandLineOption['n']) {	/* Set maturity */
+d95 1
+a95 1
+		if (!user->pwage.do_aging)
+d97 1
+a97 1
+		if (sscanf(CommandLineOption['n'], "%d", &days) == 0)
+d99 3
+a101 2
+		user->pwage.can_change = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+		crypw = user->mpw_passwd;
+d104 1
+a104 1
+	if (CommandLineOption['x']) {	/* Expiration time */
+d109 1
+a109 1
+		if (sscanf(CommandLineOption['x'], "%d", &days) == 0)
+d111 2
+a112 2
+		user->pwage.must_change = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+		crypw = user->mpw_passwd;
+d117 1
+a117 1
+	if ((perm = can_change(user, caller)) == deny)
+d121 3
+a123 3
+		if (user->mpw_passwd[0]) {
+			get_password("Current password: ", user->mpw_passwd,
+				user->password, sizeof(user->password));
+d125 1
+a125 1
+			if (SecurityLevel == sec_sunC2) {
+d128 2
+a129 2
+				rpcpw = user->password;
+				while (!check_rpc_key(user, rpcpw)) {
+d132 1
+a132 1
+				(void) strcpy(user->key, rpcpw);
+d137 1
+d139 2
+a140 1
+	motd(PasswdMotdFile, (char *)0);
+a141 2
+	printf("Changing password for %s on %s\n", user->mpw_name, user->pws_loc);
+
+d144 1
+a144 1
+		int	ntries = 0;	/* Password match counter */
+d146 1
+d148 2
+a149 1
+		px = getpass(ProgramInput ? "" : "New password (? for help): ");
+d152 1
+a152 1
+		if (!*px)
+d162 3
+a164 3
+		if (user->mpw_passwd &&
+		    *user->mpw_passwd &&
+		     password_cmp(user->mpw_passwd, newpw1)) {
+d171 2
+a172 1
+		if (password_ok(user, newpw1, checkmsg) == 0) {
+d181 2
+a182 1
+		px = getpass(ProgramInput ? "" : "New password (again): ");
+d187 1
+a187 1
+			if (ntries++ >= PasswdMatchTries) 
+d191 1
+a191 1
+			if (ProgramInput)
+d196 4
+a199 1
+		pwchanged = 1;
+a204 17
+	 * Encrypt the new password
+	 */
+	if (pwchanged) {
+		char	salt[8];
+
+		(void) random_string(salt, sizeof(salt));
+		crypw = copystr((*PasswdCrypt)(newpw1, salt));
+#ifdef	HAS_SECURE_RPC
+		if (SecurityLevel == sec_sunC2)
+			update_rpc_key(user, newpw1);
+#endif
+#ifdef	USE_NISPLUS
+		if (aux->sourcePW == srv_nisplus)
+			update_nis_cred(user, newpw1);
+#endif
+	}
+	/*
+d207 4
+a210 3
+	debug(DB_UPDATE, "pw_replace(%s, %s, (char *)0, (char *)0)\n",
+		user->mpw_name, crypw ? crypw : "<null>");
+	pw_replace(user, crypw, (char *)0, (char *)0);
+d212 2
+a213 5
+	syslog(LOG_INFO,
+		"Password changed on %s for %s by %s\n",
+		user->pws_loc, user->mpw_name, caller->mpw_name);
+
+	if (pwchanged) {
+d215 5
+a219 2
+			user->pws_name, user->mpw_name, user->pws_loc);
+		if (update_password_history(&user->pw, crypw))
+d222 1
+a222 1
+	else
+d224 5
+a228 4
+			 user->pws_name, user->mpw_name, user->pws_loc);
+#ifdef	USE_NIS
+	yp_sync();
+#endif
+d235 1
+a235 1
+public void
+d237 4
+a240 4
+char	*prompt,
+	*pwd_crypt,		/* Present password (encrypted) */
+	*pwd_plain;		/* Present password (plain)  */
+int	pwlen;			/* Length of present password buffer */
+d247 1
+a247 1
+		px = getpass(ProgramInput ? "" : prompt); 
+d266 1
+a266 1
+public char *
+d268 2
+a269 2
+char	*buf;		/* String buffer */
+int	buflen;		/* Length of buf */
+d303 1
+d305 2
+a306 2
+char	*current,
+	*check;
+d311 1
+a311 1
+	return (strcmp(current, (*PasswdCrypt)(check, current)) == 0);
+d319 5
+a323 4
+static int password_ok(theUser, newpwd, mesgbuf)
+struct mpasswd	*theUser;
+char		*newpwd,		/* New password (plaintext) */
+		*mesgbuf;		/* Error message buffer */
+d335 4
+a338 3
+enum chg_perm can_change(theUser, theCaller)
+struct mpasswd	*theUser,
+		*theCaller;
+d379 1
+a379 1
+	if (theUser->pwage.do_aging) {
+d387 1
+a387 1
+				 theUser->pwage.can_change - now) / SEC_PER_DAY);
+d435 2
+a436 1
+			logdie("Cannot get auth data.");
+d458 1
+a458 1
+	char	*options;
+d465 3
+a467 1
+	execl(vendor_passwd, "passwd", options, xxx, 0);
+d530 3
+d592 1
+a592 2
+	if (rc = index(ib, '\n'))
+		*rc = 0;
+@
+
+
+1.17
+log
+@Use debug() routine for messages
+@
+text
+@d71 2
+a72 2
+			user->pwage.min_time / SEC_PER_DAY,
+			user->pwage.max_time / SEC_PER_DAY);
+d78 1
+a78 1
+		if (!user->pwage.doit)
+d89 1
+a89 1
+		if (!user->pwage.doit)
+d93 1
+a93 1
+		user->pwage.min_time = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+d104 1
+a104 1
+		user->pwage.max_time = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+d133 1
+a133 1
+	printf("Changing password for %s on %s\n", user->mpw_name, user->where);
+d216 1
+a216 1
+		user->where, user->mpw_name, caller->mpw_name);
+d219 2
+a220 2
+		printf("Password changed for %s on %s\n",
+			user->mpw_name, user->where);
+d225 2
+a226 2
+		printf("Password aging changed for %s on %s\n",
+			 user->mpw_name, user->where);
+d361 1
+a361 1
+		    theUser->remote) {
+d377 1
+a377 1
+	if (theUser->pwage.doit) {
+d382 1
+a382 1
+			if (now < (theUser->pwage.last_change + theUser->pwage.min_time)) {
+d385 1
+a385 1
+				 theUser->pwage.min_time - now) / SEC_PER_DAY);
+d388 1
+a388 1
+			if (theUser->pwage.min_time > theUser->pwage.max_time) {
+@
+
+
+1.16
+log
+@Beta 3 development checkin
+@
+text
+@d210 2
+a211 5
+	if (DebugLevel >= DB_UPDATE) {
+		printf("pw_replace(%s, %s, (char *)0, (char *)0)\n",
+			user->mpw_name, crypw ? crypw : "<null>");
+		fflush(stdout);
+	}
+@
+
+
+1.15
+log
+@1. Change "punt()" 2. Add better support for Secure RPC passwords  3. Add first level of hooks for NIS+
+@
+text
+@d10 1
+a10 1
+#ifdef	ULTRIX_SECURITY
+d20 1
+d23 1
+d48 1
+a48 1
+	uid_t	myuid = 0;
+d50 1
+a50 1
+	uid_t	myuid = getuid();	/* Userid of caller */
+d117 1
+a117 1
+#ifdef	SUN_SECURITY
+d198 1
+a198 1
+#if	defined(SUN_SECURITY) && defined(OS_SUNOS_4)
+d202 1
+a202 1
+#ifdef	NISPLUS_SUPPORT
+d217 1
+a217 1
+	syslog(MESSAGE_LOG_LEVEL,
+d230 2
+a231 2
+#ifdef	YP_SUPPORT
+	yp_sync();		/* Eventually db_sync() */
+a300 4
+#if	defined(SYS5_TTY)
+#	include <termio.h>		/* Vanilla SV termio */
+	struct termio saved_tty_mode;
+#endif
+a301 14
+#if	defined(SUNOS_TTY)
+#	include <sys/termios.h>		/* SUN OS 4.0 termio */
+#define	TCGETA	TCGETS
+#define	TCSETA	TCSETS
+	struct termios saved_tty_mode;
+#endif
+
+#if	!defined(SUNOS_TTY) && !defined(SYS5_TTY)
+#	include <sgtty.h>		/* BSD tty */
+	struct sgttyb saved_tty_mode;
+	int	saved_local_flags;
+#endif
+char	saves_valid  = 0;		/* Are the saved values valid? */
+
+a302 89
+ *	savetty - save current terminal settings
+ */
+savetty()
+{
+#if	defined(SYS5_TTY) || defined(SUNOS_TTY)
+	(void) ioctl(0, TCGETA, &saved_tty_mode);
+#else
+	(void) ioctl(0, TIOCGETP, &saved_tty_mode);
+	(void) ioctl(0, TIOCLGET, &saved_local_flags);
+#endif
+	saves_valid++;
+}
+
+/*
+ *	fixtty - restore saved terminal settings
+ */
+fixtty()
+{
+	if (saves_valid) {
+#if	defined(SYS5_TTY) || defined(SUNOS_TTY)
+		(void) ioctl(0, TCSETA, &saved_tty_mode);
+#else
+		(void) ioctl(0, TIOCSETP, &saved_tty_mode);
+		(void) ioctl(0, TIOCLSET, &saved_local_flags);
+#endif
+	}
+}
+
+#ifdef	NEED_GETPASS
+/*
+ *	The system getpass() throws away all but the first 8 characters
+ *	of a password string.  If this isn't enough for you, use this
+ *	routine instead.  This code assumes that stdin is the terminal.
+ */
+public char	*
+getpass(prompt)
+#ifdef	__STDC__
+const char	*prompt;
+#else
+char	*prompt;
+#endif
+{
+#if	defined(SYS5_TTY)
+	struct termio	saved,		/* Saved tty characteristics */
+			noecho;		/* No-echo tty characteristics */
+	char	*strchr();
+#else
+#if	defined(SUNOS_TTY)
+	struct termios	saved,		/* Saved tty characteristics */
+			noecho;		/* No-echo tty characteristics */
+#else
+	struct sgttyb	saved,		/* Saved tty characteristics */
+			noecho;		/* No-echo tty characteristics */
+#endif	/* defined(SUNOS_TTY) */
+#endif	/* defined(SYS5_TTY) */
+	static char	ib[64];		/* Input buffer */
+	char	*rc;			/* Temp */
+
+#if	defined(SYS5_TTY) || defined(SUNOS_TTY)
+	(void) ioctl(0, TCGETA, &saved);
+	noecho = saved;
+	noecho.c_lflag &= ~ECHO;
+	(void) ioctl(0, TCSETA, &noecho);
+#else
+	(void) ioctl(0, TIOCGETP, &saved);
+	noecho = saved;
+	noecho.sg_flags &= ~ECHO;
+	(void) ioctl(0, TIOCSETP, &noecho);
+#endif
+	fprintf(stderr, "%s", prompt);
+	fflush(stderr);
+	rc = fgets(ib, sizeof(ib), stdin);
+	putc('\n', stderr);
+	fflush(stderr);
+
+#if	defined(SYS5_TTY) || defined(SUNOS_TTY)
+	(void) ioctl(0, TCSETA, &saved);
+#else
+	(void) ioctl(0, TIOCSETP, &saved);
+#endif
+	if (rc == NULL)
+		return(NULL);
+	if (rc = INDEX(ib, '\n'))
+		*rc = 0;
+	return(ib);
+}
+#endif	/* XGETPASS */
+
+/*
+d341 1
+a341 1
+	uid_t	calluid = getuid();
+d343 1
+a343 1
+#ifdef	YP_SUPPORT
+d397 1
+a397 1
+#ifdef	ULTRIX_SECURITY
+d426 2
+a427 2
+#endif	/* ULTRIX_SECURITY */
+#ifdef	OSF1_SECURITY
+d468 125
+@
+
+
+1.14
+log
+@Use new password aging field names
+@
+text
+@d36 5
+d112 2
+a113 2
+		if (user->mpw_passwd[0])
+			get_password(user->mpw_passwd,
+d115 12
+d197 2
+a198 1
+		update_rpc_key(user, newpw1);
+d201 2
+a202 1
+		update_nis_cred(user, newpw1);
+d228 1
+a228 1
+#ifdef	YP_PASSWD
+d238 3
+a240 2
+get_password(pwd_crypt, pwd_plain, pwlen)
+char	*pwd_crypt,		/* Present password (encrypted) */
+d249 1
+a249 1
+		px = getpass(ProgramInput ? "" : "Current password: ");
+a461 3
+	 *
+	 * The "ALWAYS_USE_YPPASSWDD" option runs smack into this same
+	 * problem, which is one of the reasons that I don't recommend it.
+a525 1
+			Punt();
+d527 1
+a544 1
+			Punt();
+d546 1
+d558 6
+a563 1
+Punt()
+d565 7
+a571 2
+	/* Here we will find the vendor passwd program and run it */
+	/* If this succeeds, then this routine will not return */
+@
+
+
+1.13
+log
+@Cleanup debugging statements
+@
+text
+@d8 1
+a8 2
+#include "pw_defs.h"
+#include "pw_nis.h"
+a9 2
+#include <sys/time.h>
+
+d57 2
+a58 2
+		lt = gmtime(&user->last_change);
+		if (user->last_change == 0) {
+d64 2
+a65 2
+			user->min_change_time / SEC_PER_DAY,
+			user->expire / SEC_PER_DAY);
+d71 1
+a71 1
+		if (!user->age_password)
+d73 1
+a73 1
+		user->last_change = 0;
+d82 1
+a82 1
+		if (!user->age_password)
+d86 1
+a86 1
+		user->min_change_time = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+d97 1
+a97 1
+		user->expire = ((days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK) * SEC_PER_WEEK;
+d179 1
+a179 1
+#ifdef	SUN_SECURITY
+d182 3
+a195 1
+#ifdef	USE_SYSLOG
+d199 1
+a199 1
+#endif
+d259 1
+a259 1
+	(void) srand ( (tv & 0x38d9fcff) ^ getpid ());
+d270 1
+a270 1
+	(void) srand((tv & 0x1a90fefc) ^ getpid());
+d381 1
+a381 1
+	if (rc = index(ib, '\n'))
+d428 1
+a428 1
+#ifdef	YP_PASSWD
+d468 1
+a468 1
+	if (theUser->age_password) {
+d472 2
+a473 2
+		if (theUser->last_change <= now && calluid) {
+			if (now < (theUser->last_change + theUser->min_change_time)) {
+d475 2
+a476 2
+				(theUser->last_change +
+				 theUser->min_change_time - now) / SEC_PER_DAY);
+d479 1
+a479 1
+			if (theUser->min_change_time > theUser->expire) {
+@
+
+
+1.12
+log
+@1. Abstract password age checking. 2. Abstract password encryption. 3. Support OSF/1 enhanced security. 4. Add stub for calling vendor passwd program when needed.
+@
+text
+@d48 1
+a48 1
+	enum	chg_perm	perm;	/* */
+d52 1
+a52 1
+	char	*crypw = 0;
+d189 1
+a189 1
+	if (DebugLevel >= DB_UPDATE)
+d192 2
+@
+
+
+1.11
+log
+@Make password aging updates work right
+@
+text
+@d13 1
+a13 1
+#ifdef	ULTRIX_SHADOW
+d55 1
+a55 16
+#ifdef	S5_PWAGING
+	time_t	lastchange = 0,
+		maxpwtime = 0,
+		minpwtime = 0;
+
+	if (user->mpw_age) {
+		extern long a64l();
+		long	pwage;
+
+		pwage = a64l(user->mpw_age);
+		maxpwtime = pwage & 077;
+		minpwtime = (pwage >> 6) & 077;
+		lastchange = (pwage >> 12) * SEC_PER_WEEK;
+	}
+#endif
+#if	defined(S5_PWAGING) && defined(OS_SUNOS_4)
+d60 2
+a61 2
+		lt = gmtime(&lastchange);
+		if (lastchange == 0) {
+d67 2
+a68 1
+			minpwtime * DAYS_PER_WEEK, maxpwtime * DAYS_PER_WEEK);
+d74 1
+a74 1
+		if (!user->mpw_age)
+d76 1
+a76 1
+		lastchange = 0;
+d85 1
+a85 1
+		if (!user->mpw_age)
+d89 1
+a89 1
+		minpwtime = (days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK;
+d100 1
+a100 1
+		maxpwtime = (days + DAYS_PER_WEEK - 1) / DAYS_PER_WEEK;
+d127 2
+d137 3
+a139 1
+		if (password_cmp(user->mpw_passwd, newpw1)) {
+a173 1
+#ifdef	S5_PWAGING
+a174 25
+	 * Update password aging information
+	 */
+	/* Configuration file setting to enforce a max password age? */
+	if (user->mpw_age) {
+		if (maxpwtime == 0) {
+			*user->mpw_age = '\0';
+		}
+		else {
+			extern char *l64a();
+			time_t	now = lastchange / SEC_PER_WEEK,
+				pwage;
+
+			if (pwchanged)
+				now = time((time_t *)0) / SEC_PER_WEEK;
+			pwage = maxpwtime
+				+ (minpwtime << 6)
+				+ (now << 12);
+			if (pwage)
+				user->mpw_age = l64a(pwage);
+			else
+				user->mpw_age = ".";
+		}
+	}
+#endif
+	/*
+d181 2
+a182 8
+		crypw = copystr(crypt(newpw1, salt));
+#if     ULTRIX_SHADOW
+		if (aux->shadow == sl_local &&
+		   (SecurityLevel == sec_u4upgrade ||
+		    SecurityLevel == sec_u4enhanced))
+			crypw = copystr(crypt16(newpw1, salt));
+#endif
+#ifdef	SUN_SHADOW
+d392 2
+a393 2
+ char	*current,
+		*check;
+d397 2
+a398 6
+#if	ULTRIX_SECURITY
+	if (strlen(current) > STD_PW_LEN)
+		return(strcmp(current, crypt16(check, current)) == 0);
+	else
+#endif
+		return(strcmp(current, crypt(check, current)) == 0);
+a463 1
+#ifdef	S5_PWAGING
+d467 2
+a468 6
+	if (theUser->mpw_age) {
+		time_t	pwage = 0,
+			maxpwtime = 0,
+			minpwtime = 0,
+			now;
+		extern long a64l();
+a469 4
+		pwage = a64l(theUser->mpw_age);
+		maxpwtime = pwage & 077;
+		minpwtime = (pwage >> 6) & 077;
+		pwage >>= 12;
+d471 5
+a475 5
+		now /= SEC_PER_WEEK;
+		if (pwage <= now) {
+			if (calluid && (now < (pwage + minpwtime))) {
+				printf("Less than %ld weeks since last change.\n",
+				     minpwtime);
+d478 2
+a479 2
+			if (calluid && (minpwtime > maxpwtime)) {
+				printf("You may not change this password.\n");
+d484 1
+a484 3
+#endif
+
+#ifdef	ULTRIX_SHADOW
+d486 1
+a486 2
+	 * Check the authorization data for password aging
+	 * and change permissions.
+a491 1
+		TIME	now;
+d493 1
+a493 1
+		if ((a = getauthuid(theUser->mpw_uid)) == 0)
+d508 1
+a509 3
+			/* Of course, I can't make one of those ...
+			 * so you are pretty much up the creek right now
+			 */
+d512 18
+a529 9
+		/*
+		 * Now check password age
+		 */
+		(void) time(&now);
+		if (a->a_pass_mod) {
+			if ((now - a->a_pass_mod) < a->a_pw_minexp) {
+				printf("Password was changed too recently.\n");
+				return(deny);
+			}
+d539 7
+a545 1
+/*		End $RCSfile$		*/
+@
+
+
+1.10
+log
+@Re-enable password checking
+@
+text
+@a34 3
+#define DAYS_PER_WEEK	7
+#define SEC_PER_WEEK	((time_t )(24 * DAYS_PER_WEEK * 60 * 60))
+
+d52 1
+a52 1
+	char	*crypw;
+d70 1
+a70 1
+#if	defined(S5_PWAGING) && OS_SUNOS_4
+d91 1
+d104 1
+d115 1
+d231 1
+a231 1
+	if (DebugLevel > DEBUG_PWUPDATE)
+d233 2
+a234 2
+			user->mpw_name, pwchanged ? crypw : "<null>");
+	pw_replace(user, pwchanged ? crypw : (char *)0, (char *)0, (char *)0);
+d241 1
+a241 1
+	if (pwchanged)
+d244 3
+a252 4
+#ifdef	PASSWORD_HISTORY
+	if (update_password_history(&user->pw, crypw))
+		warn("Could not update password history database\n");
+#endif
+@
+
+
+1.9
+log
+@Make ANSI compilers more happy
+@
+text
+@a55 1
+	int	rc;
+d251 2
+a252 1
+	rc = update_password_history(&user->pw, crypw);
+d458 2
+a459 5
+#if	0	/* XXX */
+	return(checkpassword(&theUser->pw, newpwd, mesgbuf));
+#else
+	return(1);
+#endif
+@
+
+
+1.8
+log
+@Hooks for password history
+@
+text
+@d377 3
+d381 1
+@
+
+
+1.7
+log
+@Fix debugging code, make work on OSF/1 ALPHA
+@
+text
+@d56 1
+d251 3
+d377 1
+a377 1
+CONST char	*prompt;
+d431 1
+a431 1
+CONST char	*current,
+d455 1
+a455 1
+	int	rc = checkpassword(&theUser->pw, newpwd, mesgbuf);
+a458 8
+
+#ifdef	PASSWORD_HISTORY
+	if (rc)
+		return(rc);
+	/* Call password history checker to prevent password reuse */
+	rc = passwd_history(&theUser->pw, newpwd, mesgbuf);
+#endif
+/* 	return(rc); */	/* XXX */
+@
+
+
+1.6
+log
+@Development checkin: 1. Change random_string() 2. Stuff moved from other modules
+@
+text
+@d233 1
+a233 1
+			user, pwchanged ? crypw : "<null>");
+d256 1
+a256 1
+public /* void */
+d373 1
+a373 1
+char	*prompt;
+d427 2
+a428 2
+char	*current,
+	*check;
+@
+
+
+1.5
+log
+@Update users' secret key
+@
+text
+@d8 1
+d13 4
+d27 15
+d56 1
+d129 1
+a129 1
+	motd(PASSWD_MOTD, (char *)0);
+d143 1
+a143 1
+			motd(PASSWD_HELP, "Missing help file");
+d170 1
+a170 1
+			if (ntries++ >= pwReadTries) 
+d188 1
+d274 1
+a274 1
+			if (ntries++ == pwReadTries)
+d284 1
+a284 1
+ *	randomstring - create a string of random characters
+d286 1
+a286 1
+char	*
+d293 1
+a293 1
+	time_t	tv;		/* Current time */
+d296 1
+a296 4
+	(void) time (&tv);
+	/*
+	 * Assumes (implicitly) that sizeof(int) == sizeof(long)
+	 */
+d308 1
+a308 1
+	(void) srand(((unsigned )tv & 0x1a90fefc) ^ getpid());
+d371 1
+a371 1
+char	*
+d450 1
+d452 3
+d462 1
+a462 1
+	return(rc);
+d587 1
+@
+
+
+1.4
+log
+@Development checkin
+@
+text
+@d193 1
+d202 3
+@
+
+
+1.3
+log
+@1. Incorporate most of pw_permission(). 2. Rename cmp_password to password_cmp()
+@
+text
+@d17 1
+a17 2
+static int	password_ok(struct mpasswd *, char *, char *);
+static int	can_change(struct mpasswd *, struct mpasswd *);
+d19 1
+a19 2
+static int	password_ok();
+static int	can_change();
+d26 1
+a26 1
+#ifdef	DEBUG
+d31 1
+d99 1
+a99 1
+	if (can_change(user, caller) == 0)
+d102 5
+a106 3
+	if (user->mpw_passwd[0] /* flag to force password read? */)
+		get_password(user->mpw_passwd,
+			user->password, sizeof(user->password));
+d126 7
+d158 2
+a159 14
+		/*
+		 * Disallow new password == old password
+		 */
+		if (password_cmp(user->mpw_passwd, newpw1)) {
+			printf("New password must be different than old; try again.\n\n");
+			if (ProgramInput)
+				die((char *)0);
+			else
+				continue;
+		}
+		else {
+			pwchanged = 1;
+			break;
+		}
+d192 3
+a194 2
+		(void) random_string(newpw2, sizeof(newpw2));
+		crypw = crypt(newpw1, newpw2);
+d199 1
+a199 1
+			crypw = crypt16(newpw1, newpw2);
+d221 3
+d230 1
+d444 1
+a444 1
+static int can_change(theUser, theCaller)
+d469 1
+a469 1
+		struct ypinfo *ypi = ypwhich(PASSWD_BYNAME);
+d471 1
+d473 1
+a473 1
+		    ypi->status == is_yp_client &&
+d476 2
+a477 2
+				ypi->master);
+			return(0);
+d482 1
+a482 1
+		return(1);
+d485 1
+a485 1
+		return(0);		/* I'm not root and target isn't me */
+d508 1
+a508 1
+				return(0);
+d512 1
+a512 1
+				return(0);
+d537 1
+a537 1
+			return(0);
+d548 1
+a548 1
+			return(0);
+d557 1
+a557 1
+				return(0);
+@
+
+
+1.2
+log
+@Insert password checking code (from backend)
+@
+text
+@d8 1
+d16 9
+a24 1
+passwd(user, caller)
+d100 1
+a100 1
+	if (pw_permission(user, caller) == 0)
+d153 1
+a153 1
+		if (cmp_password(user->mpw_passwd, newpw1)) {
+d245 1
+a245 1
+		if (!cmp_password(pwd_crypt, px)) {
+d398 1
+a398 1
+ *	cmp_password - compare old and new passwords
+d402 1
+a402 1
+cmp_password(current, check)
+d417 1
+a417 2
+ *      password_ok - sanity check password.  Right now just calls
+ *              the password check code
+d419 1
+a419 1
+ *      Returns 1 if password is ok to use, 0 otherwise
+d421 1
+a421 1
+password_ok(theUser, newpwd, mesgbuf)
+d437 128
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d27 1
+d118 1
+a118 1
+		if (pw_check(user, newpw1, checkmsg) == 0) {
+d184 13
+d201 3
+a203 2
+			user, pwchanged ? newpw1 : "<null>");
+	pw_replace(user, pwchanged ? newpw1 : (char *)0, (char *)0, (char *)0);
+a399 1
+	/* Check for  UPGRADE or ENHANCED security mode */
+d406 23
+@

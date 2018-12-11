@@ -1,0 +1,373 @@
+#!/bin/ksh
+###
+#
+# Strong Password Server Installation Script
+#
+# Copyright 1998-2001, Texas Instruments. All rights reserved.
+#
+# By using this software the USER indicates that he or she has read,
+# understood and will comply with the following:
+#
+# 1. the above copyright notice appears in all copies of the software
+#    and its documentation, or portions thereof, and 
+# 2. a full copy of this notice is included with the software and its
+#    documentation, or portions thereof, and 
+# 3. neither the software nor its documentation, nor portions thereof,
+#    is sold for profit. Any commercial sale or license of this software,
+#    copies of the software, its associated documentation and/or
+#    modifications of either is strictly prohibited without the prior
+#    consent of Texas Instruments.
+# 4. This software and any associated documentation are provided "as is,"
+#    and any issues, problems are yours to deal with. The USER takes
+#    full responsibility for the performance of this software.
+#
+#
+#  Author: Victor Burns
+#          Texas Instruments, 2001
+#
+#
+###
+#
+
+export PATH=/usr/bin:/usr/ucb
+
+### Source Config File
+. ${0%/*}/install-settings
+
+### Display Locations
+
+print
+print  "  Server Installation Script"
+print
+printf "      Source ->> [ %-30s ]\n" ${SRC_PATH}
+printf " Destination ->> [ %-30s ]\n" ${DST_PATH}
+print
+
+### Verify Source (does this look right?)
+
+if [ ! -d "${SRC_PATH}/install" -o ! -d "${SRC_PATH}/source" ]
+then
+	print
+	print "  ERROR - The source installation directory does not look correct."
+	print "          The install and source directories could be found."
+	print
+	exit -1
+fi
+
+### Prepare Destination
+
+if [ ${DST_PATH} = ${REALPATH} ]
+then
+	### Normal Installation Path
+
+	print
+	print "  INFO - Installation will be made into the directory ..."
+	print "         [ ${DST_PATH} ]"
+	print
+
+	if [ -h ${DST_PATH} ]
+	then
+		print
+		print "  WARNING - The path ${DST_PATH} already exists as a link. The link"
+		print "            is created as follows. The link will be remove to allow"
+		print "            the installation to continue."
+		print
+		ls -al ${DST_PATH}
+		print
+		print "  Delete the link and the old installation using ..."
+		print "  [ "${0%/*}/uninstall-server" ]"
+		print "  Make very sure this is what you want."
+		print
+		print "Remove the link now and continue with installation? ([Y]/N): \c"
+		read ans
+		print
+
+		case "X$ans" in
+		XY | Xy | XYES | Xyes | X )
+			break;;
+		*)
+			exit -1;
+		esac
+
+		rm -f ${DST_PATH} > /dev/null 2>&1
+
+		print "  INFO - Link removed at [ ${DST_PATH} ]"
+		print
+	fi
+
+	if [ -d ${DST_PATH} ]
+	then
+		print
+		print "  WARNING - The path ${DST_PATH} already exists as a directory. This"
+		print "            directory may have installed files. There are three choices:"
+		print
+		print "    1) Exit this installation."
+		print "    2) Run the uninstall-server script NOW, then continue."
+		print "    3) Continue with the installation over the top of the current files."
+		print
+		print "Enter Choice ([1]/2/3): \c"
+		read ans
+		print
+
+		case "X$ans" in
+		X2)
+			${0%/*}/uninstall-server
+			break;;
+		X3)
+			break;;
+		*)
+			exit -1;
+		esac
+	fi
+
+	if [ -e ${DST_PATH} -a ! -d ${DST_PATH} ]
+	then
+		print
+		print "  WARNING - The path ${DST_PATH} already exists as something other than"
+		print "            a symbolic link or directory. This condition is not exceptable."
+		print "            The installation will be aborted."
+		print
+		exit -1
+	fi
+
+	### Make the installation directory
+	[ -d ${DST_PATH} ] || mkdir -m 0755 -p ${DST_PATH}
+
+else
+	### Link Alternate Path
+
+	print
+	print "  INFO - Installation files will be installed in a location other"
+	print "         than the default. A symbolic link will be created to link"
+	print "         the normal installation path to the installed files."
+	print
+	print "         Link [ ${REALPATH} ] to [ ${DST_PATH} ]"
+	print
+
+	if [ -h ${REALPATH} ]
+	then
+		print "  WARNING - The path ${REALPATH} already exists as a link. The link"
+		print "            is created as follows. Please select a installation option"
+		print "            from a choice of options. A listing of the link is included."
+		print
+		ls -al ${REALPATH}
+		print
+		print "    1) Exit this installation."
+		print "    2) Run the uninstall-server script NOW, then continue."
+
+		linkvalue=`ls -al ${REALPATH}`
+		linkvalue=${linkvalue##*\ }
+		if [ "${linkvalue}" = ${DST_PATH} ]
+		then
+			print "    3) Continue with the installation over the top of the"
+			print "       current installation."
+			print
+			print "Enter Choice ([1]/2/3): \c"
+		else
+			print
+			print "  WARNING - The current link value is not the same as configured."
+			print "            Current[ ${linkvalue} ]"
+			print "         Configured[ ${DST_PATH} ]"
+			print
+			print "Enter Choice ([1]/2): \c"
+		fi
+
+		read ans
+		print
+
+		case "X$ans" in
+		X2)
+			${0%/*}/uninstall-server
+			break;;
+		X3)
+			[ "${linkvalue}" = ${DST_PATH} ] || exit -1
+			break;;
+		*)
+			exit -1;
+		esac
+	fi
+
+	if [ -d ${REALPATH} -a ! -h ${REALPATH} ]
+	then
+		print "  WARNING - The path ${REALPATH} already exists as a directory. This"
+		print "            directory may have installed files. There are three choices:"
+		print
+		print "    1) Exit this installation."
+		print "    2) Run the uninstall-server script NOW, then continue."
+		print "    3) Continue with the installation over the top of the current files."
+		print
+		print "Enter Choice (1/2/[3]): \c"
+		read ans
+		print
+
+		case "X$ans" in
+		X2)
+			${0%/*}/uninstall-server
+			break;;
+		X3)
+			break;;
+		*)
+			exit -1;
+		esac
+	fi
+
+	if [ -d ${DST_PATH} -a ! -e ${REALPATH} ]
+	then
+		print "  WARNING - The path ${DST_PATH} already exists as a directory. This"
+		print "            directory may not already exist. A symbolic link at"
+		print "            [ ${REALPATH} ] does not exist and this script cannot"
+		print "            verify the proper use of this directory."
+		print
+		exit -1;
+	fi
+
+	### Create the installation directory
+	[ ! -e ${DST_PATH} -a ! -e ${REALPATH} ] && mkdir -m 0755 -p ${DST_PATH}
+
+	### Create Symbolic Link
+	[ ! -e ${REALPATH} -a   -d ${DST_PATH} ] && ln -s ${DST_PATH} ${REALPATH}
+fi
+
+### Server Type
+
+OSTYPE=`uname -s`
+
+[ $OSTYPE = 'SunOS' ] && IDENT=`uname -p`
+[ $OSTYPE = 'HP-UX' ] && IDENT=`uname -m | sed 's=/==g'`
+
+print
+print "  INFO - This server was detected as having these qualities. The correct"
+print "         set of binaries and support files will be selected based on"
+print "         this information."
+print
+print "         OSTYPE = $OSTYPE"
+print "          IDENT = $IDENT"
+print
+
+
+### Install Files
+
+for iPTH in bin dictionaries etc lib
+do
+	xPTHs="${SRC_PATH}/${iPTH}/${OSTYPE}-${IDENT}"
+	xPTHd="${REALPATH}/${iPTH}"
+	[ -d "${xPTHs}" ] && {
+		printf "  INFO - Installing [ %-35s ] as %s\n" ${xPTHs} ${xPTHd}
+		[ -d "${xPTHd}" ] || mkdir -m 0755 -p ${xPTHd}
+		cd ${xPTHs} || { print "  ERROR - Cound not install ... ${xPTHs}"; exit -1; }
+		tar cf - . | ( cd ${xPTHd} ; tar xf - )
+	} || {
+		if [ ${iPTH} = 'bin' -o ${iPTH} = 'lib' ]
+		then
+			print
+			print "  ERROR - No ${iPTH} files for this host type and OS."
+			print "          Please compile them and re-install."
+			print "          Expected [ ${xPTHs} ]"
+			print
+			exit -1
+		fi
+	}
+
+	yPTHs="${SRC_PATH}/${iPTH}/common"
+	yPTHd="${REALPATH}/${iPTH}"
+	[ -d "${yPTHs}" ] && {
+		printf "  INFO - Installing [ %-35s ] as %s\n" ${yPTHs} ${yPTHd}
+		[ -d "${yPTHd}" ] || mkdir -m 0755 -p ${yPTHd}
+		cd ${yPTHs} || { print "  ERROR - Cound not install ... ${yPTHs}"; exit -1; }
+		tar cf - . | ( cd ${yPTHd} ; tar xf - )
+	}
+
+	[ ! -d "${xPTHs}" -a ! -d "${yPTHs}" -a ! "${iPTH}" = 'lib' ] && {
+		yPTHs="${SRC_PATH}/${iPTH}"
+		yPTHd="${REALPATH}/${iPTH}"
+		printf "  INFO - Installing [ %-35s ] as %s\n" ${yPTHs} ${yPTHd}
+		[ -d "${yPTHd}" ] || mkdir -m 0755 -p ${yPTHd}
+		cd ${yPTHs} || { print "  ERROR - Cound not install ... ${yPTHs}"; exit -1; }
+		tar cf - . | ( cd ${yPTHd} ; tar xf - )
+	}
+
+done
+print
+
+### Install Configuration File
+
+if [ -f ${REALPATH}/etc/passwd.conf ]
+then
+	print
+	print "  INFO - Password Strength Configuration file exists. (preserved)"
+	print
+else
+	print
+	print "  INFO - Installing Strength Configuration file."
+	print "         [ ${REALPATH}/etc/passwd.conf ]"
+	print
+
+	[ -d "${REALPATH}/etc" ] || mkdir -m 0755 -p ${REALPATH}/etc
+
+	if [ -f ${SRC_PATH}/etc/passwd.conf ]
+	then
+		cd ${SRC_PATH}/etc
+		tar cf - passwd.conf | ( cd ${REALPATH}/etc ; tar xf - )
+	fi
+fi
+
+### Installing rc daemon startup
+
+if [ -f "${REALPATH}/etc/init.d/pwstrongd" ]
+then
+	print "  INFO - Installing [ pwstrongd ] daemon rc startup script"
+	cd "${REALPATH}/etc/init.d"
+	if [ -d "/etc/init.d" ]
+	then
+		tar cf - pwstrongd | ( cd /etc/init.d ; tar xf - )
+		ln       /etc/init.d/pwstrongd /etc/rc2.d/S99pwstrongd
+		ls -aldi /etc/init.d/pwstrongd /etc/rc2.d/S99pwstrongd
+	elif [ -d "/sbin/init.d" ]
+	then
+		tar cf - pwstrongd | ( cd /sbin/init.d; tar xf - )
+		ln -s    /sbin/init.d/pwstrongd /sbin/rc2.d/S99pwstrongd
+		ls -aldi /sbin/init.d/pwstrongd /sbin/rc2.d/S99pwstrongd
+	else
+		print
+		print "  WARNING - Could not install deamon rc startup script."
+		print
+	fi
+fi
+print
+
+### Build Empty History database
+
+if [ -x "${REALPATH}/etc/db-empty" ]
+then
+	if [ -e "${REALPATH}/etc/history.dir" ]
+	then
+		print "  INFO - History database exists. (preserved)"
+	else
+		print "  INFO - Building empty Password History DB"
+		cd ${REALPATH}/etc
+		./db-empty
+	fi
+	print "         [ ${REALPATH}/etc/history.[dir|pag] ]"
+	print
+fi
+
+### Compiling Dictionaries
+
+if [ -x "${REALPATH}/bin/build_libraries.ksh" ]
+then
+	print "  INFO - Compiling Dictionaries"
+	print
+	${REALPATH}/bin/build_libraries.ksh
+	print
+fi
+chmod o-rwx ${REALPATH}/dictionaries/*
+
+### Done
+
+print "  INFO - Configure this server by editing the configuration file"
+print "         [ ${REALPATH}/etc/passwd.conf ]"
+print
+print "  INFO - Installation Complete"
+print
+
+### END

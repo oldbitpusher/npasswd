@@ -1,0 +1,25 @@
+#!/bin/sh
+###
+# Assembles a flat ASCII dictionary from wordlists in wordlists subdir.
+# assumes availability of GNU gzip/gunzip.
+###
+
+bigdict=$1
+
+if [ ! -x wordfilter ]; then
+	make wordfilter
+fi
+
+echo "Making dictionary $bigdict - This will take some time..."
+(
+	for dictfile in wordlists/*.gz
+	do
+		gunzip -c $dictfile
+	done
+) |
+wordfilter |
+sort |
+uniq > $bigdict
+
+echo "unique words in dictionary $bigdict: \c"
+wc -l $bigdict

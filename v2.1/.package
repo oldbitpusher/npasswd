@@ -1,0 +1,32 @@
+: This file was created by running packinit on Fri May 23 15:08:08 CDT 1997.
+: Do not hand edit; run packinit again if changes are to be made.
+packver='3.036'
+: Basic variables
+package=npasswd
+baserev=2.0
+patchbranch=2
+copyright=' '
+mydiff='sccs diffs'
+maintname='Senior UNIX Wacker'
+maintloc='npasswd-support@lists.cc.utexas.edu'
+ftpsite='www.utexas.edu'
+orgname='Academic Computing & Instructional Tech Services, UT Austin'
+newsgroups='comp.sources.bugs'
+recipients='source-archives@mirror.TMC.COM'
+ftpdir=''
+mailagent='false'
+changelog='ChangeLog'
+changercs=
+: File lookup extensions
+cext=''
+shext=''
+: Mailing list variables
+list_users='true'
+list_name='npasswd-users@mcfeeley.cc.utexas.edu'
+list_addr='npasswd-users@mcfeeley.cc.utexas.edu'
+list_request='listproc@mcfeeley.cc.utexas.edu'
+list_manager='listserv'
+list_sub='subscribe npasswd-users@lists.cc.utexas.edu $cf_email'
+list_unsub='unsubscribe npasswd-users@lists.cc.utexas.edu $cf_email'
+: Derivative variables -- do not change
+revbranch="$baserev.$patchbranch"

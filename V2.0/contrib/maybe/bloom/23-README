@@ -1,0 +1,366 @@
+This file works through all of Crack 4.1's transformations and
+verifies that npasswd will frustrate them.
+
+--------------------------------------------------------------------------------
+
+c-> What Crack does			If they meet in the middle, it means
+n-> What npasswd does			npasswd would see a hit, so Crack
+<-f What the filter-maker does		wouldn't succeed
+
+--------------------------------------------------------------------------------
+
+    # Force every pure alphabetic word lowercase and try it
+    # NOT-CONTAIN ANY NON-ALPHA, LOWERCASE
+  1 !?Al
+
+    word c-> word n-> word <-f word 
+    confusion c-> confusio n-> confusio <-f confusion
+    NASA c-> nasa n-> nasa <-f NASA 
+    Smith c-> smith n-> smith <-f Smith
+    McGonigle c-> mcgonigl n-> mcgonigl <-f McGonigle
+
+    # Pluralise every significant one of the above
+    # MORE-THAN 2, NOT-CONTAIN ANY NON-ALPHA, LOWERCASE, PLURALISE
+  2 >2!?Alp
+    
+    word c-> words n-> word <-f word
+    itch c-> itches n-> itch <-f itch
+    fly c-> flies n-> fly <-f fly
+    company c-> companie n-> company <-f company
+
+    # Try variations of anything that is not pure alnum
+    # CONTAIN ANY NON-ALNUM
+  3 /?X
+    
+    PS/2 c-> PS/2 n-> ps/2 <-f PS/2
+
+    # CONTAIN ANY NON-ALNUM, CONTAIN ANY UPPER, LOWERCASE
+  4 /?X/?ul
+    
+    PS/2 c-> ps/2 n-> ps/2 <-f PS/2
+
+    # Any alphaword >2 & <8 chars long, append a digit or simple punctuation
+    # MORE-THAN 2, LESS-THAN 8, NOT ANY NON-ALPHA, LOWERCASE, APPEND <whatever>
+  5 >2<8!?Al$0
+  6 >2<8!?Al$1
+  7 >2<8!?Al$2
+  8 >2<8!?Al$3
+  9 >2<8!?Al$4
+ 10 >2<8!?Al$5
+ 11 >2<8!?Al$6
+ 12 >2<8!?Al$7
+ 13 >2<8!?Al$8
+ 14 >2<8!?Al$9
+ 15 >2<8!?Al$!
+ 16 >2<8!?Al$.
+ 17 >2<8!?Al$?
+ 18 >2<8!?Al$ :
+
+    ecstasy c-> ecstasy! n-> ecstasy <-f ecstasy
+
+    # Lowercase every pure alphabetic word and reverse it
+    # MORE-THAN 2, NOT-CONTAIN ANY NON-ALPHA, LOWERCASE, REVERSE
+ 19 >2!?Alr
+ 					 dict < reverse of long words all l.c.
+
+     word c-> drow n-> word <-f word
+     McDuff c-> ffudcm n-> mcduff <-f McDuff
+     McGonigle c-> elginogc n-> elginogc <-f McGonigle	   (IF LONG_REVERSE)
+
+    # Capitalise every pure alnum word (ie: not anything which is not alnum)
+    # MORE-THAN 2, NOT-CONTAIN ANY NON-ALNUM, CAPITALISE
+ 20 >2!?Xc
+
+    word c-> Word n-> word <-f word
+
+    # Anything uppercase
+    # MORE-THAN 2, NOT-CONTAIN ANY NON-ALNUM, UPPERCASE
+ 21 >2!?Xu
+
+    word c-> WORD n-> word <-f word
+
+    # Pure alphabetic words with vowels removed which are still fairly long
+    # NOT-CONTAIN ANY NON-ALPHA, CONTAIN ANY VOWEL, PURGE ANY VOWEL, MORE-THAN 3
+ 22 !?A/?v@?v>3
+
+    wordy c-> wrdy n-> wrdy <-f wordy			   (IF VOWEL_STRIP)
+
+    # Longish pure words lowercased and reflected
+ 23 >2!?Alf
+
+    word c-> worddrow n-> word <-f word
+    McKim c-> mckimmik n-> mckim <-f McKim
+
+    # Words containing whitespace, which is then squeezed out
+ 24 /?w@?w>3
+
+    'New York' c-> NewYork n-> newYork <-f 'New York'
+
+    # In a similar vein, words with punctuation, squeezed out
+ 25 /?p@?p>3
+
+    AC/DC c-> ACDC f-> acdc <-f AC/DC
+
+    # Reasonably short words, duplicated. eg: "fredfred"
+ 26 >1<7!?Ald
+
+    word c-> wordword n-> word <-f word
+    pigeon c-> pigeonpi n-> pigeon <-f pigeon
+
+    ###
+    # >From: mycroft@edu.mit.ai.gnu
+    # >In addition to the standard dicts.rules, I use the following set.  You
+    # >can guess what it does.
+    # I've tidied this up a bit (I hope) - alec
+    ###
+ 27 >2/asa2l
+ 28 >2/asa4l
+ 29 >2/ese3l
+ 30 >2/hsh4l
+ 31 >2/isi1l
+ 32 >2/lsl1l
+ 33 >2/oso0l
+ 34 >2/sss$l
+ 35 >2/asa2/hsh4l
+ 36 >2/asa2/sss$l
+ 37 >2/asa4/hsh4l
+ 38 >2/ese3/asa2l
+ 39 >2/ese3/asa4l
+ 40 >2/ese3/hsh4l
+ 41 >2/ese3/sss$l
+ 42 >2/isi1/asa2l
+ 43 >2/isi1/asa4l
+ 44 >2/isi1/ese3l
+ 45 >2/isi1/hsh4l
+ 46 >2/isi1/sss$l
+ 47 >2/lsl1/asa2l
+ 48 >2/lsl1/asa4l
+ 49 >2/lsl1/ese3l
+ 50 >2/lsl1/hsh4l
+ 51 >2/lsl1/isi1l
+ 52 >2/lsl1/oso0l
+ 53 >2/lsl1/sss$l
+ 54 >2/oso0/asa2l
+ 55 >2/oso0/asa4l
+ 56 >2/oso0/ese3l
+ 57 >2/oso0/hsh4l
+ 58 >2/oso0/isi1l
+ 59 >2/oso0/sss$l
+ 60 >2/sss$/asa4l
+ 61 >2/sss$/hsh4l
+ 62 >2/asa2/sss$/hsh4l
+ 63 >2/ese3/asa2/hsh4l
+ 64 >2/ese3/asa2/sss$l
+ 65 >2/ese3/asa4/hsh4l
+ 66 >2/ese3/sss$/asa4l
+ 67 >2/ese3/sss$/hsh4l
+ 68 >2/isi1/asa2/hsh4l
+ 69 >2/isi1/asa2/sss$l
+ 70 >2/isi1/asa4/hsh4l
+ 71 >2/isi1/ese3/asa2l
+ 72 >2/isi1/ese3/asa4l
+ 73 >2/isi1/ese3/hsh4l
+ 74 >2/isi1/ese3/sss$l
+ 75 >2/isi1/sss$/asa4l
+ 76 >2/isi1/sss$/hsh4l
+ 77 >2/lsl1/asa2/hsh4l
+ 78 >2/lsl1/asa2/sss$l
+ 79 >2/lsl1/asa4/hsh4l
+ 80 >2/lsl1/ese3/asa2l
+ 81 >2/lsl1/ese3/asa4l
+ 82 >2/lsl1/ese3/hsh4l
+ 83 >2/lsl1/ese3/sss$l
+ 84 >2/lsl1/isi1/asa2l
+ 85 >2/lsl1/isi1/asa4l
+ 86 >2/lsl1/isi1/ese3l
+ 87 >2/lsl1/isi1/hsh4l
+ 88 >2/lsl1/isi1/sss$l
+ 89 >2/lsl1/oso0/asa2l
+ 90 >2/lsl1/oso0/asa4l
+ 91 >2/lsl1/oso0/ese3l
+ 92 >2/lsl1/oso0/hsh4l
+ 93 >2/lsl1/oso0/isi1l
+ 94 >2/lsl1/oso0/sss$l
+ 95 >2/lsl1/sss$/asa4l
+ 96 >2/lsl1/sss$/hsh4l
+ 97 >2/oso0/asa2/hsh4l
+ 98 >2/oso0/asa2/sss$l
+ 99 >2/oso0/asa4/hsh4l
+100 >2/oso0/ese3/asa2l
+101 >2/oso0/ese3/asa4l
+102 >2/oso0/ese3/hsh4l
+103 >2/oso0/ese3/sss$l
+104 >2/oso0/isi1/asa2l
+105 >2/oso0/isi1/asa4l
+106 >2/oso0/isi1/ese3l
+107 >2/oso0/isi1/hsh4l
+108 >2/oso0/isi1/sss$l
+109 >2/oso0/sss$/asa4l
+110 >2/oso0/sss$/hsh4l
+111 >2/sss$/asa4/hsh4l
+112 >2/ese3/asa2/sss$/hsh4l
+113 >2/ese3/sss$/asa4/hsh4l
+114 >2/isi1/asa2/sss$/hsh4l
+115 >2/isi1/ese3/asa2/hsh4l
+116 >2/isi1/ese3/asa2/sss$l
+117 >2/isi1/ese3/asa4/hsh4l
+118 >2/isi1/ese3/sss$/asa4l
+119 >2/isi1/ese3/sss$/hsh4l
+120 >2/isi1/sss$/asa4/hsh4l
+121 >2/lsl1/asa2/sss$/hsh4l
+122 >2/lsl1/ese3/asa2/hsh4l
+123 >2/lsl1/ese3/asa2/sss$l
+124 >2/lsl1/ese3/asa4/hsh4l
+125 >2/lsl1/ese3/sss$/asa4l
+126 >2/lsl1/ese3/sss$/hsh4l
+127 >2/lsl1/isi1/asa2/hsh4l
+128 >2/lsl1/isi1/asa2/sss$l
+129 >2/lsl1/isi1/asa4/hsh4l
+130 >2/lsl1/isi1/ese3/asa2l
+131 >2/lsl1/isi1/ese3/asa4l
+132 >2/lsl1/isi1/ese3/hsh4l
+133 >2/lsl1/isi1/ese3/sss$l
+134 >2/lsl1/isi1/sss$/asa4l
+135 >2/lsl1/isi1/sss$/hsh4l
+136 >2/lsl1/oso0/asa2/hsh4l
+137 >2/lsl1/oso0/asa2/sss$l
+138 >2/lsl1/oso0/asa4/hsh4l
+139 >2/lsl1/oso0/ese3/asa2l
+140 >2/lsl1/oso0/ese3/asa4l
+141 >2/lsl1/oso0/ese3/hsh4l
+142 >2/lsl1/oso0/ese3/sss$l
+143 >2/lsl1/oso0/isi1/asa2l
+144 >2/lsl1/oso0/isi1/asa4l
+145 >2/lsl1/oso0/isi1/ese3l
+146 >2/lsl1/oso0/isi1/hsh4l
+147 >2/lsl1/oso0/isi1/sss$l
+148 >2/lsl1/oso0/sss$/asa4l
+149 >2/lsl1/oso0/sss$/hsh4l
+150 >2/lsl1/sss$/asa4/hsh4l
+151 >2/oso0/asa2/sss$/hsh4l
+152 >2/oso0/ese3/asa2/hsh4l
+153 >2/oso0/ese3/asa2/sss$l
+154 >2/oso0/ese3/asa4/hsh4l
+155 >2/oso0/ese3/sss$/asa4l
+156 >2/oso0/ese3/sss$/hsh4l
+157 >2/oso0/isi1/asa2/hsh4l
+158 >2/oso0/isi1/asa2/sss$l
+159 >2/oso0/isi1/asa4/hsh4l
+160 >2/oso0/isi1/ese3/asa2l
+161 >2/oso0/isi1/ese3/asa4l
+162 >2/oso0/isi1/ese3/hsh4l
+163 >2/oso0/isi1/ese3/sss$l
+164 >2/oso0/isi1/sss$/asa4l
+165 >2/oso0/isi1/sss$/hsh4l
+166 >2/oso0/sss$/asa4/hsh4l
+167 >2/isi1/ese3/asa2/sss$/hsh4l
+168 >2/isi1/ese3/sss$/asa4/hsh4l
+169 >2/lsl1/ese3/asa2/sss$/hsh4l
+170 >2/lsl1/ese3/sss$/asa4/hsh4l
+171 >2/lsl1/isi1/asa2/sss$/hsh4l
+172 >2/lsl1/isi1/ese3/asa2/hsh4l
+173 >2/lsl1/isi1/ese3/asa2/sss$l
+174 >2/lsl1/isi1/ese3/asa4/hsh4l
+175 >2/lsl1/isi1/ese3/sss$/asa4l
+176 >2/lsl1/isi1/ese3/sss$/hsh4l
+177 >2/lsl1/isi1/sss$/asa4/hsh4l
+178 >2/lsl1/oso0/asa2/sss$/hsh4l
+179 >2/lsl1/oso0/ese3/asa2/hsh4l
+180 >2/lsl1/oso0/ese3/asa2/sss$l
+181 >2/lsl1/oso0/ese3/asa4/hsh4l
+182 >2/lsl1/oso0/ese3/sss$/asa4l
+183 >2/lsl1/oso0/ese3/sss$/hsh4l
+184 >2/lsl1/oso0/isi1/asa2/hsh4l
+185 >2/lsl1/oso0/isi1/asa2/sss$l
+186 >2/lsl1/oso0/isi1/asa4/hsh4l
+187 >2/lsl1/oso0/isi1/ese3/asa2l
+188 >2/lsl1/oso0/isi1/ese3/asa4l
+189 >2/lsl1/oso0/isi1/ese3/hsh4l
+190 >2/lsl1/oso0/isi1/ese3/sss$l
+191 >2/lsl1/oso0/isi1/sss$/asa4l
+192 >2/lsl1/oso0/isi1/sss$/hsh4l
+193 >2/lsl1/oso0/sss$/asa4/hsh4l
+194 >2/oso0/ese3/asa2/sss$/hsh4l
+195 >2/oso0/ese3/sss$/asa4/hsh4l
+196 >2/oso0/isi1/asa2/sss$/hsh4l
+197 >2/oso0/isi1/ese3/asa2/hsh4l
+198 >2/oso0/isi1/ese3/asa2/sss$l
+199 >2/oso0/isi1/ese3/asa4/hsh4l
+200 >2/oso0/isi1/ese3/sss$/asa4l
+201 >2/oso0/isi1/ese3/sss$/hsh4l
+202 >2/oso0/isi1/sss$/asa4/hsh4l
+203 >2/lsl1/isi1/ese3/asa2/sss$/hsh4l
+204 >2/lsl1/isi1/ese3/sss$/asa4/hsh4l
+205 >2/lsl1/oso0/ese3/asa2/sss$/hsh4l
+206 >2/lsl1/oso0/ese3/sss$/asa4/hsh4l
+207 >2/lsl1/oso0/isi1/asa2/sss$/hsh4l
+208 >2/lsl1/oso0/isi1/ese3/asa2/hsh4l
+209 >2/lsl1/oso0/isi1/ese3/asa2/sss$l
+210 >2/lsl1/oso0/isi1/ese3/asa4/hsh4l
+211 >2/lsl1/oso0/isi1/ese3/sss$/asa4l
+212 >2/lsl1/oso0/isi1/ese3/sss$/hsh4l
+213 >2/lsl1/oso0/isi1/sss$/asa4/hsh4l
+214 >2/oso0/isi1/ese3/asa2/sss$/hsh4l
+215 >2/oso0/isi1/ese3/sss$/asa4/hsh4l
+216 >2/lsl1/oso0/isi1/ese3/asa2/sss$/hsh4l
+217 >2/lsl1/oso0/isi1/ese3/sss$/asa4/hsh4l
+    # Bleagh! pant, pant - alec
+
+    easily c-> 34$11y n-> easily <-f easily
+    number1 c-> numb3r1 n-> number1 <-f number1		(npasswd tries all
+							 possibilities)
+
+    # Oddly enough, people prefixing passwords with numbers is quite a lot
+    # rarer than suffixing numbers.  Hence, we are further down the file
+    # before trying this. Oh well, let's nail the buggers anyway...
+218 >2<8l^ :
+219 >2l^0
+220 >2l^1
+221 >2l^2
+222 >2l^3
+223 >2l^4
+224 >2l^5
+225 >2l^6
+226 >2l^7
+227 >2l^8
+228 >2l^9
+
+    whatever c-> 0whateve n-> whatever <-f whatever	(npasswd tries all
+							 continuations)
+
+    # Capitalise and then reverse every word (eg: "derF")
+229 >2!?Xcr
+
+    word c-> droW n-> word <-f word
+
+    # Reverse and then capitalise every alphabetic word (eg: "Derf")
+230 >2rc
+
+    word c-> Drow n-> word <-f word
+    McGonigle c-> ElginoGc n-> elginoGc <-f McGonigle	  (IF LONG_REVERSE)
+
+    # Pure words capitalised with various ejaculatory punctuation added
+    # eg: "Cats!" for Andrew Floyd-Drebber fans...
+231 >2<8!?Ac$!
+232 >2<8!?Ac$.
+233 >2<8!?Ac$?
+
+    word c-> Word! n-> word <-f word
+
+    # Uppercase words with various things appended or swapped out
+234 >2<8u$!
+235 >2<8u$.
+236 >2<8u$?
+237 >2/OsO0u
+
+    what c-> WHAT? n-> what <-f what
+    word c-> W0RD n-> word <-f word
+
+    # Really weird uppercase variations
+238 >2ud
+239 >2uf
+240 >2ur
+
+    word c-> WORDWORD n-> word <-f word
+    word c-> WORDDROW n-> word <-f word
+    word c-> DROW n-> word <-f word

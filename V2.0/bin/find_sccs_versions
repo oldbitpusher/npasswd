@@ -1,0 +1,105 @@
+#! /usr/local/bin/perl
+#
+# @(#)find_sccs_versions	1.1 10/15/98
+#
+use English;
+use File::Basename;
+#
+# Reads "depend.master" and generates:
+#
+# what	filename	SCCS-source	SCCS-rel
+
+die "Usage: $0 dependancy-file\n" unless ($ARGV[0]);
+
+open (MAN, $ARGV[0]) || die "$ARGV[0] open $ERRNO\n";
+
+while (<MAN>) {
+	chop;
+	next if (/^#/ || /^$/);
+	($how, $fn, $path) = split(/\s+/, $_, 3);
+
+	next if ($how =~ /none/io);
+
+	if ($how =~ /force/io) {
+		print "$_\n";
+		next;
+	}
+	if ($how =~ /source/io) {
+		$SourceDep{$fn} .= "$path ";
+		next;
+	}
+
+	if ($how =~ /sccs/io) {
+		if ($path eq '') {	# Missing source
+			if ($fn =~ m@SCCS/s\.@) {	# SCCS name?
+				$path = $fn;
+				$fn =~ s@SCCS/s\.@@;
+			} else {			# Plain name
+				$xd = dirname $fn; $xf = basename $fn;
+				$path = "$xd/SCCS/s.$xf";
+			}
+		}
+		$SCCSfiles{$fn} = $path;
+		next;
+	}
+}
+close(MAN);
+
+foreach $fn (sort keys %SourceDep) {
+	foreach $path (split(/\s+/, $SourceDep{$fn})) {
+		if ($path =~ /SCCS/) {
+			$t = $path;
+		} else {
+			$t = $SCCSfiles{$path};
+		}
+		if ($t) {
+			$tv = &getSCCSversion($t);
+			print "SOURCE $fn $t $tv\n";
+			delete $SCCSfiles{$fn};
+		}
+	}
+}
+
+foreach $fn (sort keys %SCCSfiles) {
+	$path = $SCCSfiles{$fn};
+	if ($what = &getSCCSversion($path)) {
+		print "SCCS $fn $path $what\n";
+		next;
+	}
+}
+exit 0;
+
+
+sub getSCCSversion {
+	local($fn) = @_;
+
+	my $basefn = basename $fn;
+	my $pathfn = dirname $fn;
+
+	if ($fn =~ /SCCS/) {
+		$Sfile = $fn;
+		$Pfile =~ s@SCCS/s.@SCCS/p.@;
+	} else {
+		$Sfile = "$pathfn/SCCS/s.$basefn";
+		my $Pfile = "$pathfn/SCCS/p.$basefn";
+	}
+
+	return undef unless ( -e $Sfile );
+
+	if ( -e $Pfile ) {
+		my $sccsP = `cat $Pfile`;
+		my ($oldv, $newv, $junk) = split(/\s+/, $sccsP);
+		return "$oldv $newv";
+	}
+
+	open(SFILE, $Sfile) || die "Cannot open $Sfile: $ERRNO\n";
+	while (<SFILE>) {
+		if (/^\001d\sD\s(\S+)\s/) {
+			close(SFILE);
+			return "$1";
+		}
+	}
+	close(SFILE);
+	return undef;
+}
+# End find_sccs_versions

@@ -1,0 +1,43 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06673
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:17:15 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01120
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:17:12 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13795
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:17:03 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08756; Wed, 10 Dec 1997 10:19:06 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101719.KAA08756@zlin.Colorado.EDU>
+Subject: Changes #6
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:19:06 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 773
+
+@@@@@@@@@@@@@@@@@@@@  Start of diffs   @@@@@@@@@@@@@@@@@@@
+*** passwd_conf.SH.orig Tue Dec  9 16:36:04 1997
+--- passwd_conf.SH      Tue Dec  9 16:39:05 1997
+***************
+*** 94,99 ****
+--- 94,100 ----
+  #
+  #  passwd.Dictionaries       path     Password check dictionaries location
+  #  passwd.MonocaseOK         boolean  Allow single-case passwords
++ #  passwd.MinCharClass       1-5      Minimum # of character classes required
+  #  passwd.MinPassword        number   Minimum password length
+  #  passwd.MaxPassword        number   Maximum effective password length
+  # 
+@@@@@@@@@@@@@@@@@@@@     end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

@@ -1,0 +1,13 @@
+for d in /etc/pam.d ; do
+        if [ -d $d ]; then
+                foundPAM=$d
+                break;
+        fi
+done
+if [ -f /etc/pam.conf ]; then
+        grep -v '^#' /etc/pam.conf | grep -i crack
+fi
+
+if [ $foundPAM ]; then
+        find $d -type f -print | xargs grep -l -i crack
+fi

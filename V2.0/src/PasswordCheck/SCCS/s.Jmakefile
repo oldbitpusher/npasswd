@@ -1,0 +1,808 @@
+h50951
+s 00001/00001/00175
+d D 1.25 98/07/20 15:21:59 clyde 25 24
+c Change how INSTALL var is picked up
+e
+s 00011/00001/00165
+d D 1.24 98/07/17 09:43:22 clyde 24 23
+c Make custom install for checkpassword
+e
+s 00002/00003/00164
+d D 1.23 98/07/16 09:23:05 clyde 23 22
+c 1. Use new config path vars
+c 2. Change extraction of version.c
+e
+s 00026/00028/00141
+d D 1.22 98/07/14 16:24:39 clyde 22 21
+c Major rework
+e
+s 00001/00001/00168
+d D 1.21 98/07/09 16:24:11 clyde 21 20
+c Fix dependancy for pwck_all
+e
+s 00024/00008/00145
+d D 1.20 98/07/09 14:33:13 clyde 20 19
+c Make public and private password check libs
+e
+s 00002/00001/00151
+d D 1.19 98/06/30 20:59:37 clyde 19 18
+c Add hist_osf (oops)
+e
+s 00002/00003/00150
+d D 1.18 98/06/30 16:01:59 clyde 18 17
+c Get library install target right
+e
+s 00001/00001/00152
+d D 1.17 98/06/26 14:27:11 clyde 17 16
+c Change checkpasswd to checkpassword
+e
+s 00011/00005/00142
+d D 1.16 98/06/23 10:50:51 clyde 16 15
+c Build & install history_admin
+e
+s 00016/00003/00131
+d D 1.15 98/06/04 08:45:15 clyde 15 14
+c 1. Include in ../Common
+c 2. Add source & binaries for history modules
+c 3. Add dependacy on ../version.o
+e
+s 00026/00048/00108
+d D 1.14 98/05/05 13:40:44 clyde 14 13
+c 1. Include and use new top-level definitions
+e
+s 00040/00032/00116
+d D 1.13 98/04/16 17:04:23 clyde 13 12
+c 1. Include cracklib objects in archive
+c 2. Build test_pwck and test_history programs
+e
+s 00048/00002/00100
+d D 1.12 98/04/07 09:44:19 clyde 12 11
+c 1. Get include files from cracklib
+c 2. Add -DNPASSWD_LIB to CFLAGS
+c 3. Add lint target and flags
+e
+s 00002/00000/00100
+d D 1.11 97/05/01 13:59:04 clyde 11 10
+c Add subdir make for libcomobj.a
+e
+s 00001/00001/00099
+d D 1.10 97/04/14 13:34:26 clyde 10 9
+c Fix dependancy for pwck_all module
+e
+s 00012/00009/00088
+d D 1.9 96/12/16 11:40:31 clyde 9 8
+c Make sure cracklib is rebuilt
+e
+s 00011/00010/00086
+d D 1.8 96/12/05 12:32:21 clyde 8 7
+c 1. Fix library build targets
+c 2. Change name of install vars
+e
+s 00001/00001/00095
+d D 1.7 96/09/12 16:19:51 clyde 7 6
+c Add ../.. to INCLUDE_PATH
+e
+s 00002/00004/00094
+d D 1.6 96/08/15 14:26:14 clyde 6 5
+c Add build target for checkpassword application
+e
+s 00004/00002/00094
+d D 1.5 96/08/15 10:43:11 clyde 5 4
+c Set include path with a macro
+e
+s 00002/00000/00094
+d D 1.4 96/08/15 10:40:28 clyde 4 3
+c Set DPFLAGS to pick up includes in other directories
+e
+s 00002/00000/00092
+d D 1.3 96/08/14 17:49:14 clyde 3 2
+c Add subdirectories to "make depend"
+e
+s 00001/00001/00091
+d D 1.2 96/08/09 14:57:08 clyde 2 1
+c Add -I../Common to CFLAGS
+e
+s 00092/00000/00000
+d D 1.1 96/08/07 15:24:24 clyde 1 0
+c date and time created 96/08/07 15:24:24 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+D 14
+/*
+ * Jmakefile for passwd checker application & library
+ */
+E 14
+;#
+I 12
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+D 14
+;#
+E 14
+E 12
+;# %W% %G% (cc.utexas.edu)
+;#
+
+D 14
+SetSubdirs(cracklib)
+
+I 5
+D 7
+Initialize(INCLUDE_PATH, -I.. -I../Common)
+E 7
+I 7
+D 12
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../Common)
+E 12
+I 12
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../Common -Icracklib)
+E 12
+E 7
+
+E 5
+D 8
+Initialize(LD, $ld)
+Initialize(LD_MAKE_RELOC, $ldr)
+
+E 8
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+E 14
+D 2
+Initialize(CFLAGS, $ccflags $cc_osflags $(CC_TESTFLAGS) -I..)
+E 2
+I 2
+D 5
+Initialize(CFLAGS, -I.. -I../Common $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 5
+I 5
+D 12
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 12
+I 12
+D 13
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags -DNPASSWD_LIB $(CC_TESTFLAGS))
+Initialize(LINTFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags -DNPASSWD_LIB $(CC_TESTFLAGS))
+E 13
+I 13
+;#
+D 14
+;# To build a debugger-friendly pwck_lib add CC_DBFLAGS to CFLAGS
+E 14
+I 14
+;# Makefile for password checker application & library
+E 14
+;#
+D 14
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+Initialize(LINTFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 14
+I 14
+#include "../../Jmake.local"
+E 14
+E 13
+E 12
+E 5
+E 2
+
+I 25
+>INSTALL
+E 25
+I 4
+D 5
+Initialize(DPFLAGS, -I.. -I../Common)
+E 5
+I 5
+D 14
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+E 14
+I 14
+D 15
+Initialize(INCLUDE_PATH, -I.. -I../.. -Icracklib)
+E 15
+I 15
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../Common -Icracklib)
+E 15
+D 16
+Initialize(LIB_DIR, $p_installprivlib)
+SetSubdirs(cracklib)	/* Want cracklib to be built always */
+E 16
+I 16
+D 23
+Initialize(LIB_DIR, $installprivlib)
+E 23
+I 23
+Initialize(LIB_DIR, $p_installdir)
+E 23
+D 25
+Initialize(INSTALL, $install)	/* Install program */
+E 25
+I 24
+
+E 24
+SetSubdirs(cracklib)		/* Want cracklib to be built always */
+E 16
+E 14
+E 5
+
+I 24
+Describe(CHECKPW_MODE,	Install mode for checkpassword (Variable))
+Describe(CHECKPW_FLAGS,	Additional install flags for checkpassword (Variable))
+CHECKPW_MODE	= 0555
+CHECKPW_FLAGS	=
+
+E 24
+E 4
+D 13
+Initialize(LIBEXEC, $libexp)
+Initialize(LIBDATA, $privlibexp)
+
+E 13
+I 8
+D 14
+Initialize(CKPWLIB_INSTALL, $p_libinstall)
+Initialize(CKPWAPP_INSTALL, $p_ckpwinstall)
+
+E 8
+;# ---------------------------------------------------------------
+D 9
+;# Build Cracklib (used by checkpassword)
+;# ---------------------------------------------------------------
+
+CRACK_LIB = cracklib/libcrack.a
+
+$(CRACK_LIB):
+	cd cracklib; make $(MFLAGS) "XENV=-DIN_CHECKPASSWORD"
+
+;# ---------------------------------------------------------------
+E 9
+;# Build the checkpassword library
+;#
+D 13
+;# The routines in the "checkpassword" library may rely upon routines
+;# in other libraries included in the distribution.
+E 13
+I 13
+;# The routines in the "checkpassword" library rely upon items
+;# in the "cracklib" library included in the distribution.
+E 13
+;#
+D 13
+;# Random archives are good for a collection of things that you
+;# aren't always going to need everything from, i.e. libc.  In the
+;# case of the checkpassword lib, *everything* therein is used.
+;# On the other hand, object files cannot be linked in by merely
+;# using "-lobjectfile.o" on the command line - archives can be so
+;# simply accessed.
+;#
+;# For the sake of simplicity, I want to deal with only ONE
+;# library, so that must include everything needed.
+;#
+;# There are two basic approaches to this:
+;#	1) Archive everything together into one library
+;#	2) Link everything together into one .o file
+;# I have chosen to do the latter.  Hence libcheckpassword.a consists
+;# of only pwck_all.o, which contains everything needed to perform password
+;# checking (including Crack).
+;#
+E 13
+;# ---------------------------------------------------------------
+I 9
+D 13
+CRACK_LIB = cracklib/libcrack.a
+E 13
+I 13
+
+E 14
+COMOBJ = ../Common/libcomobj.a
+E 13
+E 9
+D 8
+PWCK_LIB = libpwcheck.a
+E 8
+I 8
+D 18
+PWCK_LIB = pwcheck.a
+D 14
+LIB_PWCK = lib${PWCK_LIB}
+E 14
+I 14
+LIB_PWCK = lib$(PWCK_LIB)
+E 18
+I 18
+D 20
+LIB_PWCK = libpwcheck.a
+E 20
+E 18
+E 14
+
+I 20
+PRIVATE	= pwcheck			/* Private library name */
+PRIVATE_A = lib$(PRIVATE).a
+
+PUBLIC	= checkpassword			/* Public library name */
+PUBLIC_A =  lib$(PUBLIC).a
+
+E 20
+E 8
+D 6
+PWCK_APP = checkpassword
+E 6
+PWCK_SRC = \
+	pwck_main.c \
+	pwck_crack.c \
+	pwck_history.c \
+	pwck_lexical.c \
+	pwck_local.c \
+	pwck_passwd.c
+
+I 15
+HIST_SRC = \
+	hist_file.c \
+	hist_dbm.c \
+D 19
+	hist_nis.c
+E 19
+I 19
+	hist_nis.c \
+	hist_osf.c
+E 19
+
+E 15
+PWCK_OBJ = \
+|expand f!$(PWCK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+I 15
+HIST_OBJ = \
+|expand f!$(HIST_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+E 15
+;#
+D 13
+;# Libraries that checkpassword depends upon
+E 13
+I 13
+D 14
+;# The Cracklib objects are included in this library
+E 14
+I 14
+;# These Cracklib objects are included in the library
+E 14
+;# This list needs to match that in cracklib/Makefile
+E 13
+;#
+D 13
+PWCK_LIBDEP = $(CRACK_LIB)
+E 13
+I 13
+CRACK_LIB = cracklib/libcrack.a
+E 13
+
+I 14
+/* Source list is created only to build object file list */
+E 14
+D 13
+NormalLibraryTarget(pwcheck, $(PWCK_SRC), pwck_all.o)
+E 13
+I 13
+CRACK_SRC = \
+	cracklib/fascist.c \
+	cracklib/packlib.c \
+	cracklib/rules.c \
+	cracklib/stringlib.c
+E 13
+
+D 8
+pwck_all.o:     $(PWCK_OBJ) $(PWCK_LIBDEP)
+	$(LD) $(LD_MAKE_RELOC) $(PWCK_OBJ) -o pwck_all.o $(PWCK_LIBDEP)
+E 8
+I 8
+D 10
+PrelinkedRelocatableTarget(pwck_all, ${PWCK_OBJ}, ${PWCK_LIBDEP})
+E 10
+I 10
+D 13
+PrelinkedRelocatableTarget(pwck_all, ${PWCK_OBJ} ${PWCK_LIBDEP}, ${PWCK_LIBDEP})
+E 13
+I 13
+CRACK_OBJ = \
+|expand f!$(CRACK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+E 13
+E 10
+E 8
+
+D 8
+InstallLibrary($(PWCK_LIB), $(LIBEXEC))
+
+E 8
+;#
+I 13
+;# Libraries that checkpassword depends upon.
+;# Make the dependancy upon the *library*, not the *object* files
+;# to avoid having to have dependancies for every cracklib object.
+;#
+D 15
+PWCK_LIBDEP = $(CRACK_LIB)
+E 15
+I 15
+D 22
+all::	$(CRACK_LIB)
+E 22
+I 22
+AllTarget($(CRACK_LIB))
+E 22
+E 15
+
+D 14
+NormalLibraryTarget(pwcheck, $(PWCK_SRC), ${PWCK_OBJ} ${CRACK_OBJ})
+E 14
+I 14
+D 15
+NormalLibraryTarget(pwcheck, $(PWCK_SRC), $(PWCK_OBJ) $(CRACK_OBJ))
+E 15
+I 15
+D 22
+../version.o:
+	cd ../; make ${MFLAGS} version.o
+E 22
+I 22
+D 23
+ShellScriptTarget(version.c)
+TerminalDependancy(version.c.SH)
+E 23
+I 23
+ThingFromSH(version.c)
+E 23
+E 22
+E 15
+E 14
+
+I 15
+D 20
+NormalLibraryTarget(pwcheck, $(PWCK_SRC) $(HIST_SRC), $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ))
+E 20
+I 20
+;#
+;# The private library - just password check routines
+;#
+NormalLibraryTarget($(PRIVATE), $(PWCK_SRC) $(HIST_SRC), $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ))
+E 20
+
+I 20
+
+E 20
+E 15
+;#
+I 20
+;# The public library - including routines from common object lib
+;#
+NormalLibraryTarget($(PUBLIC), $(PWCK_SRC) $(HIST_SRC), pwck_all.o)
+I 22
+PrelinkedRelocatableTarget(pwck_all, $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ) $(COMOBJ),^^)
+Describe(install, Install public password check library)
+InstallLibrary($(PUBLIC), $(LIB_DIR))
+E 22
+
+D 21
+PrelinkedRelocatableTarget(pwck_all, $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ), $(COMOBJ))
+E 21
+I 21
+D 22
+PrelinkedRelocatableTarget(pwck_all, $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ) $(COMOBJ), $(COMOBJ))
+E 21
+
+E 22
+;#
+E 20
+E 13
+D 6
+;# Build the checkpassword standalone application
+E 6
+I 6
+D 22
+;# Build the checkpassword application
+E 22
+I 22
+;# Build checkpassword application
+E 22
+E 6
+;#
+D 6
+$(PWCK_APP): checkpassword.o version.o $(PWCK_LIB)
+	$(CC) -o $(PWCK_APP) $(LFLAGS) checkpassword.o version.o $(PWCK_LIB)
+E 6
+I 6
+D 8
+NormalProgramTarget(checkpassword,checkpasswd.c, checkpasswd.o ../version.o ${PWCK_LIB} ../Common/libcomobj.a)
+E 8
+I 8
+D 13
+NormalProgramTarget(checkpassword,checkpasswd.c, checkpasswd.o ../version.o ${LIB_PWCK} ../Common/libcomobj.a)
+E 13
+I 13
+D 14
+NormalProgramTarget(checkpassword,checkpasswd.c, checkpasswd.o ../version.o ${LIB_PWCK} ${COMOBJ})
+E 14
+I 14
+D 22
+Describe(checkpassword, Build the standalone password check program)
+D 17
+NormalProgramTarget(checkpassword, checkpasswd.c, checkpasswd.o ../version.o $(LIB_PWCK) $(COMOBJ))
+E 17
+I 17
+D 20
+NormalProgramTarget(checkpassword, checkpassword.c, checkpassword.o ../version.o $(LIB_PWCK) $(COMOBJ))
+E 20
+I 20
+NormalProgramTarget(checkpassword, checkpassword.c, checkpassword.o ../version.o $(PRIVATE_A) $(COMOBJ))
+E 22
+I 22
+Describe(checkpassword, Build the password check program)
+NormalProgramTarget(checkpassword, checkpassword.c version.c, checkpassword.o version.o $(PUBLIC_A))
+Describe(install, 	Install checkpassword application)
+D 24
+InstallProgram(checkpassword, $(LIB_DIR))
+E 24
+E 22
+E 20
+E 17
+E 14
+E 13
+E 8
+E 6
+
+I 24
+install::	checkpassword-install
+
+checkpassword-install:	checkpassword
+	$(INSTALL) -c -s -m $(CHECKPW_MODE) $(CHECKPW_FLAGS) checkpassword $(LIB_DIR)
+
+E 24
+I 8
+D 13
+InstallProgram(checkpassword, ${CKPWAPP_INSTALL})
+E 13
+I 13
+;#
+D 22
+;# Build test programs
+E 22
+I 22
+;# Build history_admin application
+E 22
+;#
+D 14
+NormalProgramTarget(test_pwck,test_pwck.c,test_pwck.o ${LIB_PWCK} ${COMOBJ})
+E 14
+I 14
+D 16
+Describe(TestSuite, Build the password check lib test suite)
+E 16
+I 16
+D 22
+Describe(TestSuite, Build the password check library test suite)
+E 16
+TestSuite: test_pwck test_history
+E 14
+E 13
+
+E 22
+I 16
+Describe(history_admin, Build the history administration program)
+D 20
+NormalProgramTarget(history_admin,history_admin.c,history_admin.o $(LIB_PWCK) $(COMOBJ))
+E 16
+E 8
+D 13
+;# Install checkpasswd library
+E 13
+I 13
+D 14
+NormalProgramTarget(test_history,test_history.c,test_history.o ${LIB_PWCK} ${COMOBJ})
+E 14
+I 14
+NormalProgramTarget(test_pwck,test_pwck.c,test_pwck.o $(LIB_PWCK) $(COMOBJ))
+NormalProgramTarget(test_history,test_history.c,test_history.o $(LIB_PWCK) $(COMOBJ))
+E 20
+I 20
+NormalProgramTarget(history_admin,history_admin.c,history_admin.o $(PRIVATE_A) $(COMOBJ))
+D 22
+NormalProgramTarget(test_pwck,test_pwck.c,test_pwck.o $(PRIVATE_A) $(COMOBJ))
+NormalProgramTarget(test_history,test_history.c,test_history.o $(PRIVATE_A) $(COMOBJ))
+E 20
+E 14
+E 13
+
+I 13
+D 14
+InstallProgram(checkpassword, ${CKPWAPP_INSTALL})
+;#
+;# Install checkpasswd library
+;#
+E 13
+D 8
+InstallLibrary($(PWCK_LIB), $(LIB))
+E 8
+I 8
+InstallLibrary($(PWCK_LIB), $(CKPWLIB_INSTALL))
+E 14
+I 14
+D 16
+Describe(install,  Install checkpassword application)
+E 16
+I 16
+Describe(install, Install checkpassword application)
+E 16
+InstallProgram(checkpassword, $(LIB_DIR))
+E 14
+E 8
+
+I 12
+D 14
+LintTarget()
+E 14
+I 14
+D 16
+Describe(install,  Install password check library)
+E 16
+I 16
+Describe(install, Install history_admin application)
+E 22
+I 22
+Describe(install,	Install history_admin application)
+E 22
+InstallProgram(history_admin, $(LIB_DIR))
+
+D 20
+Describe(install, Install password check library)
+E 16
+D 18
+InstallLibrary($(PWCK_LIB), $(LIB_DIR))
+E 18
+I 18
+InstallLibrary(pwcheck, $(LIB_DIR))
+E 20
+I 20
+D 22
+Describe(install, Install public password check library)
+InstallLibrary($(PUBLIC), $(LIB_DIR))
+E 20
+E 18
+E 14
+
+E 22
+E 12
+I 9
+D 14
+;# ---------------------------------------------------------------
+E 14
+I 14
+;#
+E 14
+;# Build Cracklib
+D 14
+;# ---------------------------------------------------------------
+ForceTarget()
+E 14
+I 14
+;#
+D 22
+LocalSubdirLibMake(libcrack.a, cracklib)
+E 22
+I 22
+XdirLibMake(crack, cracklib)
+XdirLibMake(comobj, ../Common)
+E 22
+E 14
+
+D 14
+#define SubdirLibMake(target,dir)       @!\
+dir/target:     .FORCE @@\
+	cd dir; $(MAKE) $(MFLAGS) target
+E 14
+I 14
+D 22
+LocalSubdirLibMake(libcomobj.a, ../Common)	/* Need comobj for checkpassword */
+E 22
+I 22
+;#
+;# Build test programs
+;#
+NormalProgramTarget(test_pwck,test_pwck.c,test_pwck.o $(PRIVATE_A) $(COMOBJ))
+NormalProgramTarget(test_history,test_history.c,test_history.o $(PRIVATE_A) $(COMOBJ))
+E 22
+E 14
+
+D 14
+SubdirLibMake(libcrack.a, cracklib)
+
+I 11
+SubdirLibMake(libcomobj.a, ../Common)
+
+E 14
+E 11
+E 9
+I 3
+D 22
+DependDirs(cracklib cracklib/tools)
+E 22
+I 22
+DebugTarget()
+DebugSubdirs()
+DependTarget()
+DependSubdirs()
+E 22
+
+E 3
+D 14
+DependTarget()
+E 14
+I 14
+D 22
+LocalDebug()
+E 22
+I 22
+Describe(lint, Check C sources with lint)
+LintTarget()
+E 22
+E 14
+
+I 14
+D 22
+LocalEnd()
+
+E 22
+E 14
+/* End %M% */
+E 1

@@ -1,0 +1,230 @@
+
+   ______________________________________________________________________
+   
+                           Npasswd Support Guide
+   ______________________________________________________________________
+   
+Troubleshooting
+
+   Tactics for troubleshooting:
+   
+     * Use the -XDall option, browsing the sources to provide context as
+       needed.
+     * Tracking down problems such as segmentation faults requires a
+       debugger binary:
+
+make realclean          # Purge existing objects
+make debug-dbx          # Set make environment for debug
+make                    # Rebuild
+       Most systems do not allow setuid programs to drop core files. You
+       will probably need to debug it as root. The problem with this
+       approach is that you do not get the real run-time environment
+       (e.g. different real and effective uids).
+       This requires familiarity with C and a source debugger.
+     * Troubles with changing passwd/shadow files requires a [1]test
+       binary which will modify passwd and shadow files in the current
+       directory. This binary can be run without privileges.
+       Get the[2] developer kit to help.
+
+make realclean
+make debug-files
+make
+cp /etc/passwd etc_passwd
+cp /etc/shadow etc_shadow; chown my-name etc_shadow
+       Npasswd can also directly modify the NIS files on the NIS master.
+       If you need to test that functionality, here is the setup:
+
+mkdir -p yp/`domainname`                        # Make test NIS map area
+cp /var/yp/`domainname`/passwd.* yp/`domainname`        # Copy passwd files
+   ___________________________________
+   
+Support Resources
+
+     * Npasswd home page:
+       [3]http://www.utexas.edu/cc/unix/software/npasswd
+     * npasswd-users@mcfeeley.cc.utexas.edu - Mailing list for users of
+       npasswd.
+     * npasswd-support@www.utexas.edu - Where to send bug reports. Please
+       refer to the bug report template [4]BugReport.html.
+     * listproc@mcfeeley.cc.utexas.edu - Administration point for the
+       npasswd-users mailing list. To subscribe to this list, send a
+       message with an empty Subject line and the following body text:
+
+subscribe npasswd-users FIRSTNAME LASTNAME
+            FIRSTNAME and LASTNAME are your actual first name and last
+            name.
+       _________________________________
+       
+       Bug reports
+       Send bug reports to the address above. Use the bug report template
+       [5]BugReport.html.
+       The more information provided in the bug report, the better chance
+       of getting a fix. I have a limited variety of UNIX platforms
+       available for testing.
+       I will support npasswd on a time-available basis.
+       _________________________________
+       
+       Bug fixes
+       Send bug fixes to the bug report address above.
+       The preferred form is a context diff between the distribution and
+       the modified sources (e.g. diff -c dist-src new-src).
+       Do not make changes to files which are generated from .SH files.
+       The next time that Configure is run, those changes will be lost.
+       Modify (and submit changes to) the .SH file instead.
+       Changes to the Configure script are more complicated. It is built
+       from many files (see below), so changes should be made to those
+       sources. If you need to make serious modifications to Configure,
+       obtain the [6]developer kit, modify the metaconfig units and
+       submit those changes. Minor changes can be reported by a context
+       diff on Configure.
+       _________________________________
+       
+       New features
+       Functionality enhancements to npasswd are encouraged. Send the
+       changes (in the form for bug fixes) to the bug report address.
+       Improvements deemed sufficiently useful will be incorporated into
+       a patch set and the next minor release.
+       Of particular interest are modifications to make npasswd work on
+       additional UNIX platforms.
+       _________________________________
+       
+       Program internals
+       This overview of the npasswd internals supplements the ultimate
+       documentation of the entrails - the source code.
+       
+   User layer User interface
+   &
+   Configuration sub-system
+   
+                                   passwd
+                                      
+                                sub-program
+     _________________________________________________________________
+   
+   Password check library
+   
+   chsh
+   
+   sub-program
+   
+   chfn
+   
+   sub-program
+   
+   Password method switch
+   
+   Method layer
+   
+   NIS
+   
+   method module
+   
+   Local passwd
+   
+   method module
+   
+   NIS+
+   
+   method module
+   
+   SunOS adjunct
+   
+   method module
+   
+   System 5 shadow
+   
+   method module
+   
+   DEC auth
+   
+   method module
+   
+   Utility layer
+   
+   "Common object" library
+   
+       Npasswd design themes:
+          + Modularity. Subroutines tend to do just one thing and have
+            been kept as short as possible. The program is designed to
+            have new database methods and sub-programs added easily. Very
+            little is wired in, even though this makes some tasks
+            noticeably more difficult.
+          + Data abstraction. The sub-programs and database method
+            routines all manipulate a "meta-passwd" structure which
+            contains much extra information and hides the actual
+            structure of the system passwd database.
+          + Data hiding. I don't use a lot of global variables, and I
+            pass a lot of data as arguments and call utility routines.
+          + Ease of configuration. Many path names are set options
+            selected in the package configuration process.
+          + Record keeping. A hierarchy of run-time tracing can be
+            enabled from the command line. This is useful for both the
+            system administrator and developer. Npasswd also makes
+            extensive use of syslog to record changes, errors, and policy
+            violations.
+          + Development friendly. Test versions can be built which are
+            functional but do not change system files.
+          + Portability. Minimal work should be needed to port npasswd to
+            a new UNIX platform.
+       _________________________________
+       
+       Developer information
+       The npasswd kit is built using the dist package - a set of tools
+       to ease the construction and maintenance of portable software.
+       The central component of which is the Configure script generator,
+       metaconfig. This program scans source files, feature files
+       (units), and builds a Configure script. Configure probes the
+       system, requests information from the user, and saves the results
+       for use in customizing the package.
+       The end-user reads the README file, runs the Configure script
+       (which is self-documented), and then make.
+       The jmake program is used to build Makefiles. It reads a Jmakefile
+       and produces a Makefile.SH which takes the configuration data from
+       Configure, to produce a customized Makefile.
+       Changes to Configure are really changes to metaconfig units.
+       Changes to a Makefile are really changes to the Jmakefile source.
+       The end-user package does not include the dist sources
+       (Jmakefiles, metaconfig units) and glue files. These make up the
+       Npasswd Developers Kit.
+       Verification suites are provided for various components of
+       npasswd. These C programs and shell scripts are usually named (or
+       in a directory named) TestSuite. If you change any part of npasswd
+       which has a test suite, run that suite to verify that your changes
+       didn't break the basic functionality. If you add new
+       functionality, modify the test suite and submit the changes.
+       For serious work on npasswd, the developers kit is a necessity.
+       The developers kit is available at:
+        [7]ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer
+            .tar.gz
+       __________________________________________________________________
+       
+       [8][LINK]Top    [9][LINK]Home
+       __________________________________________________________________
+       
+       Document id @(#) Support.html 1.4
+       Version 1.4
+       Last modified 09/14/98
+       
+       
+    [10]Clyde Hoover
+    [11]Academic Computing Services and Instructional Technology
+    Services
+    [12]The University of Texas at Austin
+    [13]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./BuildInstall.html#Building
+   2. file://localhost/./Support.html#DeveloperKit
+   3. http://www.utexas.edu/cc/unix/software/npasswd
+   4. file://localhost/./BugReport.html
+   5. file://localhost/./BugReport.html
+   6. file://localhost/./Support.html#DeveloperKit
+   7. ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer.tar.gz
+   8. file://localhost/./Support.html#top
+   9. file://localhost/./TOC_std.html
+  10. mailto:c.hoover@cc.utexas.edu
+  11. http://www.utexas.edu/cc
+  12. http://www.utexas.edu/
+  13. file://localhost/./Copyright.html

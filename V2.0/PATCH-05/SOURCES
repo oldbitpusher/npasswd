@@ -1,0 +1,8 @@
+Configure
+Makefile.SH
+doc/npasswd.cat1
+doc/npasswd_1.html
+src/Common/Makefile.SH
+src/Common/pager.c
+src/Common/term.c
+src/Makefile.SH

@@ -1,0 +1,959 @@
+Return-Path: seeger@manatee.cis.ufl.edu
+Received: from emx.utexas.edu by sirius.cc.utexas.edu (5.61/1.1)
+	id AA06617; Mon, 17 Jun 91 21:39:31 -0500
+Received-Date:  Mon, 17 Jun 91 21:39:31 -0500
+Posted-Date:  Mon, 17 Jun 1991 22:27:26 -0400
+Received: from manatee.cis.ufl.edu by emx.utexas.edu (5.61/1.8)
+	id AA11319; Mon, 17 Jun 91 21:28:21 -0500
+Received:  by manatee.cis.ufl.edu (5.61ufl/4.12)
+	id AA07846; Mon, 17 Jun 91 22:27:29 -0400
+Message-Id: <9106180227.AA07846@manatee.cis.ufl.edu>
+From: seeger@manatee.cis.ufl.edu (F. L. Charles Seeger)
+Date: Mon, 17 Jun 1991 22:27:26 -0400
+X-Mailer: Mail User's Shell (7.2.0 10/31/90)
+To: clyde@emx.utexas.edu
+Subject: diffs to npasswd
+
+
+
+Well, enough procastinating.  I'm not going to get around to fooling with
+this anytime soon.  I started out trying to keep my changes inside
+ifdefs (UFLMODS), but eventually failed to keep up with that.  So, the
+result is inconsistant.  This will make reading it a bit tougher, but the
+changes are pretty straight forward though bulky.
+
+Best wishes with Version 2.0.  I'll look forward to it.
+
+Regards,
+Chuck
+--
+  Charles Seeger    E301 CSE Building             Office: +1 904 392 1508
+  CIS Department    University of Florida         Fax:    +1 904 392 1220
+  seeger@ufl.edu    Gainesville, FL 32611-2024
+----
+#!/bin/sh
+# This is a shell archive (produced by shar 3.49)
+# To extract the files from this archive, save it to a file, remove
+# everything above the "!/bin/sh" line above, and type "sh file_name".
+#
+# made 06/18/1991 02:19 UTC by seeger@thedon
+# Source directory /cis/thedon0/seeger/src/npasswd
+#
+# existing files will NOT be overwritten unless -c is specified
+#
+# This shar contains:
+# length  mode       name
+# ------ ---------- ------------------------------------------
+#   9177 -rw-r--r-- npasswd.c.diff
+#  14427 -rw-r--r-- pw_yp.c.diff
+#
+# ============= npasswd.c.diff ==============
+if test -f 'npasswd.c.diff' -a X"$1" != X"-c"; then
+	echo 'x - skipping npasswd.c.diff (File already exists)'
+else
+echo 'x - extracting npasswd.c.diff (Text)'
+sed 's/^X//' << 'SHAR_EOF' > 'npasswd.c.diff' &&
+*** npasswd.c.orig	Fri Jan 25 11:34:59 1991
+--- npasswd.c	Wed May 22 18:49:41 1991
+***************
+*** 67,73 ****
+--- 67,85 ----
+X  #ifndef	MOTD_FILE
+X  #define	MOTD_FILE	"/usr/adm/passwd.motd"
+X  #endif
++ #ifndef	LOGIN_FILE
++ #define	LOGIN_FILE	"/usr/adm/passwd.login"
++ #endif
+X  
++ #ifdef UFLMODS
++ #define SHELLS_FILE	"/etc/shells"
++ #define DEF_SHELL	"/local/bin/tcsh"
++ #define MODE_PASS	0
++ #define MODE_SHELL	1
++ #define MODE_FINGER	2
++ #define MODE_SHPASS	3
++ #endif UFLMODS
++ 
+X  extern int	errno;			/* System error code */
+X  
+X  #ifdef	sun
+***************
+*** 112,117 ****
+--- 124,153 ----
+X  	int	opt;			/* Option processing temp */
+X  	extern char	*optarg;	/* From getopt() */
+X  	extern int	optind;		/* From getopt() */
++ #ifdef UFLMODS
++ 	char	*p, *rindex();
++ 	int	OpMode = MODE_PASS;
++ 	int	loginsh = 0;
++ 	
++ 	/* Look at argv[0] */
++ 	p = rindex(argv[0], '/');
++ 	if (p++ == NULL)
++ 		p = argv[0];
++ 	if (strcmp(p, "npasswd") == 0)
++ 		OpMode = MODE_PASS;
++ 	else if (strcmp(p, "passwd") == 0)
++ 		OpMode = MODE_PASS;
++ 	else if (strcmp(p, "chsh") == 0)
++ 		OpMode = MODE_SHELL;
++ 	else if (strcmp(p, "chfn") == 0)
++ 		OpMode = MODE_FINGER;
++ 	else if (strcmp(p, "chshpass") == 0)
++ 		OpMode = MODE_SHPASS;
++ 	else if ( *argv[0] == '-' && argc == 1 ) {
++ 		OpMode = MODE_SHPASS;
++ 		loginsh++;
++ 		}
++ #endif UFLMODS
+X  
+X  	/*
+X  	 * Handle the 4.3BSD & SunOS 4.0 command line options.
+***************
+*** 150,159 ****
+--- 186,203 ----
+X  			exit(1);
+X  #endif
+X  		case 'f':
++ #ifdef UFLMODS
++ 			OpMode = MODE_FINGER;
++ #else
+X  			punt("chfn");
++ #endif
+X  			break;
+X  		case 's':
++ #ifdef UFLMODS
++ 			OpMode = MODE_SHELL;
++ #else
+X  			punt("chsh");
++ #endif
+X  			break;
+X  		case 'P':		/* Data source is a program */
+X  			if (getuid())
+***************
+*** 168,174 ****
+X  	bzero(ppbuf, sizeof(ppbuf));
+X  #ifndef	DEBUG
+X  	if (geteuid())
+! 		quit(0,"Permission denied.\n");
+X  #endif
+X  	checktty();
+X  	savetty();
+--- 212,218 ----
+X  	bzero(ppbuf, sizeof(ppbuf));
+X  #ifndef	DEBUG
+X  	if (geteuid())
+! 		quit(0,"npasswd: Permission denied.\n");
+X  #endif
+X  	checktty();
+X  	savetty();
+***************
+*** 189,199 ****
+X  	setcheckpasswd("-c", CONFIG_FILE, 0);
+X  	pw_initialize();
+X  
+! 	if (argv[optind])
+X  		(void) strcpy(username, argv[optind]);
+! 	else
+X  		(void) strcpy(username, mylogin);
+! 
+X  	if (strcmp(username, mylogin) == 0 && getuid()) {
+X  		if (pw_getuserbyname(username, password) == 0)
+X  			quit(1, "Cannot get your password information.\n");
+--- 233,267 ----
+X  	setcheckpasswd("-c", CONFIG_FILE, 0);
+X  	pw_initialize();
+X  
+! 	if (loginsh != 0)
+! 		motd(LOGIN_FILE, (char *)0);
+! 
+! 	if (argv[optind]) {
+X  		(void) strcpy(username, argv[optind]);
+! 		if (pw_getuserbyname(username, password) == 0)
+! 			quit(0, "No such user %s\n", argv[optind]);
+! 		if (getuid()) {
+! 			if (pw_permission() == 0)
+! 				quit(0, "npasswd: Permission denied.\n");
+! 			}
+! 		else {	/* this is for expired pw entries */
+! 			printf("Changing password for %s\n", username);
+! 			if (password[0])
+! 				getpassword(password, ppbuf, sizeof(ppbuf));
+! 			}
+! 		}
+! 	else {
+X  		(void) strcpy(username, mylogin);
+! 		if (getuid()) {
+! 			if (pw_getuserbyname(username, password) == 0)
+! 				quit(1, "Cannot get your password information.\n");
+! 			if (password[0])
+! 				getpassword(password, ppbuf, sizeof(ppbuf));
+! 			}
+! 		else
+! 			quit(0, "No root NIS/YP passwords.\n");
+! 		}
+! /*
+X  	if (strcmp(username, mylogin) == 0 && getuid()) {
+X  		if (pw_getuserbyname(username, password) == 0)
+X  			quit(1, "Cannot get your password information.\n");
+***************
+*** 204,264 ****
+X  		if (pw_getuserbyname(username, password) == 0)
+X  			quit(0, "No such user %s\n", argv[optind]);
+X  		if (pw_permission() == 0)
+! 			quit(0, "Permission denied.\n");
+X  		printf("Changing password for %s\n", username);
+X  	}
+X  	motd(MOTD_FILE, (char *)0);
+X  
+! 	for (;;) {
+! 		char	*px;		/* Temp */
+! 		int	ntries = 0;	/* Password match counter */
+X  
+! 		px = getpass(from_prog ? "" : "New password (? for help): ");
+! 		if (px == NULL)
+! 			quit(0, "EOF during new password read.\n");
+! 		(void) strcpy(pbuf, px);
+! 		if (pbuf[0] == '?') {
+! 			motd(HELP_FILE, "Missing help file");
+! 			continue;
+! 		}
+! 		/* Sanity check the new password */
+! 		if (pw_check(pbuf) == 0)
+! 			continue;
+X  
+! 		/* Get confirmation */
+! 		px = getpass(from_prog ? "" : "New password (again): ");
+! 		if (px == NULL)
+! 			quit(0, "EOF during new password read.\n");
+! 		(void) strcpy(pbuf2, px);
+! 		if (strcmp(pbuf, pbuf2)) {
+! 			if (ntries++ >= retries) 
+! 				quit(0, "Too many attempts.\n");
+X  			else
+! 				printf("They don't match; try again.\n");
+! 			if (from_prog)
+! 				quit(0, (char *)0);
+! 			else
+! 				continue;
+X  		}
+! 		/* Disallow new password == old password */
+! 		if (pw_compare(password, pbuf)) {
+! 			printf("New password must be different than old; try again.\n");
+! 			if (from_prog)
+! 				quit(0, (char *)0);
+! 			else
+X  				continue;
+X  		}
+! 		else
+! 			break;
+! 	}
+! 	pw_replace(pbuf, ppbuf);
+X  #ifdef	SYSLOG
+! 	syslog(LOG_INFO, "Password changed for %s by %s\n",
+! 		username, mylogin);
+X  #endif
+! 	printf("Password changed for %s\n", username);
+X  	pw_cleanup(0);
+! 	exit(0);
+X  }
+X  
+X  
+--- 272,384 ----
+X  		if (pw_getuserbyname(username, password) == 0)
+X  			quit(0, "No such user %s\n", argv[optind]);
+X  		if (pw_permission() == 0)
+! 			quit(0, "npasswd: Permission denied.\n");
+! 		else if (password[0])
+! 			getpassword(password, ppbuf, sizeof(ppbuf));
+X  		printf("Changing password for %s\n", username);
+X  	}
++ */
++ 
+X  	motd(MOTD_FILE, (char *)0);
++ 	
+X  
+! 	switch (OpMode) {
+! 	case MODE_SHPASS:
+! 	case MODE_PASS:
+! 		for (;;) {
+! 			char	*px;		/* Temp */
+! 			int	ntries = 0;	/* Password match counter */
+X  
+! 			px = getpass(from_prog ? "" : "New password (? for help): ");
+! 			if (px == NULL)
+! 				quit(0, "EOF during new password read.\n");
+! 			(void) strcpy(pbuf, px);
+! 			if (pbuf[0] == '?') {
+! 				motd(HELP_FILE, "Missing help file");
+! 				continue;
+! 			}
+! 			/* Sanity check the new password */
+! 			if (pw_check(pbuf) == 0)
+! 				continue;
+X  
+! 			/* Get confirmation */
+! 			px = getpass(from_prog ? "" : "New password (again): ");
+! 			if (px == NULL)
+! 				quit(0, "EOF during new password read.\n");
+! 			(void) strcpy(pbuf2, px);
+! 			if (strcmp(pbuf, pbuf2)) {
+! 				if (ntries++ >= retries) 
+! 					quit(0, "Too many attempts.\n");
+! 				else
+! 					printf("They don't match; try again.\n");
+! 				if (from_prog)
+! 					quit(0, (char *)0);
+! 				else
+! 					continue;
+! 			}
+! 			/* Disallow new password == old password */
+! 			if (pw_compare(password, pbuf)) {
+! 				printf("New password must be different than old; try again.\n");
+! 				if (from_prog)
+! 					quit(0, (char *)0);
+! 				else
+! 					continue;
+! 			}
+X  			else
+! 				break;
+X  		}
+! 		pw_replace(pbuf, ppbuf);
+! #ifdef	SYSLOG
+! 		syslog(LOG_INFO, "Password changed for %s by %s\n",
+! 			username, mylogin);
+! #endif
+! 		printf("Password changed for %s\n", username);
+! 		if (OpMode == MODE_PASS)
+! 			break;
+! 		else
+! 			/* copy pbuf into ppbuf */
+! 			strcpy(ppbuf,pbuf);
+! 	case MODE_SHELL:
+! 		for (;;) {
+! 			char	*px,		/* Temp */
+! 				ptemp[64],
+! 				*getshell(), *sprintf();
+! 
+! 			sprintf(ptemp, "New shell (? for help, <CR> for %s): ", DEF_SHELL);
+! 			px = getshell(from_prog ? "" : ptemp);
+! 			if (px == NULL)
+! 				quit(0, "EOF during new shell read.\n");
+! 			(void) strcpy(pbuf, px);
+! 			if (pbuf[0] == '?') {
+! 				printf("Available shells are:\n");
+! 				motd(SHELLS_FILE, "Missing shells file");
+! 				printf("Default shell is %s:\n", DEF_SHELL);
+X  				continue;
++ 			}
++ 			else if (pbuf[0] == '\n') {
++ 				(void) strcpy(pbuf, DEF_SHELL);
++ 				break;
++ 			}
++ 			else if (sh_check(pbuf)) {
++ 				printf("%s is not a valid shell\n", pbuf);
++ 				continue;
++ 			}
++ 			else
++ 				break;
+X  		}
+! 		sh_replace(pbuf, ppbuf);
+X  #ifdef	SYSLOG
+! 		syslog(LOG_INFO, "Login shell changed for %s by %s\n",
+! 			username, mylogin);
+X  #endif
+! 		printf("Login shell changed for %s\n", username);
+! 		break;
+! 	case MODE_FINGER:
+! 		quit(0, "Change of finger information not implemented.\n");
+! 		break;
+! 	}
+X  	pw_cleanup(0);
+! 	return 0;
+X  }
+X  
+X  
+***************
+*** 480,485 ****
+--- 600,637 ----
+X  	}
+X  }
+X  
++ #ifdef UFLMODS
++ /* sh_check returns 0 if shellpath is a valid shell, 1 otherwise */
++ sh_check(shellpath)
++ 	char	*shellpath;
++ {
++ 	return(0);
++ }
++ 
++ 
++ char	*
++ getshell(prompt)
++ 	char	*prompt;
++ {
++ 	static char	ib[64];		/* Input buffer */
++ 	char	*rc;			/* Temp */
++ 
++ 	fprintf(stderr, "%s", prompt);
++ 	fflush(stderr);
++ 	rc = fgets(ib, sizeof(ib), stdin);
++ 	putc('\n', stderr);
++ 	fflush(stderr);
++ 
++ 	if (rc == NULL)
++ 		return(NULL);
++ 	if (rc = index(ib, '\n')) {
++ 		if (ib[0] == '\n') rc++;
++ 		*rc = 0;
++ 	}
++ 	return(ib);
++ }
++ #endif UFLMODS
++ 
+X  #ifdef	XGETPASS
+X  /*
+X   *	The system getpass() throws away all but the first 8 characters
+***************
+*** 617,623 ****
+X  {
+X  	(void) setgid(getgid());
+X  	(void) setuid(getuid());
+! 	(void) execlp(prog, prog, 0);
+X  	perror(prog);
+X  	exit(1);
+X  }
+--- 769,775 ----
+X  {
+X  	(void) setgid(getgid());
+X  	(void) setuid(getuid());
+! 	(void) execlp(prog, prog, 0);	/* XXX --flcs3 */
+X  	perror(prog);
+X  	exit(1);
+X  }
+SHAR_EOF
+chmod 0644 npasswd.c.diff ||
+echo 'restore of npasswd.c.diff failed'
+Wc_c="`wc -c < 'npasswd.c.diff'`"
+test 9177 -eq "$Wc_c" ||
+	echo 'npasswd.c.diff: original size 9177, current size' "$Wc_c"
+fi
+# ============= pw_yp.c.diff ==============
+if test -f 'pw_yp.c.diff' -a X"$1" != X"-c"; then
+	echo 'x - skipping pw_yp.c.diff (File already exists)'
+else
+echo 'x - extracting pw_yp.c.diff (Text)'
+sed 's/^X//' << 'SHAR_EOF' > 'pw_yp.c.diff' &&
+*** pw_yp.c.orig	Fri Jan 25 11:35:01 1991
+--- pw_yp.c	Wed May 22 18:43:50 1991
+***************
+*** 1,4 ****
+! 
+X  /* --------------------------------------------------------------------  */
+X  /*                                                                       */
+X  /*                         Author: Clyde Hoover                          */
+--- 1,4 ----
+! /*
+X  /* --------------------------------------------------------------------  */
+X  /*                                                                       */
+X  /*                         Author: Clyde Hoover                          */
+***************
+*** 183,195 ****
+X  		fclose(pf);
+X  		if (rc) {
+X  			if (strncmp(px->pw_passwd, "##", 2) == 0)
+! 			    quit(0,
+! 				"Changing of adjunct passwords not supported.\n");
+X  			return(1);
+X  		}
+X  		else
+X  			quit(0, "Password for %s can only be changed on YP server %s.\n",
+X  				theUser.pw_name, ypmaster);
+X  	}
+X  	/* Check if passwd is '##username' - can't do that yet */
+X  
+--- 183,203 ----
+X  		fclose(pf);
+X  		if (rc) {
+X  			if (strncmp(px->pw_passwd, "##", 2) == 0)
+! 			    quit(0, "Changing of adjunct passwords not supported.\n");
+X  			return(1);
+X  		}
+X  		else
++ #ifdef UFLMODS
++ 			/* if a password has expired, login forks and execs
++ 			 * passwd, which runs with uid=0.  We want the user
++ 			 * to change his/her password, so quiting based on
++ 			 * uid==0 is not acceptable behavior.
++ 			 */
++ 			return(1);
++ #else UFLMODS
+X  			quit(0, "Password for %s can only be changed on YP server %s.\n",
+X  				theUser.pw_name, ypmaster);
++ #endif UFLMODS
+X  	}
+X  	/* Check if passwd is '##username' - can't do that yet */
+X  
+***************
+*** 235,240 ****
+--- 243,341 ----
+X  	return(rc);
+X  }
+X  
++ #ifdef UFLMODS
++ 
++ static char *
++ pw_skip(p)
++ 	register char *p;
++ {
++ 	while (*p && *p != ':' && *p != '\n')
++ 		++p;
++ 	if (*p == '\n')
++ 		*p = '\0';
++ 	else if (*p != '\0')
++ 		*p++ = '\0';
++ 	return(p);
++ }
++ 
++ 
++ static passwdp
++ pw_xlate(val, len)
++ 	char *val;
++ 	int len;
++ {
++ 	register char *p;
++ 	static passwd pwentry;
++ 	static char line[BUFSIZ+1];
++ 
++ 	(void) strncpy(line, val, len);
++ 	p = line;
++ 	line[len] = '\n';
++ 	line[len+1] = 0;
++ 	pwentry.pw_name = p;
++ 	p = pw_skip(p);
++ 	pwentry.pw_passwd = p;
++ 	p = pw_skip(p);
++ 	pwentry.pw_uid = atoi(p);
++ 	p = pw_skip(p);
++ 	pwentry.pw_gid = atoi(p);
++ /*	pwentry.pw_quota = 0;		/* */
++ /*	pwentry.pw_comment = EMPTY;	/* */
++ 	p = pw_skip(p);
++ 	pwentry.pw_gecos = p;
++ 	p = pw_skip(p);
++ 	pwentry.pw_dir = p;
++ 	p = pw_skip(p);
++ 	pwentry.pw_shell = p;
++ 	while (*p && *p != '\n')
++ 		p++;
++ 	*p = '\0';
++ 	return(&pwentry);
++ }
++ 
++ static passwd	yppwent;
++ 
++ /* Get the current yp pw entry directly from the server */
++ /* only get it once */
++ static passwdp
++ getypent(username)
++ 	char	*username;
++ {
++ 	static passwd	xpwent;
++ 	static int	gotypent = 0;	/* used ONLY in getypent */
++ 	int	vallen;
++ 	int	rc;		/* Return code from ypasswdd */
++ 	char	*val, *p, *index();
++ 
++ 	if (gotypent == 0) {
++ 		passwdp	pwy;
++ 
++ 		rc = yp_match(ypdomain, PASSWD_MAP, username,
++ 			strlen(username), &val, &vallen);
++ 		if (rc) {
++ #if	NO_CLNT_SPERRNO
++ 			clnt_perrno(rc);
++ 			quit(1, "yp_match failed: %d\n", rc);
++ #else
++ 			quit(1, "yp_match failed: %s\n",
++ 				clnt_sperrno(rc));
++ #endif
++ 		}
++ 		pwy = pw_xlate(val, vallen);
++ 		if (pwy == NULL)
++ 			quit(1, "yp pwent syntax error\n");
++ 	/*	free(val); /* */
++ 	/*	if ( p = index(pwy->pw_passwd, ',') )  *p = 0; /* */
++ 		gotypent++;
++ 		_cppasswd(pwy, &yppwent);
++ 	}
++ 	_cppasswd(&yppwent, &xpwent);
++ 	return &xpwent;
++ }
++ 
++ #endif UFLMODS
++ 
++ 
+X  /*	Error message for when yppasswdd fails with error code 1.  */
+X  static char *yperrmsg =
+X  "Password change failed: Problem with yppasswdd.\n\n\
+***************
+*** 250,255 ****
+--- 351,359 ----
+X  	*curpwd;		/* Old password (plain) */
+X  {
+X  	passwdp px,		/* Password file traversal */
++ #ifdef UFLMODS
++ 		pw,
++ #endif UFLMODS
+X  		fgetpwent();
+X  	long    oldsigs,	/* Old signal mask */
+X  		blocksigs = sigmask(SIGINT) |	/* Sigs to block */
+***************
+*** 293,305 ****
+--- 397,449 ----
+X  			int	ypport;		/* Port for RPC call */
+X  			struct yppasswd yppasswd; /* YP passwd change block */
+X  			char	salt[4];	/* Password encryption salt */
++ 			char *_newstr();
+X  
+X  			if (curpwd[0] == 0)
+X  				quit(0, "Cannot change YP password without old password.\n");
++ 
+X  			randomstring(salt, sizeof(salt));
++ #ifdef UFLMODS
++ 		/* Be careful to change only one field no the YP Master
++ 		 * server at a time.  Do not let local passwd differences
++ 		 * (e.g. GECOS or shell) change.  Use chfn or chsh.
++ 		 * Get yp data directly, and only change the password.
++ 		 */
++ 		/* Example code:
++ 		 * bikini:/usr/src/lib/libc/gen/getpwent.c
++ 		 * see routines getnamefromyellow() and interpret().
++ 		 *
++ 		 * static struct passwd * getnamefromyellow(name, savepw)
++ 		 * 	char *name;
++ 		 * 	struct passwd *savepw;
++ 		 */
++ 			pw = getypent(theUser.pw_name);
++ 
++ 		/*	if ( p = index(pw->pw_passwd, ',') )  *p = 0; /* */
++ 	/*	printf("yppasswd(%s, %s)\n", theUser.pw_passwd, curpwd);/**/
++ 	/*	printf("yppasswd(%s, %s)\n", pw->pw_passwd, curpwd);/**/
++ 	/*	printf("for user %s\n", theUser.pw_name);/**/
++ 			/* Double check password match */
++ 			if (pw_compare(pw->pw_passwd, curpwd) == 0)
++ 				quit(1, "yp password mismatch (!?)\n");
++ 	/*	printf("New password (plain):\t%s\n", newpwd);/**/
++ 			pw->pw_passwd = crypt(newpwd, salt);
++ 	/*	printf("New password (crypted):\t%s\n", pw->pw_passwd);/**/
++ 			yppasswd.oldpass = curpwd;
++ 			_cppasswd(pw, &yppasswd.newpw);
++ 	/*	printf("Old password (plain):\t%s\n", yppasswd.oldpass);/**/
++ 	/*	printf("New password name:\t%s\n", yppasswd.newpw.pw_name);/**/
++ 	/*	printf("New password (encrypted):\t%s\n", yppasswd.newpw.pw_passwd);/**/
++ 	/*	printf("New password uid:\t%d\n", yppasswd.newpw.pw_uid);/**/
++ 	/*	printf("New password gid:\t%d\n", yppasswd.newpw.pw_gid);/**/
++ 	/*	printf("New password gecos:\t%s\n", yppasswd.newpw.pw_gecos);/**/
++ 	/*	printf("New password dir:\t%s\n", yppasswd.newpw.pw_dir);/**/
++ 	/*	printf("New password shell:\t%s\n", yppasswd.newpw.pw_shell);/**/
++ #else UFLMODS
+X  			theUser.pw_passwd = crypt(newpwd, salt);
+X  			yppasswd.oldpass = curpwd;
+X  			_cppasswd(&theUser, &yppasswd.newpw);
++ #endif UFLMODS
+X  #ifdef	DEBUG
+X  			printf("yppasswd(%s, %s)\n", curpwd, theUser.pw_passwd);
+X  #else
+***************
+*** 307,313 ****
+X  			     YPPASSWDPROC_UPDATE, IPPROTO_UDP)) == 0)
+X  				quit(1, "%s is not running ypassswdd.\n",
+X  				     ypmaster);
+- 
+X  			if (ypport >= IPPORT_RESERVED)
+X  				quit(1, "yppasswdd on %s not privleged.\n",
+X  					ypmaster);
+--- 451,456 ----
+***************
+*** 316,322 ****
+X  				xdr_int, &why);
+X  
+X  			/* RPC call error */
+! 			if (rc)
+X  #if	NO_CLNT_SPERRNO
+X  				clnt_perrno(rc);
+X  				quit(1, "Password change failed (%s)\n",
+--- 459,465 ----
+X  				xdr_int, &why);
+X  
+X  			/* RPC call error */
+! 			if (rc) {
+X  #if	NO_CLNT_SPERRNO
+X  				clnt_perrno(rc);
+X  				quit(1, "Password change failed (%s)\n",
+***************
+*** 325,330 ****
+--- 468,474 ----
+X  				quit(1, "Password change failed (%s): %s\n",
+X  					ypmaster, clnt_sperrno(rc));
+X  #endif
++ 			}
+X  
+X  			/* Error returned from yppasswdd */
+X  			if (why) {
+***************
+*** 334,343 ****
+X  					why, ypmaster, theUser.pw_name);
+X  #endif
+X  				if (why == 1)
+! 				   quit(0, yperrmsg,  ypdomain, ypmaster);
+X  				else
+! 				   quit(1, "Password change failed.\n");
+X  			}
+X  # ifdef	SECURE_RPC
+X  			reset_secret_key(curpwd);
+X  # endif /* SECURE_RPC */
+--- 478,489 ----
+X  					why, ypmaster, theUser.pw_name);
+X  #endif
+X  				if (why == 1)
+! 					quit(0, yperrmsg,  ypdomain, ypmaster);
+X  				else
+! 					quit(1, "Password change failed.\n");
+X  			}
++ 			/* update our copy of yp entry */
++ 			yppwent.pw_passwd = _newstr(yppasswd.newpw.pw_passwd);
+X  # ifdef	SECURE_RPC
+X  			reset_secret_key(curpwd);
+X  # endif /* SECURE_RPC */
+***************
+*** 418,424 ****
+--- 564,765 ----
+X  	(void) sigsetmask(oldsigs);
+X  }
+X  
++ #ifdef UFLMODS
+X  /*
++  *      sh_replace - replace shell in passwd file 
++  */
++ sh_replace(newshell, curpwd)
++ 	char	*newshell,		/* New shell */
++ 		*curpwd;		/* Old password (plain) */
++ {
++ 	passwdp px,		/* Password file traversal */
++ 		fgetpwent();
++ 	long    oldsigs,	/* Old signal mask */
++ 		blocksigs = sigmask(SIGINT) |	/* Sigs to block */
++ 			    sigmask(SIGQUIT) |
++ 			    sigmask(SIGTSTP);
++ 	FILE	*tf,		/* New password file output */
++ 		*pf;		/* Current password file input */
++ 	int	fd,		/* Temp file create fd */
++ 		islocal = 0;	/* Is user in local password file */
++ 	struct stat	oldstat,	/* Old password file stat */
++ 			newstat;	/* New password file stat */
++ 
++ 	if ((pf = fopen(passwdfile, "r")) == NULL)
++ 		quit(1, "Cannot open password file \"%s\".\n", passwdfile);
++ 	/*
++ 	 * Scan local password file, looking for user
++ 	 * Cannot use getpwnam() because it will use YP - I want to know
++ 	 * if I have to change a >>local<< password file.
++ 	 */
++ 	while ((px = fgetpwent(pf)) != NULL) {
++ 		if (*px->pw_name == '+' || *px->pw_name == '-')
++ 			continue;
++ 		if (strcmp(px->pw_name, theUser.pw_name) == 0) {
++ 			islocal++;
++ 			break;
++ 		}
++ 	}
++ 	rewind(pf);
++ 
++ 	/*
++ 	 * If the user was not in the local password file, use RPC
++ 	 * to update the Yellow Pages (NIS) password file.
++ 	 */
++ 	if (islocal == 0) {
++ 		if (is_yp_master() == NOT) {
++ 			int	rc;		/* Return code from ypasswdd */
++ 			int	why;		/* RPC call return code */
++ 			int	ypport;		/* Port for RPC call */
++ 			struct yppasswd yppasswd; /* YP passwd change block */
++ 			struct passwd *pw;
++ 			char *val, *p, *index();
++ 			int vallen;
++ 
++ 			if (curpwd[0] == 0)
++ 				quit(0, "Cannot change YP shell without old password.\n");
++ 
++ 		/* Be careful to change only one field no the YP Master
++ 		 * server at a time.  Do not let local passwd differences
++ 		 * (e.g. GECOS or shell) change.  Use chfn or chsh.
++ 		 * Get yp data directly, and only change the password.
++ 		 */
++ 		/* Example code:
++ 		 * bikini:/usr/src/lib/libc/gen/getpwent.c
++ 		 * see routines getnamefromyellow() and interpret().
++ 		 *
++ 		 * static struct passwd * getnamefromyellow(name, savepw)
++ 		 * 	char *name;
++ 		 * 	struct passwd *savepw;
++ 		 */
++ 			pw = getypent(theUser.pw_name);
++ 
++ 		/*	if ( p = index(pw->pw_passwd, ',') )  *p = 0;/* */
++ 			/* Double check password match */
++ 		/*	if (pw_compare(pw->pw_passwd, curpwd) == 0) */
++ 		/*		quit(1, "yp password mismatch (!?)\n"); */
++ 			pw->pw_shell = newshell; /* */
++ 			yppasswd.oldpass = curpwd;
++ 			_cppasswd(pw, &yppasswd.newpw);
++ #ifdef	DEBUG
++ 			printf("yppasswd(%s, %s)\n", curpwd, theUser.pw_passwd);
++ #else
++ 			if ((ypport = getrpcport(ypmaster, YPPASSWDPROG,
++ 			     YPPASSWDPROC_UPDATE, IPPROTO_UDP)) == 0)
++ 				quit(1, "%s is not running ypassswdd.\n",
++ 				     ypmaster);
++ 			if (ypport >= IPPORT_RESERVED)
++ 				quit(1, "yppasswdd on %s not privleged.\n",
++ 					ypmaster);
++ 			/* better to use clnt_call rather than callrpc ?? */
++ 			rc = callrpc(ypmaster, YPPASSWDPROG, YPPASSWDVERS,
++ 				YPPASSWDPROC_UPDATE, xdr_yppasswd, &yppasswd,
++ 				xdr_int, &why);
++ 
++ 			/* RPC call error */
++ 			if (rc) {
++ #if	NO_CLNT_SPERRNO
++ 				clnt_perrno(rc);
++ 				quit(1, "Shell change failed (%s)\n",
++ 					ypmaster);
++ #else
++ 				quit(1, "Shell change failed (%s): %s\n",
++ 					ypmaster, clnt_sperrno(rc));
++ #endif
++ 			}
++ 
++ 			/* Error returned from yppasswdd */
++ 			if (why) {
++ #ifdef	SYSLOG
++ 				syslog(LOG_ERR,
++ 					"yppasswdd error %d on %s for %s",
++ 					why, ypmaster, theUser.pw_name);
++ #endif
++ 				if (why == 1)
++ 					quit(0, yperrmsg,  ypdomain, ypmaster);
++ 				else
++ 					quit(1, "Shell change failed.\n");
++ 			}
++ # ifdef	SECURE_RPC
++ 			reset_secret_key(curpwd);
++ # endif /* SECURE_RPC */
++ #endif	/* DEBUG */
++ 			return;
++ 		}
++ 		else	/* User not in local passwd, and not in YP passwd */
++ 			quit(1, "User %s missing from password file.\n",
++ 				theUser.pw_name);
++ 	}
++ 
++ 	/*
++ 	 * There is a local password file to change
++ 	 */
++ 	(void) umask(0);
++ 	(void) fstat(fileno(pf), &oldstat);
++ 	/*
++ 	 * Use different temp file if on YP master.
++ 	 * This deals with the SunOS 4.0.3 yppasswdd which creates temp files
++ 	 * named "passwd-file.ptmp", rather than the traditional "/etc/ptmp".
++ 	 * But there are still a lot of applications which use /etc/ptmp,
++ 	 * so is it used as the passwd temp file and the 'auxlockfile' is
++ 	 * also made --- >>>GROAN<<<.
++ 	 */
++ 	auxlockfile[0] = 0;
++ 	if (is_yp_master() == IS) {
++ 		(void) sprintf(auxlockfile, "%s.ptmp", passwdfile);
++ 		close(mklocktemp(auxlockfile));
++ 	}
++ 	mytempfile = 1;
++ 	fd = mklocktemp(passwdtemp);
++ 	if ((tf = fdopen(fd, "w")) == NULL)
++ 		quit(1, "Cannot fdopen temp file.\n");
++ 
++ 	oldsigs = sigblock(blocksigs);
++ 	while ((px = fgetpwent(pf)) != NULL) {
++ 		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
++ 			continue;
++ 		if (strcmp(px->pw_name, theUser.pw_name) == 0) {
++ 			theUser.pw_shell = newshell;
++ 			px = &theUser;
++ 		}
++ 		(void) putpwent(px, tf);
++ 	}
++ 	(void) fflush(tf);			/* Force buffers empty */
++ 	(void) fstat(fileno(tf), &newstat);	/* Get size */
++ 	(void) fclose(tf);
++ 	(void) fclose(pf);
++ 
++ 	/*
++ 	 * Check if the new password file is complete.  Since the encrypted
++ 	 * password is of a fixed length, the new file should be roughly
++ 	 * the same size as the old one.
++ 	 *
++ 	 * This assumption will FAIL when this program does chfn and chsh!!! -
++ 	 * use line counts.
++ 	 */
++ 	if (newstat.st_size < (oldstat.st_size - SLOP))
++ 		quit(1,
++ 		"New password file appears to be incomplete - aborting.\n");
++ 
++ 	if (rename(passwdfile, savefile) < 0) {
++ 		perror("Password file save");
++ 		(void) unlink(passwdtemp);
++ 		quit(1, "Can't save password file.\n");
++ 	}
++ 	if (rename(passwdtemp, passwdfile) < 0) {
++ 		perror("Password file replace");
++ 		(void) unlink(passwdtemp);
++ 		(void) link(savefile, passwdfile);
++ 		quit(1, "Can't replace password file.\n");
++ 	}
++ 	if (is_yp_master() == IS)
++ 		updateyp();
++ 	(void) sigsetmask(oldsigs);
++ }
++ #endif UFLMODS
++ 
++ 
++ /*
+X   *      pw_cleanup - clean up after myself
+X   */
+X  pw_cleanup(code)
+***************
+*** 499,505 ****
+X   */
+X  #include <netdb.h>
+X  #ifndef	MAXHOSTNAMLEN
+! #define	MAXHOSTNAMLEN 32
+X  #endif
+X  
+X  is_yp_master()
+--- 840,846 ----
+X   */
+X  #include <netdb.h>
+X  #ifndef	MAXHOSTNAMLEN
+! #define	MAXHOSTNAMLEN 64
+X  #endif
+X  
+X  is_yp_master()
+SHAR_EOF
+chmod 0644 pw_yp.c.diff ||
+echo 'restore of pw_yp.c.diff failed'
+Wc_c="`wc -c < 'pw_yp.c.diff'`"
+test 14427 -eq "$Wc_c" ||
+	echo 'pw_yp.c.diff: original size 14427, current size' "$Wc_c"
+fi
+exit 0

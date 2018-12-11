@@ -1,0 +1,347 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; SunOS 5.6 sun4m) [
+Netscape]">
+   <TITLE>Npasswd Support Guide</TITLE>
+</HEAD>
+<BODY>
+<A NAME="top"></A>
+<HR WIDTH="100%">
+<CENTER><H1>Npasswd Support Guide</H1></CENTER>
+<HR WIDTH="100%">
+<P>
+<A NAME="Trouble"></A>
+<H2>Troubleshooting</H2>
+<P>
+Tactics for troubleshooting:
+<P>
+<UL>
+<LI>Use the <STRONG>-XDall</STRONG> option, browsing the sources to provide
+context as needed.
+<P>
+<LI>
+Tracking down problems such as segmentation faults requires a debugger binary:
+<UL>
+<PRE>
+make realclean		# Purge existing objects
+make debug-dbx		# Set make environment for debug
+make			# Rebuild
+</PRE>
+</UL>
+Most systems do not allow setuid programs to drop core files.
+You will probably need to debug it as root.  The problem with
+this approach is that you do not get the <i>real</i> run-time environment
+(e.g. different real and effective uids).
+<P>
+This requires familiarity with C and a source debugger.
+<P>
+<LI>
+Troubles with changing passwd/shadow files requires a
+<a href="BuildInstall.html#Building"><b>test binary</b></a> which 
+will modify passwd and shadow files in the current directory.
+This binary can be run without privileges.
+<P>
+Get the<A HREF="#DeveloperKit"> <STRONG>developer kit</STRONG></A>  to help.
+<UL>
+<PRE>
+make realclean
+make debug-files
+make
+cp /etc/passwd etc_passwd
+cp /etc/shadow etc_shadow; chown <i>my-name</i> etc_shadow
+</PRE>
+</UL>
+<P>
+<I>Npasswd</I> can also directly modify the NIS files on the NIS master.
+If you need to test that functionality, here is the setup:
+<UL>
+<PRE>
+mkdir -p yp/`domainname`			# Make test NIS map area
+cp /var/yp/`domainname`/passwd.* yp/`domainname`	# Copy passwd files
+</UL>
+</PRE>
+</UL>
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<H2><A NAME="Support"></A>Support Resources</H2>
+<UL>
+<LI><I>Npasswd</I> home page:
+<A HREF="http://www.utexas.edu/cc/unix/software/npasswd">
+<STRONG> http://www.utexas.edu/cc/unix/software/npasswd</STRONG></A>
+<LI><STRONG>npasswd-users@mcfeeley.cc.utexas.edu</STRONG>
+- Mailing list for users of <I>npasswd</I>. </LI>
+<LI><STRONG>npasswd-support@www.utexas.edu</STRONG> -
+Where to send bug reports. Please refer to the bug report template
+<A HREF="BugReport.html">BugReport.html</A>.
+
+<LI><STRONG>listproc@mcfeeley.cc.utexas.edu</STRONG> - Administration point
+for the <STRONG>npasswd-users</STRONG> mailing list. To subscribe to this list,
+send a message with an <STRONG>empty</STRONG> Subject line and 
+the following body text:
+<UL><PRE>
+subscribe npasswd-users FIRSTNAME LASTNAME
+</PRE>
+FIRSTNAME and LASTNAME are your actual first name and last name. 
+</UL>
+</LI>
+
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<h2>Bug reports</h2>
+<P>
+Send bug reports to the address above.  Use the bug report template
+<A HREF="BugReport.html"><b>BugReport.html</b></a>.
+<P>
+The more information provided in the bug report,
+the better chance of getting a fix.
+I have a limited variety of UNIX platforms available for testing.
+<P>
+I will support <I>npasswd</I> on a time-available basis.  
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<H2>Bug fixes</H2>
+<P>
+Send bug fixes to the bug report address above.
+<P>
+The preferred form is a context diff between the distribution
+and the modified sources (e.g. <tt>diff -c dist-src new-src</tt>).
+<P>
+Do not make changes to files which are generated from
+<B>.SH</B> files.  The next time that <B>Configure</b> is run, those
+changes will be lost.  Modify (and submit changes to)
+the <B>.SH</B> file instead.
+<P>
+Changes to the <I>Configure</I> script are more complicated.
+It is built from many files (see below), so
+changes should be made to those sources.  If you need to make
+serious modifications to Configure, obtain the
+<A HREF="#DeveloperKit"><B>developer kit</B></A>, modify
+the <I>metaconfig</I> units and submit those changes.
+Minor changes can be reported by a context diff on Configure.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<h2>New features</h2>
+<P>
+Functionality enhancements to <I>npasswd</I> are encouraged.  Send the
+changes (in the form for bug fixes) to the bug report address.
+Improvements deemed sufficiently useful will be incorporated into a
+patch set and the next minor release.
+<P>
+Of particular interest are modifications to make <I>npasswd</I> work on
+additional UNIX platforms.
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<H2>Program internals</H2>
+<P>
+This overview of the <I>npasswd</I> internals supplements the ultimate
+documentation of the entrails - the source code.
+<P>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TD ROWSPAN="3">User layer</TD>
+
+<TH COLSPAN="3">User interface
+<BR>&amp;
+<BR>Configuration sub-system</TH>
+</TR>
+
+<TR>
+<TD VALIGN=CENTER>
+<CENTER><B>passwd</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+
+<CENTER>
+<HR height=3>Password check library</CENTER>
+</TD>
+
+<TD ALIGN=CENTER VALIGN=TOP>
+<CENTER><B>chsh</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+</TD>
+
+<TD ALIGN=CENTER VALIGN=TOP>
+<CENTER><B>chfn</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3">
+<CENTER>Password method switch</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="2">Method layer</TD>
+
+<TD>
+<CENTER>NIS</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>Local passwd</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>NIS+</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>SunOS adjunct</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>System 5 shadow</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>DEC auth</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>Utility layer</TD>
+
+<TD COLSPAN="3">
+<CENTER>"Common object" library</CENTER>
+</TD>
+</TR>
+</TABLE>
+
+<P><font size=+1>
+<i>Npasswd</i> design themes:</font>
+
+<UL>
+<LI>
+<B>Modularity</B>. Subroutines tend to do just one thing and have been
+kept as short as possible. The program is designed to have new database
+methods and sub-programs added easily. Very little is wired in, even though
+this makes some tasks noticeably more difficult.</LI>
+
+<LI>
+<B>Data abstraction.</B> The sub-programs and database method routines
+all manipulate a "meta-passwd" structure which contains much extra information
+and hides the actual structure of the system passwd database.</LI>
+
+<LI>
+<B>Data hiding</B>. I don't use a lot of global variables, and I pass a
+lot of data as arguments and call utility routines. 
+</LI>
+
+<LI>
+<B>Ease of configuration</B>. Many path names are set options selected
+in the package configuration process.</LI>
+
+<LI>
+<B>Record keeping</B>. A hierarchy of run-time tracing can
+be enabled from the command line. This is useful for both the
+system administrator
+and developer. <I>Npasswd</I> also makes extensive use of <I>syslog</I>
+to record changes, errors, and policy violations.</LI>
+
+<LI>
+<B>Development friendly</B>. Test versions can be built which are 
+functional but do not change system files.</LI>
+
+<LI>
+<B>Portability</B>. Minimal work should be needed to port <I>npasswd</I>
+to a new UNIX platform.</LI>
+</UL>
+<P>
+<HR WIDTH="50%" ALIGN=LEFT>
+<P>
+<A NAME="DeveloperKit"></A>
+<H2>Developer information</H2>
+<P>
+The <I>npasswd</I> kit is built using the <I>dist</I> package -
+a set of tools to ease the construction and
+maintenance of portable software. 
+<P>
+The central component of which is the <I>Configure</I> script generator,
+<I>metaconfig</I>.  This program scans source files, feature files
+(<I>units</I>), and
+builds a <I>Configure</I> script. Configure probes the system,
+requests information from the user, and saves the results for use in
+customizing the package.
+<P>
+The end-user reads the README file, runs the Configure script
+(which is self-documented), and then <I>make</i>. 
+<P>
+The <I>jmake</I> program is used to build Makefiles.  
+It reads a <I>Jmakefile</i> and produces a <B>Makefile.SH</B> which
+takes the configuration data from
+Configure, to produce a customized Makefile.
+<P>
+Changes to <I>Configure</I> are really changes to metaconfig units.
+Changes to a <I>Makefile</I> are really changes to the <I>Jmakefile</I> source.
+<P>
+The end-user package <B>does not</B>
+include the <i>dist</I> sources (Jmakefiles, metaconfig units) and glue files.
+These make up the <B>Npasswd Developers Kit</B>.
+<P>
+Verification suites are provided for various components
+of <i>npasswd</i>.  These C programs and shell scripts are
+usually named (or in a directory named) <b>TestSuite</b>.
+If you change any part of <I>npasswd</I> which has a test suite,
+run that suite to verify that your changes didn't break the basic
+functionality.  If you add new functionality, modify the test suite
+and submit the changes.
+<P>
+For serious work on <I>npasswd</I>, the developers kit is a necessity.
+<P>
+The developers kit is available at:
+<P>
+<UL>
+<TT>
+<A HREF="ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer.tar.gz">
+ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer.tar.gz</a>
+</TT>
+</ul>
+<P>
+
+<HR WIDTH="100%">
+<P>
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+<HR WIDTH="100%">
+
+<P>Document id @(#) Support.html 1.4
+<BR>Version 1.4
+<BR>Last modified 09/14/98
+
+<P>
+<ADDRESS>
+<A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><br>
+<A HREF="http://www.utexas.edu/cc">Academic Computing Services and
+Instructional Technology Services</A>
+<BR><A HREF="http://www.utexas.edu/">The University of Texas at Austin</A>
+<BR><FONT SIZE=-1><A HREF="Copyright.html">Copyright 1998</A>, The University
+of Texas at Austin. All rights reserved.</FONT>
+</ADDRESS>
+</BODY>
+</HTML>

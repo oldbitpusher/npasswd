@@ -1,0 +1,201 @@
+head	1.9;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.9
+date	99.07.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.07.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.04.21.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.12.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@1. Add Xsw_ChshSpecial, Xsw_AskOnce 2. Change Xsw_AskAll to Xsw_AskAlways
+@
+text
+@/*
+ * 	Constants used throughout npasswd
+ *
+ *	$Id$
+ */
+
+/*
+ * -X suboptions
+ */
+#define Xsw_Chsh		's'
+#define Xsw_ChshSpecial		'S'
+#define Xsw_Chfn		'f'
+#define Xsw_Help		'h'
+#define Xsw_AskAlways		'A'
+#define Xsw_AskOnce		'O'
+#define Xsw_CheckConfig		'C'
+#define Xsw_ShowConfig		'c'
+#define Xsw_SetDebug		'D'
+#define Xsw_ForcePWChange	'F'
+#define Xsw_UseStdin		'I'
+#define Xsw_ShowVersion		'V'
+
+/*
+ * Various string buffer sizings
+ */
+#define	STRINGLEN	32		/* Length for miscelleanous strings */
+#define	PW_LINELEN	512		/* Length for passwd lines */
+#define	TMPBUFSIZ	1024		/* Size of miscellanous buffers */
+
+/*
+ * The following are fundamental constants.
+ * Don't alter these unless a major change has taken place
+ * (e.g. adoption of a new calendar, revocation of the laws of physics)
+ */
+#define	DAYS_WEEK	7
+#define	SEC_DAY		(time_t)86400
+#define	SEC_WEEK	(time_t)(SEC_DAY * DAYS_WEEK)
+
+/* End $RCSfile$ */
+@
+
+
+1.8
+log
+@Add Xsw_AskAll -X option
+@
+text
+@d11 1
+d14 2
+a15 1
+#define Xsw_AskAll		'A'
+@
+
+
+1.7
+log
+@Add Xsw_Help
+@
+text
+@d13 1
+@
+
+
+1.6
+log
+@Add Xsw_ShowConfig suboption define
+@
+text
+@d12 1
+@
+
+
+1.5
+log
+@Add more local (-X) options
+@
+text
+@d13 1
+@
+
+
+1.4
+log
+@Remove Xsw_Require_OldPW
+@
+text
+@d10 2
+@
+
+
+1.3
+log
+@Add debugging levels (taken from defines.h)
+@
+text
+@a13 1
+#define Xsw_Require_OldPW	'R'
+@
+
+
+1.2
+log
+@Change debug level values
+@
+text
+@a7 14
+ * Debugging levels.  Debugging is activated by the -D command line option
+ */
+#define	DB_NONE		0		/* No debug */
+#define	DB_VERBOSE	1		/* Mild verbosity */
+#define	DB_LOOKUP	2		/* Trace user lookup */
+#define	DB_UPDATE	3		/* Trace user update */
+#define	DB_LEVEL7	4		/* Nothing yet */
+#define	DB_CONFIG	5		/* Trace configuration processing */
+#define	DB_MISC1	6		/* Nothing yet */
+#define	DB_MISC2	7		/* Nothing yet */
+#define	DB_DETAIL	8		/* Lots of details */
+#define	DB_ALL		9		/* Trace *everything* */
+
+/*
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 8
+a19 8
+#define	DB_LEVEL2	2		/* Nothing yet */
+#define	DB_LEVEL3	3		/* Nothing yet */
+#define	DB_LOOKUP	4		/* Trace user lookup */
+#define	DB_UPDATE	5		/* Trace user update */
+#define	DB_LEVEL6	6		/* Nothing yet */
+#define	DB_LEVEL7	7		/* Nothing yet */
+#define	DB_CONFIG	8		/* Trace configuration processing */
+#define	DB_ALL		99		/* Trace *everything* */
+@

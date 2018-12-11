@@ -1,0 +1,78 @@
+#!/bin/ksh
+###
+#
+# Strong Password Client UN-Installation Script
+#
+# Copyright 1998-2001, Texas Instruments. All rights reserved.
+#
+# By using this software the USER indicates that he or she has read,
+# understood and will comply with the following:
+#
+# 1. the above copyright notice appears in all copies of the software
+#    and its documentation, or portions thereof, and 
+# 2. a full copy of this notice is included with the software and its
+#    documentation, or portions thereof, and 
+# 3. neither the software nor its documentation, nor portions thereof,
+#    is sold for profit. Any commercial sale or license of this software,
+#    copies of the software, its associated documentation and/or
+#    modifications of either is strictly prohibited without the prior
+#    consent of Texas Instruments.
+# 4. This software and any associated documentation are provided "as is,"
+#    and any issues, problems are yours to deal with. The USER takes
+#    full responsibility for the performance of this software.
+#
+#
+#  Author: Victor Burns
+#          Texas Instruments, 2001
+#
+#
+###
+#
+
+export PATH=/usr/bin:/usr/ucb
+
+### Source Config File
+. ${0%/*}/install-settings
+
+
+### Remove /etc/pam.conf entries
+
+print
+print "  INFO - using vi please remove the pam_strongpw.sl entries from"
+print "         the PAM configuration file. [ /etc/pam.conf ]"
+print
+print " The configuration file will be opened in 5 seconds."
+sleep 5
+vi /etc/pam.conf
+
+
+### Remove Client Files
+
+print
+print "  INFO - Removing pam_strongpw from /usr/lib/security"
+print
+
+for pw in /usr/lib/security/pam_strongpw.*
+do
+	print "         Removed $pw"
+	rm -f $pw
+done
+print
+
+### Remove /use/lib/passwd
+
+if [ ! -h /usr/lib/passwd -a ! -e /usr/lib/passwd/bin/pwstrongd ]
+then
+	### Must not be a link
+	### Cannot remove unless exists
+	### no bin/pwstrongd must be a client only installation
+
+	[ -d /usr/lib/passwd ] && rm -rf /usr/lib/passwd
+fi
+
+### Done
+
+print "  INFO - Removal Complete"
+print
+
+### END

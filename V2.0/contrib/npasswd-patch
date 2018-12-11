@@ -1,0 +1,113 @@
+--- npasswd-2.05-original/src/Common/pw_svc.c	Wed Nov 18 00:49:08 1998
++++ npasswd-2.05/src/Common/pw_svc.c	Wed Jun  5 13:53:11 2002
+@@ -338,6 +338,110 @@
+ }
+ #endif	/* defined(HAS_NSSWITCH) && defined(OS_SUNOS_5) */
+ 
++
++#if defined(OS_IRIX)
++#define	_SETUP	1
++
++/* get service order for IRIX 6.x
++   added by C.Delfosse, Free&ALter Soft 2002
++*/
++
++void
++init_pwsvc(argc, argv, cmdsw)
++	int	argc;		/*NOTUSED*/
++	char	**argv;		/*NOTUSED*/
++	char	**cmdsw;	/* Command line switches */
++{
++  FILE *fp;
++  
++  _svcinfo.SecurityLevel = sec_std;
++  /* we open nsswitch.conf */
++  fp = fopen("/etc/nsswitch.conf", "r");
++  if (fp == NULL)
++    {
++      /* no nsswitch.conf.
++	 So the password service is only local */
++      _svcinfo.ServiceOrder[0] = srv_local;      
++      _svcinfo.ServiceOrder[1] = srv_last;
++    }
++  else
++    {
++      int action, cont, svo;
++      char *string;
++
++#define SEARCH 0
++#define METHOD 1
++#define QUIT 2
++
++      /* a string of 255 bytes should be sufficient
++	 to parse the file string by string. */
++      string = (char*)malloc(255);
++      
++      /* tiny parser to read nsswitch.conf */
++      action = SEARCH;
++      cont = 1;
++      svo = 0;
++      while ( !feof(fp) && (cont))
++	{
++	  switch (action)
++	    {
++	    case SEARCH:
++	      /* we are looking for the token "passwd:" */
++	      if ( (fscanf(fp, "%s", string))
++		   && (!strcmp(string,"passwd:")) )
++		action = METHOD;
++	      break;
++	    case METHOD:
++	      /* now we record the method for the password lookup */
++	      if ( (fscanf(fp, "%s", string)) )
++		{
++		  /* if the word doesn't end with a ':' (like a service name)
++		     and doesn't start with a '#' (like a commentary)
++		     we are still in the passwd line. */
++		  if ( (string[strlen(string) - 1] == ':')
++		       || (string[0] == '#') )
++		    {
++		      /* there is no more protocols specified in the passwd line. */
++		      _svcinfo.ServiceOrder[svo] = srv_last;
++		      debug(DB_LOOKUP, "\n");
++		      action = QUIT;
++		    }
++		  else
++		    {
++		      if (string[0] != '[')
++			{
++			  int result;
++			  /* if the word doesn't start with a'[' (like an action item)
++			     it should be a method */
++			  if (strstr(string,"files"))
++			    {
++			      _svcinfo.ServiceOrder[svo++] = srv_local;
++			      debug(DB_LOOKUP, "files");
++			    }
++			  else if (strstr(string, "nis"))
++			    {
++			      _svcinfo.ServiceOrder[svo++] = srv_yp;
++			      debug(DB_LOOKUP, "nis");
++			    }
++			}
++		    }
++		}
++	      break;
++	    case QUIT:
++	      cont = 0;
++	      break;
++	    }
++	}
++      
++      fclose(fp);      
++      free(string);
++    }
++
++  _svcinfo.init = 1;
++}
++
++#endif /* defined(OS_IRIX) */
++
+ #ifndef	_SETUP
+ /*
+  * The default init_pwsvc() routine

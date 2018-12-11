@@ -1,0 +1,1650 @@
+head	1.17;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.17
+date	2000.06.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	98.09.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.17
+log
+@Change gzip to gunzip
+@
+text
+@<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; U; SunOS 5.6 sun4m) [Netscape]">
+   <TITLE>Npasswd Build and Install</TITLE>
+</HEAD>
+<BODY>
+<A NAME="top"></A>
+
+<HR WIDTH="100%">
+<CENTER>
+<H1>Npasswd Build and Install</H1></CENTER>
+
+<HR WIDTH="100%"></H2>
+
+<H2>System Requirements</H2>
+<P>
+To build and install <I>npasswd</I>, the following are needed:
+<UL>
+<LI>GNU gunzip to unpack the distribution and compressed word lists.
+<LI>An ANSI compliant C compliation system.  The GNU C compiler
+(gcc) is fine.
+<LI>The <I>make</I> utility.  GNU make is fine.
+<LI>A modern Bourne shell which understands functions.  The Korn
+shell may not work with the support and maintenance scripts.
+</UL>
+<P>
+<HR WIDTH="50%" ALIGN=LEFT>
+<P>
+<H2>About the package</H2>
+<P>
+The <B>npasswd</B> package produces the following components
+which share infrastructure and code:
+<UL>
+<LI>
+The <B>npasswd</B> program which changes passwords, login shells
+and finger information. 
+<LI>
+The <B>checkpassword</B> program which does password checking.
+<LI>
+The <B>checkpassword</B> library which can be linked into other applications.
+</UL>
+
+<P>
+<HR WIDTH="50%" ALIGN=LEFT>
+<P>
+<H2>About the distribution</H2>
+<P>
+The full list and description of files in the distribution is in 
+@@NPASSWD-SRC@@/MANIFEST.
+<P>
+<TABLE>
+
+<TR>
+<TD COLSPAN=2 ALIGN=LEFT><H4>Files in the distribution</H4></TD>
+</TR>
+
+<TR>
+<TD>Configure</TD>
+
+<TD>Script which probes system facilities and performs package setup. <BR>
+Produces <B>config.sh</B> and expands all .SH files in the distribution.
+See <A HREF="#Configure_About"><B>About Configure</B></A>.</TD>
+</TR>
+
+<TR>
+<TD>config.sh</TD>
+
+<TD>Shell script which contains settings from <I>Configure</I>.</TD>
+</TR>
+
+<TR>
+<TD>config.h</TD>
+<TD>C include which contains settings from <B>config.sh</B>.</TD>
+</TR>
+
+<TR>
+<TD>config_h.SH</TD>
+<TD>Shell script which creates <B>config.h</B>.</TD>
+</TR>
+
+<TR>
+<TD>Makefile.SH</TD>
+<TD>Shell script which creates Makefile with settings from <B>config.sh</B></TD>
+</TR>
+
+<TR>
+<TD>*.SH</TD>
+
+<TD>Shell script which produces a file with settings from <B>config.sh</B></TD>
+</TR>
+
+<TR>
+<TD COLSPAN=2 ALIGN=LEFT> <H4>Directories in the distribution<H4></TD>
+</TR>
+
+<TR>
+<TD align=top> developer </TD>
+<TD> Developer support files.<br>
+These are in the <A HREF="Support.html#DeveloperKit"><B>developers kit</B></A>.
+</TD>
+</TR><TR>
+<TD align=top> dict </TD>
+<TD> Dictionary sources (which are a separate distribution).  </TD>
+</TR>
+<TR>
+<TD align=top> doc </TR>
+<TD> Documentation (text, manual pages, HTML)</TD>
+</TR> <TR>
+<TD align=top> hints</TD>
+<TD> Platform-specific hints for <I>Configure</I>.</TD>
+</TR> <TR>
+<TD align=top> files </TD>
+<TD> Configuration, help and message files.</TD>
+</TR> <TR>
+<TD align=top> src </TD>
+<TD> Main sources.</TD>
+</TR> <TR>
+<TD align=top>&nbsp;&nbsp;src/Common </TD>
+<TD> Common object library sources.</TD>
+</TR>
+<TR>
+<TD align=top>&nbsp;&nbsp;src/Methods </TD>
+<TD> Password database method module source.</TD>
+</TR>
+</TR>
+<TR>
+<TD align=top>&nbsp;&nbsp;src/Methods/TestSuite </TD>
+<TD> Test suite for passwd database method modules.</TD>
+</TR>
+<TR>
+<TD align=top>&nbsp;&nbsp;src/Scripts </TD>
+<TD> Utility script sources.</TD>
+</TR> <TR>
+<TD align=top>&nbsp;&nbsp;src/PasswordCheck </TD>
+<TD> Password check library source.</TD>
+</TR>
+<TR>
+<TD align=top>&nbsp;&nbsp;src/PasswordCheck/cracklib </TD>
+<TD> Crack library.</TD>
+</TR>
+<TR>
+<TD align=top>&nbsp;&nbsp;src/PasswordCheck/cracklib/tools </TD>
+<TD> Crack library testing and dictionary tools.</TD>
+</TR>
+</TABLE>
+
+<P>
+<HR ALIGN=LEFT WIDTH="50%">
+<P>
+<A NAME="Configure_About"> <H2>About Configure</H2> </A>
+<P>
+<I>Configure</I> is a shell script which probes the system
+environment to determine how to build <I>npasswd</I>.
+
+<P>It will determine what kind of system it is running on, features
+available and idiosyncrasies of the C compiliation environment.
+
+<P>The result of running Configure is <B>config.sh</B>, which contains
+shell variable settings which will be incorporated into other files. Every
+file ending with <B>".SH"</B> is a script which, when run, produce a
+source file with settings from <B>config.sh</B>.
+
+<P> Configure
+itself is built using the <i>metaconfig</i> software configuration package.
+If you do porting or development work on <I>npasswd</I>, fetch the
+<A HREF="Support.html#DeveloperKit"><B>developer kit</B></A> and modify
+the metaconfig units from which Configure is built. It is a lot easier
+to integrate changes to metaconfig units rather than determine which unit
+a particular Configure change affects.
+<UL>
+<TABLE>
+<TR>
+<TH COLSPAN=2 ALIGN=LEFT>
+Useful options to Configure:
+</TH>
+</TR>
+
+<TR>
+<TH>-d</TH>
+<TD>Use defaults for all answers.</TD>
+</TR>
+
+<TR>
+<TH>-e</TH>
+<TD>Go without questioning to building config.sh.</TD>
+</TR>
+
+<TR>
+<TH>-h</TH>
+<TD>Print help message and exit.</TD>
+</TR>
+
+<TR>
+<TH>-S</TH>
+<TD>Expand all .SH files.</TD>
+</TR>
+</TABLE>
+</UL>
+
+<P>
+<HR align=left WIDTH="50%">
+<P>
+
+<A NAME="Configure_interact"> <H3> Interacting with Configure</H3> </A>
+<P>
+For most of the questions you are asked by Configure, taking the default
+is sufficient. Some of the questions require your attention, especially
+the first time Configure is run.
+<DL>
+<DT>
+<TT>Use which C compiler? [cc]</TT></DT>
+
+<DL>Any ANSI C compiler can be used - gcc is fine. <I>Npasswd</i>
+should also build with non-ANSI compilers, but this is discouraged.</DL>
+<P>
+<TT>Do you expect to run these scripts and binaries on multiple machines?
+[n]</TT>
+<DL>Always answer <B><TT>n</TT></B></DL>
+<P>
+<TT>Pathname where the private library files will reside?</TT>
+<DL>This is the <B>install directory</B> where <I>npasswd</I> and its ancillary
+files will be placed.
+
+The default is <B>/usr/lib/npasswd</B>.</DL>
+<P>
+<TT>### Found passwd files "/etc/passwd"<BR>
+Change passwd file list? [n]</TT>
+<DL><I>Npasswd </I>can search multiple local password files to find a user.
+If you want to manipulate non-standard password files, specify them here.</DL>
+<P>
+<TT>### Found shadow files "/etc/shadow"<BR>
+Change shadow file list? [n]</TT>
+<DL><I>Npasswd </I>can search multiple local shadow files to find a user.
+If you want to manipulate non-standard shadow files, specify them here.</DL>
+<P>
+<TT>Replace system programs? [y]</TT>
+<DL>If this option is selected, then <I>Configure</I> creates a list of
+the programs in system bin directories which have "<B>passwd</B>",
+"<B>chfn</B>"
+or "<B>chsh</B>" in their names. You will be able to edit this list. The
+initial installation will move these programs will be moved to the <I>npasswd</I>
+install directory.</DL>
+<P>
+<TT>Activate the "paranoid" option [n]</TT>
+<DL>Activating the <B>paranoid</B> option will cause <I>npasswd</I> to
+abort if the uid obtained via <I>getpwnam(getlogin())</I> is not the same
+as that returned by <I>getuid</I>(2). If you allow multiple login names
+to have the same uid, <B>DO NOT</B> enable this option.</DL>
+<P>
+<TT>Password history file [/usr/lib/passwd/history]</TT>
+<DL>
+If this system is a member of a cluster which shares a password file,
+the history should be put on a file system that all cluster members
+mount read/write, preferably with root access.
+<BR>
+Refer to the
+<A HREF="AdminGuide.html#admin_history">password history</A>
+section of the <A HREF="AdminGuide.html"><I>Npasswd Administration Guide</I></A>.
+</DL>
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<A NAME="Building"> <H2>Building</H2> </A>
+<P>
+If your system has symbolic links, it is a good idea to use a "build tree"
+to keep the source area clean.  The <b>BuildTree</b> script will do this.
+<UL>
+<P>
+<B>build-area</B> is where you want to build <I>npasswd</I>
+<br>
+<B>source-area</B> is the directory where you unpacked the distribution.
+<P>
+<TT>
+mkdir <B>build-area</B><br>
+cd <B>build-area</B><br>
+sh <B>source-area</B>/bin/BuildTree <B>source-area</B><br>
+</TT>
+</UL>
+<P>
+<H3>Note about the build process</H3>
+<P>
+During build process some directories will be visited multiple times.
+This is because of the dependencies between various parts of
+the package.
+<P>
+<TABLE>
+<TR>
+<TD colspan=2 align=left>
+<h4>Common make targets</h4>
+</TD>
+</TR>
+
+<TR>
+<TH>help</TH>
+<TD>See what package targets are available.  </TD>
+</TR>
+
+<TR>
+<TH>all</TH>
+<TD>Build the default stuff, whatever that may be.
+Most <b>all</b> targets do <TT>make all</TT> in subdirectories.
+</TD>
+</TR>
+
+<TR>
+<TH>depend</TH>
+<TD>Update the C source dependencies.  A modified Makefile is created
+which has the dependency information at the end.
+Most <b>depend</b> targets do <TT>make depend</TT> in subdirectories.
+</TD>
+</TR>
+
+<TR>
+<TH>install</TH>
+<TD>Install what is built in this directory.
+Most <b>install</b> targets do <TT>make install</TT> in subdirectories.
+</TD>
+</TR>
+
+<TR>
+<TH>deinstall</TH>
+<TD>Remove what is built in this directory. 
+Most <b>deinstall</b> targets do <TT>make deinstall</TT> in
+subdirectories.
+</TD>
+</TR>
+
+<TR>
+<TH>clean</TH>
+<TD>Light debris removal.</TD>
+</TR>
+
+<TR>
+<TH>realclean</TH>
+<TD>Total cleanup of debris, object files and executables.</TD>
+</TR>
+
+<TR>
+<TD COLSPAN=2 ALIGN=LEFT>
+<BR>
+<H4>Special make targets</H4>
+These targets alter the compile and load flags
+in <B>Makefile.local</B>, which is included by the Makefile.  They also
+do recursive makes in subdirectories.
+<BR>
+(See the <A HREF="Support.html">Support Guide</A> for details)
+</TD>
+</TR>
+
+<TR>
+<TH VALIGN=TOP> debug-none</TH>
+<TD>Build production executables.
+The <B>-XD</B> command line option is available for run-time debugging.</TD>
+</TR>
+
+<TR>
+<TH VALIGN=TOP>debug-dbx</TH>
+<TD>Build production executables with source debugger support.</TD>
+</TR>
+
+<TR>
+<TH VALIGN=TOP>debug-files</TH>
+<TD>Build <B>debug-dbx</B> executables which change files in the
+current directory.</TD>
+</TR>
+
+<TR>
+<TH VALIGN=TOP>debug-system</TH>
+<TD>Build <B>debug-system</B> executables with many security and update checks
+disabled.
+<BR><B>These executables are insecure, partly non-functional
+and are NOT suitable for production.</B></TD>
+</TR>
+</TABLE>
+
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<A NAME="Customization"> <H2>Customizing</H2> </A>
+<P>
+Major customizations can be done by running Configure.
+Some changes require modification
+of <B>options.h</B>.  The file to edit is <B>options_h.SH</b>.
+<P>
+Follow this procedure:
+<UL>
+<pre>
+edit options_h.SH	# Change the source
+sh options_h.SH		# Reconstruct the file
+make realclean		# Remove objects and executables
+make			# Rebuild with new options
+</PRE>
+</UL>
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<H2>Installing</H2>
+<P>
+Invoke <TT>make install</TT> in the top-level build directory.
+<UL>
+<LI> The install will create any needed directories.
+<LI> Dictionary hash files will be built.  The word list distribution
+must have been unpacked into the <I>dict</I> directory first.
+<LI>
+Executables and ancillary files are placed in the install directory.
+<LI> If <B>replace system programs</B> was selected,
+the system password change utilities found by Configure will be saved
+and replaced with copies or links to the <I>npasswd</I> binary.
+</UL>
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<H2>Removing</H2>
+<P>
+To reinstall the vendor password programs,
+run <TT>@@NPASSWD-UTIL@@/restorefiles</TT>.
+<P>
+To reinstall the vendor programs and delete <I>npasswd</I>, do
+<UL>
+<PRE>
+make deinstall
+</PRE>
+</UL>
+in the top build directory.
+If the <B>replace vendor programs</B> option was not enabled,
+the system utilities are not affected by the removal process.
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<H2>Build and install summary</H2>
+<P>
+The procedure to build, install and setup <i>npasswd</i>:
+<UL>
+<PRE>
+gunzip --stdout <b>npasswd-2.XX.tar.gz</b> | tar xpfv -	# Unpack npasswd
+cd dict
+gunzip --stdout <b>npasswd-words.gz</b> | tar xpfv -	# Unpack word lists
+cd ..
+Configure		# Answer the questions
+make			# Build everything
+make install		# Install everything
+@@NPASSWD-UTIL@@/history_admin load < /dev/null  # Make history database
+</PRE>
+</UL>
+
+<HR WIDTH="100%">
+<P>
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+<HR WIDTH="100%">
+
+<P>Document id %Z% $RCSfile$ $Revision$
+<BR>Version $Revision$
+<BR>Last modified $Date$
+
+<P>
+<ADDRESS>
+<A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A><BR>
+<A HREF="http://www.utexas.edu/cc">Academic Computing Services and
+Instructional Technology Services</A>
+<BR><A HREF="http://www.utexas.edu/">The University of Texas at Austin</A>
+<BR><FONT SIZE=-1><A HREF="Copyright.html">Copyright 1998</A>, The University
+of Texas at Austin. All rights reserved.</FONT>
+</ADDRESS>
+</BODY>
+</HTML>
+@
+
+
+1.16
+log
+@Change pathname for dist package
+@
+text
+@d20 1
+a20 1
+<LI>GNU gzip to unpack the distribution and compressed word lists.
+d436 1
+a436 1
+gzip --stdout <b>npasswd-2.XX.tar.gz</b> | tar xpfv -	# Unpack npasswd
+d438 1
+a438 1
+gzip --stdout <b>npasswd-words.gz</b> | tar xpfv -	# Unpack word lists
+@
+
+
+1.15
+log
+@Spell check
+@
+text
+@d436 1
+a436 1
+gzip --stdout <b>npasswd-dist.gz</b> | tar xpfv -	# Unpack npasswd
+@
+
+
+1.14
+log
+@Mention what the package builds
+@
+text
+@d104 1
+a104 1
+<TD> Dictionary sources (which are a seperate distribution).  </TD>
+d157 1
+a157 1
+available and idiosyncrasies of the C compilation environment.
+d284 1
+a284 1
+This is because of the dependancies between various parts of
+d308 2
+a309 2
+<TD>Update the C source dependancies.  A modified Makefile is created
+which has the dependancy information at the end.
+@
+
+
+1.13
+log
+@Remove passwd history group stuff
+@
+text
+@d30 17
+@
+
+
+1.12
+log
+@Add part about history database group query
+@
+text
+@a244 17
+<TT>Group for history database [nobody]</TT>
+<DL>
+The history database is protected from prying eyes by granting
+read-write access only to the owner and read-only access for the group.
+Group permissions are used to alleviate the need for
+programs which require history database access
+(e.g. <I>checkpassword</I>) to run as root.  The database will be readable
+by this group and the <I>checkpassword</I> program will be set-gid to it.
+<BR>
+The preferred group for this purpose is one which does not own system files.
+The default is group <B>nobody</B>.
+<BR>
+Refer to the
+<A HREF="AdminGuide.html#admin_history">password history</A>
+section of the <A HREF="AdminGuide.html"><I>Npasswd Administration Guide</I></A>.
+</UL>
+<P>
+@
+
+
+1.11
+log
+@1. Update path tokens 2. Add note about multiple visits to dirs during build
+@
+text
+@d239 1
+a243 1
+
+d245 17
+@
+
+
+1.10
+log
+@Fix link typo
+@
+text
+@d263 7
+a269 1
+<p>
+d400 1
+a400 1
+run <TT>@@NPASSWD-LIB@@/restorefiles</TT>.
+d426 1
+a426 1
+@@NPASSWD-LIB@@/history_admin load < /dev/null  # Make history database
+@
+
+
+1.9
+log
+@Edit cleanup
+@
+text
+@d32 2
+a33 2
+The full list and description of files in the distribution is in the package
+<A HREF="../MANIFEST">MANIFEST</A>.
+d83 1
+a83 1
+These are in the <A HREF="#DeveloperKit"><B>developers kit</B></A>.
+@
+
+
+1.8
+log
+@Remove Internals section
+@
+text
+@d18 4
+a21 4
+To build and install <i>npasswd</i>, the following are needed:
+<ul>
+<li>GNU gzip to unpack the distribution and compressed word lists.
+<li>An ANSI compliant C compliation system.  The GNU C compiler
+d23 2
+a24 2
+<li>The <i>make</i> utility.  GNU make is fine.
+<li>A modern Bourne shell which understands functions.  The Korn
+d26 1
+a26 1
+</ul>
+d28 1
+a28 1
+<HR WIDTH="50%" align=left>
+a34 1
+<P>
+a35 3
+<tr>
+<td colspan=2 align=left><h4>Special files in the distribution</h4></td>
+</tr>
+d38 4
+d44 3
+a46 3
+<TD>Script which probes system facilities and performs package setup.
+<BR>Produces <B>config.sh</B> and expands all .SH files in the distribution.
+See <A HREF="#Configure_About">About Configure</A>.</TD>
+d52 1
+a52 1
+<TD>Shell script which contains settings from <B>Configure</B>.</TD>
+a56 1
+
+a61 1
+
+a66 1
+
+d76 3
+a78 3
+<tr>
+<td colspan=2 align=left> <h4>Directories in the distribution<h4></td>
+</tr>
+d80 50
+a129 51
+<tr>
+<td align=top> developer </td>
+<td> Files needed for developers.<br>
+This directory is a part of the
+<a href="#DeveloperKit">developers kit</a>.
+ </td>
+</tr> <tr>
+<td align=top> dict </td>
+<td> Dictionary sources, which are a seperate distribution.  </td>
+</tr>
+<tr>
+<td align=top> doc </tr>
+<td> Documentation (text, manual pages, HTML)</td>
+</tr> <tr>
+<td align=top> hints</td>
+<td> Platform-specific hints for use by <I>Configure</I>.</td>
+</tr> <tr>
+<td align=top> files </td>
+<td> Configuration, help and messages files.</td>
+</tr> <tr>
+<td align=top> src </td>
+<td> Top-level sources.</td>
+</tr> <tr>
+<td align=top>&nbsp;&nbsp;src/Common </td>
+<td> Common object library sources.</td>
+</tr>
+<tr>
+<td align=top>&nbsp;&nbsp;src/Methods </td>
+<td> Password database method module source.</td>
+</tr>
+</tr>
+<tr>
+<td align=top>&nbsp;&nbsp;src/Methods/TestSuite </td>
+<td> Test suite for passwd database method modules.</td>
+</tr>
+<tr>
+<td align=top>&nbsp;&nbsp;src/Scripts </td>
+<td> Utility script sources.</td>
+</tr> <tr>
+<td align=top>&nbsp;&nbsp;src/PasswordCheck </td>
+<td> Password check library source.</td>
+</tr>
+<tr>
+<td align=top>&nbsp;&nbsp;src/PasswordCheck/cracklib </td>
+<td> Crack library.</td>
+</tr>
+<tr>
+<td align=top>&nbsp;&nbsp;src/PasswordCheck/cracklib/tools </td>
+<td> Crack library testing and dictionary tools.</td>
+</tr>
+</table>
+d132 1
+a132 1
+<HR align=left WIDTH="50%">
+d134 1
+a134 2
+<A NAME="Configure_About"></A>
+<H2> About Configure</H2>
+d136 2
+a137 3
+Configure is a shell script which probes the system environment to determine
+how to build <I>npasswd</I>. Configure itself is built using the Metaconfig
+software configuration package.
+d139 1
+a139 1
+<P>Configure will determine what kind of system it is running on, features
+d142 4
+a145 4
+<P>The result of Configure is <B>config.sh</B>, which contains shell variable
+settings which will be incorporated into other files. Every file ending
+with <B>".SH"</B> is a script which, when run, produce a source file with
+settings from <B>config.sh</B>.
+d147 6
+a152 4
+<P>If you are doing porting or development work on <I>npasswd</I>, refrain
+from making changes to Configure. Fetch the developer kit and modify
+the Metaconfig units from which Configure is built. It is a lot easier
+to integrate changes to Metaconfig units rather than determine which unit
+a153 2
+
+<P>
+d157 2
+a158 2
+<TH colspan=2 align=left>
+Configure options of interest:
+d161 1
+a163 1
+
+a168 1
+
+a173 1
+
+a178 1
+
+d184 1
+d186 1
+d188 1
+a188 2
+<P><A NAME="Configure_interact"></A>
+<H3> Interacting with Configure</H3>
+d197 2
+a198 2
+<DL>Any ANSI C compiler can be used - gcc is fine. Npasswd will also build
+with non-ANSI compilers, but this is discouraged.</DL>
+d202 1
+a202 1
+<DL>Always answer <B><tt>n</tt></B></DL>
+d206 3
+a208 4
+files will be placed. If the system is a NFS server for workstations, this
+directory should be put on a file system that clients mount read/write
+(preferably with root access). For standalone systems the default
+(<B>/usr/lib/npasswd</B>) is reasonable.</DL>
+a227 3
+<TT>Do you wish to build the test version? [y]</TT>
+<DL>Choose this option if you are doing development or serious debugging.</DL>
+<P>
+d235 8
+a242 5
+<DL>If this system is a workstation server, this file needs to be on a
+file system that clients can write to.</DL>
+<P>
+<TT>Primary dictionary directory [/usr/lib/passwd/dictionaries]</TT>
+<DL>Select where to put the default dictionary collection.</DL>
+a245 1
+<A NAME="Building"></A>
+d247 1
+a247 1
+<H2>Building</H2>
+d249 2
+a250 3
+If the system has symbolic links, it a good idea to use a "build tree"
+to keep the source area clean.
+Such a tree can be constructed with the <b>BuildTree</b> script.
+d260 1
+a260 1
+sh <B>source-area</B>/bin/MakeTree <B>source-area</B><br>
+d273 2
+a274 2
+<td>See what package targets are available.  </td>
+</tr>
+d278 4
+a281 4
+<td>Build the default stuff, whatever that may be.
+Most <b>all</b> targets do <tt>make all</tt> in various subdirectories.
+</td>
+</tr>
+d285 1
+a285 1
+<td>Update the C source dependancies.  A modified Makefile is created
+d287 3
+a289 3
+Most <b>depend</b> targets do <tt>make depend</tt> in various subdirectories.
+</td>
+</tr>
+d293 3
+a295 3
+<td>Install what is built in this directory.
+Most <b>install</b> targets do <tt>make install</tt> in various subdirectories.
+</td>
+d300 5
+a304 5
+<td>Remove what is built in this directory. 
+Most <b>deinstall</b> targets do <tt>make deinstall</tt> in
+various subdirectories.
+</td>
+</tr>
+d308 2
+a309 2
+<td>Light debris removal.</td>
+</tr>
+d313 2
+a314 2
+<td>Total cleanup of debris, object files and executables.</td>
+</tr>
+d317 8
+a324 3
+<TD colspan=2 align=left>
+<br>
+<h4>Special make targets</h4>
+d329 3
+a331 4
+<TH>debug-none</TH>
+
+<TD>Create production binary (default). The <B>-XD</B> command line option
+is still available for run-time debugging.</TD>
+d335 2
+a336 3
+<TH>debug-dbx</TH>
+
+<TD>Build binary with symbol table for source debugger.</TD>
+d340 3
+a342 4
+<TH>debug-files</TH>
+
+<TD>Build debugger binary and enable use of files in current directory.
+<BR>Used to test update code without changing system files.</TD>
+d346 5
+a350 6
+<TH>debug-system</TH>
+
+<TD>Build debugger binary, enable use of files in current directory and
+disable some update and security checks.
+<BR><B>This binary is insecure and partly non-functional and NOT suitable
+for production.</B></TD>
+a353 1
+<HR align=left WIDTH="50%"><A NAME="Customization"></A>
+d355 1
+a355 1
+<H2>Customizing</H2>
+d357 1
+a357 4
+Most customizations should be done by re-running Configure.
+However, there are some some changes which requires modification
+of <B>options.h</B> in the top-level source directory.  The file
+to edit is <B>options_h.SH</b>.
+d359 4
+d364 1
+a364 1
+<ul>
+d370 2
+a371 2
+</pre>
+</ul>
+d377 1
+a377 1
+Do <TT>make install</TT> in the top build directory.
+d379 9
+a387 9
+<li> The first install will create any directories needed.
+<li> The dictionary hash files will be built.  The word list distribution
+must have been unpacked into the <i>dict</i> directory first.
+<li>
+All executables and ancillary files are placed in the library directory.
+<li> If <B>replace system programs</B> was selected,
+the system password change utilities found by Configure will be saved,
+and replaced with copies or links to the <i>npasswd</i> binary.
+</ul>
+d394 1
+a394 1
+run <tt><b>npasswd-lib</b>/restorefiles</tt>.
+d397 2
+a398 2
+<ul>
+<pre>
+d400 2
+a401 2
+</pre>
+</ul>
+d420 1
+a420 1
+<b>npasswd-lib</b>/history_admin load < /dev/null  # Make history database
+d438 1
+a438 1
+<A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A><br>
+@
+
+
+1.7
+log
+@Major revision
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd Technical Manual</TITLE>
+d12 1
+a12 1
+<H1>Npasswd Technical Manual</H1></CENTER>
+a433 288
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<A NAME="Trouble"></A>
+<h2>Troubleshooting</h2>
+<P>
+Tactics for troublshooting:
+<P>
+<UL>
+<li>Run with <b>-XDall</b>, browsing the sources to provide context if needed.
+<P>
+<LI>
+If you are having problems such as
+segmentation faults, then build a debugger binary:
+<ul>
+<pre>
+make realclean
+make debug-dbx
+make
+</pre>
+</ul>
+Most systems will not allow setuid programs to drop core files
+nor allow running them under a debugger.   But you may be able
+to get a core file anyway.  If you use a debugger,
+you will probably need to run it as root.  The problem with
+this approach is that you do not get the <i>real</i> run-time environment
+(e.g. different real and effective uids).
+<P>
+This approach requires familarity with C and a source debugger.
+<P>
+<li>
+The next stage is to build the <b>local files</b> debug version which 
+will allows modification of passwd and shadow files in the current directory.
+This binary can be run without privleges to test local file updates.
+<P>
+This approach requires familarity with C and a source debugger.
+The <A HREF="#DeveloperKit"> <b>developer kit</b></A> can be useful.
+<ul>
+<pre>
+make realclean
+make debug-files
+make
+cp /etc/passwd etc_passwd
+cp /etc/shadow etc_shadow; chown <i>my-name</i> etc_shadow
+#
+# To test the NIS map direct updating
+#
+mkdir -p yp/<i>domain-name</i>			# Make test NIS map area
+cp /var/yp/<i>domain-name</i>/passwd.* yp/<i>domain-name</i>
+</pre>
+</ul>
+</UL>
+
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+
+<h2>Bug reports</h2>
+<P>
+If you <i>find</i> a bug, send the report
+to <B>npasswd-bugs@@lists.cc.utexas.edu</B>.
+Please use the bug report template
+<A HREF="BugReport.html"><b>BugReport.html</b></a>.
+<P>
+The more information you can provide in the bug report,
+the better chance of getting a fix.  The developer has
+a  limited variety of UNIX platforms available for devlopment and testing.
+<P>
+Support will be done on a time-available basis.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<h2>Bug fixes</h2>
+<P>
+If you fix a bug, sent the change
+to <B>npasswd-bugs@@lists.cc.utexas.edu</B>.
+<P>
+The preferred form is a context diff between the distribution
+and the modified sources (e.g. <tt>diff -c dist-src new-src</tt>).
+<P>
+Do not make changes directly to files which are generated from
+<B>.SH</B> files.  The next time that <B>Configure</b> is run, those
+changes will be lost.  Modify (and submit changes to)
+the <B>.SH</B> file instead.
+<P>
+Changes to the <b>Configure</b> script are more complicated.
+It is built from many files (see below), so
+changes should be made to those sources.  If you need to make
+serious modifications to Configure, obtain the developer kit, modify
+the metaconfig units and submit those changes.
+Minor changes can be reported by a context diff on Configure.
+<P>
+<HR align=left WIDTH="50%">
+<P>
+<H2>Internals</H2>
+<P>
+This is a quick overview of the internals of <I>npasswd</I>. It is not
+a full documentation of the entrails, but is a supplement to the ultimate
+documentation - the source code.
+<P>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TD ROWSPAN="3">User layer</TD>
+
+<TH COLSPAN="3">User interface
+<BR>&amp;
+<BR>Configuration sub-system</TH>
+</TR>
+
+<TR>
+<TD VALIGN=CENTER>
+<CENTER><B>passwd</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+
+<CENTER>
+<HR height=3>Password check library</CENTER>
+</TD>
+
+<TD ALIGN=CENTER VALIGN=TOP>
+<CENTER><B>chsh</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+</TD>
+
+<TD ALIGN=CENTER VALIGN=TOP>
+<CENTER><B>chfn</B></CENTER>
+
+<CENTER>sub-program</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD COLSPAN="3">
+<CENTER>Password method switch</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="2">Method layer</TD>
+
+<TD>
+<CENTER>NIS</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>Local passwd</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>NIS+</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>
+<CENTER>SunOS adjunct</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>System 5 shadow</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+
+<TD>
+<CENTER>DEC auth</CENTER>
+
+<CENTER>method module</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>Utility layer</TD>
+
+<TD COLSPAN="3">
+<CENTER>"Common object" library</CENTER>
+</TD>
+</TR>
+</TABLE>
+
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<A NAME="Design"></a>
+<H2>Design philosophy</H2>
+<P>
+
+<UL>
+<LI>
+<B>Modularity</B>. Subroutines tend to do just one thing and have been
+kept as short as possible. The program is designed to have new database
+methods and sub-programs added easily. Very little is wired in, even though
+this makes some tasks noticeably more difficult.</LI>
+
+<LI>
+<B>Data abstraction.</B> The sub-programs and database method routines
+all manipulate a "meta-passwd" structure which contains much extra information
+and hides the actual structure of the system passwd database.</LI>
+
+<LI>
+<B>Data hiding</B>. I don't use a lot of global variables, and I pass a
+lot of data as arguments and call utility routines. One example is the
+"debug" routine which is called many places. But the "debug" subroutine
+uses the global <TT>DebugLevel</TT> variable to control
+printing the messages.</LI>
+
+<LI>
+<B>Ease of configuration</B>. Many path names are set options selected
+in the package configuration process. Hence <I>npasswd</I> can manipulate
+password files anyplace on the system and be installed wherever wanted.</LI>
+
+<LI>
+<B>Record keeping</B>. There is a hierarchy of run-time tracing which can
+be selected from the command line. This is useful for both the
+system administrator
+and developer. <I>Npasswd</I> also makes extensive use of syslog to record
+changes, errors, and policy violations.</LI>
+
+<LI>
+<B>Development friendly</B>. Test versions can be built which are 
+functional but do not change system files.</LI>
+
+<LI>
+<B>Portability</B>. Minimal work should be needed to port <I>npasswd </I>
+to a new UNIX platform.</LI>
+</UL>
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<A NAME="DeveloperKit"></A>
+<h2>Developer information</h2>
+<P>
+The <b>npasswd</b> kit is built using the <b>dist</b> package -
+a set of tools meant to ease the construction and
+maintenance of portable software. 
+<P>
+The central component of which is the <i>Configure</i> script generator,
+<I>metaconfig</i>.  This program scans source files, feature files
+(<i>units</i>), and
+builds a <I>Configure</i> script. <i>Configure</i> probes the system,
+requests information from the user, and saves the results for use in
+customizing the package.
+<P>
+The end-user reads the README file, runs the Configure script
+(which is self-documented), and then <I>make</i>. 
+<P>
+The <i>jmake</i> program is used to build Makefiles.  
+It reads a <I>Jmakefile</i> and produces a shell script which
+takes the configuration data from
+Configure, to produce a customized Makefile.
+<P>
+Changes to <b>Configure</b> are really changes to metaconfig units.
+Changes to a <b>Makefile</b> are really changes to the <b>Jmakefile</b> source.
+<P>
+The end-user package <b>does not</b>
+include the <i>dist</i> sources (Jmakefiles, metaconfig units)
+and glue files.
+These make up the <b>Npasswd Developers Kit</b>.
+<P>
+Verification suites are provided for various components
+of <i>npasswd</i>.  These C programs and shell scripts are
+usually named (or in a directory named) <b>TestSuite</b>.
+If you change any part of <I>npasswd</I> which has a test suite,
+run that suite to verify that your changes didn't break the basic
+functionality.  If you add new functionality, modify the test suite
+and submit the changes.
+<P>
+For serious work on <i>npasswd</i>, the developers kit is a necessity.
+<P>
+The developers kit is available at:
+<P>
+<UL>
+<TT>
+<A HREF="ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer.tar.gz">
+ftp://ftp.cc.utexas.edu/people/clyde/npasswd/npasswd-developer.tar.gz</a>
+</TT>
+</ul>
+<P>
+
+@
+
+
+1.6
+log
+@Add part on test suite and bug fixes
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd: Programmer's Guide</TITLE>
+d12 1
+a12 1
+<H1>Npasswd: Programmer's Guide</H1></CENTER>
+d16 512
+a621 1
+<p>
+d623 1
+a624 2
+<A NAME="philiosphy"></a>
+<H2> Design philosophy</H2>
+d626 4
+a629 1
+Guiding philosophies for the design:
+d656 2
+a657 1
+be selected from the command line. This is useful for both the system administrator
+d659 1
+a659 1
+changes made, errors encountered, and policy violations.</LI>
+d662 2
+a663 2
+<B>Development friendly</B>. Test versions can be built which will go through
+its paces but not change system files.</LI>
+d666 2
+a667 2
+<B>Portability</B>. Minimal work should be needed to port <I>npasswd </I>to
+a new UNIX variant.</LI>
+a668 3
+
+<HR WIDTH="50%" align=left>
+<H2> Source distribution </H2>
+a669 57
+The full list and description of the distribution is in the package
+<A HREF="../MANIFEST">MANIFEST</A> file.
+<P>
+<table>
+<tr>
+<td align=top> <tt>developer</tt> </td>
+<td> Files needed for developers.<br>
+This directory is included <b>only</b> in the
+<a href="#DeveloperKit">developers kit</a>.
+ </td>
+</tr> <tr>
+<td align=top> <tt>dict</tt> </td>
+<td> Dictionary word lists.<br>
+The word lists are in a seperate distribution.
+</td>
+</tr> <tr>
+<td align=top> <tt>doc</tt> </tr>
+<td> Documentation files.</td>
+</tr> <tr>
+<td align=top> <tt>hints</tt></td>
+<td> Platform hints for use by  <I>Configure</I>.</td>
+</tr> <tr>
+<td align=top> <tt>files</tt> </td>
+<td> Ancillary sources,</td>
+</tr> <tr>
+<td align=top> <tt>src</tt> </td>
+<td> Npasswd sources.</td>
+</tr> <tr>
+<td align=top><tt>&nbsp;&nbsp;src/Common</tt> </td>
+<td> Common object library sources.</td>
+</tr>
+<tr>
+<td align=top><tt>&nbsp;&nbsp;src/Methods</tt> </td>
+<td> Password database method module source.</td>
+</tr>
+</tr>
+<tr>
+<td align=top><tt>&nbsp;&nbsp;src/Methods/TestSuite</tt> </td>
+<td> Test suite for passwd database method modules.</td>
+</tr>
+<tr>
+<td align=top><tt>&nbsp;&nbsp;src/Scripts </td>
+<td> Utility script sources.</td>
+</tr> <tr>
+<td align=top><tt>&nbsp;&nbsp;src/PasswordCheck</tt> </td>
+<td> Password check library source.</td>
+</tr>
+<tr>
+<td align=top><tt>&nbsp;&nbsp;src/PasswordCheck/cracklib</tt> </td>
+<td> Crack library.</td>
+</tr>
+<tr>
+<td align=top><tt>&nbsp;&nbsp;src/PasswordCheck/cracklib/tools</tt> </td>
+<td> Crack library testing and dictionary tools.</td>
+</tr>
+</table>
+
+a670 2
+<A NAME="TestSuite"></A>
+<h2>Test suites</h2>
+a671 31
+Test suites are provided for various parts of <i>npasswd</i>.  These 
+C programs and shell script drivers are throughout the distribution
+in directories and scripts named <b>TestSuite</b>.
+If changes are made to any part of <I>npasswd</I> which has a test suite,
+that suite should be run to verify that the changes didn't break the basic
+functionality.  If new functionality is added, then the test suite should
+be modified to verify it.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<h2>Bug fixes and contributions</h2>
+<P>
+Bug fixes and changes should be sent to the address noted in the
+<A HREF="Introduction.html#Support">support</A> section of the manual.
+<P>
+The preferred form is a context diff between the distribution
+and the modified sources (e.g. <tt>diff -c dist-src new-src</tt>).
+<P>
+Do not make changes directly to files which are generated from
+<B>.SH</B> files.  The next time that <B>Configure</b> is run, those
+changes will be lost.  Modify the <B>.SH</B> file instead.
+<P>
+Changes to the <b>Configure</b> script are more complicated.
+It is built from many sources (see below for a quick overview), so
+changes should be made to those sources.  If you need to make
+serious modifications to Configure, obtain the developer kit, modify
+the metaconfig units and submit those changes.
+Minor changes can be reported in the usual way.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+d673 1
+a673 1
+<h2>Developer resources</h2>
+d694 2
+a695 3
+There are a number of files in the distribution which end with <B>.SH</b>.
+These are scripts which takes configuration data and build customized
+files (e.g. C header files and shell scripts).
+d702 7
+a708 3
+Changes to Configure are really changes to metaconfig units, from
+which Configure is built.  Changes to a Makefile are really changes to a
+Jmakefile, from which the Makefile is built.
+d710 1
+a710 1
+To do serious work on <i>npasswd</i>, the developers kit is a necessity.
+d716 2
+a717 2
+<A HREF="ftp://ftp.cc.utexas.edu./people/clyde/npasswd/npasswd-developer.tar.gz">
+ftp://ftp.cc.utexas.edu./people/clyde/npasswd/npasswd-developer.tar.gz</a>
+d720 1
+@
+
+
+1.5
+log
+@Change title
+@
+text
+@d217 34
+d288 1
+a288 1
+<h3>Getting the developers kit</h3>
+a289 2
+The developers kit is available from:
+<P>
+@
+
+
+1.4
+log
+@Fix signatures
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd: Programmers Guide</TITLE>
+d12 1
+a12 1
+<H1>Programmers Guide</H1></CENTER>
+@
+
+
+1.3
+log
+@Change name to Programmers Guide
+@
+text
+@d8 1
+a13 2
+<A NAME="top"></a>
+
+d254 1
+a254 1
+<h3>Getting the the developer kit</h3>
+a265 5
+
+<P><A HREF="TOC_std.html"><IMG SRC="home.gif"  ALIGN=CENTER></A><A HREF="TOC_std.html">Manual
+Home</A><A HREF="#top"><IMG SRC="top.gif"  ALIGN=CENTER></A><A HREF="#top">Top
+of page</A>
+
+d267 4
+d279 1
+a279 1
+<A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A></ADDRESS>
+d285 1
+@
+
+
+1.2
+log
+@Move installed files table to admin guide
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd: Developers Guide</TITLE>
+d11 1
+a11 1
+<H1>Developers Guide</H1></CENTER>
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd: Internals</TITLE>
+d11 1
+a11 2
+<H1>
+Internals</H1></CENTER>
+d13 1
+a13 1
+<H2>
+d17 2
+a18 2
+<H2>
+Introduction</H2>
+a21 1
+
+a22 4
+<HR WIDTH="50%" align=left>
+<H2>
+Program structure</H2>
+
+d114 2
+a115 2
+<H2>
+Design philosophy</H2>
+d133 2
+a134 2
+"debug" routine which is called many places. Only the "debug" subroutine
+itself knows about the global <TT>DebugLevel</TT> variable which controls
+d167 2
+a168 1
+This directory is included <b>only</b> in the developer distribution.
+d218 2
+a219 1
+<H2> Files Installed</H2>
+d221 3
+a223 3
+The following files and directories are used by <I>npasswd</I>. These paths
+(except the configuration file) can be changed by directives in the configuration
+file.
+d225 40
+a264 3
+<TABLE BORDER CELLSPACING=2 CELLPADDING=2 >
+<TR>
+<TH>Default location</TH>
+a265 61
+<TH>What it is</TH>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd</TT></TD>
+
+<TD>Directory where all the parts live</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/xbin</TT></TD>
+
+<TD>Directory where vendor utilities are saved</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/dictionaries</TT></TD>
+
+<TD>Directory where the hashed <I>Crack </I>dictionaries live</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/doc</TT></TD>
+
+<TD>Directory for <I>npasswd</I> documentation</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/passwd.conf</TT></TD>
+
+<TD>The <I>npasswd </I>configuration file</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/chfn.help</TT>
+<BR><TT>/usr/lib/passwd/chfn.motd</TT></TD>
+
+<TD>Help and message-of-the-day for <I>chfn</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/chsh.help</TT>
+<BR><TT>/usr/lib/passwd/chsh.motd</TT></TD>
+
+<TD>Help and message-of-the-day for <I>chsh</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/passwd.help</TT>
+<BR><TT>/usr/lib/passwd/passwd.motd</TT></TD>
+
+<TD>Help and message-of-the-day for <I>passwd</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>/usr/lib/passwd/history</TT></TD>
+
+<TD>Password history database</TD>
+</TR>
+</TABLE>
+
+@

@@ -1,0 +1,202 @@
+diff -rc ./Configure ../beta/Configure
+*** ./Configure	Wed Oct 29 15:03:30 1997
+--- ../beta/Configure	Mon Nov 24 18:14:48 1997
+***************
+*** 94,100 ****
+  if (PATH=.; alias -x) >/dev/null 2>&1; then
+  		inksh=true
+  fi
+! if test -f /hp-ux -a -f /bin/ksh; then
+  	needksh='to avoid sh bug in "here document" expansion'
+  fi
+  if test -d /usr/lpp -a -f /usr/bin/bsh -a -f /usr/bin/uname; then
+--- 94,101 ----
+  if (PATH=.; alias -x) >/dev/null 2>&1; then
+  		inksh=true
+  fi
+! OS_TEST=`uname`
+! if test "$OS_TEST" = "HP-UX"; then
+  	needksh='to avoid sh bug in "here document" expansion'
+  fi
+  if test -d /usr/lpp -a -f /usr/bin/bsh -a -f /usr/bin/uname; then
+***************
+*** 223,228 ****
+--- 224,230 ----
+  p_hesiod=''
+  p_keepdir=''
+  p_kerberos=''
++ p_hpuxauth=''
+  p_libinstall=''
+  p_netinfo=''
+  p_nis=''
+***************
+*** 244,249 ****
+--- 246,252 ----
+  p_shuid=''
+  p_svcconf=''
+  p_sysprogs=''
++ p_tcbdflt=''
+  p_u4auth=''
+  top_level=''
+  p_osMajor=''
+***************
+*** 2799,2805 **** APPLIED
+  			;;
+  	aix*)		cc_osflags="-DOS_AIX $cc_osflags"
+  			;;
+! 	hp-ux*)		cc_osflags="-DOS_HPUX -D_HPUX_SOURCE $cc_osflags"
+  			;;
+  esac
+  
+--- 2802,2808 ----
+  			;;
+  	aix*)		cc_osflags="-DOS_AIX $cc_osflags"
+  			;;
+! 	hpux*)		cc_osflags="-DOS_HPUX -D_HPUX_SOURCE $cc_osflags"
+  			;;
+  esac
+  
+***************
+*** 4049,4058 ****
+  fi
+  $rm -f foo* bar* 
+  
+- 
+  p_shadow=''
+  t=`./findhdr shadow.h`
+! if $test -n "$t"; then
+  	echo '### Including support for System 5 shadow passwords' >& 4
+  	p_shadow='shm_shadow'
+  fi
+--- 4052,4060 ----
+  fi
+  $rm -f foo* bar* 
+  
+  p_shadow=''
+  t=`./findhdr shadow.h`
+! if $test -n "$t" -a !"$p_osName" = "hpux"; then
+  	echo '### Including support for System 5 shadow passwords' >& 4
+  	p_shadow='shm_shadow'
+  fi
+***************
+*** 4062,4077 ****
+  	p_shadow='shm_adjunct'
+  fi
+  p_osf1auth=$undef
+! if $test -z "$p_shadow" -a -n "`./findhdr sia.h`" ; then
+! 	echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+! 	p_shadow='shm_osf1';
+! 	p_osf1auth=$define
+  fi
+  p_u4auth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr auth.h`"; then
+! 	echo '### Including support for Ultrix 4 auth' >& 4
+! 	p_shadow='shm_ultrix';
+! 	p_u4auth=$define
+  fi
+  p_aixauth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr userpw.h`"; then
+--- 4064,4086 ----
+  	p_shadow='shm_adjunct'
+  fi
+  p_osf1auth=$undef
+! p_hpuxauth=$undef
+! if $test -z "$p_shadow" -a -n "`./findhdr prot.h`"; then
+! 	if $test -n "`./findhdr sia.h`" ; then
+! 	  echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+! 	  p_shadow='shm_osf1'
+! 	  p_osf1auth=$define
+!         else
+! 	  echo '### Including support for HP-UX trusted host' >& 4
+!           p_shadow='shm_hpux'
+!           p_hpuxauth=$define	
+! 	fi
+  fi
+  p_u4auth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr auth.h`"; then
+!   	  echo '### Including support for Ultrix 4 auth' >& 4
+! 	  p_shadow='shm_ultrix';
+! 	  p_u4auth=$define
+  fi
+  p_aixauth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr userpw.h`"; then
+***************
+*** 4098,4104 ****
+  	y*|Y*)	ans=y ;;
+  esac
+  if $test "$ans" = y; then
+! 	echo 'Enter passwd file names, end with blank line'
+  	d=''
+  	while true; do
+  		rp='Passwd file: '
+--- 4107,4113 ----
+  	y*|Y*)	ans=y ;;
+  esac
+  if $test "$ans" = y; then
+! 	echo 'Enter passwd file names, end with blank line or "done"'
+  	d=''
+  	while true; do
+  		rp='Passwd file: '
+***************
+*** 4106,4111 ****
+--- 4115,4122 ----
+  		. ./myread
+  		case $ans in
+  		/*)	;;
++                 "done") break
++                         ;;
+  		"")	break
+  			;;
+  		*)	echo 'File name must start with /'
+***************
+*** 4204,4209 ****
+--- 4215,4226 ----
+  	p_nsswitch="$define"
+  fi
+  
++ p_tcbdflt="$undef"
++ if $test -f /tcb/files/auth/system/default; then
++ 	echo "### This system uses a TCB default"
++ 	p_tcbdflt="$define"
++ fi
++ 
+  if $test "$p_svcconf" = $define -a "$p_nsswitch" = $define; then
+  	echo ' '
+  	echo 'Hmm. This system thinks it has both /etc/svc.conf' >&4
+***************
+*** 5395,5401 ****
+  	exit(1);
+  }
+  EOF
+! 	$cc fgptest.c -o fgptest
+  	if ./fgptest;  then
+  		echo 'nope (good)' >&4
+  	else
+--- 5412,5418 ----
+  	exit(1);
+  }
+  EOF
+! 	$cc -Aa +u4 +DA1.0 fgptest.c -o fgptest
+  	if ./fgptest;  then
+  		echo 'nope (good)' >&4
+  	else
+***************
+*** 6361,6366 ****
+--- 6378,6384 ----
+  p_hesiod='$p_hesiod'
+  p_keepdir='$p_keepdir'
+  p_kerberos='$p_kerberos'
++ p_hpuxauth='$p_hpuxauth'
+  p_lckpwdf='$p_lckpwdf'
+  p_libinstall='$p_libinstall'
+  p_netinfo='$p_netinfo'
+***************
+*** 6392,6397 ****
+--- 6410,6416 ----
+  p_svcconf='$p_svcconf'
+  p_sysinfo='$p_sysinfo'
+  p_sysprogs='$p_sysprogs'
++ p_tcbdflt='$p_tcbdflt'
+  p_ttyposix='$p_ttyposix'
+  p_u4auth='$p_u4auth'
+  p_xdr_passwd='$p_xdr_passwd'

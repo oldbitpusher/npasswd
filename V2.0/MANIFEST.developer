@@ -1,0 +1,617 @@
+MANIFEST.developer		This file
+README.developer		README for developer kit
+
+bin/Jmakeall			Script to simplify rebuilding Makefiles
+bin/Makeconfig			Script to simplify running Metaconfig
+
+Jmake.local			Includes for all Jmakefiles
+Jmakefile			Source for top level Makefile
+dict/Jmakefile			Source for dictionaries Makefile
+doc/Jmakefile			Source for documentation Makefile
+files/Jmakefile			Source for misc files Makefile
+files/Jmakefile			Source for misc files Makefile
+src/Jmakefile			Source for npasswd Makefile
+src/Common/Jmakefile		Source for common object lib Makefile
+src/Methods/Jmakefile		Source for methods lib Makefile
+src/Methods/TestSuite/Jmakefile	Source for methods lib test suite Makefile
+src/Scripts/Jmakefile		Source for scripts Makefile
+src/PasswordCheck/Jmakefile	Source for password check lib Makefile
+src/PasswordCheck/cracklib/Jmakefile	Source for Crack lib Makefile
+src/PasswordCheck/cracklib/tools/Jmakefile Source for Crack tools Makefile
+
+developer/U/End.U		metaconfig private end unit
+developer/U/MyOptions.U		metaconfig private options unit
+developer/U/Myinit.U		metaconfig private init unit
+developer/U/Tr.U		metaconfig unit to probe 'tr' behavior
+developer/U/ccflags.U		metaconfig unit to set compilation flags
+developer/U/p_clntsperrno.U	metaconfig unit to find clntsperrno(3)
+developer/U/p_crypt.U		metaconfig unit to find password encrypter
+developer/U/p_fgetpwent.U	metaconfig unit to find fgetpwent(3)
+developer/U/p_fgetspent.U	metaconfig unit to find fgetspent(3)
+developer/U/p_getusershell.U	metaconfig unit to find getusershell(3)
+developer/U/p_lckpwdf.U		metaconfig unit to find lckpwdf(3)
+developer/U/p_putpwent.U	metaconfig unit to find putpwent(3)
+developer/U/p_rpcsvc.U		metaconfig unit to find NIS passwd glue
+developer/U/p_sigposix.U	metaconfig unit to find POSIX signal handlers
+developer/U/p_sysinfo.U		metaconfig unit to find sysinfo(2)
+developer/U/p_ttyposix.U	metaconfig unit to find POSIX tty controls
+developer/U/uidsigned.U		metaconfig unit to find if uid_t unsigned
+
+developer/dist_3.0.70/Artistic                   The Artistic Licence
+developer/dist_3.0.70/ChangeLog                  Where changes are recorded.
+developer/dist_3.0.70/Configure                  Portability tool
+developer/dist_3.0.70/Credits                    Traditional "thank you" list
+developer/dist_3.0.70/Jmakefile                  Description of the main Makefile
+developer/dist_3.0.70/Known_bugs                 A list of known bugs
+developer/dist_3.0.70/MANIFEST                   This list of files
+developer/dist_3.0.70/Makefile.SH                A makefile to run subsidiary makefiles
+developer/dist_3.0.70/README                     Basic instructions
+developer/dist_3.0.70/Wishlist                   Features I would like to add
+developer/dist_3.0.70/bin/Jmakefile              Generic makefile description for bin
+developer/dist_3.0.70/bin/Makefile.SH            Jmake-generated configured makefile
+developer/dist_3.0.70/bin/manicheck.SH           Check manifest accuracy
+developer/dist_3.0.70/bin/manicheck.man          Manual page for manicheck
+developer/dist_3.0.70/bin/manilist.SH            Produces reports based on manifest
+developer/dist_3.0.70/bin/manilist.man           Manual page for manilist
+developer/dist_3.0.70/bin/packinit.SH            Creates a .package file describing your package
+developer/dist_3.0.70/bin/packinit.man           Manual page for packinit
+developer/dist_3.0.70/bin/perload                Build dynamically loaded perl scripts
+developer/dist_3.0.70/dist.man                   Introduction to dist
+developer/dist_3.0.70/install.SH                 Installation script with a BSD-like syntax
+developer/dist_3.0.70/jmake/Jmakefile            High level makefile description for jmake
+developer/dist_3.0.70/jmake/Makefile.SH          Generated makefile for jmake
+developer/dist_3.0.70/jmake/NOTES                Quick description of the internal syntax
+developer/dist_3.0.70/jmake/README               Welcome to jmake
+developer/dist_3.0.70/jmake/bindex.SH            Script to build an index of rules
+developer/dist_3.0.70/jmake/files/Jmake.rules    Generic rules for jmake
+developer/dist_3.0.70/jmake/files/Jmake.tmpl     Template used by jmake to produce Makefile.SH
+developer/dist_3.0.70/jmake/fixcpp.SH            Wrapper around cpp to fix buggy backslash hanling
+developer/dist_3.0.70/jmake/jmake.SH             The makefile generator
+developer/dist_3.0.70/jmake/jmake.man            Manual page for jmake
+developer/dist_3.0.70/jmake/jmkmf.SH             Wrapper for jmake
+developer/dist_3.0.70/jmake/jmkmf.man            Manual page for jmkmf
+developer/dist_3.0.70/kit/Jmakefile              Jmake's description of kit builder's makefile
+developer/dist_3.0.70/kit/Makefile.SH            Builds kit builder
+developer/dist_3.0.70/kit/README                 Instructions on makedist
+developer/dist_3.0.70/kit/kitpost.SH             Post shell archive kits
+developer/dist_3.0.70/kit/kitpost.man            Manual page for kitpost
+developer/dist_3.0.70/kit/kitsend.SH             Mail shell archive kits
+developer/dist_3.0.70/kit/kitsend.man            Manual page for kitsend
+developer/dist_3.0.70/kit/makeSH                 Does most of turning a script into an SH file
+developer/dist_3.0.70/kit/makeSH.man             Manual page for same
+developer/dist_3.0.70/kit/makedist.SH            Makes a set of kits in the current directory
+developer/dist_3.0.70/kit/makedist.man           Manual page for same
+developer/dist_3.0.70/kit/manifake.SH            Makes a MANIFEST.new file out of a MANIFEST
+developer/dist_3.0.70/kit/manifake.man           Manual page for same
+developer/dist_3.0.70/lib/C/Jmakefile            Generic makefile for C lib routines
+developer/dist_3.0.70/lib/C/Makefile.SH          Produces Makefile for C lib routines
+developer/dist_3.0.70/lib/C/fake/Jmakefile       Generic makefile for faked C routines
+developer/dist_3.0.70/lib/C/fake/Makefile.SH     Jmake-generated configured makefile
+developer/dist_3.0.70/lib/C/fake/dup2.C          A dup2() replacement
+developer/dist_3.0.70/lib/C/fake/getopt.C        A getopt() replacement
+developer/dist_3.0.70/lib/C/fake/rename.C        A rename() replacement for files
+developer/dist_3.0.70/lib/C/fake/scandir.C       A scandir() replacement
+developer/dist_3.0.70/lib/C/fake/setsid.C        A setsid() pale imitation
+developer/dist_3.0.70/lib/Jmakefile              Generic makefile description for lib
+developer/dist_3.0.70/lib/Makefile.SH            Jmake-generated configured makefile
+developer/dist_3.0.70/lib/errnolist.a            Awk script to build sys_errnolist[]
+developer/dist_3.0.70/lib/errnolist.mk           Rule files to add for errnolist.c
+developer/dist_3.0.70/lib/errnolist.sh           Script to build errnolist.c
+developer/dist_3.0.70/lib/makedepend.sh          Script to make dependecies, Larry Wall's way
+developer/dist_3.0.70/lib/makedir.sh             Emulates 'mkdir -p'
+developer/dist_3.0.70/mcon/INTRO                 Quick introduction for newcommers
+developer/dist_3.0.70/mcon/Jmakefile             The file used by jmake to produce the Makefile
+developer/dist_3.0.70/mcon/Makefile.SH           Builds metaconfig
+developer/dist_3.0.70/mcon/NOTES                 Documents the changes in metaconfig
+developer/dist_3.0.70/mcon/README                Instructions on using metaconfig
+developer/dist_3.0.70/mcon/U/AAAAA.U             Does magic before Head.U
+developer/dist_3.0.70/mcon/U/Begin.U             "Beginning of configuration questions"
+developer/dist_3.0.70/mcon/U/Chk_MANI.U          MANIFEST checks
+developer/dist_3.0.70/mcon/U/Chk_whoami.U        A unit which checks for conflicts
+developer/dist_3.0.70/mcon/U/Config_h.U          Makes config.h.SH--bizarrity here
+developer/dist_3.0.70/mcon/U/Config_sh.U         Makes config.sh
+developer/dist_3.0.70/mcon/U/Configdir.U         Creates .config directory to store persistent info
+developer/dist_3.0.70/mcon/U/Cppsym.U            Makes program to test for cpp symbols
+developer/dist_3.0.70/mcon/U/Csym.U              Determines whether C symbol is defined
+developer/dist_3.0.70/mcon/U/End.U               "End of configuration questions"
+developer/dist_3.0.70/mcon/U/Extract.U           .SH file extraction
+developer/dist_3.0.70/mcon/U/Extractall.U        Support for the -S Configure option
+developer/dist_3.0.70/mcon/U/Filexp.U            Makes program to do tilde expansion
+developer/dist_3.0.70/mcon/U/Findhdr.U           Locate header files
+developer/dist_3.0.70/mcon/U/Finish.U            A unit which always goes last
+developer/dist_3.0.70/mcon/U/Getfile.U           Get file/directory name
+developer/dist_3.0.70/mcon/U/Guess.U             Hazard guesses as to overall philosophy
+developer/dist_3.0.70/mcon/U/Head.U              First unit, does "#!/bin/sh" et al
+developer/dist_3.0.70/mcon/U/Inhdr.U             Defines a look-for-header function
+developer/dist_3.0.70/mcon/U/Init.U              Magically gathers ?Init: lines from other units
+developer/dist_3.0.70/mcon/U/Inlibc.U            Defines an is-in-libc? function
+developer/dist_3.0.70/mcon/U/Instruct.U          Prints instructions
+developer/dist_3.0.70/mcon/U/Loc.U               Look for common programs
+developer/dist_3.0.70/mcon/U/Loc_sed.U           Full path of sed interpreter, even when portable
+developer/dist_3.0.70/mcon/U/Magic_h.U           Makes confmagic.h--bizarrity here
+developer/dist_3.0.70/mcon/U/MailAuthor.U        Offers user to register himself
+developer/dist_3.0.70/mcon/U/MailList.U          Offers user to subscribe to users list
+developer/dist_3.0.70/mcon/U/Myinit.U            For copying to private U directories
+developer/dist_3.0.70/mcon/U/Myread.U            Makes program to do read with shell escape
+developer/dist_3.0.70/mcon/U/Nothing.U           For empty dependencies
+developer/dist_3.0.70/mcon/U/Null.U              Zeroes out variables.  Probably unnecessary
+developer/dist_3.0.70/mcon/U/Obsol_h.U           Warnings about obsolete C symbols
+developer/dist_3.0.70/mcon/U/Obsol_sh.U          Warnings about obsolete shell symbols
+developer/dist_3.0.70/mcon/U/Oldconfig.U         Looks for old config.sh file
+developer/dist_3.0.70/mcon/U/Oldsym.U            Try to propagate symbols
+developer/dist_3.0.70/mcon/U/Options.U           Configure option parsing
+developer/dist_3.0.70/mcon/U/Prefixit.U          Fixes path prefix in variables in case it changed
+developer/dist_3.0.70/mcon/U/Prefixup.U          Fixes vars with path prefix using ~name expansion
+developer/dist_3.0.70/mcon/U/Rcs.U               Some stupid redefinitions to keep RCS happy
+developer/dist_3.0.70/mcon/U/Setvar.U            Set a variable with some sanity checks
+developer/dist_3.0.70/mcon/U/Signal.U            Utilities for sig_name.U
+developer/dist_3.0.70/mcon/U/Tr.U                Builds a tr script to handle lower and upper classes
+developer/dist_3.0.70/mcon/U/Typedef.U           Defines a typedef lookup function
+developer/dist_3.0.70/mcon/U/Unix.U              Common UNIX settings and assumptions
+developer/dist_3.0.70/mcon/U/Warn_v7EXT.U        V7 has some ideosyncracies
+developer/dist_3.0.70/mcon/U/Warn_v7ND.U         V7 has no O_NDELAY read
+developer/dist_3.0.70/mcon/U/Whoa.U              Warning function
+developer/dist_3.0.70/mcon/U/abortsig.U          Which signal is sent by abort()?
+developer/dist_3.0.70/mcon/U/active.U            Find the news active file
+developer/dist_3.0.70/mcon/U/afs.U               Look whether AFS is running or not
+developer/dist_3.0.70/mcon/U/alignbytes.U        Check for alignment constraints
+developer/dist_3.0.70/mcon/U/archlib.U           Where architecture-dependent files are installed
+developer/dist_3.0.70/mcon/U/archname.U          Computes the architecture name (cpu-osname)
+developer/dist_3.0.70/mcon/U/baserev.U           Base revision of package
+developer/dist_3.0.70/mcon/U/basicshell.U        Which basic shell is available
+developer/dist_3.0.70/mcon/U/bin.U               Find where to install public executables
+developer/dist_3.0.70/mcon/U/bitpbyte.U          Computes the number of bits in a byte
+developer/dist_3.0.70/mcon/U/byteorder.U         Computes the byte order (big-endian?)
+developer/dist_3.0.70/mcon/U/cc.U                Which C compiler should be used?
+developer/dist_3.0.70/mcon/U/ccflags.U           Any additional C flags?
+developer/dist_3.0.70/mcon/U/cf_email.U          Computes user's e-mail address
+developer/dist_3.0.70/mcon/U/cf_name.U           Computes user's full name
+developer/dist_3.0.70/mcon/U/cf_who.U            Who configured the sytem, where and when
+developer/dist_3.0.70/mcon/U/charorder.U         Character order within a byte
+developer/dist_3.0.70/mcon/U/charsize.U          What is the size of "char"?
+developer/dist_3.0.70/mcon/U/contains.U          Makes status-returning grep
+developer/dist_3.0.70/mcon/U/cpp_stuff.U         Some cpp stuff
+developer/dist_3.0.70/mcon/U/cppfilecom.U        Running cpp while preserving C comments
+developer/dist_3.0.70/mcon/U/cppstdin.U          Check how to invoke the C pre-processor
+developer/dist_3.0.70/mcon/U/d_NOFILE.U          Maximum # of file descriptors
+developer/dist_3.0.70/mcon/U/d_NeWS.U            Old NeWS stuff
+developer/dist_3.0.70/mcon/U/d_PORTAR.U          Do we know about portable archives?
+developer/dist_3.0.70/mcon/U/d_SHM_MAC.U         SHMLBA macro stuff
+developer/dist_3.0.70/mcon/U/d_access.U          Do we have access()?
+developer/dist_3.0.70/mcon/U/d_alarm.U           Do we have alarm()?
+developer/dist_3.0.70/mcon/U/d_attribut.U        Checks wether your cc groks __attribute__
+developer/dist_3.0.70/mcon/U/d_bcmp.U            Do we have bcmp() or memcmp()?
+developer/dist_3.0.70/mcon/U/d_bcopy.U           Do we have bcopy() or memcpy()?
+developer/dist_3.0.70/mcon/U/d_brokstat.U        Check whether stat() macros are broken
+developer/dist_3.0.70/mcon/U/d_bsdjmp.U          Do we have BSD _setjmp() and _longjmp()?
+developer/dist_3.0.70/mcon/U/d_byacc.U           Is byacc available?
+developer/dist_3.0.70/mcon/U/d_bzero.U           Do we have bzero() or memset()?
+developer/dist_3.0.70/mcon/U/d_casti32.U         Can the compiler cast large flots to 32-bit ints?
+developer/dist_3.0.70/mcon/U/d_castneg.U         Can the C compiler cast negative to unsigned?
+developer/dist_3.0.70/mcon/U/d_cbrt.U            Do we have cubic root cbrt()?
+developer/dist_3.0.70/mcon/U/d_charsprf.U        How is sprintf() defined?
+developer/dist_3.0.70/mcon/U/d_chown.U           Do we have chown()?
+developer/dist_3.0.70/mcon/U/d_chroot.U          Do we have chroot()?
+developer/dist_3.0.70/mcon/U/d_chsize.U          Size of a char
+developer/dist_3.0.70/mcon/U/d_ckeypad.U         Do we have the curses keypad()?
+developer/dist_3.0.70/mcon/U/d_closedir.U        Do we have closedir()?
+developer/dist_3.0.70/mcon/U/d_const.U           Can cc grok the const keyword?
+developer/dist_3.0.70/mcon/U/d_crypt.U           Does crypt() exist?
+developer/dist_3.0.70/mcon/U/d_csh.U             csh path
+developer/dist_3.0.70/mcon/U/d_ctermid.U         Do we have ctermid()?
+developer/dist_3.0.70/mcon/U/d_cuserid.U         Do we have cuserid()?
+developer/dist_3.0.70/mcon/U/d_dbl_dig.U         Is DBL_DIG defined in <limits.h> or <float.h>?
+developer/dist_3.0.70/mcon/U/d_difftime.U        Do we have difftime()?
+developer/dist_3.0.70/mcon/U/d_dlerror.U         Do we have dlerror()?
+developer/dist_3.0.70/mcon/U/d_dlopen.U          Do we have dlopen()?
+developer/dist_3.0.70/mcon/U/d_dosuid.U          Do they want setuid emulation?
+developer/dist_3.0.70/mcon/U/d_drem.U            Do we have drem()?
+developer/dist_3.0.70/mcon/U/d_dup2.U            Do we have dup2()?
+developer/dist_3.0.70/mcon/U/d_eofpipe.U         Will EOF be seen on closed pipes?
+developer/dist_3.0.70/mcon/U/d_euc2jis.U         Do we have euc2jis()?
+developer/dist_3.0.70/mcon/U/d_fchmod.U          Do we have fchmod()?
+developer/dist_3.0.70/mcon/U/d_fchown.U          Do we have fchown()?
+developer/dist_3.0.70/mcon/U/d_fcntl.U           Do we have fcntl()?
+developer/dist_3.0.70/mcon/U/d_fd_set.U          Do we have the fd set manipulation macros?
+developer/dist_3.0.70/mcon/U/d_ffs.U             Do we have ffs()?
+developer/dist_3.0.70/mcon/U/d_fgetpos.U         Do we have fgetpos()?
+developer/dist_3.0.70/mcon/U/d_flexfnam.U        Long filenames?
+developer/dist_3.0.70/mcon/U/d_flock.U           Do we have flock()?
+developer/dist_3.0.70/mcon/U/d_fmod.U            Do we have fmod()?
+developer/dist_3.0.70/mcon/U/d_fork.U            Do we have fork()?
+developer/dist_3.0.70/mcon/U/d_fsetpos.U         Do we have fsetpos()?
+developer/dist_3.0.70/mcon/U/d_ftime.U           Do we have ftime()?
+developer/dist_3.0.70/mcon/U/d_ftrncate.U        Do we have ftruncate()?
+developer/dist_3.0.70/mcon/U/d_gconvert.U        Do we have gconvert() or gcvt()?
+developer/dist_3.0.70/mcon/U/d_getgrps.U         Do we have getgroups()?
+developer/dist_3.0.70/mcon/U/d_gethbynm.U        Do we have gethostbyname()?
+developer/dist_3.0.70/mcon/U/d_gethent.U         Do we have gethostent()?
+developer/dist_3.0.70/mcon/U/d_gethid.U          Do we have gethostid()?
+developer/dist_3.0.70/mcon/U/d_gethname.U        What is the C function to get host name?
+developer/dist_3.0.70/mcon/U/d_getlogin.U        Do we have getlogin()?
+developer/dist_3.0.70/mcon/U/d_getopt.U          Do we have getopt()?
+developer/dist_3.0.70/mcon/U/d_getpagsz.U        Computes system's page size
+developer/dist_3.0.70/mcon/U/d_getpgid.U         Do we have getpgid()?
+developer/dist_3.0.70/mcon/U/d_getpgrp.U         Do we have getpgrp()?
+developer/dist_3.0.70/mcon/U/d_getpgrp2.U        Do we have getpgrp2()? (DG/UX)
+developer/dist_3.0.70/mcon/U/d_getppid.U         Do we have getppid()?
+developer/dist_3.0.70/mcon/U/d_getprior.U        Do we have getpriority()?
+developer/dist_3.0.70/mcon/U/d_getpwent.U        How is passwd info gotten?
+developer/dist_3.0.70/mcon/U/d_getwd.U           Do we have getwd()?
+developer/dist_3.0.70/mcon/U/d_gnulibc.U         Are we using the GNU C library?
+developer/dist_3.0.70/mcon/U/d_group.U           Do we have group()?
+developer/dist_3.0.70/mcon/U/d_havetlib.U        Where is termlib?
+developer/dist_3.0.70/mcon/U/d_hidnet.U          Do hiddennet stuff?
+developer/dist_3.0.70/mcon/U/d_htonl.U           Do we have htonl() and friends?
+developer/dist_3.0.70/mcon/U/d_inetaton.U        Do we have inet_aton()?
+developer/dist_3.0.70/mcon/U/d_inetd.U           Should internet communication be done via inetd?
+developer/dist_3.0.70/mcon/U/d_internet.U        Use internet addresses?
+developer/dist_3.0.70/mcon/U/d_isascii.U         Do we have isascii()?
+developer/dist_3.0.70/mcon/U/d_itimer.U          Do we have setitimer()?
+developer/dist_3.0.70/mcon/U/d_keepsig.U         Will signal handlers need to be rearmed?
+developer/dist_3.0.70/mcon/U/d_killpg.U          Do we have killpg()?
+developer/dist_3.0.70/mcon/U/d_link.U            Do we have link()?
+developer/dist_3.0.70/mcon/U/d_linuxstd.U        Do we have Linux standard I/O structures?
+developer/dist_3.0.70/mcon/U/d_locconv.U         Do we have localeconv()?
+developer/dist_3.0.70/mcon/U/d_lockf.U           Do we have lockf()?
+developer/dist_3.0.70/mcon/U/d_lstat.U           Do we have lstat()?
+developer/dist_3.0.70/mcon/U/d_mblen.U           Do we have mblen()?
+developer/dist_3.0.70/mcon/U/d_mbstowcs.U        Do we have mbstowcs()?
+developer/dist_3.0.70/mcon/U/d_mbtowc.U          Do we have mbtowc()?
+developer/dist_3.0.70/mcon/U/d_memccpy.U         Do we have memccpy()?
+developer/dist_3.0.70/mcon/U/d_memchr.U          Do we have memchr()?
+developer/dist_3.0.70/mcon/U/d_memcmp.U          Do we have memcmp()?
+developer/dist_3.0.70/mcon/U/d_memcpy.U          Do we have memcpy()?
+developer/dist_3.0.70/mcon/U/d_memmove.U         Do we have memmove()?
+developer/dist_3.0.70/mcon/U/d_memset.U          Do we have memset()?
+developer/dist_3.0.70/mcon/U/d_mkdir.U           Do we have mkdir()?
+developer/dist_3.0.70/mcon/U/d_mkfifo.U          Do we have mkfifo()?
+developer/dist_3.0.70/mcon/U/d_mktime.U          Do we have mktime()?
+developer/dist_3.0.70/mcon/U/d_mmap.U            Do we have mmap()?
+developer/dist_3.0.70/mcon/U/d_msg.U             Do we have full msg(2) support?
+developer/dist_3.0.70/mcon/U/d_msgctl.U          Do we have msgctl()?
+developer/dist_3.0.70/mcon/U/d_msgget.U          Do we have msgget()?
+developer/dist_3.0.70/mcon/U/d_msgrcv.U          Do we have msgrcv()?
+developer/dist_3.0.70/mcon/U/d_msgsnd.U          Do we have msgsnd()?
+developer/dist_3.0.70/mcon/U/d_msync.U           Do we have msync()?
+developer/dist_3.0.70/mcon/U/d_munmap.U          Do we have munmap()?
+developer/dist_3.0.70/mcon/U/d_newsadm.U         Who is news administrator?
+developer/dist_3.0.70/mcon/U/d_nice.U            Do we have nice()?
+developer/dist_3.0.70/mcon/U/d_nolnbuf.U         Is stdout line buffered?
+developer/dist_3.0.70/mcon/U/d_normsig.U         signal() vs sigset()
+developer/dist_3.0.70/mcon/U/d_open3.U           Do we have the 3 arguments form for open()?
+developer/dist_3.0.70/mcon/U/d_passwd.U          Do we have passwd()?
+developer/dist_3.0.70/mcon/U/d_pathconf.U        Do we have pathconf()?
+developer/dist_3.0.70/mcon/U/d_pause.U           Do we have pause()?
+developer/dist_3.0.70/mcon/U/d_perror.U          Do we have perror()?
+developer/dist_3.0.70/mcon/U/d_pidcheck.U        Is kill(pid, 0) allowed for PID checks?
+developer/dist_3.0.70/mcon/U/d_pipe.U            Do we have pipe()?
+developer/dist_3.0.70/mcon/U/d_poll.U            Do we have poll()?
+developer/dist_3.0.70/mcon/U/d_popen.U           Do we have popen()?
+developer/dist_3.0.70/mcon/U/d_portable.U        How portable do we want to be?
+developer/dist_3.0.70/mcon/U/d_psignal.U         Do we have psignal()?
+developer/dist_3.0.70/mcon/U/d_raster.U          Is this a Raster Tech machine?
+developer/dist_3.0.70/mcon/U/d_rdchk.U           Is rdchk() there to check for input?
+developer/dist_3.0.70/mcon/U/d_readdir.U         Do we have readdir()?
+developer/dist_3.0.70/mcon/U/d_readlink.U        Do we have readlink()?
+developer/dist_3.0.70/mcon/U/d_regcmp.U          Do we have regcmp()?
+developer/dist_3.0.70/mcon/U/d_rename.U          Do we have rename()?
+developer/dist_3.0.70/mcon/U/d_rmdir.U           Do we have rmdir()?
+developer/dist_3.0.70/mcon/U/d_rusage.U          Do we have getrusage()?
+developer/dist_3.0.70/mcon/U/d_safebcpy.U        Can bcopy() handle overlapping blocks?
+developer/dist_3.0.70/mcon/U/d_safemcpy.U        Can memcpy() handle overlapping blocks?
+developer/dist_3.0.70/mcon/U/d_sanemcmp.U        Can we compare 8th bit in chars with memcmp()?
+developer/dist_3.0.70/mcon/U/d_sbrk.U            Do we have sbrk()?
+developer/dist_3.0.70/mcon/U/d_scandir.U         Do we have scandir()?
+developer/dist_3.0.70/mcon/U/d_scannl.U          Does scanf() groks '\n' correctly?
+developer/dist_3.0.70/mcon/U/d_scorfl.U          Keep scoreboards by full name?
+developer/dist_3.0.70/mcon/U/d_select.U          Do we have select()?
+developer/dist_3.0.70/mcon/U/d_sem.U             Do we have full sem(2) support?
+developer/dist_3.0.70/mcon/U/d_semctl.U          Do we have d_semctl()?
+developer/dist_3.0.70/mcon/U/d_semget.U          Do we have semget()?
+developer/dist_3.0.70/mcon/U/d_semop.U           Do we have semop()?
+developer/dist_3.0.70/mcon/U/d_setegid.U         Do we have setegid()?
+developer/dist_3.0.70/mcon/U/d_seteuid.U         Do we have seteuid()?
+developer/dist_3.0.70/mcon/U/d_setlnbuf.U        Do we have setlinebuf()?
+developer/dist_3.0.70/mcon/U/d_setlocale.U       Do we have setlocale()?
+developer/dist_3.0.70/mcon/U/d_setpgid.U         Do we have setpgid()?
+developer/dist_3.0.70/mcon/U/d_setpgrp.U         Do we have setpgrp()?
+developer/dist_3.0.70/mcon/U/d_setpgrp2.U        Do we have setpgrp2()? (DG/UX)
+developer/dist_3.0.70/mcon/U/d_setprior.U        Do we have setpriority()?
+developer/dist_3.0.70/mcon/U/d_setregid.U        Do we have setregid()?
+developer/dist_3.0.70/mcon/U/d_setreuid.U        Do we have setreuid()?
+developer/dist_3.0.70/mcon/U/d_setrgid.U         Do we have setrgid()?
+developer/dist_3.0.70/mcon/U/d_setruid.U         Do we have setruid()?
+developer/dist_3.0.70/mcon/U/d_setsid.U          Do we have setsid()?
+developer/dist_3.0.70/mcon/U/d_sgndchr.U         Are chars signed?
+developer/dist_3.0.70/mcon/U/d_shm.U             Do we have full shm(2) support?
+developer/dist_3.0.70/mcon/U/d_shmat.U           Do we have shmat()?
+developer/dist_3.0.70/mcon/U/d_shmctl.U          Do we have shmctl()?
+developer/dist_3.0.70/mcon/U/d_shmdt.U           Do we have shmdt()?
+developer/dist_3.0.70/mcon/U/d_shmget.U          Do we have shmget()?
+developer/dist_3.0.70/mcon/U/d_sigaction.U       Do we have sigaction()?
+developer/dist_3.0.70/mcon/U/d_sigblock.U        Do we have sigblock()?
+developer/dist_3.0.70/mcon/U/d_sighold.U         Do we have sighold()?
+developer/dist_3.0.70/mcon/U/d_siglist.U         Do we have sys_siglist[]?
+developer/dist_3.0.70/mcon/U/d_sigsetjmp.U       Do we have sigsetjmp()?
+developer/dist_3.0.70/mcon/U/d_sigsetmk.U        Do we have sigsetmask()?
+developer/dist_3.0.70/mcon/U/d_sigvec.U          BSD reliable signals supported?
+developer/dist_3.0.70/mcon/U/d_sjis2jis.U        Do we have sjis2jis()?
+developer/dist_3.0.70/mcon/U/d_socket.U          BSD socket interface supported?
+developer/dist_3.0.70/mcon/U/d_speedopt.U        Optimize speed vs memory?
+developer/dist_3.0.70/mcon/U/d_stat.U            Do we have stat()?
+developer/dist_3.0.70/mcon/U/d_statblks.U        Does stat know about blksize and blocks?
+developer/dist_3.0.70/mcon/U/d_stdstdio.U        How standard is stdio?
+developer/dist_3.0.70/mcon/U/d_strccmp.U         Do we have strcasecmp()?
+developer/dist_3.0.70/mcon/U/d_strchr.U          Use strchr() or index()?
+developer/dist_3.0.70/mcon/U/d_strcoll.U         Do we have strcoll()?
+developer/dist_3.0.70/mcon/U/d_strcspn.U         Do we have strcspn()?
+developer/dist_3.0.70/mcon/U/d_strctcpy.U        Do we do struct copies?
+developer/dist_3.0.70/mcon/U/d_strdup.U          Do we have strdup()?
+developer/dist_3.0.70/mcon/U/d_strerror.U        Do we have strerror()?
+developer/dist_3.0.70/mcon/U/d_strftime.U        Do we have strftime()?
+developer/dist_3.0.70/mcon/U/d_strstr.U          Do we have strtr()?
+developer/dist_3.0.70/mcon/U/d_strtod.U          Do we have strtod()?
+developer/dist_3.0.70/mcon/U/d_strtok.U          Do we have strtok()?
+developer/dist_3.0.70/mcon/U/d_strtol.U          Do we have strtol()?
+developer/dist_3.0.70/mcon/U/d_strtoul.U         Do we have strtoul()?
+developer/dist_3.0.70/mcon/U/d_strxfrm.U         Do we have strxfrm()?
+developer/dist_3.0.70/mcon/U/d_su_chown.U        Do we need to be root to do a chown?
+developer/dist_3.0.70/mcon/U/d_symlink.U         Does symlink() exist?
+developer/dist_3.0.70/mcon/U/d_syscall.U         Do we have syscall()?
+developer/dist_3.0.70/mcon/U/d_sysconf.U         Do we have sysconf()?
+developer/dist_3.0.70/mcon/U/d_syslog.U          Do we have syslog()?
+developer/dist_3.0.70/mcon/U/d_system.U          Do we have system()?
+developer/dist_3.0.70/mcon/U/d_table.U           De we have table()?
+developer/dist_3.0.70/mcon/U/d_tcgtpgrp.U        Do we have tcgetpgrp()?
+developer/dist_3.0.70/mcon/U/d_tcstpgrp.U        Do we have tcsetpgrp()?
+developer/dist_3.0.70/mcon/U/d_time.U            Do we have time()?
+developer/dist_3.0.70/mcon/U/d_times.U           Do we have a times() function?
+developer/dist_3.0.70/mcon/U/d_tminsys.U         Is struct tm in <sys/time.h>?
+developer/dist_3.0.70/mcon/U/d_truncate.U        Do we have truncate()?
+developer/dist_3.0.70/mcon/U/d_tzmin.U           Do we use tz_minuteswest?
+developer/dist_3.0.70/mcon/U/d_tzname.U          Do we have tzname[]?
+developer/dist_3.0.70/mcon/U/d_ulimit.U          Do we have ulimit()?
+developer/dist_3.0.70/mcon/U/d_umask.U           Do we have umask()?
+developer/dist_3.0.70/mcon/U/d_usendir.U         Use our own ndir routines?
+developer/dist_3.0.70/mcon/U/d_usleep.U          Do we have usleep()?
+developer/dist_3.0.70/mcon/U/d_uwait.U           Is there a 'union wait' declaration around here?
+developer/dist_3.0.70/mcon/U/d_vfork.U           vfork() vs fork()
+developer/dist_3.0.70/mcon/U/d_voidsig.U         How is signal() declared?
+developer/dist_3.0.70/mcon/U/d_volatile.U        Does our C compiler support "volatile"?
+developer/dist_3.0.70/mcon/U/d_vprintf.U         Do we have vprintf()?
+developer/dist_3.0.70/mcon/U/d_wait3.U           Do we have wait3()?
+developer/dist_3.0.70/mcon/U/d_wait4.U           Do we have wait4()?
+developer/dist_3.0.70/mcon/U/d_waitpid.U         Do we have waitpid() system call?
+developer/dist_3.0.70/mcon/U/d_wcstombs.U        Do we have wcstombs()?
+developer/dist_3.0.70/mcon/U/d_wctomb.U          Do we have wctomb()?
+developer/dist_3.0.70/mcon/U/d_wifstat.U         Can we safely use WIFEXITED() and friends?
+developer/dist_3.0.70/mcon/U/d_xdrs.U            Do we have XDR serialization routines?
+developer/dist_3.0.70/mcon/U/defeditor.U         Find default editor
+developer/dist_3.0.70/mcon/U/doublesize.U        What is the size of "double"?
+developer/dist_3.0.70/mcon/U/errnolist.U         See if we need our own .c to get sys_errnolist[]
+developer/dist_3.0.70/mcon/U/etc.U               Where administrative executable should go
+developer/dist_3.0.70/mcon/U/filexp.U            Finds location of filexp made by Filexp.U
+developer/dist_3.0.70/mcon/U/floatsize.U         What is the size of "float"?
+developer/dist_3.0.70/mcon/U/fpostype.U          What is the type for file positions?
+developer/dist_3.0.70/mcon/U/fpu.U               What kind of Sun fpu is in use?
+developer/dist_3.0.70/mcon/U/gidtype.U           What is the type of gids?
+developer/dist_3.0.70/mcon/U/groupstype.U        What is the type for groups in getgroups()?
+developer/dist_3.0.70/mcon/U/h_fcntl.U           Do we need to include fcntl.h?
+developer/dist_3.0.70/mcon/U/h_sysfile.U         Do we need to include sys/file.h?
+developer/dist_3.0.70/mcon/U/i_arpainet.U        Shall we include <arpa/inet.h>?
+developer/dist_3.0.70/mcon/U/i_db.U              Shall we include <db.h>?
+developer/dist_3.0.70/mcon/U/i_dbm.U             Shall we include <dbm.h>?
+developer/dist_3.0.70/mcon/U/i_dirent.U          Shall we include <dirent.h>
+developer/dist_3.0.70/mcon/U/i_dld.U             Shall we include <dld.h>?
+developer/dist_3.0.70/mcon/U/i_dlfcn.U           Shall we include <dlfcn.h>?
+developer/dist_3.0.70/mcon/U/i_fcntl.U           Shall we include <fcntl.h>?
+developer/dist_3.0.70/mcon/U/i_float.U           Shall we include <float.h>?
+developer/dist_3.0.70/mcon/U/i_gdbm.U            Shall we include <gdbm.h>?
+developer/dist_3.0.70/mcon/U/i_grp.U             Shall we include <grp.h>?
+developer/dist_3.0.70/mcon/U/i_limits.U          Shall we include <limits.h>?
+developer/dist_3.0.70/mcon/U/i_locale.U          Shall we include <locale.h>?
+developer/dist_3.0.70/mcon/U/i_malloc.U          Shall we include <malloc.h>?
+developer/dist_3.0.70/mcon/U/i_math.U            Shall we include <math.h>?
+developer/dist_3.0.70/mcon/U/i_memory.U          Shall we include <memory.h>?
+developer/dist_3.0.70/mcon/U/i_ndbm.U            Shall we include <ndbm.h>?
+developer/dist_3.0.70/mcon/U/i_neterrno.U        Shall we include <net/errno.h>?
+developer/dist_3.0.70/mcon/U/i_niin.U            Shall we include <netinet/in.h>?
+developer/dist_3.0.70/mcon/U/i_pwd.U             Shall we include <pwd.h>?
+developer/dist_3.0.70/mcon/U/i_regex.U           Shall we include <regex.h>?
+developer/dist_3.0.70/mcon/U/i_sfio.U            Shall we include <sfio.h>?
+developer/dist_3.0.70/mcon/U/i_stddef.U          Shall we include <stddef.h>?
+developer/dist_3.0.70/mcon/U/i_stdlib.U          Shall we include <stdlib.h>?
+developer/dist_3.0.70/mcon/U/i_string.U          <string.h> or <strings.h>?
+developer/dist_3.0.70/mcon/U/i_sysdir.U          Shall we include <sys/dir.h>?
+developer/dist_3.0.70/mcon/U/i_sysfile.U         Do we need <sys/file.h>?
+developer/dist_3.0.70/mcon/U/i_sysioctl.U        Include <sys/ioctl.h> or <sgtty.h>?
+developer/dist_3.0.70/mcon/U/i_sysmman.U         Do we have to include <sys/mman.h>?
+developer/dist_3.0.70/mcon/U/i_sysndir.U         Shall we include <sys/ndir.h>?
+developer/dist_3.0.70/mcon/U/i_sysparam.U        Shall we include <sys/param.h>?
+developer/dist_3.0.70/mcon/U/i_sysresrc.U        Shall we include <sys/resource.h>?
+developer/dist_3.0.70/mcon/U/i_sysselct.U        Shall we include <sys/select.h>?
+developer/dist_3.0.70/mcon/U/i_syssock.U         Shall we include <sys/socket.h>?
+developer/dist_3.0.70/mcon/U/i_sysstat.U         Shall we include <sys/stat.h>
+developer/dist_3.0.70/mcon/U/i_systable.U        De we have to include <sys/table.h>?
+developer/dist_3.0.70/mcon/U/i_systimeb.U        Is struct timeb defined in <sys/timeb.h>?
+developer/dist_3.0.70/mcon/U/i_systimes.U        Shall we include <sys/times.h>?
+developer/dist_3.0.70/mcon/U/i_systwgcf.U        Shall we include <sys/twg_config.h>?
+developer/dist_3.0.70/mcon/U/i_systypes.U        Do we have to include <sys/types.h>?
+developer/dist_3.0.70/mcon/U/i_sysun.U           Shall we include <sys/un.h>?
+developer/dist_3.0.70/mcon/U/i_syswait.U 	       Is there a <sys/wait.h>?
+developer/dist_3.0.70/mcon/U/i_termio.U          Include <termio.h> or <sgtty.h>?
+developer/dist_3.0.70/mcon/U/i_time.U            Which time.h should we include?
+developer/dist_3.0.70/mcon/U/i_unistd.U          Include <unistd.h>?
+developer/dist_3.0.70/mcon/U/i_utime.U           Include <utime.h>?
+developer/dist_3.0.70/mcon/U/i_values.U          Shall we include <values.h>
+developer/dist_3.0.70/mcon/U/i_varhdr.U          Choose between <varargs.h> and <stdarg.h>
+developer/dist_3.0.70/mcon/U/i_vfork.U           Include <vfork.h>?
+developer/dist_3.0.70/mcon/U/i_whoami.U          Include <whoami.h>?
+developer/dist_3.0.70/mcon/U/inc.U               Where to put public include files?
+developer/dist_3.0.70/mcon/U/install.U           Look for a BSD-compatible install
+developer/dist_3.0.70/mcon/U/intsize.U           What is the size of "int"?
+developer/dist_3.0.70/mcon/U/ipc.U               Choose IPC mechanism
+developer/dist_3.0.70/mcon/U/kernel.U            Compute the kernel pathname
+developer/dist_3.0.70/mcon/U/lex.U               Use lex or flex?
+developer/dist_3.0.70/mcon/U/lib.U               Where to put public library files ?
+developer/dist_3.0.70/mcon/U/libc.U              Where is libc?
+developer/dist_3.0.70/mcon/U/libdbm.U            Look for a suitable dbm library
+developer/dist_3.0.70/mcon/U/libflex.U           Locate flex library
+developer/dist_3.0.70/mcon/U/libnlist.U          Locate an nlist library
+developer/dist_3.0.70/mcon/U/libnm.U             New math library?
+developer/dist_3.0.70/mcon/U/libpth.U            Set path to locate libraries
+developer/dist_3.0.70/mcon/U/libs.U              Optional libraries?
+developer/dist_3.0.70/mcon/U/libyacc.U           Locate yacc library
+developer/dist_3.0.70/mcon/U/lintlib.U           Where lint library should be placed
+developer/dist_3.0.70/mcon/U/lns.U               Are symbolic links supported by ln?
+developer/dist_3.0.70/mcon/U/locdist.U           Find distribution names for news
+developer/dist_3.0.70/mcon/U/longsize.U          What is the size of "long"?
+developer/dist_3.0.70/mcon/U/lseektype.U         What is the type of lseek()?
+developer/dist_3.0.70/mcon/U/maildir.U           Where is mail spooled
+developer/dist_3.0.70/mcon/U/mailer.U            What delivers mail?
+developer/dist_3.0.70/mcon/U/mailfile.U          What filename in maildir?
+developer/dist_3.0.70/mcon/U/make.U              Does make set the $(MAKE) macro?
+developer/dist_3.0.70/mcon/U/mallocsrc.U         Use malloc included in kit?
+developer/dist_3.0.70/mcon/U/man1dir.U           Where to put traditional section 1 manpage sources
+developer/dist_3.0.70/mcon/U/man3dir.U           Where to put traditional section 3 manpage sources
+developer/dist_3.0.70/mcon/U/manfmt.U            Formatted man directories
+developer/dist_3.0.70/mcon/U/mansrc.U            Where to put manual pages source
+developer/dist_3.0.70/mcon/U/mboxchar.U          How to determine if file is mailbox
+developer/dist_3.0.70/mcon/U/mkdep.U             How to generate makefile dependencies?
+developer/dist_3.0.70/mcon/U/models.U            Large vs small, split I&D, etc
+developer/dist_3.0.70/mcon/U/modetype.U          What is the type for file modes?
+developer/dist_3.0.70/mcon/U/myhostname.U        How to determine hostname from shell
+developer/dist_3.0.70/mcon/U/n.U                 How to suppress newline with echo
+developer/dist_3.0.70/mcon/U/nametype.U          How to get user's fullname
+developer/dist_3.0.70/mcon/U/nblock_io.U         Support for non-blocking I/O
+developer/dist_3.0.70/mcon/U/newslevel.U         What version of news are we running?
+developer/dist_3.0.70/mcon/U/newslib.U           Where is the news library?
+developer/dist_3.0.70/mcon/U/newsspool.U         Where is news spooled?
+developer/dist_3.0.70/mcon/U/nis.U               Do we have to deal with NIS (former YP)?
+developer/dist_3.0.70/mcon/U/nlist_pfx.U         nlist() related stuff
+developer/dist_3.0.70/mcon/U/orderlib.U          Shall we order components libraries?
+developer/dist_3.0.70/mcon/U/orgname.U           What is the organizaton name?
+developer/dist_3.0.70/mcon/U/packadmin.U         E-mail address of the package administrator
+developer/dist_3.0.70/mcon/U/package.U           Gets package name from .package magically
+developer/dist_3.0.70/mcon/U/pager.U             What's the pager, more or less?
+developer/dist_3.0.70/mcon/U/patchlevel.U        Grab current patchlevel out of patchlevel.h
+developer/dist_3.0.70/mcon/U/perlpath.U          The full path of perl
+developer/dist_3.0.70/mcon/U/pidtype.U           What is the type of a PID?
+developer/dist_3.0.70/mcon/U/prefix.U            Installation prefix setting (none, /usr/local)
+developer/dist_3.0.70/mcon/U/prefshell.U         Preferred user shell
+developer/dist_3.0.70/mcon/U/privlib.U           Where is the private library?
+developer/dist_3.0.70/mcon/U/prototype.U         Do we support prototypes?
+developer/dist_3.0.70/mcon/U/ptrsize.U           What is the size of a pointer?
+developer/dist_3.0.70/mcon/U/randbits.U          How many bits in rand()?
+developer/dist_3.0.70/mcon/U/randfunc.U          Which random number function shall we use?
+developer/dist_3.0.70/mcon/U/rcs_branch.U        Does RCS know about the -b switch?
+developer/dist_3.0.70/mcon/U/registers.U         How many register declarations to use
+developer/dist_3.0.70/mcon/U/rootid.U            Root user id
+developer/dist_3.0.70/mcon/U/sbrksmart.U         Can sbrk() be used to release core?
+developer/dist_3.0.70/mcon/U/sbrktype.U          What is the return type of sbrk()?
+developer/dist_3.0.70/mcon/U/scriptdir.U         Where to put public scripts
+developer/dist_3.0.70/mcon/U/selecttype.U        What type for select() file bitfields?
+developer/dist_3.0.70/mcon/U/sh.U                Where the shell is located
+developer/dist_3.0.70/mcon/U/shm_for.U           More shared memory stuff
+developer/dist_3.0.70/mcon/U/sig_name.U          Signal names
+developer/dist_3.0.70/mcon/U/sitearch.U          Where user-installed arch-dependant files should go
+developer/dist_3.0.70/mcon/U/sitelib.U           Where user-installed regular library files should go
+developer/dist_3.0.70/mcon/U/sizetype.U          What is the type for byte size?
+developer/dist_3.0.70/mcon/U/so.U                Shared object extension
+developer/dist_3.0.70/mcon/U/sockopt.U           Check for socket options
+developer/dist_3.0.70/mcon/U/spitshell.U         Shell comment stripper, maybe
+developer/dist_3.0.70/mcon/U/src.U               Build and source tree separation support
+developer/dist_3.0.70/mcon/U/ssizetype.U         What is the signed type for byte size?
+developer/dist_3.0.70/mcon/U/startperl.U         Do we start perl with #! or what?
+developer/dist_3.0.70/mcon/U/startsh.U           How to guarantee sh startup
+developer/dist_3.0.70/mcon/U/stdchar.U           Are chars unsigned in stdio?
+developer/dist_3.0.70/mcon/U/sunscanf.U          Is this Sun's version of scanf()?
+developer/dist_3.0.70/mcon/U/sysman.U            Where is the man(1) located?
+developer/dist_3.0.70/mcon/U/uidtype.U           What is the type of uids?
+developer/dist_3.0.70/mcon/U/usenm.U             Shall we use the costly nm extraction?
+developer/dist_3.0.70/mcon/U/usrinc.U            Where are include files located?
+developer/dist_3.0.70/mcon/U/vaproto.U           How do we prototype varargs, with ...?
+developer/dist_3.0.70/mcon/U/voidflags.U         How supported is void?
+developer/dist_3.0.70/mcon/U/warnflags.U         Any additional cc warning flags?
+developer/dist_3.0.70/mcon/U/yacc.U              Which compiler-compiler to use?
+developer/dist_3.0.70/mcon/configure             GNU configure-like wrapper to metaconfig's Configure
+developer/dist_3.0.70/mcon/files/Internal.U      Template for special units with internal symbols
+developer/dist_3.0.70/mcon/files/README          Why those templates are here...
+developer/dist_3.0.70/mcon/files/d_function.U    Template for C defines
+developer/dist_3.0.70/mcon/files/dir.U           Template to get a directory
+developer/dist_3.0.70/mcon/files/file.U          Template get a file
+developer/dist_3.0.70/mcon/files/i_include.U     Template for include files
+developer/dist_3.0.70/mcon/files/keyword.U       Template for keyword checking
+developer/dist_3.0.70/mcon/files/locate.U        Template to locate a file
+developer/dist_3.0.70/mcon/files/question.U      Template for setvar questions
+developer/dist_3.0.70/mcon/files/rcshead.U       Template for unit head
+developer/dist_3.0.70/mcon/files/shell.U         Template for non-setvar questions
+developer/dist_3.0.70/mcon/files/type.U          Template for type lookup
+developer/dist_3.0.70/mcon/makegloss.SH          Extracts Glossary from Unit files
+developer/dist_3.0.70/mcon/man/Jmakefile         Generic makefile description for manual pages
+developer/dist_3.0.70/mcon/man/Makefile.SH       Jmake-generated makefile for manual pages
+developer/dist_3.0.70/mcon/man/mconfig.SH        Manual page for metaconfig
+developer/dist_3.0.70/mcon/man/mlint.SH          Manual page for metalint
+developer/dist_3.0.70/mcon/man/mxref.SH          Manual page for metaxref
+developer/dist_3.0.70/mcon/mconfig.SH            Writes Configure scripts for you
+developer/dist_3.0.70/mcon/mlint.SH              Lints metaconfig units
+developer/dist_3.0.70/mcon/mxref.SH              Builds symbol cross-reference files
+developer/dist_3.0.70/mcon/pl/common.pl          Common control lines extraction
+developer/dist_3.0.70/mcon/pl/configure.pl       Generates Configure
+developer/dist_3.0.70/mcon/pl/cosmetic.pl        Some cosmetic fixes
+developer/dist_3.0.70/mcon/pl/depend.pl          Metaconfig-only dependencies
+developer/dist_3.0.70/mcon/pl/eval.pl            Built-in interpreter
+developer/dist_3.0.70/mcon/pl/extract.pl         Dependency extractor engine
+developer/dist_3.0.70/mcon/pl/files.pl           Extracts files from MANIFEST.new
+developer/dist_3.0.70/mcon/pl/gensym.pl          Dynamic symbol generator
+developer/dist_3.0.70/mcon/pl/init.pl            Initialization of dependency control array
+developer/dist_3.0.70/mcon/pl/lint.pl            Lint-only dependencies
+developer/dist_3.0.70/mcon/pl/locate.pl          Locate units
+developer/dist_3.0.70/mcon/pl/makefile.pl        Builds temporary Makefiles
+developer/dist_3.0.70/mcon/pl/obsolete.pl        Deals with obsolete symbols
+developer/dist_3.0.70/mcon/pl/order.pl           Re-order units within Configure
+developer/dist_3.0.70/mcon/pl/tsort.pl           Topological sort
+developer/dist_3.0.70/mcon/pl/wanted.pl          Set up Wanted file
+developer/dist_3.0.70/mcon/pl/xref.pl            Metaxref-only dependencies
+developer/dist_3.0.70/mcon/pl/xwant.pl           Metaxref symbol extraction
+developer/dist_3.0.70/pat/Jmakefile              High level makefile description for pat
+developer/dist_3.0.70/pat/Makefile.SH            Makefile for pat tools
+developer/dist_3.0.70/pat/README                 Instructions for patch/developping tools
+developer/dist_3.0.70/pat/pat.SH                 Check in, do diffs, make patch, send it
+developer/dist_3.0.70/pat/pat.man                Manual page for patch tools
+developer/dist_3.0.70/pat/patbase.SH             To set the base for future differences
+developer/dist_3.0.70/pat/patchlevel.h           Prototypical patchlevel.h
+developer/dist_3.0.70/pat/patcil.SH              Check in the latest changes
+developer/dist_3.0.70/pat/patclean.SH            Check in latest changes and remove files
+developer/dist_3.0.70/pat/patcol.SH              Check out working file
+developer/dist_3.0.70/pat/patdiff.SH             Find the differences since last patch
+developer/dist_3.0.70/pat/patftp.SH              Put patches in ftp pub directory
+developer/dist_3.0.70/pat/patindex.SH            Create an index of patches sent out
+developer/dist_3.0.70/pat/patlog.SH              Handles the ChangeLog file
+developer/dist_3.0.70/pat/patmake.SH             Put together a patch file
+developer/dist_3.0.70/pat/patname.SH             Assign symbolic name to a revision
+developer/dist_3.0.70/pat/patnotify.SH           Notifies that new patches have been released
+developer/dist_3.0.70/pat/patpost.SH             Send patches via news
+developer/dist_3.0.70/pat/patsend.SH             Sends patches via mail
+developer/dist_3.0.70/pat/patsnap.SH             Builds RCS snapshot file
+developer/dist_3.0.70/patchlevel.h               The current patchlevel for dist
+developer/dist_3.0.70/pl/comment.pl              Perl library to find comment in front of $Log
+developer/dist_3.0.70/pl/copyright.pl            Perl library to expand copyright
+developer/dist_3.0.70/pl/editor.pl               Perl library to compute suitable editor name
+developer/dist_3.0.70/pl/fullname.pl             Perl library to get full name
+developer/dist_3.0.70/pl/listedit.pl             Perl library to edit list of items
+developer/dist_3.0.70/pl/logname.pl              Perl library to get login name
+developer/dist_3.0.70/pl/makedir.pl              Perl library to emulate 'mkdir -p'
+developer/dist_3.0.70/pl/manifake.pl             Perl library to build a MANIFEST.new if none found
+developer/dist_3.0.70/pl/newer.pl                Perl library to Find files newer than patchlevel.h
+developer/dist_3.0.70/pl/package.pl              Perl library to read .package
+developer/dist_3.0.70/pl/patseq.pl               Perl library to compute issued patch sequence
+developer/dist_3.0.70/pl/profile.pl              Perl library to get ~/.dist_profile
+developer/dist_3.0.70/pl/rangeargs.pl            Perl library to expand number lists
+developer/dist_3.0.70/pl/rcsargs.pl              Perl library to expand rcs filename lists
+developer/dist_3.0.70/pl/snapshot.pl             Perl library to parse RCS snapshot file
+developer/dist_3.0.70/pl/tilde.pl                Perl library to perform ~name expansion
+developer/dist_3.0.70/pl/users.pl                Perl library to parse users file
+
+

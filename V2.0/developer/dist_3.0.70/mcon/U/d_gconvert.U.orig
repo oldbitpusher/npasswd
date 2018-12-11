@@ -1,0 +1,110 @@
+?RCS: $Id: d_gconvert.U,v 3.0.1.2 1995/07/25 13:55:59 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: d_gconvert.U,v $
+?RCS: Revision 3.0.1.2  1995/07/25  13:55:59  ram
+?RCS: patch56: improved comments about the Gconvert macro (ADO)
+?RCS: patch56: force compile-link test since it may exist but be unusable (ADO)
+?RCS:
+?RCS: Revision 3.0.1.1  1994/10/29  16:12:51  ram
+?RCS: patch36: created by ADO
+?RCS:
+?MAKE:d_Gconvert: cat cc ccflags ldflags libs Inlibc rm runnm
+?MAKE:	-pick add $@ %<
+?S:d_Gconvert:
+?S:	This variable holds what Gconvert is defined as to convert
+?S:	floating point numbers into strings. It could be 'gconvert'
+?S:	or a more complex macro emulating gconvert with gcvt() or sprintf.
+?S:.
+?C:Gconvert:
+?C:	This preprocessor macro is defined to convert a floating point
+?C:	number to a string without a trailing decimal point.  This
+?C:	emulates the behavior of sprintf("%g"), but is sometimes much more
+?C:	efficient.  If gconvert() is not available, but gcvt() drops the
+?C:	trailing decimal point, then gcvt() is used.  If all else fails,
+?C:	a macro using sprintf("%g") is used. Arguments for the Gconvert
+?C:	macro are: value, number of digits, whether trailing zeros should
+?C:	be retained, and the output buffer.
+?C:	Possible values are:
+?C:		d_Gconvert='gconvert((x),(n),(t),(b))'
+?C:		d_Gconvert='gcvt((x),(n),(b))'
+?C:		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
+?C:	The last two assume trailing zeros should not be kept.
+?C:.
+?H:#define Gconvert(x,n,t,b) $d_Gconvert
+?H:.
+?X: We don't permanently change runnm, but we do temporarily.
+?LINT: change runnm
+?T: d_gconvert d_gcvt xxx_runnm
+: see if gconvert exists
+?X: On some SVR4 systems, gconvert is present but can not be used 
+?X: because it requires some other unavailable functions.
+?X: Therefore, do not use the nm extraction, but use a real compile
+?X: and link test instead.
+xxx_runnm="$runnm"
+runnm=false
+set gconvert d_gconvert
+eval $inlibc
+runnm="$xxx_runnm"
+
+case "$d_gconvert" in
+$define)
+	echo "We'll use it to convert floats into a string then." >&4
+	d_Gconvert="gconvert((x),(n),(t),(b))"
+	;;
+*)
+	: Maybe we can emulate it with gcvt.
+	set gcvt d_gcvt
+	eval $inlibc
+
+	case "$d_gcvt" in
+	$define) 
+		: Test whether gcvt drops a trailing decimal point
+		$cat >try.c <<'EOP'
+main() { 
+	char buf[64]; 
+	gcvt(1.0, 8, buf); 
+	if (buf[0] != '1' || buf[1] != '\0')
+		exit(1);
+	gcvt(0.0, 8, buf); 
+	if (buf[0] != '0' || buf[1] != '\0')
+		exit(1);
+	gcvt(-1.0, 8, buf); 
+	if (buf[0] != '-' || buf[1] != '1' || buf[2] != '\0')
+		exit(1);
+	exit(0);
+}
+EOP
+		if $cc $ccflags $ldflags -o try try.c $libs > /dev/null 2>&1; then
+			if ./try; then
+				echo "Good, your gcvt() drops a trailing decimal point."
+				echo "We'll use it to convert floats into a string." >&4
+				d_Gconvert="gcvt((x),(n),(b))"
+			else
+				echo "But your gcvt() keeps a trailing decimal point".
+				d_Gconvert=''
+			fi
+		else
+			echo "Hmm.  I can't compile the gcvt test program."
+			d_Gconvert=''
+		fi
+		$rm -f try.c try
+		;;
+	esac
+	case "$d_Gconvert" in
+	'')
+		echo "I'll use sprintf instead to convert floats into a string." >&4
+		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
+		;;
+	esac
+esac
+

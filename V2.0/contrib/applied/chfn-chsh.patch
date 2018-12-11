@@ -1,0 +1,628 @@
+Return-Path: swartz@cs.wisc.edu
+Received: from dip.cs.wisc.edu (dip.cs.wisc.edu [128.105.9.32]) by sirius.cc.utexas.edu (8.6.8.1/8.6.6/cc-os.mc-1.2) with SMTP id JAA24485 for <clyde@sirius.cc.utexas.edu>; Fri, 15 Jul 1994 09:38:36 -0500
+Date: Fri, 15 Jul 94 09:38:35 -0500
+Message-Id: <9407151438.AA09143@dip.cs.wisc.edu>
+Received: by dip.cs.wisc.edu; Fri, 15 Jul 94 09:38:35 -0500
+From: Steve Swartz <swartz@cs.wisc.edu>
+To: Clyde Hoover <clyde@sirius.cc.utexas.edu>
+Subject: chsh/chfn
+
+
+Here's the patch for the chsh and chfn stuff. The architecture you had in
+place made this very easy to code! Good job. I've tested this on the four
+architectures we have here (sunos 4.1.3, hpux 9.01, ultrix 4.3a, osf 1.3).
+
+I tried to code this in as non-impactful a way as I could. So, I didn't change
+the names of configuration string variables for these two modules. The names
+are different than the corresponding names in the passwd code (ie.,
+PasswdHelpFile vs chsh_help).
+
+The chsh implementation is rather straightforward. It does not allow users to
+change to or from a shell not found in the SHELLS file. I wonder about having
+the location of the shells file readable from a configuration file, but I
+didn't mess with that stuff.
+
+I know places that maintain different kinds of information in the gecos field,
+so I implemented chfn so that the nature of the fields can be easily
+customized. The number of gecos fields and the total size of the field are
+configurable. There is an array of strings naming each field, and an array of
+functions which check those fields for validity. The input part of the routine
+loops over the fields, reads each one in, and checks it for validity. The
+default validity checks allow no field to contain a colon, a comma, or a
+non-printing character. Phone numbers may only contain parentheses, dashes,
+and decimal digits. The routine implements the two BSD special inputs ("none"
+in any combination of upper and/or lower case letters empties a field, and a
+carriage return leaves the field as it was) and your '?' help-file
+convention. It does not do the BSD checking on room numbers to make sure
+they're valid in the UCB CS department ;)
+
+If these routines don't meet your needs, let me know. I'm hoping you'll accept
+all four patches I eventually send you, so that we can use the npasswd program
+that results "out of the box"). 
+
+Thanks. Here's the patch (sorry I didn't send you context patches before):
+
+------------------------------------------------------------------------------
+
+diff -C 2 -P old/Makefile new/Makefile
+*** old/Makefile	Wed Jun 29 16:41:24 1994
+--- new/Makefile	Thu Jul 14 18:21:52 1994
+***************
+*** 96,99 ****
+--- 96,101 ----
+  	configure.o \
+  	passwd.o \
++ 	chfn.o \
++ 	chsh.o \
+  	pw_passwd.o \
+  	pw_nis.o \
+***************
+*** 234,237 ****
+--- 236,241 ----
+  main.o:		main.c $(NPASSWD_INC) version.h 
+  passwd.o:	passwd.c $(NPASSWD_INC)
++ chsh.o:		chsh.c $(NPASSWD_INC) pw_defs.h pw_nis.h
++ chfn.o:		chfn.c $(NPASSWD_INC) pw_defs.h pw_nis.h
+  configure.o:	configure.c $(NPASSWD_INC)
+  pw_passwd.o:	pw_passwd.c $(NPASSWD_INC) pw_defs.h pw_nis.h
+diff -C 2 -P old/chfn.c new/chfn.c
+*** old/chfn.c	Wed Dec 31 18:00:00 1969
+--- new/chfn.c	Fri Jul 15 09:32:43 1994
+***************
+*** 0 ****
+--- 1,244 ----
++ /*
++  *	This program duplicates the manual page behavior of the 4.XBSD
++  *	chfn(1) command.
++  */
++ #include "npasswd.h"
++ #include "pw_defs.h"
++ #include "pw_nis.h"
++ 
++ #include <sys/time.h>
++ 
++ #ifdef __STDC__
++ private enum chg_perm can_change_finfo (struct mpasswd *, struct mpasswd *);
++ private int is_none (char *field);
++ #else
++ private enum chg_perm can_change_finfo ();
++ private int is_none ();
++ #endif
++ 
++ 
++ #ifndef CHFN_HELP
++ # define	CHFN_HELP	"/usr/adm/chfn.help"
++ #endif
++ 
++ #ifndef CHFN_MOTD
++ # define	CHFN_MOTD	"/usr/adm/chfn.motd"
++ #endif
++ 
++ public char	chfn_help[MAXPATHLEN] = { CHFN_HELP },
++ 		chfn_motd[MAXPATHLEN] = { CHFN_MOTD };
++ 
++ #define NUM_GECOS_ENTRIES 4
++ #define GECOS_SIZE 200
++ char *gecosLabels[NUM_GECOS_ENTRIES] = {
++ 	"Name",
++ 	"Office number",
++ 	"Office phone",
++ 	"Home phone"
++ };
++ 
++ typedef int (*GecosCheckFun)();
++ private int check_name(), check_roomnum(), check_phone();
++ 
++ GecosCheckFun check_gecos[NUM_GECOS_ENTRIES] = {
++ 	check_name, check_roomnum, check_phone, check_phone
++ };
++ 	
++ public void chfn(user, caller)
++ struct mpasswd	*user,
++ 		*caller;
++ {
++ 	enum	chg_perm	perm;
++ 	char	newGecos[GECOS_SIZE];
++ 	char	oldGecos[GECOS_SIZE];
++ 	char	*gecosValues[NUM_GECOS_ENTRIES];
++ 	char	*gecosPtr = newGecos;
++ 	char	*rptr;
++ 	char	*tptr;
++ 	int	cnt;
++ 
++ 	if ((perm = can_change_finfo (user, caller)) == deny) {
++ 		die("Permission denied.\n");
++ 	}
++ 
++ 	motd(chfn_motd, (char *)0);
++ 
++ 	if (!ProgramInput) {
++ 		fprintf(stderr,
++ 			"Changing finger information for %s on %s\n",
++ 			user->mpw_name, user->where);
++ 		fprintf(stderr,	"Default values are printed inside of '[]'\n");
++ 		fprintf(stderr, "To accept the default, type <return>\n");
++ 		fprintf(stderr, "To have a blank entry, type the word 'none'\n");
++ 		fprintf(stderr, "For more information, type '?'\n");
++ 		fflush(stderr);
++ 	}
++ 
++ 	strcpy(oldGecos, user->mpw_gecos);
++ 	for (tptr = oldGecos, cnt = 0; *tptr != '\0'; tptr++) {
++ 		if (*tptr == ',') {
++ 			cnt++;
++ 		}
++ 	}
++ 	for ( ; cnt < NUM_GECOS_ENTRIES ; cnt++ ) {
++ 		strcat(oldGecos, ",");
++ 	}
++ 	tptr = oldGecos;
++ 	
++ 	for (cnt = 0; cnt < NUM_GECOS_ENTRIES; cnt++) {
++ 		gecosValues[cnt] = tptr;
++ 		for ( ; *tptr != ',' ; tptr++ ) ;
++ 		*tptr++ = '\0';
++ 	}
++ 
++ 	tptr = newGecos;
++ 	for (cnt = 0; cnt < NUM_GECOS_ENTRIES; cnt++) {
++ 		if (!ProgramInput) {
++ 			fprintf (stderr, "%s [%s]: ",
++ 				 gecosLabels[cnt],
++ 				 gecosValues[cnt]);
++ 			fflush(stderr);
++ 		}
++ 
++ 		rptr = fgets(tptr, GECOS_SIZE, stdin);
++ 
++ 		if (rptr == NULL) {
++ 			if (feof(stdin)) {
++ 				fprintf (stderr,
++ 					 "\nFinger information unchanged\n");
++ 				fflush(stderr);
++ 				return;
++ 			}
++ 			else {
++ 				die ("Error while reading stdin\n");
++ 			}
++ 		}
++ 
++ 		for (rptr = tptr;
++ 		     *rptr != '\n' && *rptr != '\0';
++ 		     rptr++);
++ 		*rptr = '\0';
++ 
++ 		if (*tptr == '\0') {
++ 			strcpy (tptr, gecosValues[cnt]);
++ 			for ( ; *tptr != '\0'; tptr++) ;
++ 			*tptr++ = ',';
++ 			continue;
++ 		}
++ 
++ 		if (strcmp(tptr, "?") == 0) {
++ 			motd(chfn_help, "Missing help file");
++ 			cnt--;
++ 			continue;
++ 		}
++ 
++ 		if (is_none(tptr)) {
++ 			*tptr++ = ',';
++ 			continue;
++ 		}
++ 		
++ 		if (! (check_gecos[cnt])(tptr)) {
++ 			fprintf (stderr, "Invalid %s: %s\n", 
++ 				 gecosLabels[cnt], tptr);
++ 			fflush (stderr);
++ 			cnt--;
++ 			continue;
++ 		}
++ 
++ 		while ( *tptr++ != '\0') ;
++ 		*(tptr-1) = ',';
++ 	}
++ 	*--tptr = '\0';
++ 
++ 	pw_replace(user, (char *)0, newGecos, (char *)0);
++ 
++ #ifdef	USE_SYSLOG
++ 	syslog(MESSAGE_LOG_LEVEL,
++ 	       "Finger information changed on %s for %s by %s\n",
++ 	       user->where, user->mpw_name, caller->mpw_name);
++ #endif
++ 
++ #ifdef	YP_PASSWD
++ 	yp_sync();
++ #endif
++ 
++ 	return;
++ }
++ 
++ /*
++  *	can_change_finfo - check finger information change permission
++  *
++  *	Returns 1 if finger information can be changed
++  *		0 if not
++  */
++ private enum chg_perm can_change_finfo (theUser, theCaller)
++ struct mpasswd	*theUser,
++ 		*theCaller;
++ {
++ 	uid_t	calluid = getuid();
++ 
++ 	if (calluid == 0)		/* Su can change anybody's finger info */
++ 		return(other);
++ 
++ 	if (strcmp(theCaller->mpw_name, theUser->mpw_name))
++ 		return(deny);		/* I'm not root and target isn't me */
++ 
++ 	return(self);			/* I can always change my finger info */
++ }
++ 
++ private int is_none (field)
++ char	*field;
++ {
++ 	if (field[0] != 'n' && field[0] != 'N') return 0;
++ 	if (field[1] != 'o' && field[1] != 'O') return 0;
++ 	if (field[2] != 'n' && field[2] != 'N') return 0;
++ 	if (field[3] != 'e' && field[3] != 'E') return 0;
++ 	if (field[4] != '\0' && field[4] != '\0') return 0;
++ 	return 1;
++ }
++ 
++ /*
++  *	check_name	- check for valid user name
++  *	check_roomnum	- check for valid room number
++  *	check_phone	- check for valid phone number
++  *
++  *	These three routines can be used to provide sanity checks for 
++  *	 values to be stored in the password file gecos fields.
++  *
++  *	Return 1 if field is OK
++  *	       0 if not.
++  */
++ 
++ private int check_name (name)
++ char *name;
++ {
++ 	for ( ; *name != '\0' ; name++ ) {
++ 		if (*name == ':' || *name == ',' || !isprint(*name)) {
++ 			return 0;
++ 		}
++ 	}
++ 	return 1;
++ }
++ 
++ private int check_roomnum (num)
++ char *num;
++ {
++ 	for ( ; *num != '\0' ; num++ ) {
++ 		if (*num == ':' || *num == ',' || !isprint(*num)) {
++ 			return 0;
++ 		}
++ 	}
++ 	return 1;
++ }
++ 
++ private int check_phone (phonenum)
++ char *phonenum;
++ {
++ 	for ( ; *phonenum != '\0' ; phonenum++ ) {
++ 		if (!isdigit (*phonenum) && *phonenum != '-' &&
++ 		    *phonenum != '(' && *phonenum != ')') {
++ 			return 0;
++ 		}
++ 	}
++ 	return 1;
++ }
+diff -C 2 -P old/chsh.c new/chsh.c
+*** old/chsh.c	Wed Dec 31 18:00:00 1969
+--- new/chsh.c	Fri Jul 15 09:19:10 1994
+***************
+*** 0 ****
+--- 1,184 ----
++ /*
++  *	This program duplicates the manual page behavior of the 4.XBSD
++  *	chsh(1) command.
++  */
++ #include "npasswd.h"
++ #include "pw_defs.h"
++ #include "pw_nis.h"
++ 
++ #include <sys/time.h>
++ 
++ #ifdef __STDC__
++ private enum chg_perm can_change_shell (struct mpasswd *, struct mpasswd *);
++ private int shell_ok(char *);
++ #else
++ private enum chg_perm can_change_shell ();
++ private int shell_ok();
++ #endif
++ 
++ 
++ #ifndef CHSH_HELP
++ # define	CHSH_HELP	"/usr/adm/chsh.help"
++ #endif
++ 
++ #ifndef CHSH_MOTD
++ # define	CHSH_MOTD	"/usr/adm/chsh.motd"
++ #endif
++ 
++ #ifndef CHSH_SHELLS
++ # define	CHSH_SHELLS	"/etc/shells"
++ #endif
++ 
++ #ifndef SHELL_NAME_SIZE
++ # define SHELL_NAME_SIZE 80
++ #endif
++ 
++ public char	chsh_help[MAXPATHLEN] = { CHSH_HELP },
++ 		chsh_motd[MAXPATHLEN] = { CHSH_MOTD },
++ 		chsh_shells[MAXPATHLEN] = { CHSH_SHELLS };
++ 
++ public void chsh(user, caller)
++ struct mpasswd	*user,
++ 		*caller;
++ {
++ 	char	*sx;
++ 	char	newShell[SHELL_NAME_SIZE];
++ 	enum	chg_perm	perm;
++ 	
++ 	if ((perm = can_change_shell (user, caller)) == deny)
++ 	  die("Permission denied.\n");
++ 	
++ 	motd(chsh_motd, (char *)0);
++ 	
++ 	if (!ProgramInput) {
++ 		fprintf(stderr,
++ 			"Changing login shell for %s on %s\n", 
++ 			user->mpw_name, user->where);
++ 		fflush(stderr);
++ 	}
++ 	
++ 	if (perm == self && !shell_ok (user->mpw_shell)) {
++ 		fprintf (stderr, "Cannot change from restricted shell %s.\n", 
++ 			 user->mpw_shell);
++ 		fflush (stderr);
++ 		return;
++ 	}
++ 	
++ 	for ( ;; ) {
++ 		if (!ProgramInput) {
++ 			fprintf (stderr, "Old shell: %s\n", user->mpw_shell);
++ 			fprintf (stderr, "New shell (? for help): ");
++ 			fflush  (stderr);
++ 		}
++ 		sx = fgets(newShell, SHELL_NAME_SIZE, stdin);
++ 
++ 		if (sx == NULL) {
++ 			if (feof(stdin)) {
++ 				fprintf(stderr, "\nLogin shell unchanged\n");
++ 				fflush(stderr);
++ 				return;
++ 			}
++ 			else {
++ 				die ("Error while reading stdin\n");
++ 			}
++ 		}
++ 	
++ 		for (sx = newShell; *sx != '\n' && *sx != '\0'; sx++) ;
++ 		if (*sx == '\n') *sx = '\0';
++ 	
++ 		if (strcmp(newShell, "?") == 0) {
++ 			motd(chsh_help, "Missing help file");
++ 			continue;
++ 		}
++ 		break;
++ 	}
++ 	
++ 	if (*newShell == '\0' || strcmp(user->mpw_shell, newShell) == 0) {
++ 		fprintf(stderr, "Login shell unchanged\n");
++ 		fflush(stderr);
++ 		return;
++ 	}
++ 
++ 	if (!shell_ok(newShell)) {
++ 		fprintf(stderr, "%s is unacceptable as a new shell.\n",
++ 			newShell);
++ 		fflush(stderr);
++ 		return;
++ 	}
++ 	    
++ 	pw_replace(user, (char *)0, (char *)0, newShell);
++ 
++ #ifdef	USE_SYSLOG
++ 	syslog(MESSAGE_LOG_LEVEL,
++ 	       "Login shell changed on %s for %s by %s\n",
++ 	       user->where, user->mpw_name, caller->mpw_name);
++ #endif
++ 
++ #ifdef	YP_PASSWD
++ 	yp_sync();
++ #endif
++ 
++ 	return;
++ }
++ 
++ 
++ /*
++  *      shell_ok - check shell against CHSH_SHELLS file.
++  */
++ 
++ private int shell_ok(theShell)
++ char	*theShell;
++ {
++ 	FILE	*shells;
++ 	char	*rc;
++ 	char	goodShell[SHELL_NAME_SIZE];
++ 	char	*tptr;
++ 	int	found = 0;
++ 
++ 	shells = fopen(CHSH_SHELLS, "r");
++ 	if (shells == NULL) {
++ 		die("/etc/shells file missing\n");
++ 	}
++ 	while (!found) {
++ 		rc = fgets(goodShell, SHELL_NAME_SIZE, shells);
++ 		if (rc == NULL) {
++ 			if (feof(shells)) {
++ 				break;
++ 			}
++ 			else {
++ 				die("error reading /etc/shells\n");
++ 			}
++ 		}
++ 		if (goodShell[0] == '#' || goodShell[0] == '\0') {
++ 			continue;
++ 		}
++ 		for (tptr = goodShell; *tptr != '\n' && *tptr != '\0'; tptr++) ;
++ 		if (*tptr == '\n') *tptr = '\0';
++ 		if (strcmp(goodShell, theShell) == 0) {
++ 			found = 1;
++ 		}
++ 	}
++ 	(void) fclose (shells);
++ 	return (found);
++ }
++ 
++ /*
++  *	can_change_shell - check shell change permission
++  *
++  *	Returns 1 if password can be changed
++  *		0 if not
++  */
++ private enum chg_perm can_change_shell (theUser, theCaller)
++ struct mpasswd	*theUser,
++ 		*theCaller;
++ {
++ 	uid_t	calluid = getuid();
++ 
++ 	if (calluid == 0)		/* Su can change anybody's shell */
++ 		return(other);
++ 
++ 	if (strcmp(theCaller->mpw_name, theUser->mpw_name))
++ 		return(deny);		/* I'm not root and target isn't me */
++ 
++ 	return(self);			/* I can always change my login shell */
++ }
+diff -C 2 -P old/configure.c new/configure.c
+*** old/configure.c	Wed Jun 29 15:33:05 1994
+--- new/configure.c	Wed Jul 13 15:38:58 1994
+***************
+*** 13,18 ****
+  extern char	PasswdMotdFile[];
+  
+- #if	0
+- /* Hooks for stuff that isn't attached yet */
+  extern char	chsh_shells[];
+  extern char	chsh_help[];
+--- 13,16 ----
+***************
+*** 20,24 ****
+  extern char	chfn_help[];
+  extern char	chfn_motd[];
+- #endif
+  
+  #define	PASSTHRU	'p'
+--- 18,21 ----
+***************
+*** 58,71 ****
+  	{ "passwd.motd",  	0, PATH,	(void *)PasswdMotdFile },
+  
+- #if	0
+  	/* Configurationf for 'chsh' module */
+  	{ "chsh.shells",	0, PATH,	(void *)chsh_shells },
+! 	{ "chsh.help",  	0, PATH,	(void *)chsh_helpfile },
+! 	{ "chsh.motd",  	0, PATH,	(void *)chsh_motdfile },
+  
+! 	/* Configuration for 'chfn' module */
+! 	{ "chfn.help",  	0, PATH,	(void *)chfn_helpfile },
+! 	{ "chfn.help",  	0, PATH,	(void *)chfn_helpfile },
+! #endif
+  	{ 0 },
+  };
+--- 55,66 ----
+  	{ "passwd.motd",  	0, PATH,	(void *)PasswdMotdFile },
+  
+  	/* Configurationf for 'chsh' module */
+  	{ "chsh.shells",	0, PATH,	(void *)chsh_shells },
+! 	{ "chsh.help",  	0, PATH,	(void *)chsh_help },
+! 	{ "chsh.motd",  	0, PATH,	(void *)chsh_motd },
+  
+! 	/* Configurationf for 'chfn' module */
+! 	{ "chfn.help",  	0, PATH,	(void *)chfn_help },
+! 	{ "chfn.motd",  	0, PATH,	(void *)chfn_motd },
+  	{ 0 },
+  };
+Common subdirectories: old/cracklib and new/cracklib
+diff -C 2 -P old/main.c new/main.c
+*** old/main.c	Wed Jun 29 16:19:05 1994
+--- new/main.c	Fri Jul 15 09:15:36 1994
+***************
+*** 123,128 ****
+  	(void) strcat(opts, "");
+  #endif
+! 	pfunc = PASSWD;
+! 	ProgramName = "passwd";
+  #ifdef CMDLINE_CRYPT_PW
+  	EncryptedPassword[0] = '\0';
+--- 123,140 ----
+  	(void) strcat(opts, "");
+  #endif
+! 
+! 	if (strcmp (argv[0], "chsh") == 0) {
+! 		pfunc = CHSH;
+! 		ProgramName = "chsh";
+! 	}
+! 	else if (strcmp (argv[0], "chfn") == 0) {
+! 		pfunc = CHFN;
+! 		ProgramName = "chfn";
+! 	}
+! 	else {
+! 		pfunc = PASSWD;
+! 		ProgramName = "passwd";
+! 	}
+! 
+  #ifdef CMDLINE_CRYPT_PW
+  	EncryptedPassword[0] = '\0';
+***************
+*** 217,221 ****
+  
+  #ifdef CMDLINE_CRYPT_PW
+! 	if (EncryptedPassword[0] == '\0')
+  #endif
+  	checktty();
+--- 229,233 ----
+  
+  #ifdef CMDLINE_CRYPT_PW
+! 	if (EncryptedPassword[0] == '\0' || pfunc != PASSWD)
+  #endif
+  	checktty();
+***************
+*** 276,279 ****
+--- 288,297 ----
+  	case PASSWD:
+  		passwd(TargetPW, CallerPW);
++ 		break;
++ 	case CHSH:
++ 		chsh(TargetPW, CallerPW);
++ 		break;
++ 	case CHFN:
++ 		chfn(TargetPW, CallerPW);
+  		break;
+  	}
+diff -C 2 -P old/options.h new/options.h
+*** old/options.h	Wed Jun 29 16:11:58 1994
+--- new/options.h	Fri Jul 15 07:57:22 1994
+***************
+*** 15,18 ****
+--- 15,22 ----
+  
+  #define CONFIG_FILE "/common/usr/sup/lib/npasswd/passwd.conf"
++ #define CHFN_HELP "/common/usr/sup/lib/npasswd/chfn.help"
++ #define CHFN_MOTD "/common/usr/sup/lib/npasswd/chfn.motd"
++ #define CHSH_HELP "/common/usr/sup/lib/npasswd/chsh.help"
++ #define CHSH_MOTD "/common/usr/sup/lib/npasswd/chsh.motd"
+  #define PASSWD_HELP "/common/usr/sup/lib/npasswd/passwd.help"
+  #define PASSWD_MOTD "/common/usr/sup/lib/npasswd/passwd.motd"
+Common subdirectories: old/tools and new/tools

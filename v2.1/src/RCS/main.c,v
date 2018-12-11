@@ -1,0 +1,3837 @@
+head	1.49;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.49
+date	2002.10.02.15.53.18;	author clyde;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2000.01.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	99.07.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	98.11.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	98.09.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	98.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	98.07.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	98.07.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	98.04.21.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	97.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	97.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	97.03.04.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	96.08.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	96.04.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	96.03.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	96.03.27.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	96.03.27.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	94.11.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	94.10.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	94.09.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	94.07.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	94.07.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	94.05.19.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	94.05.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	94.03.31.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	94.03.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	94.03.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	94.03.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	93.12.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	93.12.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.49
+log
+@Put under GPL
+@
+text
+@/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ *	This program duplicates the manual page behavior of the 4.XBSD
+ *	passwd(1) command.  It can be configured for use with a variety
+ *	of passwd systems (/etc/passwd, /etc/shadow, databases).
+ */
+#include "npasswd.h"
+#include "pw_svc.h"
+
+#ifndef lint
+static char sccsid[] = "$Id: main.c,v 1.48 2000/01/17 00:00:00 clyde Exp clyde $ (cc.utexas.edu) %P%";
+#endif
+
+/*
+ * Global variables
+ */
+public char	*ConfigFile = CONFIG_FILE;	/* Configuration file */
+public char	*Switches[256];			/* Command line switch values */
+public char	*XSwitches[256];		/* 'X' Command switches */
+private	struct mpasswd	*TargetPW,		/* Target of change */
+			*CallerPW;		/* Who wants to make change */
+public Uid_t	CallerUid;			/* Cached getuid() value */
+
+private enum { PASSWD, CHFN, CHSH } what_to_do;	/* What to do */
+
+private char	*ProgramName;			/* Program name */
+private char	*Usage = "Usage: %s\n\
+	Generic options:\n\
+	[-Xc]		Show configuration settings\n\
+	[-XC config-file] Use alternate configuration file\n\
+	[-XD level]	Set debug level\n\
+	[-Xf]		Change finger name\n\
+	[-XF]		Suppress new password checking (root only)\n\
+	[-Xh]		Help\n\
+	[-XA]		Always ask for current password (root only)\n\
+	[-XO]		Allow one attempt to set new password (root only)\n\
+	[-XI]		Read passwords from standard input (root only)\n\
+	[-Xs]		Change login shell\n\
+	[-XS]		Change login shell without verfication (root only)\n\
+	[-XV]		Print version and patch information\n";
+
+/*
+ * Program debug level table
+ */
+private debug_table npasswd_debug[] = {
+	{ "none",	DB_NONE,	"Debugging off" },
+	{ "verbose",	DB_VERBOSE,	"Verbose" },
+	{ "lookup",	DB_LOOKUP,	"User lookup" },
+	{ "update",	DB_UPDATE,	"User update" },
+	{ "config",	DB_CONFIG,	"Configuration processing" },
+	{ "pwcheck",	DB_PWCHECK,	"Password checking" },
+	{ "detail",	DB_DETAIL,	"Detailed debugging" },
+	{ "all",	DB_ALL,		"All debugging" },
+	{ 0 },
+};
+
+private Signal_t catchit _((int));		/* Signal catcher */
+private void	checktty();
+private void	os_init _((int, char **, char **));
+private void	print_os_env();
+private void	process_arguments _((int, char **, char **));
+
+/*
+ *	main program - passwd/chfn/chsh
+ */
+main(argc, argv, envp)
+	int	argc;
+	char	**argv;
+	char	**envp;		/* Not ANSI? */
+{
+	char	*temp;			/* ACME Scratch Variables */
+	char	CallerLogin[STRINGLEN];	/* User name temp */
+	struct passwd	*pwtemp;	/* Lookup temp */
+	extern int	optind;
+
+#ifdef	DEBUG_DEFAULT
+	init_debug(DEBUG_DEFAULT);
+#else
+	init_debug(DB_NONE);
+#endif
+	CallerUid = getuid();		/* Get uid of invoker */
+	set_die_callback(pw_cleanup);
+	process_arguments(argc, argv, envp); /* Process command line */
+
+	init_pwsvc(argc, argv, Switches);
+	checktty();
+	term_save();
+	temp = getlogin();
+	if (temp == 0 || *temp == '\0') {	/* Can't get login name */
+		static char savedname[STRINGLEN];
+
+		if ((pwtemp = getpwuid(CallerUid)) == ((struct passwd *)NULL))
+			logdie("Cannot get your login name.\n");
+		(void) strncpy(savedname, pwtemp->pw_name, sizeof(savedname));
+		temp = savedname;
+	}
+	(void) strncpy(CallerLogin, temp, sizeof(CallerLogin));
+	if ((pwtemp = getpwnam(CallerLogin)) == NULL)
+		logdie("Cannot get user identification from name.\n");
+	if (pwtemp->pw_uid != CallerUid && CallerUid) {
+#if	(CDEBUG >= CDEBUG_SYSTEM)
+		warn("Login name \"%s\" does not belong to uid %d\n",
+			pwtemp, CallerUid);
+#endif
+#ifdef	PARANOID_UIDCHECK
+		logdie("Login name \"%s\" does not belong to uid %d\n",
+			pwtemp, CallerUid);
+#endif
+	}
+	CallerPW = (struct mpasswd *)calloc(sizeof(struct mpasswd), 1);
+	if (!CallerPW)
+		logdie("Cannot allocate memory to store caller information\n");
+	(void) copypwent(pwtemp, &CallerPW->pw);
+
+	/*
+	 * Set up signal handling
+	 */
+#if	(CDEBUG < CDEBUG_SYSTEM)
+	(void) signal(SIGHUP, catchit);
+	(void) signal(SIGINT, catchit);
+	(void) signal(SIGQUIT, catchit);
+	(void) signal(SIGTERM, catchit);
+#endif
+#ifdef	LOG_AUTH
+	openlog(ProgramName, LOG_PID, LOG_AUTH);
+#else
+	openlog(ProgramName, LOG_PID);
+#endif
+	configure(ConfigFile, 0);
+	pw_initialize(argc, argv);
+
+	if (argv[optind]) {
+		if ((TargetPW = pw_getuserbyname(argv[optind])) == NULL)
+			die("No such user %s\n", argv[optind]);
+	}
+	else {
+		if ((TargetPW = pw_getuserbyname(CallerLogin)) == NULL)
+			logdie("Cannot get your user information.\n");
+	}
+
+#if	(CDEBUG <= CDEBUG_SYSTEM)
+	if (geteuid())
+		die("Permission denied.\n");
+#endif
+#ifdef	NICE_LEVEL
+	(void) nice(NICE_LEVEL);
+#endif
+	switch (what_to_do) {
+	case PASSWD:
+		passwd(TargetPW, CallerPW);
+		break;
+	case CHSH:
+#ifdef	DENY_CHSH
+		die("Chsh not available.\n");
+#else
+		chsh(TargetPW, CallerPW);
+#endif
+		break;
+	case CHFN:
+#ifdef	DENY_CHFN
+		die("Chfn not available.\n");
+#else
+		chfn(TargetPW, CallerPW);
+#endif
+		break;
+	}
+	pw_cleanup(0);
+	exit(0);
+	return(0);		/* Make ANSI C happy */
+}
+
+/*
+ * motd
+ *	Issue 'message of the day'
+ * Usage
+ *	(void) motd(file, error-message);
+ */
+public void
+motd(fn, complaint)
+	char	*fn,		/* File to present */
+		*complaint;	/* Complaint if missing */
+{
+	char	inbuf[TMPBUFSIZ];	/* ACME Scratch Storage */
+	FILE	*in;			/* ACME Scratch Storage */
+
+	if ((in = fopen(fn, "r")) == NULL) {
+		if (complaint)
+			printf("%s\n", complaint);
+		return;
+	}
+	pager(in);
+	(void) fclose(in);
+}
+
+/*
+ * checktty
+ *	Check if standard input has been redirected. This is considered bad.
+ * Usage
+ * 	(void) checktty();
+ * Errors
+ *	Aborts upon error or ttyname(stdin) != ttyname(stdout)
+ */
+private void
+checktty()
+{
+	char	*stdin_tty,	/* ttyname(0) */
+		*t;		/* Temp */
+
+	if (!isatty(fileno(stdin))) {
+		if (!XSwitches[Xsw_UseStdin])
+			die("Input not a tty.\n");
+		return;
+	}
+	XSwitches[Xsw_UseStdin] = 0;	/* Stdin is a tty - behave normal */
+	t = ttyname(fileno(stdin));
+	if (t == NULL || *t == 0)
+		die("Cannot get name for input.\n");
+	stdin_tty = strdup(t);
+
+	t = ttyname(fileno(stdout));
+	if (t == NULL || *t == 0)
+		die("Cannot get name for output.\n");
+	if (strcmp(stdin_tty, t))
+		die("Input and output are not the same tty.\n");
+	free(stdin_tty);
+}
+
+/*
+ * Command line option defines.  These are used only in this module.
+ */
+#define	OPTIONS_GENERIC "X:"		/* Baseline command line options */
+
+#ifdef	OS_SUNOS_4
+# define	OPTIONS_DEFER	"a"		/* SunOS 4 options punted */
+# define	OPTIONS_OS 	"fsden:x:"	/* SunOS 4 options supported */
+# define	OPTIONS_IGNORE 	"F:ly"		/* SunOS 4 options to ignore */
+#endif
+
+#ifdef	OS_SUNOS_5
+# define	OPTIONS_DEFER	"adfhln:w:x:s:"	/* SunOS 5 options punted */
+# define	OPTIONS_OS 	"egr:"		/* SunOS 5 options supported */
+# define	OPTIONS_IGNORE 	"D:"		/* SunOS 5 options to ignore */
+#endif
+
+#ifdef OS_HPUX
+# define	OPTIONS_OS "den:x:"		/* HP-UX options supported */
+#endif
+
+#ifdef OS_DEC_OSF
+# define	OPTIONS_OS "fs"			/* OSF options supported */
+#endif
+
+#ifdef OS_AIX
+# define	OPTIONS_OS "fs"			/* AIX options supported */
+#endif
+
+/*
+ * process_arguments
+ *	Process command line arguments
+ * Usage
+ *	(void) process_arguments(argc, argv, envp);
+ * Effects
+ *	Sets lots of global variables
+ *
+ * Notes
+ *	Npasswd can't do everything, so some command line options are
+ *	deferred to the vendor program (stashed in SAVE_DIR).
+ *	The encounter of any deferred option (in DEFER_OPTIONS), causes
+ *	invocation of the vendor program.
+ */
+private void
+process_arguments(argc, argv, envp)
+	int	argc;
+	char	**argv;
+	char	**envp;
+{
+	char	opts[STRINGLEN];	/* Options string for getopt */
+	int	opt;			/* Option processing temp */
+	char	*pn;			/* Program name from argv[0] */
+#ifdef	OPTIONS_DEFER
+	char	*d_argv[256];		/* Arguments for deferred program */
+	int	d_argc = 0;		/* Argument counter */
+#endif
+	extern char	*optarg;	/* From getopt() */
+	extern int	optind;		/* From getopt() */
+
+	/*
+	 * Build option string for getopt()
+	 */
+	(void) strcpy(opts, OPTIONS_GENERIC);	/* Start with generic options */
+#ifdef	OPTIONS_OS
+	(void) strcat(opts, OPTIONS_OS);	/* Add platform options we do */
+#endif
+#ifdef	OPTIONS_DEFER
+	zeromem(d_argv, sizeof(d_argv));
+	(void) strcat(opts, OPTIONS_DEFER);	/* Add platform options we punt */
+#endif
+#ifdef	OPTIONS_IGNORE
+	(void) strcat(opts, OPTIONS_IGNORE);	/* Add platform options we ignore */
+#endif
+	what_to_do = PASSWD;
+	ProgramName = "passwd";
+
+	if (pn = strrchr(argv[0], '/'))		/* Invoked with what name? */
+		pn++;
+	else
+		pn = argv[0];
+
+	if (instring(pn, "chsh")) {
+		what_to_do = CHSH;
+		ProgramName = "chsh";
+	}
+	if (instring(pn, "chfn")) {
+		what_to_do = CHFN;
+		ProgramName = "chfn";
+	}
+	set_debug_tag(ProgramName);
+
+	os_init(argc, argv, envp);		/* Call platform init code */
+
+	zeromem(Switches, sizeof Switches);
+	zeromem(XSwitches, sizeof XSwitches);
+
+	while ((opt = getopt(argc, argv, opts)) != EOF) {
+		switch (opt) {
+#ifdef	OS_SUNOS_4
+		/*
+		 * SunOS 4 options
+		 */
+		case 'a':
+			Switches[(char)opt] = "on";
+			break;
+		case 'f':		/* Change finger */
+			what_to_do = CHFN;
+			break;
+		case 's':		/* Change shell */
+			what_to_do = CHSH;
+			break;
+		case 'l':
+			Switches[(char)opt] = "on";
+			break;
+		case 'y':
+			Switches[(char)opt] = "on";
+			break;
+		case 'd':
+			Switches[(char)opt] = "on";
+			break;
+		case 'e':
+			Switches[(char)opt] = "on";
+			break;
+		case 'n':
+			Switches[(char)opt] = strdup(optarg);
+			break;
+		case 'x':
+			Switches[(char)opt] = strdup(optarg);
+			break;
+		case 'F':
+			printf("Option \"-F\" not supported.\n");
+			exit(1);
+#endif	/* OS_SUNOS_4 */
+#ifdef	OS_SUNOS_5
+		/*
+		 * SunOS 5 options
+		 */
+		case 'e':		/* Change shell */
+			what_to_do = CHSH;
+			break;
+		case 'g':		/* Change finger info */
+			what_to_do = CHFN;
+			break;
+		case 'r':		/* Select service */
+			Switches[(char)opt] = strdup(optarg);
+			break;
+
+#endif	/* OS_SUNOS_5 */
+#ifdef OS_HPUX
+		/*
+		 * HP-UX code from mstute@@compucom.com (Mike Stute)
+		 */
+		case 'n':
+			Switches[(char)opt] = strdup(optarg);
+			break;
+		case 'x':
+			Switches[(char)opt] = strdup(optarg);
+			break;
+		case 'd':
+			Switches[(char)opt] = "on";
+			break;
+		case 'e':
+			Switches[(char)opt] = "on";
+			break;
+#endif	/* OS_HPUX */
+		case 'X': {		/* -X [Extended options] */
+			char	*op = optarg;
+		
+			switch (*op) {
+			case Xsw_Chfn:
+				what_to_do = CHFN;	/* chfn mode */
+				break;
+
+			case Xsw_Chsh:			/* chsh mode */
+				what_to_do = CHSH;
+				break;
+
+			case Xsw_ChshSpecial:		/* chsh (no check) */
+				if (CallerUid)
+					die("Option \"-X%s\" reserved for super-user.\n", Xsw_ChshSpecial);
+				XSwitches[Xsw_ChshSpecial] = "on";
+				what_to_do = CHSH;
+				break;
+
+			case Xsw_AskOnce:	/* Try once to read password */
+				XSwitches[Xsw_AskOnce] = "on";
+				break;
+
+			case Xsw_AskAlways:		/* Always ask for pw */
+				XSwitches[Xsw_AskAlways] = "on";
+				break;
+
+			case Xsw_ShowConfig:		/* Show config */
+				XSwitches[Xsw_ShowConfig] = "on";
+				break;
+
+			case Xsw_CheckConfig:		/* Check config file */
+				(void) setgid(getgid()); /* Give away */
+				(void) setuid(getuid()); /* privs */
+				configure(++op, 1);
+				printf("Configuration file \"%s\" OK\n", op);
+				exit(0);
+				break;
+
+			case Xsw_SetDebug:		/* Debug level */
+				set_debug(++op, npasswd_debug);
+				printf("Debug level = %d\n", get_debug());
+				printf("Version: %s\nPatch: %s\n%s",
+					npasswd_version,
+					npasswd_patchlevel,
+					build_info);
+				print_os_env();
+				break;
+
+			case Xsw_ForcePWChange:		/* Force change */
+				if (CallerUid)
+					die("Option \"-X%s\" reserved for super-user.\n", Xsw_ForcePWChange);
+				XSwitches[Xsw_ForcePWChange] = "on";
+				break;
+
+			case Xsw_UseStdin:		/* Read from stdin */
+				if (CallerUid)
+					die("Option \"-X%s\" reserved for super-user.\n", Xsw_UseStdin);
+				XSwitches[Xsw_UseStdin] = "on";
+				break;
+
+			case Xsw_ShowVersion:
+				printf("Version: %s\nPatch level: %s\n%s\n",
+					npasswd_version, npasswd_patchlevel,
+					build_info);
+				exit(0);
+
+			case Xsw_Help:
+				{
+				debug_table *dt = npasswd_debug;
+
+				printf(Usage, ProgramName);
+				printf("Debug levels (-XD...):\n");
+				for (; dt->name; dt++)
+					printf("\t%s\t%s\n", dt->name, dt->help);
+				exit(0);
+				}
+				/*NOTREACHED*/
+				break;
+			}	/* switch */
+		} /* case 'X' */
+		break;
+
+		/* Switches of OPTIONS_IGNORE are quietly not dealt with */
+
+#ifdef	OPTIONS_DEFER
+		default: {
+			/*
+			 * If this option should be deferred, add the switch
+			 * and possbily the next argument to the argument list
+			 */
+			char *xopt;
+			if (xopt = strchr(OPTIONS_DEFER, (char )opt)) {
+				char	temp[STRINGLEN];
+
+				(void) sprintf(temp, "-%c", (char )opt);
+				if (d_argc == 0) d_argc++; /* leave space */
+				d_argv[d_argc++] = strdup(temp);
+				if (*++xopt == ':')
+					d_argv[d_argc++] = strdup(optarg);
+			}
+			break;
+		}
+#endif
+		} /* switch */
+	} /* for */
+
+#ifdef	OPTIONS_DEFER
+	if (d_argc) {
+		/*
+		 * Punt to external program
+		 */
+		while (argv[optind])	/* Copy remaining arguments */
+			d_argv[d_argc++] = argv[optind++];
+		punt(d_argv, envp);
+		/*NOTREACHED*/
+	}
+#endif
+}
+
+/*
+ * punt
+ *	Execute vendor program to do something that we don't do.
+ * Usage
+ *	punt(arg-list, environmnet-list)
+ */
+private
+punt(argv, envp)
+	char	**argv;		/* Arguments */
+	char	**envp;		/* Environment */
+{
+	char	xpath[MAXPATHLEN];
+
+	if (access(SAVED_BIN, 0) < 0)
+		logdie("Cannot find saved '%s'\n", ProgramName);
+	
+	(void) sprintf(xpath, "%s/%s", SAVED_BIN, ProgramName);
+	if (access(xpath, 0) < 0)
+		logdie("Cannot find '%s'\n", xpath);
+
+	(void) setgid(getgid());
+	(void) setuid(CallerUid);
+	argv[0] = ProgramName;
+	if (get_debug() >= DB_UPDATE) {
+		char	**v = argv;
+
+		printf("punt: %s ", xpath);
+		for (; *v; v++) {
+			printf("'%s' ", *v);
+		}
+		printf("\n");
+	}
+#if	(CDEBUG < CDEBUG_SYSTEM)
+	(void) execve(xpath, argv, envp);
+	/*NOTREACHED*/
+	logdie("(punt) Exec of '%s' failed\n", xpath);
+	/*NOTREACHED*/
+#else
+	printf("punt exec\n");
+	exit(0);
+#endif
+}
+
+/*
+ * catchit
+ *	Generic signal handler
+ * Usage
+ *	catchit(signal-number)
+ * Effects
+ #	Aborts with error message
+ */
+private Signal_t
+catchit(signo)
+	int	signo;
+{
+	term_restore();
+	pw_cleanup(signo);
+	die("\nInterrupted; changes discarded.\n");
+}
+
+#ifdef	I_SYS_RESOURCE
+#include <sys/resource.h>
+#endif
+/*
+ * os_init
+ *	Operating system specific initialization
+ * Effects
+ *	Clears out environment (from envp) for safety and removes system
+ *	resource limits, to prevent hitting our head.
+ */
+private void
+os_init(argc, argv, envp)
+	int	argc;
+	char	**argv;
+	char	**envp;
+{
+	(void) umask((mode_t)0);	/* Full control over file modes */
+#ifdef	I_SYS_RESOURCE
+	{
+	/*
+	 * Remove BSD resource limits
+	 */
+	struct rlimit no_limit;
+
+	no_limit.rlim_cur = no_limit.rlim_max = RLIM_INFINITY;
+	(void) setrlimit(RLIMIT_CPU, &no_limit);
+	(void) setrlimit(RLIMIT_DATA, &no_limit);
+	(void) setrlimit(RLIMIT_STACK, &no_limit);
+	(void) setrlimit(RLIMIT_FSIZE, &no_limit);
+#ifdef	RLIMIT_RSS
+	(void) setrlimit(RLIMIT_RSS, &no_limit);
+#endif
+#ifdef	RLIMIT_AS
+	(void) setrlimit(RLIMIT_AS, &no_limit);
+#endif
+	}
+#endif
+#if	(CDEBUG < CDEBUG_SYSTEM)
+	/*
+	 * Sanitize the environment, which is all changable by the user and
+	 * therefore not trustable.  This avoids *some* strange overflows
+	 * and bad assumptions by shared libraries and dyanmic loaders.
+	 *
+	 * This is usually a pointer to the "real" environment vector, so 
+	 * the changes made here will be effective throughout the program.
+ 	 */
+	while (*envp) *envp++ = "";
+#endif
+}
+
+/*
+ * print_os_env
+ *	Printer runtime environment
+ * Effects
+ *	Calls uname(2) to get environment information and prints it.
+ */
+#ifdef	HAS_UTSNAME_H
+#include <sys/utsname.h>
+
+private void
+print_os_env()
+{
+	struct utsname	un;
+
+	if (uname(&un) >= 0)
+		printf("Operating system: %s %s %s\nPlatform: %s\nNode: %s\n",
+			un.sysname, un.release, un.version,
+			un.machine, un.nodename);
+}
+#else
+private void
+print_os_env()
+{
+	/* Use something else here instead of uname(2) */
+}
+#endif	/* HAS_UTSNAME_H */
+
+/* End $RCSfile: main.c,v $ */
+@
+
+
+1.48
+log
+@1. Add option -XS (chsh without shell check) 2. Add option -XA (always ask for old password) 3. Add option -XO (ask for new password only once) 4. Fix SunOS4 option support list
+@
+text
+@d2 1
+a2 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d4 4
+a7 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d9 4
+a12 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d14 6
+a19 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d31 1
+a31 1
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+d670 1
+a670 1
+/* End $RCSfile$ */
+@
+
+
+1.47
+log
+@Print `uname -a` information
+@
+text
+@d78 2
+d82 1
+d188 3
+d278 1
+a278 1
+# define	OPTIONS_OS 	"fsd:e:n:x:"	/* SunOS 4 options supported */
+d448 5
+a452 2
+			case Xsw_AskAll:		/* Alwayws ask for pw */
+				XSwitches[Xsw_AskAll] = "on";
+d455 8
+d487 1
+a487 1
+					die("Option \"-XF\" reserved for super-user.\n");
+d493 1
+a493 1
+					die("Option \"-XI\" reserved for super-user.\n");
+@
+
+
+1.46
+log
+@1. Add -XA switch  2. Use new terminal mode save/restore routines 3. Use pager() to present help files
+@
+text
+@d100 1
+d460 6
+a465 2
+				printf("%s: Debug level = %d\n",
+					ProgramName, get_debug());
+d649 27
+@
+
+
+1.45
+log
+@Add -f to SUNOS 5 deferred options
+@
+text
+@d126 1
+a126 1
+	savetty();
+d227 1
+a227 4
+	while (fgets(inbuf, sizeof(inbuf), in)) {
+		(void) fputs(inbuf, stdout);
+		(void) fflush(stdout);
+	}
+d441 4
+d589 1
+a589 1
+	fixtty();
+@
+
+
+1.44
+log
+@Add -r option for SunOS 5
+@
+text
+@d279 1
+a279 1
+# define	OPTIONS_DEFER	"adhln:w:x:s:"	/* SunOS 5 options punted */
+@
+
+
+1.43
+log
+@Do not set RLIMIT_NOFILE or RLIMIT_CORE
+@
+text
+@d124 1
+a124 1
+	init_pwsvc(argc, argv);
+d279 2
+a280 2
+# define	OPTIONS_DEFER	"adhln:w:x:r:s:"/* SunOS 5 options punted */
+# define	OPTIONS_OS 	"eg"		/* SunOS 5 options supported */
+d410 3
+@
+
+
+1.42
+log
+@Move uid check to just before the action block
+@
+text
+@d613 1
+a615 1
+	(void) setrlimit(RLIMIT_FSIZE, &no_limit);
+a616 1
+	(void) setrlimit(RLIMIT_CORE, &no_limit);
+d618 1
+a624 3
+#ifdef	RLIMIT_NOFILE
+	(void) setrlimit(RLIMIT_NOFILE, &no_limit);
+#endif
+@
+
+
+1.41
+log
+@1. Eliminate DebugLevel global - use new debug get/set routines 2. Add -Xh option for printing usage message 3. Changes for new pwsvc() routines
+@
+text
+@a123 4
+#if	(CDEBUG <= CDEBUG_SYSTEM)
+	if (geteuid())
+		die("Permission denied.\n");
+#endif
+d180 4
+@
+
+
+1.40
+log
+@Use set_debug to set debug level
+@
+text
+@d51 1
+a56 5
+
+#ifndef	DEBUG_DEFAULT
+# define	DEBUG_DEFAULT	DB_NONE
+#endif
+
+a59 1
+public int	DebugLevel = DEBUG_DEFAULT;	/* Debugging level */
+a62 2
+public char	*ProgramName;			/* Program name */
+public struct pw_svc svc;			/* Service info */
+d69 28
+d115 5
+d128 1
+a128 1
+	(void) get_pwsvc(argc, argv, envp, &svc);
+a267 17
+ * Program debug level table
+ */
+private debug_levels main_debug_levels[] = {
+	"none",		DB_NONE,
+	"verbose",	DB_VERBOSE,
+	"lookup",	DB_LOOKUP,
+	"update",	DB_UPDATE,
+	"config",	DB_CONFIG,
+	"misc1",	DB_MISC1,
+	"misc2",	DB_MISC2,
+	"pwcheck",	DB_PWCHECK,
+	"detail",	DB_DETAIL,
+	"all",		DB_ALL,
+	0,		-1,
+};
+
+/*
+d356 1
+d429 1
+a429 1
+		case 'X': {		/* Our special options */
+d454 1
+a454 1
+				set_debug(++op, main_debug_levels);
+d456 1
+a456 1
+					ProgramName, DebugLevel);
+d476 13
+d544 1
+a544 1
+		logdie("Cannot find original '%s' program\n", ProgramName);
+d553 1
+a553 1
+	if (DebugLevel >= DB_UPDATE) {
+@
+
+
+1.39
+log
+@1. Don't loop over -X.... characters 2. Allow symbolic debug level names to -XD
+@
+text
+@d241 4
+a244 4
+private struct dbtab {
+	char	*name;
+	int	level;
+} debugtab[] = {
+d444 1
+a444 13
+				op++;
+				if (isdigit(*op)) {
+					DebugLevel = atoi(op);
+				} else {
+					struct dbtab *dt;
+
+					for (dt = debugtab; dt->name; dt++) {
+					   if (strcasecmp(dt->name, op) == 0) {
+						DebugLevel = dt->level;
+						break;
+					   }
+					}
+				}
+@
+
+
+1.38
+log
+@1. Fix optind use in main 2. Add Xsw_ShowConfig -X option
+@
+text
+@d241 17
+d420 1
+a420 1
+			char	*op;
+a421 1
+			for (op = optarg; *op; op++) {
+d445 12
+a456 3
+				if (!isdigit(*op))
+					die("Debug level is not a number.\n");
+				DebugLevel = atoi(op);
+a478 1
+			}	/* for */
+@
+
+
+1.37
+log
+@1. Add copright message 2. Change debugging ifdef trigger define 3. Rewrite command line option handling code 4. Impliment code to defer options to vendor program 5. Raise ceiling on some other system resource limits
+@
+text
+@d92 1
+d415 4
+@
+
+
+1.36
+log
+@1. Change call of configure() 2. Move file manipulation routines to comobj lib module
+@
+text
+@d2 44
+a49 1
+
+a55 4
+#define	SWITCHES_GENERIC "X:fs"		/* Baseline command line options */
+#ifdef	OS_SUNOS_4
+# define	SWITCHES_OS "alyd:e:n:x:F:"
+#endif
+d57 2
+a58 2
+#ifdef OS_HPUX
+# define	SWITCHES_OS "den:x:"
+d64 1
+a64 5
+#ifdef	DEBUG_TEST
+public int	DebugLevel = DEBUG_TEST;	/* Debugging level */
+#else
+public int	DebugLevel = 0;			/* Debugging level */
+#endif
+a75 1
+
+d97 1
+a97 1
+#ifndef	DEBUG
+d117 1
+a117 1
+#ifdef	DEBUG
+d121 1
+a121 1
+#ifdef	PARANOID
+d134 1
+a134 1
+#ifndef	DEBUG
+d241 29
+d276 6
+d289 1
+a289 1
+	char	opts[128];		/* Command line options */
+d292 4
+d300 1
+a300 1
+	 * Process command line options.
+d302 3
+a304 3
+	(void) strcpy(opts, SWITCHES_GENERIC);
+#ifdef	SWITCHES_OS
+	(void) strcat(opts, SWITCHES_OS);
+d306 11
+a316 1
+	if (pn = strrchr(argv[0], '/'))
+a320 2
+	what_to_do = PASSWD;
+	ProgramName = "passwd";
+d330 2
+a331 1
+	os_init(argc, argv, envp);
+d334 1
+d344 6
+d371 13
+a383 1
+#endif
+d400 2
+a401 9
+#endif
+		case 'f':
+			what_to_do = CHFN;
+			break;
+		case 's':
+			what_to_do = CHSH;
+			break;
+
+		case 'X': {
+d406 8
+d452 22
+d476 12
+d491 43
+d557 2
+a558 2
+ *	Clears out environment (from envp) for safety, removes system
+ *	resource limits (if present)
+a578 1
+	/* NOTE To raise file descriptor limit */ /* XXXX */
+d582 6
+d590 1
+a590 1
+#ifndef	DEBUG
+d592 6
+a597 2
+	 * Sanitize the environment.  There isn't much we will
+	 * let through (if anything).
+@
+
+
+1.35
+log
+@1. Fix usage of CallerUid 2. Add HP-UX command line options
+@
+text
+@a21 1
+
+a38 12
+/*
+ * File locking retry parameters
+ */
+#ifndef	FLOCK_TRIES
+# define	FLOCK_TRIES 4
+#endif
+#ifndef	FLOCK_CYCLE
+# define	FLOCK_CYCLE 2
+#endif
+Config_Value int	LockTries = FLOCK_TRIES;	/* How many times */
+Config_Value int	LockCycle = FLOCK_CYCLE;	/* How long to wait */
+
+a40 2
+extern char	*optarg;	/* From getopt() */
+extern int	optind;		/* From getopt() */
+d111 1
+a111 1
+	configure(ConfigFile);
+d223 2
+d250 2
+a251 7
+#ifdef	HAS_MEMSET
+	(void) memset((void *)Switches, 0, sizeof(Switches));
+	(void) memset((void *)XSwitches, 0, sizeof(XSwitches));
+#else
+	bzero((char *)Switches, sizeof(Switches));
+	bzero((char *)XSwitches, sizeof(XSwitches));
+#endif
+d315 1
+a315 1
+				configure(++op);
+d400 1
+a414 77
+/*
+ *	Utility routines used all over npasswd
+ */
+
+/*
+ * FileSizeDiff
+ *	Find size difference between two files
+ * Usage
+ *	diff = FileSizeDiff(file1, file2);
+ * Returns
+ *	(size of <file2>) - (size of <file1>) bytes
+ */
+public size_t
+FileSizeDiff(fn1, fn2)
+	char	*fn1,	
+		*fn2;
+{
+	struct stat	stb;	/* ACME Scratch Storage */
+	size_t	s1;		/* ACME Scratch Storage */
+
+	if (stat(fn1, &stb) < 0)
+		return(-1);
+	s1 = stb.st_size;
+	if (stat(fn2, &stb) < 0)
+		return(-1);
+	return(s1 - stb.st_size);
+}
+
+/*
+ * MakeLockTemp
+ *	Create a file with exclusive use checking
+ * Usage
+ *	fd = MakeLockTemp(file);
+ * Returns
+ *	File descriptor of created file
+ * Error
+ *	Aborts if file cannot be created, usually because
+ *	the file exists.
+ */
+public int
+MakeLockTemp(name)
+	char	*name;
+{
+	int	fd;	/* ACME Scratch Storage */
+	int	cnt;	/* Retry counter */
+
+	for (cnt = 0; cnt <= LockTries; cnt++) {
+		if ((fd = open(name, O_WRONLY|O_CREAT|O_EXCL, 0600)) >= 0) 
+			return(fd);
+		debug(DB_DETAIL, "MakeLockTemp \"%s\" cycle %d\n", name, cnt);
+		(void) sleep(LockCycle);
+	}
+	perror("Tempfile create");
+	logdie("Cannot create temp file \"%s\"\n", name);
+}
+
+#if	!(defined(HAS_FCHMOD) && defined(HAS_FCHMOD))
+/*
+ * FixPwFileMode
+ *	Set protection for passwd/shadow files
+ * Usage
+ *	FixPwFileMode(filename, "passwd" | "shadow");
+ *
+ * Used only when fchmod() and fchown() do not exist
+ */
+public void
+FixPwFileMode(file, type)
+	char	*file,
+		*type;
+{
+	(void) chown(file, PASSWD_UID, PASSWD_GID);
+	(void) chmod(file, PASSWD_MODE);
+	if (strcmp(type, "shadow") == 0)
+		(void) chmod(file, SHADOW_MODE);
+}
+#endif
+
+@
+
+
+1.34
+log
+@Add hooks to deny chfn and chsh
+@
+text
+@d18 5
+d74 1
+a84 1
+	CallerUid = getuid();
+d94 1
+a94 1
+	(void) strcpy(CallerLogin, temp);
+d301 17
+@
+
+
+1.33
+log
+@1. Add retry to MakeLockTemp() 2. Add new global vars LockTries and LockCycle
+@
+text
+@d138 3
+d142 1
+d145 3
+d149 1
+@
+
+
+1.32
+log
+@Restrict -XF to superuser
+@
+text
+@d35 12
+d439 1
+a439 1
+ *	the file already exists
+d446 1
+d448 5
+a452 7
+	fd = open(name, O_WRONLY|O_CREAT|O_EXCL, 0600);
+	/* Need to loop here  */
+	if (fd < 0) {
+		if (errno == EEXIST)
+			die("File \"%s\" is busy.\n", name);
+		perror("Tempfile create");
+		logdie("Cannot create temp file \"%s\"\n", name);
+d454 2
+a455 1
+	return(fd);
+@
+
+
+1.31
+log
+@1. Remove 'const' declarations (too much compiler pain) 2. Move getopt/optind decls to top level
+@
+text
+@d306 2
+@
+
+
+1.30
+log
+@Change #ifdef DEBUG_NOEXEC to #ifdef DEBUG
+@
+text
+@d37 4
+a40 1
+private Signal_t catchit _((const int));		/* Signal catcher */
+d145 2
+a146 2
+	const char	*fn,		/* File to present */
+			*complaint;	/* Complaint if missing */
+a212 2
+	extern char	*optarg;	/* From getopt() */
+	extern int	optind;		/* From getopt() */
+d338 1
+a338 1
+	const int	signo;
+d402 2
+a403 2
+	const char	*fn1,	
+			*fn2;
+d429 1
+a429 1
+	const char	*name;
+d455 2
+a456 2
+	const char	*file,
+			*type;
+@
+
+
+1.29
+log
+@1. Fix punctutation for die() strings 2. Set 'die' callback routine
+@
+text
+@d57 1
+a57 1
+#ifndef	DEBUG_NOEXEC
+@
+
+
+1.28
+log
+@Change pwsvc -> pw_svc
+@
+text
+@d54 1
+d70 1
+a70 1
+			logdie("Cannot get your login name\n");
+d76 1
+a76 1
+		logdie("Cannot get user identification from name\n");
+d115 1
+a115 1
+			logdie("Cannot get your user information\n");
+d298 1
+a298 1
+					die("Debug level is not a number");
+d436 1
+a436 1
+			die("File \"%s\" is busy", name);
+d438 1
+a438 1
+		logdie("Cannot create temp file \"%s\"", name);
+@
+
+
+1.27
+log
+@1. Add lots of comments 2. Add const decls here and there
+@
+text
+@d30 1
+a30 1
+public struct pwsvc svc;			/* Service info */
+d60 1
+a60 1
+	(void) svc_info(argc, argv, envp, &svc);	/* Get service order */
+@
+
+
+1.26
+log
+@Beta 3 development checkin 2
+@
+text
+@a12 4
+#ifndef	CONFIG_FILE
+# define	CONFIG_FILE	"npasswd.config"	/* XXX */
+#endif
+
+d33 1
+a33 1
+private Uid_t	MyUid;
+d37 1
+a37 1
+private Signal_t catchit _((int));		/* Signal catcher */
+d51 1
+a51 1
+	char	LoginName[STRINGLEN];	/* User name temp */
+d56 1
+a56 3
+	(void) svc_info(argc, argv, envp, &svc);	/* Get service order */
+
+#ifndef	DEBUG_NOEXEC_X	/* XXX */
+d60 1
+d63 1
+a63 1
+	MyUid = getuid();
+d68 1
+a68 1
+		if ((pwtemp = getpwuid(MyUid)) == ((struct passwd *)NULL))
+d73 2
+a74 2
+	(void) strcpy(LoginName, temp);
+	if ((pwtemp = getpwnam(LoginName)) == NULL)
+d76 1
+a76 1
+	if (pwtemp->pw_uid != MyUid && MyUid) {
+d79 1
+a79 1
+			pwtemp, MyUid);
+d83 1
+a83 1
+			pwtemp, MyUid);
+d113 1
+a113 1
+		if ((TargetPW = pw_getuserbyname(LoginName)) == NULL)
+d134 4
+a137 1
+ *	motd - issue 'message of the day'
+d141 2
+a142 2
+	char	*fn,			/* Name of file to present */
+		*complaint;		/* Complaint if missing */
+d144 2
+a145 2
+	char	inbuf[TMPBUFSIZ];
+	FILE	*in;
+d160 6
+a165 2
+ *	checktty - Check if standard input has been redirected
+ *		Such redirection is considered bad.
+d173 1
+a173 1
+	if (!isatty(0)) {
+d179 1
+a179 1
+	t = ttyname(0);
+d184 1
+a184 1
+	t = ttyname(1);
+d192 8
+d208 1
+a208 1
+	char	*pn;
+d236 4
+a239 1
+
+d242 1
+a242 1
+
+d308 1
+a308 1
+				if (MyUid)
+a312 6
+			case Xsw_Require_OldPW:		/* Require old passwd even for su */
+				if (MyUid)
+					die( "Option \"-XR\" reserved for super-user.\n");
+				XSwitches[Xsw_Require_OldPW] = "on";
+				break;
+
+d327 6
+a332 1
+ *	catchit - tty interrupt catcher
+d336 1
+a336 1
+	int	signo;
+a339 3
+#ifdef	HAS_PSIGNAL
+	/* maybe */
+#endif
+d347 5
+a351 1
+ * os_init - Per-operating system initialization code
+d391 3
+a393 3
+ * FileSizeDiff - Return size difference between two files
+ *
+ * Usage:
+d395 2
+a396 2
+ * Returns:
+ *	size of <file2> - size of <file1> (in bytes)
+d400 2
+a401 2
+	char	*fn1,
+		*fn2;
+d403 2
+a404 2
+	struct stat	stb;
+	size_t	s1;
+d415 3
+a417 3
+ * MakeLockTemp - Make temp file with exclusive use checking
+ *
+ * Usage:
+d419 1
+a419 1
+ * Returns:
+d421 3
+d427 1
+a427 1
+	char	*name;
+d429 1
+a429 1
+	int	fd;
+d435 1
+a435 1
+			die("Password file busy - try again");
+d437 1
+a437 1
+		logdie("Cannot create temp file");
+d444 4
+a447 1
+ * FixPwFileMode - Set protection for passwd/shadow files
+d449 1
+a449 2
+ * Usage:
+ *	FixPwFileMode(filename, "passwd" | "shadow");
+d453 2
+a454 2
+	char	*file,
+		*type;
+@
+
+
+1.25
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d34 1
+a58 1
+	svc_get(argc, argv, envp);	/* Get service order */
+d60 2
+@
+
+
+1.24
+log
+@ Reflect new mpasswd structure element names
+@
+text
+@a4 20
+ *
+ *	The System V support is untested (by the author - other sites
+ *	tell me it works).
+ *
+ *	Here we have only the most abstract data needed (login name,
+ *	user id, current password, new password).
+ *	All other information needed (the full password line, etc),
+ *	is kept down in the 'method' routines.
+ *
+ *	The 'method' routines are:
+ *
+ *	pw_initalize()		Do initializations 
+ *	pw_getuserbyname()	Get user information by name
+ *	pw_permission()		Check if user has permission
+ *				 to change this users' password
+ *	cmp_password()		Compare passwords
+ *	pw_check()		Check password
+ *				 Returns 1 if ok, 0 otherwise
+ *	pw_replace()		Replace the password
+ *	pw_cleanup()		Cleanup
+d17 4
+a20 2
+#define	BASEOPTIONS "X:fs"		/* Baseline command line options */
+extern char	*crypt();
+d23 1
+a23 1
+ * Global storage definitions
+d26 1
+a26 1
+int	DebugLevel = DEBUG_TEST;	/* Debugging level */
+d28 1
+a28 1
+int	DebugLevel = 0;			/* Debugging level */
+d30 7
+a36 14
+int	ProgramInput = 0;		/* Data source is a program */
+char	*ConfigFile = CONFIG_FILE;	/* Configuration file */
+char	*CommandLineOption[256];	/* Command line options vector */
+char	*ProgramName;			/* Name for error messages */
+char	*(*PasswdCrypt)() = crypt;	/* Password encryption routine */
+enum sec_order SecurityLevel;		/* OS security level */
+enum svc_order ServiceOrder[32] = {
+	/* Services to call for passwd data lookup */
+#ifdef	USE_NIS
+	srv_local, srv_yp, srv_last
+#else
+	srv_local, srv_last
+#endif
+};
+d38 1
+a38 2
+private	struct mpasswd	*TargetPW,	/* Target of change */
+			*CallerPW;	/* Who want to make change */
+d40 1
+a40 9
+/*
+ * Local storage definitions
+ */
+
+/*
+ * Prototypes for functions used in this file.
+ */
+#ifdef	__STDC__
+private Signal_t	catchit(int);		/* Signal catcher */
+d42 2
+a43 8
+private void	os_init(int, char **, char **);
+public void	svc_get(int, char **, char **);
+#else
+private Signal_t	catchit();		/* Signal catcher */
+private void	checktty();
+private void	os_init();
+public void	svc_get();
+#endif
+d46 1
+a46 3
+ *	passwd - change the password for a user.
+ *
+ *	This program impliments the 'passwd' command.
+a52 4
+	char	opts[128];		/* Command line options */
+	int	opt;			/* Option processing temp */
+	Uid_t	myuid;			/* Caller's uid */
+	int	cfcheck = 0;		/* Check config file only */
+a55 5
+	enum {
+		PASSWD, CHFN, CHSH
+	} pfunc;			/* Which function we're doing */
+	extern char	*optarg;	/* From getopt() */
+	extern int	optind;		/* From getopt() */
+d57 1
+a57 114
+	/*
+	 * Process command line options.
+	 */
+	(void) strcpy(opts, BASEOPTIONS);
+#ifdef	OS_SUNOS_4
+	(void) strcat(opts, "alyd:e:n:x:F:");
+#endif
+#ifdef	OS_ULTRIX_4
+	(void) strcat(opts, "");
+#endif
+	if (temp = rindex(argv[0], '/'))
+		temp++;
+	else
+		temp = argv[0];
+
+	if (strcmp (temp, "chsh") == 0) {
+		pfunc = CHSH;
+		ProgramName = "chsh";
+	}
+	else if (strcmp (temp, "chfn") == 0) {
+		pfunc = CHFN;
+		ProgramName = "chfn";
+	}
+	else {
+		pfunc = PASSWD;
+		ProgramName = "passwd";
+	}
+	os_init(argc, argv, envp);
+
+	bzero((char *)CommandLineOption, sizeof(CommandLineOption));
+
+	while ((opt = getopt(argc, argv, opts)) != EOF) {
+		switch (opt) {
+#ifdef	OS_SUNOS_4
+		/*
+		 * We slurp up the SunOS options, but don't do much
+		 * with them just yet.
+		 */
+		case 'a':
+			CommandLineOption[(char)opt] = "on";
+			break;
+		case 'l':
+			CommandLineOption[(char)opt] = "on";
+			break;
+		case 'y':
+			CommandLineOption[(char)opt] = "on";
+			break;
+		case 'd':
+			CommandLineOption[(char)opt] = "on";
+			break;
+		case 'e':
+			CommandLineOption[(char)opt] = "on";
+			break;
+		case 'n':
+			CommandLineOption[(char)opt] = copystr(optarg);
+			break;
+		case 'x':
+			CommandLineOption[(char)opt] = copystr(optarg);
+			break;
+		case 'F':
+			printf("Option \"-F\" not supported.\n");
+			exit(1);
+#endif
+		case 'f':
+			pfunc = CHFN;
+			break;
+		case 's':
+			pfunc = CHSH;
+			break;
+
+		case 'X': {
+			char	*op;
+		
+			for (op = optarg; *op; op++) {
+			switch (*op) {
+			case 'C':		/* Check config file */
+				(void) setgid(getgid()); /* Give away */
+				(void) setuid(getuid()); /* privs */
+/* 				DebugLevel = DB_CONFIG; */
+				configure(++op);
+				printf("Configuration file \"%s\" OK\n", op);
+				exit(0);
+				break;
+
+			case 'D':		/* Debug level */
+				op++;
+				if (!isdigit(*op))
+					die("Debug level is not a number");
+				DebugLevel = atoi(op);
+				printf("%s: Debug level = %d\n",
+					ProgramName, DebugLevel);
+				break;
+
+			case 'P':		/* Data source is a program */
+				if (getuid())
+					die("Option \"-XP\" reserved for super-user.\n");
+				ProgramInput = 1;
+				break;
+			case 'R':		/* Require old passwd even for su */
+				if (getuid())
+					die( "Option \"-XR\" reserved for super-user.\n");
+				break;
+			case 'V':
+				printf("Version: %s\nPatch level: %s\n%s\n",
+					npasswd_version, npasswd_patchlevel,
+					build_info);
+				exit(0);
+			}	/* switch */
+			}	/* for */
+		} /* case 'X' */
+		break;
+		} /* switch */
+	} /* for */
+
+a63 4
+#ifdef CMDLINE_CRYPT_PW
+	if (EncryptedPassword[0] == '\0' || pfunc != PASSWD)
+		{ /* XXX */ }
+#endif
+d66 1
+d68 1
+a68 2
+	myuid = getuid();
+	if (temp == 0 || *temp == '\0') {
+d71 2
+a72 2
+		if ((pwtemp = getpwuid(myuid)) == ((struct passwd *)NULL))
+			logdie("Cannot get your login name.\n");
+d78 2
+a79 2
+		logdie("Cannot get user identification from name.\n");
+	if (pwtemp->pw_uid != getuid() && myuid) {
+d82 1
+a82 1
+			pwtemp, myuid);
+d86 1
+a86 1
+			pwtemp, myuid);
+d90 2
+d117 1
+a117 1
+			logdie("Cannot get your password information.\n");
+d120 1
+a120 1
+	switch (pfunc) {
+d133 1
+a133 1
+	return(0);
+d144 2
+a145 2
+	char	cmdbuf[TMPBUFSIZ];	/* Buffer to build command in */
+	int	pid;
+d147 1
+a147 1
+	if (access(fn, 0) < 0) {
+d152 3
+a154 30
+#ifndef	PAGER_CMD
+#define	PAGER_CMD	"/bin/cat"
+#endif
+	/*
+	 * Set SHELL environment to /dev/null to discourage shell escapes
+	 * from the pager program
+	 */
+	if (isatty(0))
+		(void) sprintf(cmdbuf, "SHELL=/dev/null %s %s", PAGER_CMD, fn);
+	else
+		(void) sprintf(cmdbuf, "cat %s", fn);
+
+	if ((pid = fork()) == 0) {
+		if (getuid() == 0) {
+			/* Real uid == 0, then set uid to 'nobody' */
+#define	NOBODY	"nobody"
+			struct passwd *nb = getpwnam(NOBODY);
+			if (nb) {
+				(void) setgid(nb->pw_gid);
+				(void) setuid(nb->pw_uid);
+			} else {
+				die("No safe uid available to run help file pager.\n");
+			}
+		} else {
+			(void) setgid(CallerPW->mpw_gid);
+			(void) setuid(CallerPW->mpw_uid);
+		}
+		(void) execl("/bin/sh", "sh", "-c", cmdbuf, 0);
+		_exit(0);
+#undef	NOBODY
+d156 1
+a156 1
+	(void) wait((int *)0);		/* "Wrong" for BSD, right for SYS V */
+d160 2
+a161 1
+ *	checktty - Check for input/output redirection
+d170 1
+a170 1
+		if (ProgramInput == 0)
+a171 6
+#if	0
+		if (lseek(0, 0L, 1) < 0) {
+			if (errno != ESPIPE)
+				die("Input not a tty or pipe.\n");
+		}
+#endif
+d174 1
+a174 1
+	ProgramInput = 0;		/* Stdin is a tty - behave normal */
+d178 1
+a178 1
+	stdin_tty = copystr(t);
+d188 129
+d331 4
+a334 1
+#ifndef	HAS_RENAME
+d336 1
+a336 1
+ *	rename - replacement for the 4BSD rename system call
+d338 5
+a342 4
+public
+rename(src, dst)
+	char	*src,		/* Source path */
+		*dst;		/* Destination path */
+d344 16
+a359 3
+	if (unlink(dst) < 0) {
+		if (errno != ENOENT)
+			return(-1);
+d361 8
+a368 3
+	if (link(src, dst) < 0)
+		return(-1);
+	return(unlink(src));
+a369 1
+#endif
+d372 1
+a372 1
+ *	copystr - copy string into new storage
+a373 5
+public char *
+copystr(s)
+	char	*s;		/* String to copy */
+{
+	char	*t;	/* Temp */
+d375 8
+a382 8
+	if (s == NULL)
+		return("");
+	if ((t = malloc(strlen(s) + 1)) == NULL)
+		logdie("No memory for string copy.");
+	(void) strcpy(t, s);
+	return(t);
+}
+
+d384 1
+a384 1
+cmp_file_size(fn1, fn2)
+d400 1
+a400 1
+ *	mklocktemp - Make temp file with exclusive use checking
+d402 4
+a405 1
+ *	Returns file descriptor of created file, else exits with error
+d408 1
+a408 1
+mklocktemp(name)
+d424 7
+a430 5
+#define	PASSWD_OWNER	(Uid_t)0
+#define	PASSWD_GROUP	(Gid_t)0
+#define	PASSWD_MODE	0444
+#define	SHADOW_MODE	0400
+
+d432 1
+a432 1
+set_protection(file, type)
+d436 1
+a436 1
+	(void) chown(file, PASSWD_OWNER, PASSWD_GROUP);
+a440 4
+
+
+#ifdef	I_SYS_RESOURCE
+#include <sys/resource.h>
+a441 35
+/*
+ * os_init - Per-operating system initialization code
+ */
+private void
+os_init(argc, argv, envp)
+	int	argc;
+	char	**argv;
+	char	**envp;
+{
+	(void) umask((mode_t)0);	/* Full control over file modes */
+#ifdef	I_SYS_RESOURCE
+	{
+	/*
+	 * Remove BSD resource limits
+	 */
+	struct rlimit no_limit;
+	no_limit.rlim_cur = no_limit.rlim_max = RLIM_INFINITY;
+	(void) setrlimit(RLIMIT_CPU, &no_limit);
+	(void) setrlimit(RLIMIT_FSIZE, &no_limit);
+	(void) setrlimit(RLIMIT_DATA, &no_limit);
+	(void) setrlimit(RLIMIT_CORE, &no_limit);
+	(void) setrlimit(RLIMIT_STACK, &no_limit);
+#ifdef	RLIMIT_RSS
+	(void) setrlimit(RLIMIT_RSS, &no_limit);
+#endif
+	}
+#endif
+#ifndef	DEBUG
+	/*
+	 * Sanitize the environment.  There isn't much we will
+	 * let through (if anything).
+ 	 */
+	while (*envp) *envp++ = "";
+#endif
+}
+a442 82
+/*
+ * Signal block/unblock routines.
+ */
+public void
+block_signals VA_DCL(struct sigblk *args)
+{
+	va_list	fargs;
+	struct sigblk *sigblk;
+	int	xsig;
+
+	VA_START(fargs, args);
+	sigblk = va_arg(fargs, struct sigblk *);
+
+#if	(SIG_TYPE == SIG_TYPE_POSIX)
+	sigemptyset(&sigblk->savesigs);
+	while (xsig = va_arg(fargs, int))
+		sigaddset(&sigblk->savesigs, xsig);
+	sigprocmask(SIG_BLOCK, &sigblk->savesigs, &sigblk->sigvalues);
+#endif
+
+#if	(SIG_TYPE == SIG_TYPE_BSD)
+	sigblk->savesigs = 0;
+	while (xsig = va_arg(fargs, int))
+		sigblk->savesigs |= sigmask(xsig);
+	sigblk->sigvalues = sigblock(sigblk->savesigs);
+#endif
+
+#if	(SIG_TYPE == SIG_TYPE_UNIX)
+	while (xsig = va_arg(fargs, int))
+		sigblk->sigvalues[xsig] = signal(xsig, SIG_IGN);
+#endif
+}
+
+public void
+unblock_signals(sigblk)
+	struct sigblk *sigblk;
+{
+#if	(SIG_TYPE == SIG_TYPE_POSIX)
+	sigprocmask(SIG_UNBLOCK, &sigblk->savesigs, (sigset_t *)0);
+	return;
+#endif
+#if	(SIG_TYPE == SIG_TYPE_BSD)
+	sigsetmask(&sigblk->sigvalues);
+#endif
+#if	(SIG_TYPE == SIG_TYPE_UNIX)
+	int	i;
+	
+	for (i = 0; i <= NSIG; i++) {
+		if (sigblk->sigvalues[i])
+			(void) signal(i, sigblk->sigvalues[i]);
+	}
+#endif
+}
+
+dump_user(theUser)
+	struct mpasswd *theUser;
+{
+#ifdef	DEBUG
+#define	STRX(_Z_) (_Z_ ? _Z_ : "(null)")
+	printf("mpw_name = %s\n", STRX(theUser->mpw_name));
+	printf("mpw_passwd = %s\n", STRX(theUser->mpw_passwd));
+	printf("mpw_uid = %u\n", theUser->mpw_uid);
+	printf("mpw_gid = %u\n", theUser->mpw_gid);
+	printf("mpw_shell = %s\n", STRX(theUser->mpw_shell));
+	printf("mpw_gecos = %s\n", STRX(theUser->mpw_gecos));
+	printf("mpw_shell = %s\n", STRX(theUser->mpw_shell));
+	printf("mpw_dir = %s\n", STRX(theUser->mpw_dir));
+#ifdef	PWAGE
+	printf("mpw_age = %s\n", STRX(theUser->mpw_age));
+#endif
+	printf("age_password = %u\n", theUser->pwage.do_aging);
+	printf("last_change = %u\n", theUser->pwage.last_change);
+	printf("min_time = %u\n", theUser->pwage.can_change);
+	printf("max_time = %u\n", theUser->pwage.must_change);
+	printf("key = %s\n", STRX(theUser->key));
+	printf("password = %s\n", STRX(theUser->password));
+	printf("where = %s\n", STRX(theUser->pws_loc));
+	printf("what = %s\n", STRX(theUser->pws_name));
+	printf("remote = %u\n", theUser->pws_remote);
+	printf("opaque = %x\n", theUser->opaque);
+#endif
+}
+@
+
+
+1.23
+log
+@Fix reference to svc_get()
+@
+text
+@d600 1
+a600 1
+	printf("age_password = %u\n", theUser->pwage.doit);
+d602 2
+a603 2
+	printf("min_time = %u\n", theUser->pwage.min_time);
+	printf("max_time = %u\n", theUser->pwage.max_time);
+d606 3
+a608 2
+	printf("where = %s\n", STRX(theUser->where));
+	printf("remote = %u\n", theUser->remote);
+@
+
+
+1.22
+log
+@Split a lot of small routines out into seperate source files
+@
+text
+@a75 1
+private void	svc_get(int, char **, char **);
+d77 1
+a80 1
+private void	svc_get();
+d82 1
+@
+
+
+1.21
+log
+@1. Mess around with a couple DEBUG ifdefs 2. Change nsswitch processing:  a) Eliminate need for svc_ypcompat  b) Look for "passwd_compat" if passwd service is "compat"  c) Add debugging for nsswitch processing 3. Move svc_get() to after command line handling (to have debug level set)
+@
+text
+@a399 148
+
+#ifndef	HAS_PUTPWENT
+public void
+putpwent(p, f)
+	struct passwd	*p;	/* Passwd entry to put */
+	FILE	*f;		/* File pointer */
+{
+	char	pwline[PW_LINELEN];
+
+	sputpwent(p, pwline);
+	(void) fprintf(f, "%s\n", pwline);
+}
+#endif	/* HAS_PUTPWENT */
+
+#ifndef	HAS_FGETPWENT
+/*
+ *	fgetpwent() - read passwd(5) entry from a file
+ *		This reads the "standard" passwd file format.
+ */
+public struct passwd *
+fgetpwent(f)
+	FILE	*f;			/* Pointer to open passwd format file */
+{
+	static char	ibuf[PW_LINELEN];	/* Input and return data buffer */
+	char	*p;
+
+	if (fgets(ibuf, sizeof(ibuf), f) == NULL)
+		return(0);
+	if ((p = index(ibuf, '\n')) == 0)		/* Zap newline */
+		logdie("Ill-formed passwd entry \"%s\".\n", ibuf);
+	else
+		*p = 0;
+	return(sgetpwent(ibuf));
+}
+#endif	/* HAS_FGETPWENT */
+
+/*
+ *	putpwent - replacement for the System V routine
+ *		This writes the "standard" passwd file format.
+ */
+public char *
+sputpwent(p, b)
+	struct passwd	*p;	/* Passwd entry to put */
+	char		*b;	/* Buffer to build it in */
+{
+	char	pwb[48];
+
+	(void) strcpy(pwb, p->pw_passwd);
+#ifdef	PWAGE
+	if (p->pw_age && *p->pw_age) {
+		(void) strcat(pwb, ",");
+		(void) strcat(pwb, p->pw_age);
+	}
+#endif
+#ifdef	UIDS_ARE_SIGNED
+	(void) sprintf(b, "%s:%s:%d:%d:%s:%s:%s",
+#else
+	(void) sprintf(b, "%s:%s:%u:%u:%s:%s:%s",
+#endif
+		p->pw_name, pwb, (Uid_t )p->pw_uid, (Gid_t )p->pw_gid,
+		p->pw_gecos, p->pw_dir, p->pw_shell);
+	return(b);
+}
+
+/*
+ *	sgetpwent() - crack a passwd(5) format line
+ *		This reads the "standard" passwd file format.
+ */
+public struct passwd *
+sgetpwent(s)
+	char	*s;			/* Pointer to open passwd format file */
+{
+	static struct passwd	pwdata;	/* Return data */
+	char		*p;	/* ACME Pointer Works, Inc */
+	char		*pp;	/* ACME Pointer Works, Inc */
+
+	bzero((char *)&pwdata, sizeof(pwdata));
+#define	skipc while (*p && *p != ':' && *p != '\n') ++p; if (*p) *p++ = 0
+	p = s;
+	pwdata.pw_name = p;	skipc;
+	pwdata.pw_passwd = p;	skipc;
+#ifdef	PWAGE
+	if (pp = index(pwdata.pw_passwd, ',')) {
+		*pp++ = 0;
+		pwdata.pw_age = pp;
+	}	
+#endif
+	pwdata.pw_uid = atoi(p); skipc;
+	pwdata.pw_gid = atoi(p); skipc;
+	pwdata.pw_gecos = p;	skipc; 
+	pwdata.pw_dir = p;	skipc;
+	pwdata.pw_shell = p;
+	return(&pwdata);
+#undef	skipc
+}
+
+/*
+ *	copypwent - copy a passwd structure
+ */
+public struct passwd *
+copypwent(f,t)
+	struct passwd	*f,		/* From */
+			*t;		/* To */
+{
+	*t = *f;	
+	t->pw_name = copystr(f->pw_name);
+#ifdef	PWAGE
+	t->pw_age = copystr(f->pw_age);
+#endif
+#ifdef	PWCOMMENT
+	t->pw_comment = copystr(f->pw_comment);
+#endif
+	t->pw_passwd = copystr(f->pw_passwd);
+	t->pw_gecos = copystr(f->pw_gecos);
+	t->pw_dir = copystr(f->pw_dir);
+	t->pw_shell = copystr(f->pw_shell);
+	return(t);
+}
+
+/*
+ *	fgetpwnam - get user from password file
+ */
+public struct passwd *
+fgetpwnam(name, pwfile)
+	char	*name,
+		*pwfile;
+{
+	FILE	*pf;
+	struct passwd	*px;		/* Password file traversal */
+
+	if ((pf = fopen(pwfile, "r")) == NULL)
+		logdie("Cannot open password file \"%s\".", pwfile);
+	/*
+	 * Scan local password file, looking for user
+	 */
+	while ((px = fgetpwent(pf)) != NULL) {
+		char	*tp = px->pw_name;
+
+		if (*tp == '+') tp++;
+		if (strcmp(tp, name) == 0) {
+			(void) fclose(pf);
+			return(px);
+		}
+	}
+	(void) fclose(pf);
+	return(NULL);
+}
+
+a529 343
+#ifdef	HAS_SVC_CONF
+#define	_SETUP	1
+/*
+ * svc_get - Process the service configuration for Ultrix 4.X and OSF/1
+ */
+#include <sys/svcinfo.h>
+private void
+svc_get(argc, argv, envp)
+	int	argc;
+	char	**argv;
+	char	**envp;	/*NOTUSED*/
+{
+	struct svcinfo	*svc;
+	int	i,
+		j,
+		s;
+
+	SecurityLevel = sec_std;
+
+	if ((svc = getsvc()) == 0)
+		logdie("Cannot get service configuration.\n");
+
+	for (s = i = 0; (j = svc->svcpath[SVC_PASSWD][i]) != SVC_LAST; i++) {
+		switch(j) {
+		case SVC_LOCAL:
+			ServiceOrder[s++] = srv_local;
+			break;
+		case SVC_YP:
+			ServiceOrder[s++] = srv_yp;
+			break;
+		case SVC_BIND:
+			ServiceOrder[s++] = srv_hesiod;
+			break;
+		}
+	}
+	ServiceOrder[s++] = srv_last;
+
+	switch (svc->svcauth.seclevel) {
+	case SEC_BSD:
+		SecurityLevel = sec_std;
+		break;
+	case SEC_UPGRADE:
+		SecurityLevel = sec_u4upgrade;
+		break;
+	case SEC_ENHANCED:
+		SecurityLevel = sec_u4enhanced;
+#ifdef	ULTRIX_AUTH
+		PasswdCrypt = crypt16;
+#endif
+		break;
+	}
+#ifdef	OSF1_AUTH
+	/*
+	 * If there is a Trusted Computing Base directory, then
+	 * we are running enhanced security.
+	 * On OSF/1, the "security level" returned by getsvc() is wrong.
+	 */
+	if (access(OSF1_TCB, 0) == 0) {
+		SIAENTITY *who;
+
+		if (sia_ses_init(&who, argc, argv, NULL, NULL, NULL, 0, NULL)
+			== SIASUCCESS) {
+				SecurityLevel = sec_OSFenhanced;
+				PasswdCrypt = bigcrypt;
+		}
+	}
+#endif
+}
+#endif	/* USE_getsvc */
+
+#ifdef	HAS_NSSWITCH
+#define	_SETUP	1
+/*
+ * svc_get - Process the 'name service' configuration under Solaris 2.X
+ */
+#include <nsswitch.h>
+
+private char **
+get_nsswitch(what)
+	char	*what;
+{
+	struct __nsw_switchconfig *config;
+	struct __nsw_lookup     *p;
+	enum __nsw_parse_err    error;
+	char	*srvlist[32];	/* LIMIT */
+	char	**rv;
+	int	svcno = 0;
+
+	config = __nsw_getconfig(what, &error);
+	switch (error) {
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_SUCCESS:
+#else
+	case __NSW_PARSE_SUCCESS:
+#endif
+		break;
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_NOFILE:
+#else
+	case __NSW_PARSE_NOFILE:
+#endif
+		printf("Warning: \"%s\" not found.\n", __NSW_CONFIG_FILE);
+		return;
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_NOPOLICY:
+#else
+	case __NSW_PARSE_NOPOLICY:
+#endif
+		return;
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_SYSERR:
+#else
+	case __NSW_PARSE_SYSERR:
+#endif
+		printf("Warning: Syntax error in \"%s\".\n", __NSW_CONFIG_FILE);
+		return;
+	}
+	for (p = config->lookups; p; p = p->next) {
+		srvlist[svcno++] = copystr(p->service_name);
+	}
+	srvlist[svcno] = 0;
+	rv = (char **)calloc(sizeof(char *), svcno);
+	if (rv == 0)
+		logdie("Cannot allocate memory for service list\n");
+	bcopy((void *)&srvlist, (void *)rv, (svcno * sizeof(char *)));
+	return(rv);
+}
+
+private void
+svc_get(argc, argv, envp)
+	int	argc;	/*NOTUSED*/
+	char	**argv;	/*NOTUSED*/
+	char	**envp;	/*NOTUSED*/
+{
+#define	SV_NIS		"nis"
+#define	SV_NISPLUS	"nisplus"
+#define	SV_COMPAT	"compat"
+#define	SV_FILES	"files"
+#define	SV_PWCOMPAT	"passwd_compat"
+
+	int	svo = 0;
+	char	**svlist;
+
+	SecurityLevel = sec_std;
+	debug(DB_LOOKUP, "svc_get nsswitch: ");
+
+	/*
+	 * TODO: Figure out what security level needed for RPC 
+	 * i.e. might a key need resetting.
+	 */
+	for (svlist = get_nsswitch(__NSW_PASSWD_DB); *svlist; *svlist++) {
+		if (strcmp(*svlist, SV_FILES) == 0) {
+			ServiceOrder[svo++] = srv_local;
+			debug(DB_LOOKUP, "local ");
+		}
+#if	defined(USE_NIS) || defined(USE_NISPLUS)
+		if (strcmp(*svlist, SV_NIS) == 0) {
+			ServiceOrder[svo++] = srv_yp;
+			debug(DB_LOOKUP, "nis ");
+		}
+		if (strcmp(*svlist, SV_COMPAT) == 0) {
+			char	**pwsv = get_nsswitch(SV_PWCOMPAT);
+			enum	svc_order sv_compat = srv_yp;
+			char	*what = "nis";
+
+			/* Check for service passwd_compat: */
+			for (; *pwsv; pwsv++) {
+				if (strcmp(*pwsv, SV_NISPLUS) == 0) {
+					sv_compat = srv_nisplus;
+					what = "nisplus";
+				}
+			}
+			ServiceOrder[svo++] = sv_compat;
+			debug(DB_LOOKUP, "compat/%s ", what);
+		}
+#endif
+#ifdef	USE_NISPLUS
+		if (strcmp(*svlist, SV_NISPLUS) == 0) {
+			die("NIS+ not supported\n");
+			ServiceOrder[svo++] = srv_nisplus;
+			debug(DB_LOOKUP, "nisplus ");
+		}
+#endif
+	}
+	ServiceOrder[svo] = srv_last;
+	debug(DB_LOOKUP, "\n");
+
+#undef	SV_NIS
+#undef	SV_NISPLUS
+#undef	SV_COMPAT
+#undef	SV_FILES
+#undef	SV_PWCOMPAT
+}
+#endif	/* OS_SUNOS_5 */
+
+#ifndef	_SETUP
+/*
+ * The default svc_get() routine
+ */
+private void
+svc_get(argc, argv, envp)
+	int	argc;	/*NOTUSED*/
+	char	**argv;	/*NOTUSED*/
+	char	**envp; /*NOTUSED*/
+{
+	SecurityLevel = sec_std;
+#ifdef	SUNOS4_SECURITY
+	if (issecure())
+		SecurityLevel = sec_sunC2;
+#endif	/* OS_SUNOS_4 */
+}
+#endif	/* _SETUP */
+
+/*
+ * debug - print debug message
+ */
+public void
+#ifdef	__STDC__
+debug (int level, char *fmt, ...)
+{
+	va_list	args;
+
+	if (DebugLevel < level)
+		return;
+	va_start(args, fmt);
+	vprintf(fmt, args);
+	fflush(stdout);
+	va_end(args);
+}
+#else
+debug (va_alist)
+va_dcl
+{
+	va_list	args;
+	int	level;
+	char	*fmt;
+
+	va_start(args);
+	level = va_arg(args, int);
+	fmt = va_arg(args, char *);
+	if (DebugLevel >= level) {
+		vprintf(fmt, args);
+		fflush(stdout);
+	}
+	va_end(args);
+}
+#endif
+
+/*
+ * die - spew error and die
+ */
+public void
+die VA_DCL(char *msgs)
+{
+	va_list	args;
+#ifdef	__STDC__
+	fprintf(stderr, "%s: ", ProgramName);
+	va_start(args, msgs);
+	vfprintf(stderr, msgs, args);
+#else
+	char	*fmt;
+
+	va_start(args);
+	fprintf(stderr, "%s: ", ProgramName);
+	fmt = va_arg(args, char *);
+	vfprintf(stderr, fmt, args);
+#endif
+	va_end(args);
+	fflush(stderr);
+	pw_cleanup(-1);
+	exit(1);
+}
+
+/*
+ * warn - spew error
+ */
+public void
+warn VA_DCL(char *msgs)
+{
+
+	va_list	args;
+#ifdef	__STDC__
+	fprintf(stderr, "%s: ", ProgramName);
+	va_start(args, msgs);
+	vfprintf(stderr, msgs, args);
+#else
+	char	*fmt;
+
+	va_start(args);
+	fprintf(stderr, "%s: ", ProgramName);
+	fmt = va_arg(args, char *);
+	vfprintf(stderr, fmt, args);
+#endif
+	va_end(args);
+	fflush(stderr);
+}
+
+/*
+ * logdie - spew error, log message and die
+ */
+public void
+logdie VA_DCL(char *msgs)
+{
+	va_list	args;
+	char	*fmt;
+	char	msgbuf[TMPBUFSIZ];
+
+	VA_START(args, msgs);
+#ifdef	__STDC__
+	vsprintf(msgbuf, msgs, args);
+#else
+	fmt = va_arg(args, char *);
+	vsprintf(msgbuf, fmt, args);
+#endif
+	va_end(args);
+	fprintf(stderr, "%s: %s\n", ProgramName, msgbuf);
+	fflush(stderr);
+	syslog(LOG_ERR, msgbuf);
+	pw_cleanup(-1);
+	exit(1);
+}
+
+/*
+ * log_error - spew error and log message
+ */
+public void
+logerr VA_DCL(char *msgs)
+{
+	va_list	args;
+	char	*fmt;
+	char	msgbuf[TMPBUFSIZ];
+
+	VA_START(args, msgs);
+#ifdef	__STDC__
+	vsprintf(msgbuf, msgs, args);
+#else
+	fmt = va_arg(args, char *);
+	vsprintf(msgbuf, fmt, args);
+#endif
+	va_end(args);
+	syslog(LOG_ERR, msgbuf);
+}
+
+@
+
+
+1.20
+log
+@1. Rewrite nsswitch processor 2. Rewrite varargs/stdargs routines
+@
+text
+@d43 2
+a44 2
+#ifdef	DEBUGX
+int	DebugLevel = DEBUGX;		/* Debugging level */
+d197 2
+d221 6
+a226 3
+#ifndef	DEBUG
+/* 	if (geteuid()) */
+/* 		die("Permission denied.\n"); */
+a668 1
+	svc_get(argc, argv, envp);	/* Get service order */
+d812 6
+d822 1
+d829 1
+a829 1
+		if (strcmp(*svlist, "files") == 0)
+d831 4
+a834 2
+#ifdef	USE_NIS
+		if (strcmp(*svlist, "yp") == 0)
+d836 7
+a842 1
+		if (strcmp(*svlist, "compat") == 0) {
+d844 8
+a851 2
+			ServiceOrder[svo++] = srv_ypcompat;
+			ServiceOrder[svo++] = srv_yp;
+d855 1
+a855 1
+		if (strcmp(*svlist, "nisplus") == 0) {
+d858 1
+d863 7
+@
+
+
+1.19
+log
+@Remove call to checkpassword_init()
+@
+text
+@a134 1
+
+d244 1
+a244 1
+		printf("Login name \"%s\" does not belong to uid %d\n",
+d305 1
+a305 1
+	char	cmdbuf[BUFSIZ];		/* Buffer to build command in */
+d750 4
+a753 5
+private void
+svc_get(argc, argv, envp)
+	int	argc;	/*NOTUSED*/
+	char	**argv;	/*NOTUSED*/
+	char	**envp;	/*NOTUSED*/
+d758 3
+a760 1
+	int	svo = 0;
+d762 1
+a762 7
+	SecurityLevel = sec_std;
+
+	/*
+	 * TODO: Figure out what security level needed for RPC 
+	 * i.e. might a key need resetting.
+	 */
+	config = __nsw_getconfig(__NSW_PASSWD_DB, &error);
+d792 27
+a818 1
+		if (strcmp(p->service_name, "files") == 0)
+d821 1
+a821 1
+		if (strcmp(p->service_name, "yp") == 0)
+d823 2
+a824 1
+		if (strcmp(p->service_name, "compat") == 0)
+d826 2
+d830 1
+a830 1
+		if (strcmp(p->service_name, "nisplus") == 0) {
+a836 1
+	
+a858 9
+ * Varargs stuff needed by the following message routines
+ */
+#ifdef	__STDC__
+#define	VA_GETFMT(x,y,z)	x = y;
+#else
+#define	VA_GETFMT(x,y,z)	x = va_arg(z, char *)
+#endif
+
+/*
+d862 2
+a863 1
+debug VA_DCL(char *msgs)
+d865 1
+a865 3
+	va_list	wargs;
+	int	level;
+	char	*fmt;
+a866 3
+	VA_START(wargs, msgs);
+	level = va_arg(wargs, int);
+	VA_GETFMT(fmt, msgs, wargs);
+d869 2
+a870 1
+	vprintf(fmt, wargs);
+d872 1
+d874 7
+d882 11
+d899 6
+a904 3
+	va_list	wargs;
+	char	*p;
+	char	msgbuf[BUFSIZ];
+d907 6
+a912 7
+	VA_START(wargs, msgs);
+	VA_GETFMT(fmt, msgs, wargs);
+	vsprintf(msgbuf, fmt, wargs);
+	va_end(wargs);
+	p = &msgbuf[strlen(msgbuf)];
+	if (*p == '\n') *p = 0;
+	fprintf(stderr, "%s: %s\n", ProgramName, msgbuf);
+d919 1
+a919 1
+ * warn - spew error and die
+a923 4
+	va_list	wargs;
+	char	*p,
+		*fmt;
+	char	msgbuf[BUFSIZ];
+d925 14
+a938 7
+	VA_START(wargs, msgs);
+	VA_GETFMT(fmt, msgs, wargs);
+	vsprintf(msgbuf, fmt, wargs);
+	va_end(wargs);
+	p = &msgbuf[strlen(msgbuf)];
+	if (*p == '\n') *p = 0;
+	fprintf(stderr, "%s: %s\n", ProgramName, msgbuf);
+d948 3
+a950 4
+	va_list	wargs;
+	char	*p,
+		*fmt;
+	char	msgbuf[BUFSIZ];
+d952 8
+a959 6
+	VA_START(wargs, msgs);
+	VA_GETFMT(fmt, msgs, wargs);
+	vsprintf(msgbuf, fmt, wargs);
+	va_end(wargs);
+	p = &msgbuf[strlen(msgbuf)];
+	if (*p == '\n') *p = 0;
+d973 3
+a975 4
+	va_list	wargs;
+	char	*p,
+		*fmt;
+	char	msgbuf[BUFSIZ];
+d977 8
+a984 4
+	VA_START(wargs, msgs);
+	VA_GETFMT(fmt, msgs, wargs);
+	vsprintf(msgbuf, fmt, wargs);
+	va_end(wargs);
+a986 1
+#undef	VA_GETFMT
+a998 3
+#ifdef	__STDC__
+	sigblk = (struct sigblk *)args;
+#else
+d1000 1
+a1000 1
+#endif
+d1007 1
+d1014 1
+@
+
+
+1.18
+log
+@Add debug() routine
+@
+text
+@a283 1
+		checkpassword_init();
+@
+
+
+1.17
+log
+@Beta 3 development checkin
+@
+text
+@d847 19
+@
+
+
+1.16
+log
+@Add -XC (check config file) option
+@
+text
+@a27 1
+#include "version.h"
+d56 1
+a56 1
+#if	YP_SUPPORT
+d74 1
+a74 1
+private SIGNAL_T	catchit(int);		/* Signal catcher */
+d79 1
+a79 1
+private SIGNAL_T	catchit();		/* Signal catcher */
+d97 1
+a97 1
+	uid_t	myuid;			/* Caller's uid */
+a107 2
+	os_init(argc, argv, envp);
+
+d118 1
+a118 1
+	if (temp = RINDEX(argv[0], '/'))
+d136 1
+a136 1
+	BZERO((char *)CommandLineOption, sizeof(CommandLineOption));
+d138 2
+d210 3
+a212 2
+				printf("%s; patch level %s\n",
+					npasswd_version, npasswd_patchlevel);
+d315 3
+d323 1
+a323 1
+		(void) sprintf(cmdbuf, "SHELL=/dev/null %s %s", PAGER, fn);
+d336 1
+a336 2
+				fprintf(stderr, "No safe uid available\n");
+				_exit(1);
+d386 1
+a386 1
+private SIGNAL_T
+d392 3
+d398 1
+a398 1
+#ifdef	NEED_PUTPWENT
+d409 1
+a409 1
+#endif	/* NEED_PUTPWENT */
+d411 1
+a411 1
+#ifdef	NEED_FGETPWENT
+d425 1
+a425 1
+	if ((p = INDEX(ibuf, '\n')) == 0)		/* Zap newline */
+d431 1
+a431 1
+#endif	/* NEED_FGETPWENT */
+d445 1
+a445 1
+#if	HAS_PW_AGE
+d456 1
+a456 1
+		p->pw_name, pwb, (uid_t )p->pw_uid, (gid_t )p->pw_gid,
+d473 1
+a473 1
+	BZERO((char *)&pwdata, sizeof(pwdata));
+d478 2
+a479 2
+#if	HAS_PW_AGE
+	if (pp = INDEX(pwdata.pw_passwd, ',')) {
+d503 1
+a503 1
+#ifdef	HAS_PW_AGE
+d506 1
+a506 1
+#ifdef	HAS_PW_COMMENT
+d545 1
+a545 1
+#ifdef	NEED_RENAME
+d619 2
+a620 2
+#define	PASSWD_OWNER	(uid_t)0
+#define	PASSWD_GROUP	(gid_t)0
+d636 1
+a636 1
+#if	OS_BSD
+d649 1
+a649 1
+#if     OS_BSD
+d661 1
+d663 1
+a672 1
+	/* Nuke group list? */
+d676 1
+a676 1
+#ifdef	USE_getsvc
+a677 3
+
+#include <sys/svcinfo.h>
+
+d681 1
+d722 1
+a722 1
+#ifdef	OS_ULTRIX_4
+d727 1
+a727 1
+#ifdef	OSF1_SECURITY
+d730 2
+a731 2
+	 * we are running enhanced security.  On OSF/1, the data returned
+	 * by getsvc() will NOT be right.
+d736 5
+a740 3
+		sia_ses_init(&who, argc, argv, NULL, NULL, NULL, 0, NULL);
+		SecurityLevel = sec_OSFenhanced;
+		PasswdCrypt = bigcrypt;
+d746 1
+a746 1
+#ifdef	OS_SOLARIS_2
+a747 3
+
+#include <nsswitch.h>
+
+d751 1
+d801 1
+d806 2
+d810 1
+a810 1
+/* 			ServiceOrder[svo++] = srv_nisplus; */
+d812 1
+d817 1
+a817 1
+#endif	/* OS_SOLARIS_2 */
+d830 1
+a830 1
+#ifdef	OS_SUNOS_4
+d909 1
+a909 1
+	syslog(ERROR_LOG_LEVEL, msgbuf);
+d929 1
+a929 1
+	syslog(ERROR_LOG_LEVEL, msgbuf);
+d973 1
+d1001 1
+a1001 1
+#ifdef	HAS_PW_AGE
+@
+
+
+1.15
+log
+@Set DebugLevel based upon #ifdef DEBUGX
+@
+text
+@d50 1
+d99 1
+d185 9
+d270 1
+a270 1
+	configure(CONFIG_FILE);
+@
+
+
+1.14
+log
+@Development checkin - lots of changes
+@
+text
+@d44 5
+a49 1
+int	DebugLevel = 99;		/* Debugging level */
+d56 1
+a56 1
+#if	YP_PASSWD
+@
+
+
+1.13
+log
+@Add chfn and chsh
+@
+text
+@d59 3
+d89 1
+a89 1
+	char	**envp;
+a96 2
+	struct mpasswd	*TargetPW,	/* Target of change */
+			*CallerPW;	/* Who want to make change */
+d211 1
+d250 4
+a253 3
+
+#ifdef	USE_SYSLOG
+	openlog("passwd", LOG_PID | LOG_CONS, LOG_AUTH);
+a254 1
+	checkpassword_init();
+d269 1
+a294 1
+#define	NOBODY	"nobody"
+d300 4
+d305 1
+a305 5
+#ifdef	OS_SYS5
+		(void) sprintf(cmdbuf, "SHELL=/dev/null pg -n -s %s", fn);
+#else
+		(void) sprintf(cmdbuf, "SHELL=/dev/null more -d %s", fn);
+#endif
+d312 1
+d322 2
+a323 2
+			(void) setgid(getgid());
+			(void) setuid(getuid());
+d327 1
+a329 1
+#undef	NOBODY
+d333 1
+a333 1
+ *	checktty - Attempt to check against being pipe-fed
+a338 1
+		*stdout_tty,	/* ttyname(1) */
+d344 1
+a347 2
+			else
+				return;
+d349 2
+d353 4
+a356 8
+	stdin_tty = ttyname(0);
+	if (stdin_tty == NULL || *stdin_tty == 0)
+		die("Cannot get name (stdin).\n");
+	t = malloc(strlen(stdin_tty) + 1);
+	if (t == NULL)
+		logdie("Cannot allocate temp memory.");
+	(void) strcpy(t, stdin_tty);
+	stdin_tty = t;
+d358 4
+a361 4
+	stdout_tty = ttyname(1);
+	if (stdout_tty == NULL || *stdout_tty == 0)
+		die("Cannot get name (stdout).\n");
+	if (strcmp(stdin_tty, stdout_tty))
+d384 1
+a384 1
+	char	pwline[512];
+d400 1
+a400 1
+	static char	ibuf[BUFSIZ];	/* Input and return data buffer */
+d425 1
+a425 1
+#if	S5_PWAGING
+d458 1
+a458 1
+#if	S5_PWAGING
+d483 1
+a483 1
+#ifdef	S5_PWAGING
+d486 1
+a486 1
+#ifdef	PW_COMMENT
+d527 1
+a527 1
+ *	rename - replacement for the 4.2/4.3 BSD rename system call
+d562 1
+a562 1
+sizecheck(fn1, fn2)
+d567 1
+a567 1
+	long	s1;
+d577 39
+d651 1
+a651 1
+	/* Nuke group list */
+d715 1
+a715 1
+		SIAENTITY *who = NULL;
+a720 1
+#undef	TCB_DIR
+d797 3
+d804 1
+a804 1
+	char	**envp;
+a806 1
+
+a885 1
+#ifdef	USE_SYSLOG
+a886 1
+#endif
+d892 1
+a892 1
+ * log_error - spew error, log message and die
+a905 1
+#ifdef	USE_SYSLOG
+a906 6
+#else
+	p = &msgbuf[strlen(msgbuf)];
+	if (*p == '\n') *p = 0;
+	fprintf(stderr, "%s: %s\n", ProgramName, msgbuf);
+	fflush(stderr);
+#endif
+d977 1
+a977 1
+#ifdef	S5_PWAGING
+d980 4
+a983 4
+	printf("age_password = %u\n", theUser->age_password);
+	printf("last_change = %u\n", theUser->last_change);
+	printf("min_change_time = %u\n", theUser->min_change_time);
+	printf("expire = %u\n", theUser->expire);
+@
+
+
+1.12
+log
+@1. Move from main procedure to os_init(). 2. Make argument indentation consistent
+@
+text
+@d114 4
+a117 2
+	pfunc = PASSWD;
+	ProgramName = "passwd";
+d119 13
+d208 3
+d269 6
+@
+
+
+1.11
+log
+@Pull TCB directory path from include file
+@
+text
+@a29 4
+#if	OS_BSD
+#include <sys/resource.h>
+#endif
+
+d35 1
+a35 1
+#define	CONFIG_FILE	"npasswd.config"	/* XXX */
+d39 5
+d47 3
+a49 6
+char	*ProgramName;
+
+extern char	*crypt();
+char	*(*PasswdCrypt)() = crypt;
+
+enum sec_order SecurityLevel;
+d51 1
+d59 3
+d63 3
+d70 1
+a70 1
+
+a71 1
+
+d75 1
+a75 1
+
+d84 3
+a86 3
+int	argc;
+char	*argv[];
+char	*envp[];
+a87 1
+	struct passwd	*pwtemp;
+d90 6
+a95 6
+	uid_t	myuid;
+	char	*temp;
+	char	LoginName[STRINGLEN];	/* Temp */
+	struct mpasswd	*TargetPW,
+			*CallerPW;
+
+d97 2
+a98 4
+		PASSWD,
+		CHFN,
+		CHSH
+	} pfunc;
+d102 2
+a103 2
+#if     OS_BSD
+	{
+d105 1
+a105 1
+	 * Remove BSD resource limits
+a106 12
+	struct rlimit no_limit;
+	no_limit.rlim_cur = no_limit.rlim_max = RLIM_INFINITY;
+	(void) setrlimit(RLIMIT_CPU, &no_limit);
+	(void) setrlimit(RLIMIT_FSIZE, &no_limit);
+	(void) setrlimit(RLIMIT_DATA, &no_limit);
+	(void) setrlimit(RLIMIT_CORE, &no_limit);
+	(void) setrlimit(RLIMIT_STACK, &no_limit);
+	(void) setrlimit(RLIMIT_RSS, &no_limit);
+	}
+#endif
+	(void) umask((mode_t)0);		/* Give full control over file modes */
+
+a116 4
+	svc_get(argc, argv, envp);
+	/*
+	 * Process command line options.
+	 */
+d262 2
+a263 2
+char	*fn,			/* Name of file to present */
+	*complaint;		/* Complaint if missing */
+d348 1
+a348 1
+int	signo;
+d358 2
+a359 2
+struct passwd	*p;	/* Passwd entry to put */
+FILE	*f;		/* File pointer */
+d375 1
+a375 1
+FILE	*f;			/* Pointer to open passwd format file */
+d396 2
+a397 2
+struct passwd	*p;	/* Passwd entry to put */
+char		*b;	/* Buffer to build it in */
+d424 1
+a424 1
+char	*s;			/* Pointer to open passwd format file */
+d455 2
+a456 2
+struct passwd	*f,		/* From */
+		*t;		/* To */
+d478 2
+a479 2
+char	*name,
+	*pwfile;
+d508 2
+a509 2
+char	*src,		/* Source path */
+	*dst;		/* Destination path */
+d526 1
+a526 1
+char	*s;		/* String to copy */
+d540 2
+a541 2
+char	*fn1,
+	*fn2;
+d554 39
+d603 3
+a605 3
+int	argc;
+char	**argv;
+char	**envp;	/*NOTUSED*/
+d674 3
+a676 3
+int	argc;	/*NOTUSED*/
+char	**argv;	/*NOTUSED*/
+char	**envp;	/*NOTUSED*/
+d738 3
+a740 3
+int	argc;	/*NOTUSED*/
+char	**argv;	/*NOTUSED*/
+char	**envp;
+a746 14
+	/* 
+	 * Clear out environment of weird stuff to prevent using
+	 * the wrong shared SunOS shared libraries for anything this
+	 * program execs.
+	 */
+	if (getuid() != geteuid()) {
+		char  **cpp, **xpp;
+
+		for (cpp = envp; *cpp; cpp++) {
+			if (strncmp(*cpp, "LD_", strlen("LD_")))
+				continue;
+			for (xpp = cpp; xpp[0] = xpp[1]; xpp++);
+		}
+	}
+d911 1
+a911 1
+struct mpasswd *theUser;
+@
+
+
+1.10
+log
+@1. Rewrite svc_get() for OSF/1 security environment. 2. Add debug print routine. 3. Abstract out which encryption routine to use.
+@
+text
+@a622 3
+#ifndef	TCB_DIR
+# define	TCB_DIR	"/tcb"
+#endif
+d628 1
+a628 1
+	if (access(TCB_DIR, 0) == 0) {
+@
+
+
+1.9
+log
+@Add routines for easy signal blocking and unblocking
+@
+text
+@d48 3
+d64 1
+a64 1
+private void	svc_get(char **);
+d128 1
+a128 1
+	svc_get(envp);
+d575 1
+a575 1
+ * svc_get - Process the service configuration for Ultrix 4.X
+d578 3
+a580 1
+svc_get(envp)
+d617 3
+d622 4
+d627 3
+a629 2
+	 * TODO: Allow the password length settings to override those
+	 * provided in the configuration file.
+d631 9
+d641 1
+a641 1
+#endif	/* OS_ULTRIX_4 */
+d652 3
+a654 1
+svc_get(envp)
+d716 3
+a718 1
+svc_get(envp)
+d902 28
+@
+
+
+1.8
+log
+@Use generic types for signal handling
+@
+text
+@d49 7
+a55 1
+enum svc_order ServiceOrder[32];
+d57 1
+a97 1
+	svc_get(envp);
+d122 4
+a128 2
+	pfunc = PASSWD;
+	ProgramName = "passwd";
+d425 1
+a425 1
+		p->pw_name, pwb, p->pw_uid, p->pw_gid,
+a583 1
+	ServiceOrder[0] = srv_last;
+a638 1
+	ServiceOrder[svo] = srv_last;
+d646 3
+d650 1
+d652 3
+d656 1
+d659 3
+d663 1
+d665 3
+d669 1
+d680 4
+a683 2
+		if (strcmp(p->service_name, "nisplus") == 0)
+			ServiceOrder[svo++] = srv_nisplus;
+a695 1
+	ServiceOrder[0] = srv_last;
+d731 1
+a731 1
+die VA_DCL(msgs)
+d754 1
+a754 1
+warn VA_DCL(msgs)
+d775 1
+a775 1
+logdie VA_DCL(msgs)
+a796 1
+
+d801 1
+a801 1
+logerr VA_DCL(msgs)
+d821 55
+@
+
+
+1.7
+log
+@Call checkpassword_init()
+@
+text
+@d52 1
+a52 1
+private void	catchit(int);		/* Signal catcher */
+d58 1
+a58 1
+private void	catchit();		/* Signal catcher */
+d350 1
+a350 1
+private SIGFUNC_T
+@
+
+
+1.6
+log
+@Development checkin
+@
+text
+@d238 1
+@
+
+
+1.5
+log
+@Make compile under OSF/1 on alpha AXP
+@
+text
+@d38 2
+a39 2
+#ifndef	PASSWD_CONFIG
+#define	PASSWD_CONFIG	"config.file"	/* XXX */
+d185 1
+a185 1
+					version, patchlevel);
+d238 1
+a238 1
+	configure(PASSWD_CONFIG);
+d349 2
+a350 1
+private void catchit(signo)
+@
+
+
+1.4
+log
+@Development checkin: 1. Add 'warn' routine 2. Change some routine names 3. Call new configuration routine
+@
+text
+@a31 1
+#include <sys/stat.h>
+d38 3
+d51 4
+a54 1
+signal_t	catchit(/* int signo */);		/* Signal catcher */
+d56 8
+d171 1
+a171 1
+				DebugLevel = atoi(*op);
+d263 1
+d311 1
+d349 1
+a349 1
+signal_t catchit(signo)
+d358 1
+d375 1
+a375 1
+struct passwd *
+d396 1
+a396 1
+char *
+d424 1
+a424 1
+struct passwd *
+d429 2
+a430 1
+	char		*p, *pp;	/* ACME Pointer Works, Inc */
+d455 1
+a455 1
+struct passwd *
+d478 1
+a478 1
+struct passwd *
+d508 1
+d526 1
+a526 1
+char *
+d540 1
+d556 1
+a556 1
+#ifdef	OS_ULTRIX_4
+d564 1
+d620 1
+d665 1
+a692 1
+#include <varargs.h>
+d694 9
+d705 2
+a706 2
+die(va_alist)
+va_dcl
+d709 1
+a709 2
+	char	*p,
+		*fmt;
+d711 1
+d713 2
+a714 2
+	va_start(wargs);
+	fmt = va_arg(wargs, char *);
+d728 2
+a729 2
+warn(va_alist)
+va_dcl
+d736 2
+a737 2
+	va_start(wargs);
+	fmt = va_arg(wargs, char *);
+d749 2
+a750 2
+logdie(va_alist)
+va_dcl
+d757 2
+a758 2
+	va_start(wargs);
+	fmt = va_arg(wargs, char *);
+d777 1
+a777 2
+logerr(va_alist)
+va_dcl
+d784 2
+a785 2
+	va_start(wargs);
+	fmt = va_arg(wargs, char *);
+@
+
+
+1.3
+log
+@Don't put a newline at the end of passwd lines created
+@
+text
+@a30 1
+#include <sys/time.h>
+d32 1
+a40 1
+int	pwReadTries = 3;		/* Retry limit */
+d42 1
+a42 1
+int	DebugLevel = 99;			/* Debugging level */
+d78 1
+a78 1
+	setup(envp);
+d94 1
+a94 1
+	(void) umask(0);		/* Give full control over file modes */
+d101 1
+a101 1
+	(void) strcat(options, "");
+d225 1
+a238 1
+		setcheckpassword("-c", PASSWD_CONFIG, 0);	/* XXX */
+d349 2
+a350 1
+	(void) fprintf("%s\n", sputpwent(p, pwline));
+d364 1
+d443 1
+a443 4
+	*t = *f;	/* Possible memory leak due to the string pointers
+			 * which may point to malloced storage that is not
+			 * reused or freed.
+			 */
+d506 1
+a506 1
+ *	_newstr - copy string into new storage
+d515 1
+a515 1
+		return(NULL);
+d543 1
+a543 1
+ * config - Process the service configuration for Ultrix 4.X
+d545 1
+a545 1
+setup(envp)
+d598 1
+a598 1
+ * setup - Process the 'name service' configuration under Solaris 2.X
+d600 1
+a600 1
+setup(envp)
+d644 1
+a644 1
+setup(envp)
+d673 1
+a673 1
+ * warn - spew error and die
+d696 21
+d768 1
+@
+
+
+1.2
+log
+@Development checkin
+@
+text
+@d394 1
+a394 1
+	(void) sprintf(b, "%s:%s:%d:%d:%s:%s:%s\n",
+d396 1
+a396 1
+	(void) sprintf(b, "%s:%s:%u:%u:%s:%s:%s\n",
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d50 1
+a50 1
+int	catchit(/* int signo */);		/* Signal catcher */
+d182 2
+a183 2
+	if (geteuid())
+		die("Permission denied.\n");
+d335 1
+a335 1
+catchit(signo)
+@

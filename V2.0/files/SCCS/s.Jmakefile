@@ -1,0 +1,234 @@
+h11055
+s 00013/00004/00083
+d D 1.4 98/08/17 15:25:48 clyde 4 3
+c 1. Don't replace lib/npasswd.conf if exists
+c 2. Add install/deinstall target for config file
+e
+s 00010/00012/00077
+d D 1.3 98/07/16 08:55:06 clyde 3 2
+c Fix install stuff
+e
+s 00013/00019/00076
+d D 1.2 98/07/14 16:23:23 clyde 2 1
+c Major rewrite
+e
+s 00093/00000/00000
+d D 1.1 98/06/25 13:46:15 clyde 1 0
+c date and time created 98/06/25 13:46:15 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# Install npasswd ancillary files
+;#
+;# %W% %G% (cc.utexas.edu)
+;#
+#include "../Jmake.local"
+
+D 3
+Initialize(LIB, $privlibexp)
+E 3
+I 3
+Initialize(LIB, $p_installdir)
+E 3
+
+HELP = \
+	passwd.help \
+	chfn.help \
+	chsh.help
+
+MOTD = \
+	passwd.motd \
+	chfn.motd \
+	chsh.motd
+
+CONF	= passwd.conf
+
+I 2
+D 3
+HelpTarget()
+
+E 3
+E 2
+Describe(all,	Build everything)
+I 3
+AllTarget(passwd.conf)
+
+E 3
+D 2
+all::	$(CONF)
+E 2
+I 2
+Describe(passwd.conf,	Build example config file)
+I 3
+ThingFromSH(passwd.conf)
+E 3
+E 2
+
+D 2
+Describe(passwd.conf,	Build config file)
+$(CONF):	passwd_conf.SH
+	$(RM) $(CONF)
+	sh passwd_conf.SH
+E 2
+I 2
+D 3
+NoManPages()
+E 3
+I 3
+D 4
+Describe(install,	Install config help and motd files)
+Describe(deinstall,	Remove config help and motd files)
+E 4
+I 4
+Describe(install,	Install help and motd files)
+Describe(deinstall,	Remove help and motd files)
+E 4
+E 3
+E 2
+
+D 2
+passwd_conf.SH:
+E 2
+I 2
+D 3
+ShellScriptTarget(passwd.conf)
+TerminalDependancy(passwd.conf.SH)
+E 2
+
+D 2
+HelpTarget()
+E 2
+I 2
+Describe(install-all,	Install config help and motd files)
+Describe(deinstall-all,	Remove config help and motd files)
+E 2
+
+E 3
+D 2
+Describe(install,	Install config help and motd files)
+Describe(deinstall,	Remove config help and motd files)
+
+E 2
+install::
+I 4
+	@if [ ! -f $(LIB)/$(CONF) ]; then \
+		$(INSTALL) -c -m 444 $(CONF) $(LIB);\
+		echo $(INSTALL) -c -m 444 $(CONF) $(LIB);\
+	fi
+E 4
+	@echo ""
+D 2
+	@echo See README for details
+E 2
+I 2
+D 3
+	@echo See README before installing
+E 3
+I 3
+D 4
+	@echo See $(CURRENT)/README about customizing help and message files
+E 4
+I 4
+	@echo See $(CURRENT)/README about customizing config, help and message files
+E 4
+E 3
+E 2
+	@echo ""
+
+D 2
+InstallMultipleDestFlags(install,$(CONF) $(HELP) $(MOTD), $(LIB), -m 0444)
+E 2
+I 2
+D 3
+InstallMultipleDestFlags(install-all,$(CONF) $(HELP) $(MOTD), $(LIB), -m 0444)
+E 3
+I 3
+D 4
+InstallMultipleDestFlags(install,$(CONF) $(HELP) $(MOTD), $(LIB), -m 0444)
+E 4
+I 4
+InstallMultipleDestFlags(install, $(HELP) $(MOTD), $(LIB), -m 0444)
+E 4
+E 3
+E 2
+
+I 4
+Describe(install-config,	Install config file)
+Describe(deinstall-config,	Remove config file)
+
+InstallMultipleDestFlags(install-config, $(CONF), $(LIB), -m 0444)
+
+E 4
+I 3
+HelpTarget()
+E 3
+D 2
+depend:
+	@echo Nothing to depend on
+E 2
+I 2
+NoDebug()
+NoLint()
+NoDepend()
+I 3
+NoManPages()
+E 3
+E 2
+
+D 2
+local_clean::
+	$(RM) passwd.conf
+
+LocalNoDebug()
+
+E 2
+;#
+;# End Makefile
+E 1

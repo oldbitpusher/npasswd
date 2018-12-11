@@ -1,0 +1,138 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	97.10.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	97.10.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Add comments re patch 4
+@
+text
+@
+Npasswd 2.0 beta 4 kit - May 1997
+
+This is beta release 4 of npasswd 2.0.
+
+Notes for patch level 4.0 10/29/97
+	Fixes:
+	* Compilation on AIX 4.1
+	* SunOS 5 fix for missing /etc/nsswitch.conf
+	* Possible buffer overflows
+	* Fix use of varags / stdargs
+	* Bug in YP support module
+	* Better support for shadow passwords on SunOS 4, Utrix 4
+	* Fix major bug in password check code
+	* Fix some signal handling on HP/UX
+
+	New features:
+	* Support for AIX shadow passwords
+	* Rewritten lexical check module
+	* Added new password check switch "alphaonly" to allow
+	  alpha-only passwords
+
+Notes for base distribution
+
+Caveats:
+	This is still a testing version - lots of debugging hooks are
+	enabled by default.
+
+	Re-run Configure and answer no to the "build test version" question
+	before making npasswd available for general use.
+
+Status of this program
+
+	* Uses 'Crack' to check passwords.
+	* Loads characteristics from configuration file.
+	* Uses the 'dist' package (via "Configure" script) to determine system 
+	  configuration and features.
+	* Should build and install "out of the box" on many systems.
+	* Is pretty much ANSI and POSIX compliant.
+	* Should not have "buffer overflow" security problems (I believe).
+
+	SunOS 4.1.3+:
+		Compiles & links using unbundled ANSI compiler (/usr/lang/acc)
+		Changes local local and adjunct passwords
+
+	SunOS 5.4:
+		SunOS 5.4 using unbundled ANSI compiler (/opt/SUNWspro/bin/cc)
+		Changes local passwords
+		Changes passwords via NIS
+
+	Ultrix 4.2: (if you still run this dinosaur)
+		Compiles & links 
+		Changes local password
+		Should support enhanced security passwords
+	
+	DEC OSF/1 V3.x:
+		Compiles & links 
+		Changes local password
+		Supports enhanced security (auth database passwords)
+
+	See "./doc/OpenIssues.html" for a definitive status report.
+
+Documentation:
+
+	The documentation is a series of HTML pages in the doc directory.
+	Point a Web browser (lynx will work just fine) at:
+
+		./doc/index.html
+
+Work that needs done:
+
+	* Test on "generic" (e.g. non-Sun) SVR4.
+	* Test on AIX, Linux, HP/UX, etc.
+	* Completion of NIS+ support.
+		This has gotten really messy since Sun removed some NIS+ related
+		APIs in SunOS 5.5, did not provide a *documented* replacement
+		and isn't forthcoming with documentation about the replacement
+		interface they *did* provide.
+
+		The NIS+ code included should work on SunOS 5.3 and 5.4,
+		but I've not finished it because we don't have any 5.4 systems
+		using NIS+.
+
+	* Integration of newer version of Crack library.
+	* Flesh out password history database support and build
+	  maintenance tools.
+	* Finish "punt" code to recognize what functions that npasswd needs
+	  to use vendor programs to accomplish.
+
+Want to fill in the blanks?
+
+	* Use the Web interface to get the "developer's kit" which has
+	  all the metaconfig units used to build the Configure script
+	  and some other tools.
+
+Questions, problems and feeback to
+
+	mailto:npasswd-bugs@@uts.cc.utexas.edu
+
+Version $Id$
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 19
+@

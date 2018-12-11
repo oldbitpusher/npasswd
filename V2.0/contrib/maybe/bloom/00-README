@@ -1,0 +1,12 @@
+This directory contains an experimental version of checkpasswd which
+uses a Bloom filter to check words against a dictionary, and which
+rejects words which Crack, using the same dictionary, would guess.
+
+The file "checkpasswd.filter" is a one-megabyte filter made from a
+large word list (~500,000 items).
+
+This version comprises only the standalone "checkpasswd" and the
+program which constructs filters from word lists.   To compile, type
+"make".  To run, type "checkpasswd".
+
+There are fragmentary beginnings of documentation in the README files.

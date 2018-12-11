@@ -1,0 +1,104 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	98.09.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.22.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Update bug report address
+@
+text
+@<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, UT Austin">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; U; SunOS 5.6 sun4m) [Netscape]">
+   <TITLE>Npasswd Bug Report Form</TITLE>
+</HEAD>
+<BODY>
+
+<HR WIDTH="100%">
+<CENTER> <H1> Npasswd bug report form</H1></CENTER>
+<HR WIDTH="100%">
+
+<P>
+This is a suggested form for reporting npasswd bugs. The more detailed
+information provided, the better the chance of getting a fix. Please remember
+that I have a limited variety of UNIX platforms available for testing.
+<P>
+<PRE>
+
+OS and hardware:
+
+
+Output of <I>npasswd -XV</I>:
+
+
+Description of problem:
+
+
+
+Output of <I>npasswd -XDall</I>:
+
+
+
+Attempted fixes/workarounds:
+
+</PRE>
+
+<HR WIDTH="100%">
+
+<P>Mail bug report to<STRONG>
+<A HREF="mailto:npasswd-support@@www.utexas.edu">
+npasswd-support@@www.utexas.edu</A></STRONG>
+
+<P>
+<HR WIDTH="100%">
+
+<P><A HREF="TOC_std.html"><IMG SRC="home.gif"  ALIGN=CENTER></A><A HREF="TOC_std.html">Home</A>
+
+<P>
+<HR WIDTH="100%">
+
+<P>Document id %Z% $RCSfile$ $Revision$
+<BR>Version $Revision$
+<BR>Last modified $Date$
+<ADDRESS>
+<A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A></ADDRESS>
+
+<BR><A HREF="http://www.utexas.edu/cc">Academic Computing Services and
+Instructional Technology Services</A>
+<BR><A HREF="http://www.utexas.edu/">The University of Texas at Austin</A>
+<BR><FONT SIZE=-1><A HREF="Copyright.html">Copyright 1998</A>, The University
+of Texas at Austin. All rights reserved.</FONT>
+</BODY>
+</HTML>
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d41 3
+a43 1
+<P>Mail bug report to <I><A HREF="mailto:npasswd-bugs@@lists.cc.utexas.edu">npasswd-bugs@@uts.cc.utexas.edu</A></I>
+@

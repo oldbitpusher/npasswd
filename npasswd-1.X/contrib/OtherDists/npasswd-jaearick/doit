@@ -1,0 +1,3 @@
+sudo chown root npasswd
+sudo chgrp bin npasswd
+sudo chmod 4511 npasswd

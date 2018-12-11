@@ -1,0 +1,32 @@
+Return-Path: swartz@cs.wisc.edu
+Received: from dip.cs.wisc.edu (dip.cs.wisc.edu [128.105.9.32]) by sirius.cc.utexas.edu (8.6.8.1/8.6.6/cc-os.mc-1.2) with SMTP id PAA00207 for <clyde@sirius.cc.utexas.edu>; Fri, 15 Jul 1994 15:41:17 -0500
+Date: Fri, 15 Jul 94 15:41:16 -0500
+Message-Id: <9407152041.AA09601@dip.cs.wisc.edu>
+Received: by dip.cs.wisc.edu; Fri, 15 Jul 94 15:41:16 -0500
+From: Steve Swartz <swartz@cs.wisc.edu>
+To: Clyde Hoover <clyde@sirius.cc.utexas.edu>
+Subject: little patches
+
+
+I made a mistake in the code that checks argv[0] to see whether or not it is
+chfn or chsh. I forget to skip to the basename. Sigh. Here's a little patch
+for main.c:
+
+*** main.c      Fri Jul 15 15:34:55 1994
+--- main.c.old  Fri Jul 15 15:35:32 1994
+***************
+*** 124,135 ****
+  #endif
+  
+-       temp = strrchr (argv[0], (int) '/');
+-       if (temp == NULL) {
+-               temp = argv[0];
+-       }
+-       else {
+-               temp++;
+-       }
+- 
+        if (strcmp (temp, "chsh") == 0) {
+                pfunc = CHSH;
+--- 124,127 ----
+

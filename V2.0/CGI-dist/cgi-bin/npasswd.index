@@ -1,0 +1,7 @@
+#
+#
+README	npasswd/v2.0/README			README for the distribution
+npasswd	npasswd/v2.0/npasswd-2.0b4.tar.Z	Source distribution
+develop	npasswd/v2.0/npasswd-2.0b4_develop.tar.Z	Developer kit part 1
+dist30	npasswd/v2.0/dist-3.0@70.tar.Z	Metaconfig package (developer kit part 2)
+

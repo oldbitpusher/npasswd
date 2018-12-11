@@ -1,0 +1,82 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	99.12.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Fix typo
+@
+text
+@
+Release notes for npasswd 2.0
+
+Npasswd is a replacement for the passwd command for UNIX.
+It subjects user passwords to stringent guessability checks to
+decrease the chance of users choosing vulnerable passwords.
+
+It addresses other deficiencies found of standard password change
+programs. Npasswd is designed to replace the programs passwd, chfn and chsh. 
+
+	* Uses 'Crack' to check passwords.
+	* Offers password reuse control.
+	* Loads characteristics from a configuration file.
+	* Should build and install "out of the box" on many UNIX platforms.
+	* Written in ANSI and (pretty much) POSIX C.
+	* Should be clean of "buffer overflow" security problems.
+
+Documentation:
+
+	The documentation is a set of HTML pages in the doc directory.
+	Point a Web browser (lynx will work just fine) at:
+
+		./doc/index.html
+
+Please read the "Build and Install" guide before attempting to build npasswd.
+
+Other stuff:
+	* There is a large collection of word lists available under
+	  seperate cover (to keep the program distribution archive small).
+	  See ./dict/0-README for details
+
+	* If you are doing development or major repair on npasswd,
+	  the you need to get the developer's kit which has
+	  all the metaconfig units used to build the Configure script
+	  and other tools.
+
+Clyde Hoover
+c.hoover@@cc.utexas.edu
+Academic Computing Services and Instructional Technology Services
+The University of Texas at Austin
+
+Document id $Id$
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d25 1
+a25 1
+Please read the "Build and Instal" guide before attempting to build npasswd.
+@

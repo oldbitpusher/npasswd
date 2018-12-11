@@ -1,0 +1,66 @@
+
+   ______________________________________________________________________
+   
+                       Npasswd Documentation Roadmap
+   ______________________________________________________________________
+   
+   This is the on-line documentation for version 2.0 of npasswd.
+     _________________________________________________________________
+   
+     * [1]Introduction
+       Introduction.
+     * [2]History
+       How npasswd came about.
+     * [3]Build and install
+       Building and installing npasswd.
+     * [4]Troubleshooting How to help yourself.
+     * [5]Support Guide How to get help.
+     * [6]The future
+       Where npasswd might be going.
+     * [7]Acknowledgments
+       Credit where credit is due.
+     * [8]Bibliography
+       Other things of interest.
+     * [9]Questions and Answers
+       Answers to what I think are common questions.
+     * [10]Manual pages
+       Traditional UNIX manual pages.
+     * [11]Reference Manual
+       The big hairy reference manual.
+     * [12]Administration Guide
+       What the system administrator needs to know.
+     * [13]Notes
+       Ruminations and relevations.
+   ______________________________________________________________________
+   
+   Document id @(#) TOC_std.html 1.7
+   Version 1.7
+   Last modified 07/20/98
+   
+   
+    [14]Clyde Hoover
+    [15]Academic Computing Services and Instructional Technology
+    Services
+    [16]The University of Texas at Austin
+    [17]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./Main.html#Introduction
+   2. file://localhost/./Main.html#History
+   3. file://localhost/./BuildInstall.html
+   4. file://localhost/./Support.html#Trouble
+   5. file://localhost/./Support.html#Support
+   6. file://localhost/./Main.html#Future
+   7. file://localhost/./Main.html#Acknowledgments
+   8. file://localhost/./Main.html#Bibliography
+   9. file://localhost/./QNA.html
+  10. file://localhost/./ManPages.html
+  11. file://localhost/./Reference_index.html
+  12. file://localhost/./AdminGuide.html
+  13. file://localhost/./MiscNotes.html
+  14. mailto:c.hoover@cc.utexas.edu
+  15. http://www.utexas.edu/cc
+  16. http://www.utexas.edu/
+  17. file://localhost/./Copyright.html

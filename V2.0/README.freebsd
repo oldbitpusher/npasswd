@@ -1,0 +1,8 @@
+
+Configure:
+	don't use 'nm' to extract symbols
+	bogus NIS+ detection
+	Not finding most of libc routines (no symbols on libc.so)
+cc_osflags='-DOS_NAME=freebsd -DOS_MAJOR_VERSION=4 -DOS_MINOR_VERSION=10-' 
+		Needs fixing
+

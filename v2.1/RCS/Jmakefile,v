@@ -1,0 +1,412 @@
+head	1.12;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.12
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.07.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	97.05.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	97.04.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	97.04.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.12.04.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.12.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.09.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.08.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.12
+log
+@Add 'nuke' target to burn everything down brutally
+@
+text
+@;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# $Id$ (cc.utexas.edu)
+;#
+;# Main Makefile for npasswd
+;#
+#include "Jmake.local"
+
+Initialize(INSTALL_DIR, $p_installdir)
+Initialize(KEEP_DIR, $p_keepdir)
+Initialize(DICT_DIR, $p_dictionaries)
+Initialize(UTIL_DIR, $p_utildir)
+Initialize(ECHO_C, $c)
+Initialize(ECHO_N, $n)
+
+DIRS_NEEDED = $(INSTALL_DIR) $(DICT_DIR) $(KEEP_DIR) $(UTIL_DIR)
+
+SetSubdirs(files src dict doc)
+
+Describe(all, Build everything everywhere)
+;# Force "all" to be the first target
+all::
+	/* Leave this blank line here */
+
+HelpTarget()
+
+Describe(install, Install npasswd. This must be done as root)
+;#
+;# Install section - lots of things to do
+;#
+install::
+	@@foo=`(id || whoami) 2>/dev/null`;\
+	  case "$$foo" in \
+	  *root*) exit 0;;\  
+	  *) echo "make install should be done as root"; exit 1;;\
+          esac
+
+;#
+;# Make and set modes for the installation directories
+;#
+install::
+	MakeDirs($(DIRS_NEEDED))
+	chmod 0755 $(INSTALL_DIR) $(DICT_DIR) $(UTIL_DIR)
+	chmod 0751 $(KEEP_DIR)
+
+Describe(deinstall, Remove npasswd and revert to vendor programs)
+deinstall:: backdown
+
+Describe(backdown, Revert to vendor programs )
+backdown::
+	cd src; make $(MFLAGS) backdown
+
+Describe(nuke, Delete the entire install directory and contents) 
+nuke:
+	@@echo $(ECHO_N) Delete everything under $(INSTALL_DIR) '(y/n)? $(ECHO_C)'; \
+	 read ans;\
+	 case "$$ans" in\
+	 y*|Y*) (set -x; $(RM) -r $(INSTALL_DIR)) ;;\
+	esac
+
+Describe(depend, Update makefile dependancies)
+DependSubdirs()	/* Depend ins SUBDIRS */
+DebugSubdirs()	/* Debugging in SUBDIRS */
+
+/* End $RCSfile$ */
+@
+
+
+1.11
+log
+@Add util directory, use new config path names
+@
+text
+@d54 2
+d94 8
+@
+
+
+1.10
+log
+@Major rewrite
+@
+text
+@d50 1
+a50 1
+Initialize(LIB_DIR, $privlibexp)
+d52 2
+a53 1
+Initialize(DICT_DIR, $p_dictlib)
+d55 1
+a55 1
+DIRS_NEEDED = $(LIB_DIR) $(DICT_DIR) $(KEEP_DIR)
+d82 1
+a82 1
+	chmod 0755 $(LIB_DIR) $(DICT_DIR)
+@
+
+
+1.9
+log
+@Major rework to eliminate unneccesary building and cleanup
+@
+text
+@d59 2
+a60 1
+all::	/* Force "all" to be first target */
+d92 2
+a93 1
+DependSubdirs()
+a94 3
+/* Debugging targets */
+DebugSubdirs()
+
+@
+
+
+1.8
+log
+@1. Add copyright notice 2. Include local definitions file\ 3. Fix use of () and {} 4. Use local setup macros
+@
+text
+@d54 1
+a54 1
+ALL_LIBS = $(LIB_DIR) $(DICT_DIR) $(KEEP_DIR)
+d58 3
+a60 5
+;#
+;# Make all builds everything
+;#
+Describe(all, Build npasswd and ancillary programs)
+NamedTargetSubdirsRule($(SUBDIRS), all, Making all, ^^)
+d62 2
+d69 5
+a73 5
+	@@(set +e; foo=`(id || whoami) 2>/dev/null`;\
+	 case "$$foo" in \
+	 *root*) exit 0;;\  
+	 *) echo "Warning: make install should be done as root"; exit 1;;\
+         esac)
+d79 1
+a79 1
+	MakeDirs($(ALL_LIBS))
+d83 3
+d90 2
+a91 4
+;#
+;# Make depend for everything
+;#
+DependSubdirs($(SUBDIRS))
+d93 2
+a94 5
+Describe(deinstall, Remove npasswd and revert to vendor programs)
+deinstall::
+	@@echo ""
+	@@echo You have to remove $(LIB_DIR) manually 
+	@@echo ""
+a95 2
+SubdirDebug(files src)
+
+@
+
+
+1.7
+log
+@1. Make deinstall do almost the right thing 2. Add backdown target
+@
+text
+@a0 3
+/*
+ * Main Jmakefile for npasswd 2.0
+ */
+d2 42
+d46 4
+d54 1
+a54 1
+ALL_LIBS = ${LIB_DIR} ${DICT_DIR} ${KEEP_DIR}
+d61 2
+a62 1
+NamedTargetSubdirsRule(${SUBDIRS}, all, Making all, ^^)
+d64 1
+a67 2
+;# Warn user if not installing as root
+;#
+d79 3
+a81 3
+	MakeDirs(${ALL_LIBS})
+	chmod 0755 ${LIB_DIR} ${DICT_DIR}
+	chmod 0751 ${KEEP_DIR}
+d83 1
+d85 1
+a85 1
+	cd src; make ${MFLAGS} backdown
+d90 1
+a90 1
+DependSubdirs(${SUBDIRS})
+d92 1
+d95 1
+a95 1
+	@@echo You have to remove ${LIB_DIR} manually 
+d98 2
+@
+
+
+1.6
+log
+@Again change logic of root permission test
+@
+text
+@a10 2
+Initialize(INSTALL, $install)
+
+d33 1
+a33 1
+;# Make the installation directories
+a34 5
+MakeInstallDirectories(${ALL_LIBS})
+
+;#
+;# Set modes for installation directories
+;#
+d36 1
+d40 3
+d48 5
+@
+
+
+1.5
+log
+@Fix root permission checking
+@
+text
+@d28 5
+a32 7
+	@@(set +e; foo=`(logname || whoami) 2>/dev/null`;\
+	 if test -n "$$foo" -a "$$foo" != root; then\
+		echo "Warning: make install should be done as root";\
+		exit 1;\
+	 else \
+		exit 0;\
+	 fi)
+@
+
+
+1.4
+log
+@Fix typo
+@
+text
+@d28 1
+a28 1
+	@@foo=`(whoami)2>/dev/null`;\
+d31 4
+a34 1
+	 fi
+@
+
+
+1.3
+log
+@Add more install sub-parts
+@
+text
+@d30 1
+a30 1
+		echo Warning: make install should be done as root";\
+@
+
+
+1.2
+log
+@Add "all" target to build everything
+@
+text
+@d7 8
+a14 1
+Initialize(LIB, $privlibexp)
+d17 3
+d22 26
+a49 2
+MakeInstallDirectories(${LIB} ${LIB}/dictionaries)
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d10 1
+a10 1
+MakeInstallDirectories(${LIB} ${LIB}/dictionaries)
+d14 2
+@

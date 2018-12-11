@@ -1,0 +1,204 @@
+h26504
+s 00001/00001/00154
+d D 1.4 98/09/23 14:27:25 clyde 4 3
+c Add -I../Common to INCLUDE_PATH
+e
+s 00001/00001/00154
+d D 1.3 98/07/16 09:20:14 clyde 3 2
+c Change ShellScriptTarget to ThingFromSH
+e
+s 00003/00003/00152
+d D 1.2 98/07/14 16:25:15 clyde 2 1
+c Update for new local stuff
+e
+s 00155/00000/00000
+d D 1.1 98/06/26 14:41:03 clyde 1 0
+c date and time created 98/06/26 14:41:03 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# This Makefile builds debugging versions of password database access method
+;# modules and the selected shadow database access method module,
+;# and the validation test drivers & programs.
+;#
+;# %W% %G% (cc.utexas.edu)
+;#
+#include "../../../Jmake.local"
+
+D 4
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../../..)
+E 4
+I 4
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../../.. -I../Common)
+E 4
+
+;# 
+;# Debugging is always on ../defines.h for the debug level explanation
+;#
+X_LOCAL_CFLAGS = -DCDEBUG=3 $(X_CCDEBUG)
+COMOBJ_LIB = ../../Common/libcomobj.a	/* Need common object lib */
+
+/*
+ * Things needed from package config
+ */
+Initialize(SHADOW_M, $p_shadow)
+>LIBS
+>RM
+
+;#
+;# These must be the same as PASSWDM_SRC and SHADOWM_SRC in ../Makefile
+;#
+PASSWDM_SRC = \
+	pwm_main.c \
+	pwm_local.c \
+	pwm_nis.c
+
+SHADOWM_SRC = \
+	shm_adjunct.c \
+	shm_aix.c \
+	shm_shadow.c \
+	shm_ultrix.c \
+	shm_osf1.c \
+	shm_hpux.c
+
+;#
+;# Test suite driver program
+;#
+MAIN = pwm_test.c
+
+++SOURCES $(SHADOWM_SRC) 
+
+METHOD_OBJ = \
+|expand f!$(PASSWDM_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+OBJS	= $(METHOD_OBJ) $(SHADOW_M).o $(COMOBJ_LIB) $(LIBS)
+
+Describe(all, Setup and build everthing)
+all::	srclinks
+	-@echo Run InitTestFiles.sh to setup dummy files
+
+all::	getuser
+
+Describe(getuser, Build user lookup test program)
+SingleProgramTarget(getuser, $(MAIN) $(SHADOW_M).o, $(LIBS))
+
+getuser: $(MAIN) $(COMOBJ_LIB) $(METHOD_OBJ) $(SHADOW_M).o
+	$(CC) -o getuser -DTEST_GETUSER $(JCFLAGS) $(MAIN) $(OBJS)
+
+;#
+;# putuser - build test user passwd update program
+;#
+;# all:: putuser
+;#
+;#Describe(putuser, Build user update test program)
+;#putuser: $(MAIN) $(COMOBJ_LIB) $(METHOD_OBJ) $(SHADOW_M).o
+;#	$(CC) -o putuser -DTEST_PUTUSER $(JCFLAGS) $(MAIN) $(OBJS)
+
+depend::	srclinks
+
+Describe(srclinks, Link source modules from method directory)
+srclinks:
+	-@for f in $(PASSWDM_SRC) $(SHADOW_M).c; do \
+		if [ ! -f $$f ]; then\
+			 ln -s ../$$f $$f && echo $(LNS) ../$$f $$f;\
+		fi;\
+	done
+
+;#
+;# Local components to 'clobber' target
+;#
+local_clobber::
+	$(RM) $(PASSWDM_SRC) $(SHADOW_M).c
+	$(RM) TestSuiteSetup.sh getuser putuser etc_*
+
+;#
+;# Dependancies for pieces of the test suite
+;#
+all::	TestGetUser.sh TestSuiteSetup.sh InitTestFiles.sh
+
+TestGetUser.sh:
+
+InitTestFiles.sh:
+
+D 3
+ShellScriptTarget(TestSuiteSetup)
+E 3
+I 3
+ThingFromSH(TestSuiteSetup)
+E 3
+
+D 2
+LocalSubdirMake($(COMOBJ_LIB), all, ../../Common)
+E 2
+I 2
+XdirLibMake(comobj,../../Common)
+E 2
+
+D 2
+LocalDebugMulti(debug-main)
+E 2
+I 2
+DebugMulti(debug-main)
+E 2
+
+debug-main:
+	@echo Debugging in $(CURRENT) is always enabled
+
+D 2
+LocalEnd()
+E 2
+I 2
+Coda()
+E 2
+
+/* End %M% */
+E 1

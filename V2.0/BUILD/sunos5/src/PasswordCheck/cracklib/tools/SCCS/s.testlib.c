@@ -1,0 +1,1 @@
+../../../../../../../src/PasswordCheck/cracklib/tools/SCCS/s.testlib.c

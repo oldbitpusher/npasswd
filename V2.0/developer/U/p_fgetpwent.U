@@ -1,0 +1,48 @@
+?RCS:
+?RCS: @(#)p_fgetpwent.U	1.3 09/22/97
+?RCS:
+?RCS: Unit 'p_fgetpwent' - see if fgetpwent exists
+?RCS:
+?MAKE:p_fgetpwent: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_fgetpwent
+?S:p_fgetpwent:
+?S:    This variable is set to 'true' if libc fgetpwent should be used.
+?S:.
+?C:HAS_FGETPWENT :
+?C:	This symbol, if defined, indicates that libc fgetpwent should be used.
+?C:.
+?H:#$p_fgetpwent	HAS_FGETPWENT	/**/
+?H:.
+?F: fgptest.c fgptest fgptest-passwd
+set fgetpwent p_fgetpwent
+eval "$inlibc"
+
+if test $p_fgetpwent = $define; then
+	echo ' ' >&4
+	echo $n 'Checking if fgetpwent ignores NIS stubs ... ' $c >&4
+	echo "+one::0:0:::/bin/csh" > fgptest-passwd
+	cat > fgptest.c <<"EOF"
+#include <sys/types.h>
+#include <stdio.h>
+#include <pwd.h>
+main()
+{
+        FILE    *f = fopen("fgptest-passwd", "r");
+        struct passwd *pwp;
+        while (pwp = fgetpwent(f)) {
+		if (*pwp->pw_name == '+') exit(0);
+	}
+	exit(1);
+}
+EOF
+	$cc fgptest.c -o fgptest
+	if ./fgptest;  then
+		echo 'nope (good)' >&4
+	else
+		echo 'yep - we wont use it.' >&4
+		p_fgetpwent=$undef
+	fi
+	$rm -f fgptest.c fgptest fgptest-passwd
+fi
+

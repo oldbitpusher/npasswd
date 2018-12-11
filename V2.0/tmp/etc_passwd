@@ -1,0 +1,17 @@
+root:##root:0:1:Operator:/:/bin/csh
+nobody:##nobody:65534:65534::/:
+daemon:##daemon:1:1::/:
+sys:##sys:2:2::/:/bin/csh
+bin:##bin:3:3::/bin:
+uucp:##uucp:4:8::/var/spool/uucppublic:
+news:##news:6:6::/var/spool/news:/bin/csh
+ingres:##ingres:7:7::/usr/ingres:/bin/csh
+audit:##audit:9:9::/etc/security/audit:/bin/csh
+AUpwdauthd:##AUpwdauthd:27:10:AUpwdauthd pseudo user::
+AUyppasswdd:##AUyppasswdd:28:10:AUyppasswdd pseudo user::
+sync:##sync:1:1::/:/bin/sync
+sysdiag:##sysdiag:0:1:Old System Diagnostic:/usr/diag/sysdiag:/usr/diag/sysdiag/sysdiag
+sundiag:##sundiag:0:1:System Diagnostic:/usr/diag/sundiag:/usr/diag/sundiag/sundiag
+clyde:##clyde:165:0:CWH:/home/clyde:/bin/csh
+mic:##mic:2655:0:MPK:/home/mic:/bin/csh
+joe:##joe:166:0:CWH:/home/clyde:/bin/csh

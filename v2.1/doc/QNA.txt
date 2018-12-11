@@ -1,0 +1,148 @@
+
+     _________________________________________________________________
+   
+                       Npasswd Questions And Answers
+     _________________________________________________________________
+   
+General issues
+   ___________________________________
+   
+   Q. My system has shadow passwords. Why would I need npasswd?
+   
+   A. Shadow passwords makes it harder for a bad guy to obtain encrypted
+   passwords. But that protection is a function of the UNIX file system.
+   There are a number of "root kits" available for intruders to gain
+   super-user privileges on your system so they can get a copy of your
+   password and shadow files.
+   
+   Combining intelligent password checking with a shadow database
+   provides the best protection short of one-time use passwords or
+   challenge/response smart card systems.
+   ___________________________________
+   
+   Q. Is npasswd compatible with the passwd program supplied by my system
+   vendor?
+   
+   A. The basic functionality of the passwd program (changing passwords)
+   is the same. However, many vendor passwd programs have specialty
+   options that npasswd does not. This is usually because the option is
+   ill-documented or very esoteric and a hard to replicate. The npasswd
+   installation procedure will preserve the vendor programs in the
+   npasswd installation directory. These programs will be invoked to do
+   what npasswd cannot.
+   ___________________________________
+   
+   Q. Are there npasswd binaries that I can drop in?
+   
+   A. Npasswd is distributed in source for the following reasons:
+     * There are customizations which must be chosen at compilation time.
+       I consider these options important for the installer to be aware
+       of, even though they probably will not need to be changed.
+     * I did not want to arbitrarily decide where you want to install
+       npasswd. You have the option of changing the default to suit your
+       needs. For example, the location of the password history database
+       is dependent upon system configuration.
+   ___________________________________
+   
+   Q. How much do I need to know to build and install npasswd?
+   
+   A. A lot of work has gone into making npasswd easier to build, install
+   and maintain. However, this is not a "turn the crank and go" process.
+   You should be familiar with your C compiler and make.
+   ___________________________________
+   
+   Q. What support is available?
+   
+   A. Bug reports will be investigated on a time-available basis. See the
+   [1]Npasswd Support Guide.
+   ___________________________________
+   
+   Q. Is there any maintenance required?
+   
+   A. The password history database must be purged periodically. Use the
+   history_admin program for this purpose. See [2]history_admin(1).
+   ___________________________________
+   
+Password checking
+   ___________________________________
+   
+   Q. Can I use Crack dictionaries with npasswd?
+   
+   A. Yes, but not directly. The dictionary hash format used by Crack is
+   optimized to conserve disk space. The npasswd dictionary hash format
+   is optimized for lookup speed. Crack dictionaries can be converted for
+   use by npasswd.
+   
+   See the [3]Npasswd Administration Guide for the conversion procedure.
+   ___________________________________
+   
+   Q. How many dictionaries do I need or want?
+   
+   A. As many as you can stand. You can have multiple dictionaries, each
+   generated from a distinct word list, or one large combined dictionary.
+   A number of smaller dictionaries allows easier customization than one
+   big dictionary.
+   ___________________________________
+   
+   Q. How does the size of my dictionaries affect password security?
+   
+   A. More dictionary words equals greater password security. It may also
+   mean greater frustration in your user community because npasswd will
+   reject more passwords.
+   ___________________________________
+   
+   Q. Why are there words in the dictionary which are shorter than the
+   minimum password length? Wouldn't it save disk space to remove these
+   short words from the dictionaries?
+   
+   A. Several permutations are made on each dictionary word. For example,
+   "quick" is too short to be a password, (minimum length is 6), but
+   "quickly" is long enough and would be found by the test of the plural
+   form of the word "quick" from the dictionary. If bad guys have "quick"
+   in their Crack dictionaries, and you don't - your system can be in
+   trouble.
+   ___________________________________
+   
+   Q. Why is npasswd so picky about accepting passwords?
+   
+   A. Because the bad guys who are trying to get your passwords are using
+   some very thorough tools like Crack. The dictionary check code in
+   npasswd was written by the author of Crack, and performs the same
+   checks. Given sufficient dictionaries, if npasswd accepts a password
+   there is a good chance that Crack will not guess it.
+   ___________________________________
+   
+   Q. What kind of passwords will npasswd accept?
+   
+   A. A mixture of upper and lower case alphas, with a sprinkling of
+   punctuation characters and digits will usually pass muster. Control
+   and whitespace characters can also be included, but should be used
+   with caution - some applications which read passwords may not deal
+   with these very well.
+     _________________________________________________________________
+   
+   [4][LINK]Top    [5][LINK]Home
+   ______________________________________________________________________
+   
+   Document id @(#) QNA.html 1.5
+   Version 1.5
+   Last modified 07/20/98
+   
+   
+    [6]Clyde Hoover
+    [7]Academic Computing Services and Instructional Technology Services
+    [8]The University of Texas at Austin
+    [9]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./Support.html
+   2. file://localhost/./history_admin_1.html
+   3. file://localhost/./AdminGuide.html
+   4. file://localhost/./QNA.html#top
+   5. file://localhost/./TOC_std.html
+   6. mailto:c.hoover@cc.utexas.edu
+   7. http://www.utexas.edu/cc
+   8. http://www.utexas.edu/
+   9. file://localhost/./Copyright.html

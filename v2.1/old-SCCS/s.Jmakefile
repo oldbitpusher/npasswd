@@ -1,0 +1,385 @@
+h54332
+s 00010/00000/00096
+d D 1.12 98/07/20 13:51:31 clyde 12 11
+c Add 'nuke' target to burn everything down brutally
+e
+s 00005/00004/00091
+d D 1.11 98/07/16 09:16:29 clyde 11 10
+c Add util directory, use new config path names
+e
+s 00004/00005/00091
+d D 1.10 98/07/14 16:23:09 clyde 10 9
+c Major rewrite
+e
+s 00019/00023/00077
+d D 1.9 98/07/10 10:48:48 clyde 9 8
+c Major rework to eliminate unneccesary building and cleanup
+e
+s 00060/00013/00040
+d D 1.8 98/05/05 13:37:05 clyde 8 7
+c 1. Add copyright notice
+c 2. Include local definitions file\
+c 3. Fix use of () and {}
+c 4. Use local setup macros
+e
+s 00010/00008/00043
+d D 1.7 97/05/01 13:52:46 clyde 7 6
+c 1. Make deinstall do almost the right thing
+c 2. Add backdown target
+e
+s 00005/00007/00046
+d D 1.6 97/04/29 14:42:57 clyde 6 5
+c Again change logic of root permission test
+e
+s 00005/00002/00048
+d D 1.5 97/04/28 16:12:06 clyde 5 4
+c Fix root permission checking
+e
+s 00001/00001/00049
+d D 1.4 96/12/04 15:12:28 clyde 4 3
+c Fix typo
+e
+s 00037/00003/00013
+d D 1.3 96/12/03 16:16:39 clyde 3 2
+c Add more install sub-parts
+e
+s 00003/00001/00013
+d D 1.2 96/09/12 16:27:38 clyde 2 1
+c Add "all" target to build everything
+e
+s 00014/00000/00000
+d D 1.1 96/08/30 16:00:06 clyde 1 0
+c date and time created 96/08/30 16:00:06 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+D 8
+/*
+ * Main Jmakefile for npasswd 2.0
+ */
+E 8
+;#
+I 8
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+E 8
+;# %W% %G% (cc.utexas.edu)
+;#
+I 8
+;# Main Makefile for npasswd
+;#
+#include "Jmake.local"
+
+E 8
+D 3
+Initialize(LIB, $privlibexp)
+E 3
+I 3
+D 11
+Initialize(LIB_DIR, $privlibexp)
+E 11
+I 11
+Initialize(INSTALL_DIR, $p_installdir)
+E 11
+Initialize(KEEP_DIR, $p_keepdir)
+D 11
+Initialize(DICT_DIR, $p_dictlib)
+E 11
+I 11
+Initialize(DICT_DIR, $p_dictionaries)
+Initialize(UTIL_DIR, $p_utildir)
+I 12
+Initialize(ECHO_C, $c)
+Initialize(ECHO_N, $n)
+E 12
+E 11
+
+D 7
+Initialize(INSTALL, $install)
+
+E 7
+D 8
+ALL_LIBS = ${LIB_DIR} ${DICT_DIR} ${KEEP_DIR}
+E 8
+I 8
+D 9
+ALL_LIBS = $(LIB_DIR) $(DICT_DIR) $(KEEP_DIR)
+E 9
+I 9
+D 11
+DIRS_NEEDED = $(LIB_DIR) $(DICT_DIR) $(KEEP_DIR)
+E 11
+I 11
+DIRS_NEEDED = $(INSTALL_DIR) $(DICT_DIR) $(KEEP_DIR) $(UTIL_DIR)
+E 11
+E 9
+E 8
+
+E 3
+SetSubdirs(files src dict doc)
+
+I 3
+D 9
+;#
+;# Make all builds everything
+;#
+E 3
+D 2
+MakeInstallDirectories(${LIB} ${LIB}/dictionaries)
+E 2
+I 2
+D 8
+NamedTargetSubdirsRule(${SUBDIRS}, all, Making all, ^^)
+E 8
+I 8
+Describe(all, Build npasswd and ancillary programs)
+NamedTargetSubdirsRule($(SUBDIRS), all, Making all, ^^)
+E 9
+I 9
+Describe(all, Build everything everywhere)
+D 10
+all::	/* Force "all" to be first target */
+E 10
+I 10
+;# Force "all" to be the first target
+all::
+E 10
+	/* Leave this blank line here */
+E 9
+E 8
+E 2
+
+I 9
+HelpTarget()
+
+E 9
+I 8
+Describe(install, Install npasswd. This must be done as root)
+E 8
+D 3
+DependSubdirs(${SUBDIRS})
+E 3
+I 3
+;#
+;# Install section - lots of things to do
+;#
+D 8
+;# Warn user if not installing as root
+;#
+E 8
+install::
+D 5
+	@foo=`(whoami)2>/dev/null`;\
+E 5
+I 5
+D 6
+	@(set +e; foo=`(logname || whoami) 2>/dev/null`;\
+E 5
+	 if test -n "$$foo" -a "$$foo" != root; then\
+D 4
+		echo Warning: make install should be done as root";\
+E 4
+I 4
+		echo "Warning: make install should be done as root";\
+E 4
+D 5
+	 fi
+E 5
+I 5
+		exit 1;\
+	 else \
+		exit 0;\
+	 fi)
+E 6
+I 6
+D 9
+	@(set +e; foo=`(id || whoami) 2>/dev/null`;\
+	 case "$$foo" in \
+	 *root*) exit 0;;\  
+	 *) echo "Warning: make install should be done as root"; exit 1;;\
+         esac)
+E 9
+I 9
+	@foo=`(id || whoami) 2>/dev/null`;\
+	  case "$$foo" in \
+	  *root*) exit 0;;\  
+	  *) echo "make install should be done as root"; exit 1;;\
+          esac
+E 9
+E 6
+E 5
+E 3
+
+I 2
+D 3
+MakeInstallDirectories(${LIB} ${LIB}/dictionaries)
+E 3
+I 3
+;#
+D 7
+;# Make the installation directories
+E 7
+I 7
+;# Make and set modes for the installation directories
+E 7
+;#
+D 7
+MakeInstallDirectories(${ALL_LIBS})
+E 3
+
+I 3
+;#
+;# Set modes for installation directories
+;#
+E 7
+install::
+I 7
+D 8
+	MakeDirs(${ALL_LIBS})
+E 7
+	chmod 0755 ${LIB_DIR} ${DICT_DIR}
+	chmod 0751 ${KEEP_DIR}
+E 8
+I 8
+D 9
+	MakeDirs($(ALL_LIBS))
+E 9
+I 9
+	MakeDirs($(DIRS_NEEDED))
+E 9
+D 11
+	chmod 0755 $(LIB_DIR) $(DICT_DIR)
+E 11
+I 11
+	chmod 0755 $(INSTALL_DIR) $(DICT_DIR) $(UTIL_DIR)
+E 11
+	chmod 0751 $(KEEP_DIR)
+E 8
+
+I 9
+Describe(deinstall, Remove npasswd and revert to vendor programs)
+deinstall:: backdown
+
+E 9
+I 8
+Describe(backdown, Revert to vendor programs )
+E 8
+I 7
+backdown::
+D 8
+	cd src; make ${MFLAGS} backdown
+E 8
+I 8
+	cd src; make $(MFLAGS) backdown
+E 8
+
+I 12
+Describe(nuke, Delete the entire install directory and contents) 
+nuke:
+	@echo $(ECHO_N) Delete everything under $(INSTALL_DIR) '(y/n)? $(ECHO_C)'; \
+	 read ans;\
+	 case "$$ans" in\
+	 y*|Y*) (set -x; $(RM) -r $(INSTALL_DIR)) ;;\
+	esac
+
+E 12
+E 7
+D 9
+;#
+;# Make depend for everything
+;#
+D 8
+DependSubdirs(${SUBDIRS})
+E 8
+I 8
+DependSubdirs($(SUBDIRS))
+E 9
+I 9
+Describe(depend, Update makefile dependancies)
+D 10
+DependSubdirs()
+E 10
+I 10
+DependSubdirs()	/* Depend ins SUBDIRS */
+DebugSubdirs()	/* Debugging in SUBDIRS */
+E 10
+E 9
+E 8
+
+I 8
+D 9
+Describe(deinstall, Remove npasswd and revert to vendor programs)
+E 8
+I 7
+deinstall::
+	@echo ""
+D 8
+	@echo You have to remove ${LIB_DIR} manually 
+E 8
+I 8
+	@echo You have to remove $(LIB_DIR) manually 
+E 8
+	@echo ""
+E 9
+I 9
+D 10
+/* Debugging targets */
+DebugSubdirs()
+E 9
+
+E 10
+I 8
+D 9
+SubdirDebug(files src)
+
+E 9
+E 8
+E 7
+E 3
+E 2
+/* End %M% */
+E 1

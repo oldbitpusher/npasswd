@@ -1,0 +1,461 @@
+head	1.8;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.8
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@Spell check
+@
+text
+@<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Npasswd Documentation </TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m) [Netscape]">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, University of Texas, Austin[">
+</HEAD>
+<BODY>
+
+<A NAME="top"></A>
+<hr>
+<H1 ALIGN=CENTER>Npasswd Documentation </H1>
+<hr>
+<P>
+<H2><A NAME="Introduction"></A>Introduction</H2>
+
+<P><I>Npasswd</I> is a replacement for the passwd command for UNIX.
+It subjects user passwords to stringent guessability checks to decrease
+the chance of users choosing vulnerable passwords. It addresses
+other deficiencies found of standard password change programs.
+
+<I>Npasswd</I> is designed to replace the
+programs <I>passwd</I>, <I>chfn </I>and <I>chsh</I>.
+
+<P><I>Npasswd</I> should work under most versions of UNIX and UNIX-like
+operating systems. It does not replicate every feature of every password
+program on every UNIX platform.  If the installer chooses to replace
+the system programs with <I>npasswd</I>, they will be preserved 
+and used to perform the functions that <i>npasswd</i> cannot do.
+
+<P>Many UNIX platforms use shadow passwords, which makes it harder for a
+bad guy to obtain encrypted passwords. But there are still plenty of systems
+which have the encrypted passwords available for all the world to see.
+</P>
+
+<P>Having shadow passwords in and of itself <b>greatly reduces</b>
+vulnerability to password crackers.
+But that protection is a function of the UNIX file system. If you use unsecure
+NIS or a misconfigured NIS+, you can still give away your passwords. </P>
+
+<P>Combining intelligent password checking with a shadow database provides
+the best protection short of one-time use passwords or challenge/response
+smart card systems. </P>
+
+<P>Configuring <I>npasswd</I> requires some thought on the part of the
+administrator. It's not a "plug and play" process. There are configuration
+options to select, and there is policy in the code that may not meet your
+needs. </P>
+
+<HR WIDTH="100%">
+
+<H2><A NAME="History"></A>History </H2>
+
+<P>In November of 1988 the infamous Morris worm escaped its playpen and
+went on a rampage across the Internet, bringing UNIX systems to their
+knees and causing widespread trouble. Among the Worm's attacks was a password
+guesser, which was fairly clever and unnervingly successful. </P>
+
+<P>Our systems (University of Texas Academic Computing Servies)
+escaped being ravaged by the Worm
+because our main mail gateway was not a VAX or SUN. </P>
+
+<P>Afterwards the Worm was dissected and papers released describing its
+anatomy. From these papers I replicated the password cracker, ran it against
+our password files and got plenty of hits. I rewrote the cracker into
+a primitive password checker that was posted to <I>comp.sources.misc</I>
+in 1989. </P>
+
+<P>The UNIX password encryption <I>crypt</I>(3) was considered good
+that the cyphertext could not be cracked, so it was safe to 
+have the encrypted passwords visible to all.
+
+<P>The Worm approached password cracking from a &quot;human engineering&quot;
+perspective. People are likely to choose passwords which are easy to remember
+- such as their login name or phone number. The Worm's password cracker
+encrypted various plaintext strings and compared them to the encrypted
+password. The plaintext came from user's passwd information and
+the UNIX spelling dictionary. This approach was fairly successful. </P>
+
+<P>Our UNIX vendors were shipping the primitive V7 <i>passwd</i> program
+which did no significant password checking. This lack of vendor support
+meant the only way to have more secure passwords was to replace it.
+I wrote <I>npasswd</I> around my "worm" password checker.</P>
+
+<P>By late 1989 <I>npasswd</I> had replaced <B>/bin/passwd</B> on all of
+our public UNIX systems. After a few sweeps with my password checker, some
+pointed email and other unfriendly actions, I and my colleagues
+breathed easier - at least for awhile.
+
+<P>In 1991 (or so) <I>Crack</I> was released and the world changed. It did
+not attempt to reverse the password encryption, but used a brute force
+attack similar to that of the Worm.  Anyone with a 386 box (the hot
+commodity system of the time), a C compiler and some patience could
+crack passwords at their leisure.
+<P>
+I began to look into integrating <I>Crack</I> into <I>npasswd</I>.
+I found that <I>npasswd</I> needed serious
+updating - the UNIX environment was changing, and there had been plenty
+of porting problems. </P>
+
+<P>I had also learned a lot more about C programming, so I decided that
+<I>npasswd</I> needed an extensive rewrite.  That work started in July of 1993.
+
+<P>
+<HR WIDTH="100%">
+<P>
+<A NAME="Future"><H2>The future</H2></A>
+<P>
+The rewrite was more complicated and taken over 5 years (off and on).
+All of the UNIX platforms which hosted the original <i>npasswd</i> have
+have been retired.
+There is new hardware (64-bit CPUs), new operating systems (Solaris 2, OSF/1),
+new user databases (NIS+) and security facilities. </P>
+
+<P>These facilities are sophisticated and capable, but too often
+have unstable and/or undocumented programming interfaces - as well as difficult
+bugs to work around.
+Manipulating these databases is much more complex
+than updating field 2 of <B>/etc/passwd.</B> </P>
+
+<P>Although some vendor password change utilities are better at disallowing
+easily guessed passwords, most still rely upon file system protections to
+keep the cyphertext away from prying eyes. </P>
+
+<P>Vendors could make the life of a system
+administrator more pleasant by allowing the system administrator to interpose
+a site-specific password check policy.
+
+<P>The work of keeping up with new releases of UNIX systems and new features
+can take up a lot of time. I do not know if I will be able to
+continue this work. </P>
+
+<P>
+<HR WIDTH="100%">
+<P>
+
+<A NAME="Acknowledgments"><H2>Acknowledgments</H2></A>
+
+<P>A lot of people have contributed their work to <I>npasswd </I>over the
+years. I've got a large collection of variants of npasswd 1 done by lots
+of folks. Many have provided good ideas and code that have been incorporated
+into version 2.0.</P>
+
+<P>Here are some of the more outstanding contributors that I can recall:</P>
+
+<UL>
+<P>Alec Muffet for providing me <I>Crack</I> modules ready
+to use and a copious collection of word lists.</p>
+
+<P>Paul Leyland of Oxford University, UK provided support for Ultrix enhanced
+security (which was the base for OSF/1 enhanced security support).</P>
+
+<P>Donnie Emeson for adding character class diversity requirements
+to the password lexical check code.
+
+<P>Mike Stute for HP-UX support and some improvements to the dictionary
+lookup password checking.
+
+<P>One of the most popular variants of <I>npasswd</I> was produced at NASA
+Jet Propulsion Laboratory in Pasadena, California. Two guys who did a lot
+of the JPL work were Dan Kegel, who added Crack password checking and Dave
+Hayes who added SunOS 4 adjunct password support (among other things).</P>
+
+<P>Tomasz Surmacz, Institute of Cybernetics, Technical Technical University
+of Wroclaw, Poland, contributed the password original history code. </P>
+
+<P>Charles Seeger, University of Florida CIS Department and Steve
+Swartz, University of Wisconsin for supplying code to include <I>chfn</I> and
+<I>chsh</I> functionality.</P>
+</UL>
+
+<P>There are many more who made suggestions and provided code that wasn't
+used, but whose comments were appreciated.</P>
+
+<P>
+<HR WIDTH="100%">
+<P>
+<A NAME="Bibliography"><H2>Bibliography</H2></A>
+
+<P>Documents on the Internet Worm:</P>
+
+<UL>
+<LI><I><A HREF="Worm-MIT.ps">With Microscope and Tweezers:</A> An Analysis
+of the Internet Virus of November, 1988</I> Mark W. Eichin and Jon Rochlis,
+MIT.</LI>
+
+<LI><I><A HREF="Worm-Utah.ps">A Tour of the Worm,</A></I> Donn Seeley,
+Department of Computer Science, University of Utah.</LI>
+</UL>
+
+<P>Documents on password security:</P>
+
+<UL>
+<LI><I><A HREF="PasswordSecurity.ps">Foiling the cracker:</A></I> <I>A
+Survey of, and Improvements to, Password Security.</I> Daniel V. Klein,
+Software Engineering Institute, Carniege Mellon University.</LI>
+
+<LI><I>Password Security: A Case History.</I> Robert Morris and Ken
+Thompson, AT&amp;T Bell Laboratories 1978. Originally part of Volume
+2A of the <i>Seventh Edition UNIX Programmers Manual</i>, dated January 1979
+and included in the <i>4.3 BSD System Managers Manual</i>.</LI>
+</UL>
+<P>
+<HR WIDTH="100%">
+<P>
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+<HR WIDTH="100%">
+<P>
+Document id %Z% $RCSfile$ $Revision$<BR>
+Version $Revision$<BR>
+Last modified $Date$<P>
+<ADDRESS>
+  <A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</A><BR>
+  <A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 1998</A>,
+The University of Texas at Austin.  All rights reserved.</FONT>
+</ADDRESS>
+</BODY></HTML>
+@
+
+
+1.7
+log
+@Update document & clean markup
+@
+text
+@d59 1
+a59 1
+<P>Our systems (of Academic Computing Serivces)
+d126 1
+a126 1
+adminstrator more pleasant by allowing the system administrator to interpose
+@
+
+
+1.6
+log
+@Fix title
+@
+text
+@d23 1
+a23 1
+programs <I>passwd</I>, <I>chfn </I>and <I>chsh.</I>
+d59 2
+a60 1
+<P>Our systems escaped being ravaged by the Worm
+a102 1
+</P>
+d105 7
+a111 7
+<HR WIDTH="100%"></P>
+<A NAME="Future"><H2>The future</H2></a>
+
+<P>The rewrite has been more complicated and taken <b>much</b>
+longer than expected.
+Since that work started, we have retired all of the UNIX platforms
+which hosted the original <i>npasswd</i>.
+d118 2
+a119 2
+Writing code to manipulate these databases is much more complex
+than merely updating field 2 of <B>/etc/passwd.</B> </P>
+d126 2
+a127 1
+adminstrator more pleasant by the following: </P>
+a128 10
+<UL>
+<LI>Fully integrate their various password databases (NIS, NIS+, Kerberos)
+ into the <i>passwd</i> command.
+</LI>
+
+<LI>Allow the administrator to interpose a site-specific password check
+policy, either by shared library, external program or configuration of
+the <i>passwd</i> program. </LI>
+</UL>
+
+d134 2
+a135 1
+<HR WIDTH="100%"></P>
+d137 1
+a137 1
+<H2><A NAME="Acknowledgments"></A>Acknowledgments </H2>
+d146 1
+d151 1
+a151 2
+security (which I also used as the base for the OSF/1 enhanced security
+support).</P>
+d168 3
+a170 2
+Swartz, University of Wisconsin for supplying code to include <I>chfn </I>and
+<I>chsh </I>functionality.</P>
+d178 1
+a178 1
+<H2><A NAME="Bibliography"></A>Bibliography</H2>
+d218 1
+a218 1
+Academic Computing Services and Instructional Technology Services</a><br>
+d222 2
+a223 2
+<A HREF="Copyright.html">Copyright 1998</a>,
+The University of Texas at Austin.  All rights reserved.</font>
+@
+
+
+1.5
+log
+@Move support section elsewhere
+@
+text
+@d4 1
+a4 1
+   <TITLE>Npasswd Documentation Home</TITLE>
+d12 1
+a12 1
+<H1 ALIGN=CENTER>Npasswd Documentation Home</H1>
+@
+
+
+1.4
+log
+@Change title
+@
+text
+@d4 1
+a4 1
+   <TITLE>Npasswd: A better password change program</TITLE>
+d12 1
+a12 1
+<H1 ALIGN=CENTER>Npasswd: A better password change program</H1>
+a182 28
+<HR WIDTH="100%"></P>
+
+<H2><A NAME="Support"></A>Support</H2>
+
+<P>
+<H3>Mailing lists</H3>
+
+<UL>
+<LI><B>npasswd-users@@lists.cc.utexas.edu</B> - Mailing list of and for <I>npasswd</I>
+users. </LI>
+
+<LI><B>npasswd-users-request@@lists.cc.utexas.edu</B> - Administration point
+for the <B>npasswd-users</B> mailing list. This is a <I>listserv</I> mailing
+list server. </LI>
+
+<LI><B>npasswd-bugs@@lists.cc.utexas.edu</B> - Where to send bug reports.
+</LI>
+</UL>
+
+<H3>Web resources</H3>
+
+<ul>
+<P><I>Npasswd</I> home page:
+<A HREF=http://uts.cc.utexas.edu/~clyde/npasswd/">
+<b>http://uts.cc.utexas.edu/~clyde/npasswd</b></A></P>
+</ul>
+
+<P>
+@
+
+
+1.3
+log
+@Fix signature
+@
+text
+@d4 1
+a4 1
+   <TITLE>Introduction to npasswd</TITLE>
+d12 1
+a12 1
+<H1 ALIGN=CENTER>Npasswd documentation</H1>
+@
+
+
+1.2
+log
+@Minor tweaks
+@
+text
+@d239 1
+a239 1
+<HR>
+d241 3
+a243 1
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Return to top</A>
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d241 1
+a241 1
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top of page</A>
+@

@@ -1,0 +1,516 @@
+head	1.13;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.13
+date	2002.10.02.15.54.07;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.10.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.03.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	97.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.12.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.09.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Put under GPL
+@
+text
+@case $CONFIG in
+'')
+	if test -f config.sh; then TOP=.;
+	elif test -f ../config.sh; then TOP=..;
+	elif test -f ../../config.sh; then TOP=../..;
+	elif test -f ../../../config.sh; then TOP=../../..;
+	elif test -f ../../../../config.sh; then TOP=../../../..;
+	else
+		echo "Can't find config.sh."; exit 1
+	fi
+	. $TOP/config.sh
+	;;
+esac
+: This forces SH files to create target in same directory as SH file.
+: This is so that make depend always knows where to find SH derivatives.
+case "$0" in
+*/*) cd `expr X$0 : 'X\(.*\)/'` ;;
+esac
+echo "Extracting options.h (with variable substitutions)"
+
+$rm -f options.h
+$spitshell >options.h <<!GROK!THIS
+/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ * Defaults for npasswd configuration settings.
+ * Some of these can be overridden by entries in
+ * the configuration file.
+ *
+ * Change to options.h will go away the next time Configure is run!
+ * Make permanent changes to $RCSfile: options.h.SH,v $
+ *
+ * $Id: options.h.SH,v 1.12 1998/10/14 00:00:00 clyde Exp clyde $ (cc.utexas.edu)
+ */
+
+/*
+ * Values which are hard wired into the code
+ */
+#define CONFIG_FILE	"$p_installdir/passwd.conf"	/* Config file */
+#define	SAVED_BIN	"$p_keepdir"	/* Where vendor programs were saved */
+#define DICTIONARIES	"$p_dictionaries" /* Dictionary collection */
+
+#define	PASSWD_UID	0		/* Uid for passwd files */
+#define	PASSWD_GID	0		/* Gid for passwd files */
+#define	PASSWD_MODE	0444		/* Mode for passwd files */
+
+#define	SHADOW_UID	0		/* Mode for shadow files */
+#define	SHADOW_GID	0		/* Mode for shadow files */
+#define	SHADOW_MODE	0400		/* Mode for shadow files */
+
+#define	SHELLS_FILE	"/etc/shells"	/* List of blessed shells */
+
+/*
+ * Defaults for settings which can be altered in the config file
+ */
+#define CHFN_HELP "$p_installdir/chfn.help"	/* chfn help messsage */
+#define CHFN_MOTD "$p_installdir/chfn.motd"	/* chfn intro message */
+
+#define CHSH_HELP "$p_installdir/chsh.help"	/* chsh help message */
+#define CHSH_MOTD "$p_installdir/chsh.motd"	/* chsh intro message */
+
+#define PASSWD_HELP "$p_installdir/passwd.help"	/* passwd help message */
+#define PASSWD_MOTD "$p_installdir/passwd.motd"	/* passwd intro message */
+
+#define	PASSWD_DIFF_OK		128	/* Old <-> new passwd size diff ok */
+#define	SHADOW_DIFF_OK		32	/* Old <-> new shadow size diff ok */
+#define	PASSWORD_MATCH_WAIT	2	/* Password match fail delay */
+#define	PASSWORD_MATCH_TRIES	3	/* Password match retries */
+
+#define	PASSWORD_HISTORY_AGE	180	/* Maximum age in password history */
+#define	PASSWORD_HISTORY_DEPTH	2	/* Passwords per user in history */
+
+!GROK!THIS
+
+$spitshell >>options.h <<'!NO!SUBS!'
+
+/*
+ * More program options
+ */
+#undef	DENY_CHSH			/* Define to disable chsh */
+#undef	DENY_CHFN			/* Define to disable chfn */
+#undef	PASSWORD_MATCH_BACKOFF		/* Define to use expotential backoff
+					 * after user enters wrong password */
+/*
+ * Defines which are here for documentation purposes.
+ * They are really defined in various places, but can be overridden
+ * by defining them here (or in the Makefile).
+ *
+ * If you need to change them permanently, move the line out of the
+ * "#ifdef ___DEFINE_COMMENTS___" block.
+ */
+#ifdef	___DEFINE_COMMENTS___
+
+/*
+ * Defines to make debugging / test versions
+ */
+#define	CDEBUG			/* Build test code */
+				/* Levels are in defines.h */
+#define	DEBUG_DEFAULT	N	/* Set default debugging level to N */
+#define	CRACKLIB_DEBUG		/* Enable debugging in Cracklib */
+#define	CRACKLIB_PERROR		/* Enable error message spew in Cracklib */
+
+
+/*
+ * Defines which will are usually set by Configure
+ */
+#undef	SWITCHES_OS	/* OS-specific commmand line options supported */
+#undef	SWITCHES_DEFER	/* OS-specific commmand line options
+			 * for which the saved programs are run. */
+#define	UIDS_ARE_SIGNED	/* UID type (uid_t) is signed (vs. unsigned) */
+
+/*
+ * Defines to override internal settings 
+ */
+#define	FLOCK_TRIES	N	/* Set file locking retry count to N */
+#define	FLOCK_CYCLE	N	/* Set file locking retry wait to N seconds */
+#define	SYSTEM_PASSWD_MIN N	/* Set minimum acceptable password length */
+#define	SYSTEM_PASSWD_MAX N	/* Set maximum effective password length */
+
+/*
+ * Defines for method modules
+ */
+#define XSHADOW_FILE	/path	/* Alternate shadow file */
+#define XSHADOW_TEMP	/path	/* Alternate shadow temp file */
+#define XSHADOW_SAVE	/path	/* Alternate shadow save file */
+#define XSHADOW_LOCK	/path	/* Alternate shadow lock file */
+
+#define XPASSWD_FILE	/path	/* Alternate passwd file */
+#define XPASSWD_TEMP	/path	/* Alternate passwd temp file */
+#define XPASSWD_SAVE	/path	/* Alternate passwd save file */
+#define XPASSWD_LOCK	/path	/* Alternate passwd lock file */
+
+#define	SHORT_FILE_WARN		/* Do not abort when temp files come up short */
+
+/*
+ * Defines for NIS method module "src/Methods/pwm_nis.c"
+ */
+#define	YP_PROBE_TIMEOUT	N
+#define	YP_TIMEOUT		N
+#define	NIS_PASSWD_MAX_LEN	N
+#define SYSTEM_YP_DIR		/path	/* Alternate NIS data directory */
+
+#endif	/* ___DEFINE_COMMENTS___ */
+
+/*
+ * End $RCSfile: options.h.SH,v $
+ */
+!NO!SUBS!
+
+chmod 444 options.h
+# exit 0
+@
+
+
+1.12
+log
+@Add SHORT_FILE_WARN comment
+@
+text
+@d24 1
+a24 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d26 4
+a29 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d31 4
+a34 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d36 6
+a41 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d50 1
+a50 1
+ * Make permanent changes to $RCSfile$
+d52 1
+a52 1
+ * $Id$ (cc.utexas.edu)
+d165 1
+a165 1
+ * End $RCSfile$
+@
+
+
+1.11
+log
+@Use new config path vars
+@
+text
+@d145 1
+d175 2
+@
+
+
+1.10
+log
+@Major rework
+@
+text
+@d81 1
+a81 1
+#define CONFIG_FILE	"$privlibexp/passwd.conf"	/* Config file */
+d83 1
+a83 1
+#define DICTIONARIES	"$p_dictlib"	/* Default dictionary collection */
+a94 2
+#define	DEFER_SWITCHES	"$defer_options"
+
+d98 2
+a99 2
+#define CHFN_HELP "$privlibexp/chfn.help"	/* chfn help messsage */
+#define CHFN_MOTD "$privlibexp/chfn.motd"	/* chfn intro message */
+d101 2
+a102 2
+#define CHSH_HELP "$privlibexp/chsh.help"	/* chsh help message */
+#define CHSH_MOTD "$privlibexp/chsh.motd"	/* chsh intro message */
+d104 2
+a105 2
+#define PASSWD_HELP "$privlibexp/passwd.help"	/* passwd help message */
+#define PASSWD_MOTD "$privlibexp/passwd.motd"	/* passwd intro message */
+@
+
+
+1.9
+log
+@Insert some defines removed from config.h
+@
+text
+@d24 44
+d69 1
+a69 1
+ * Most of these can be overridden by entries in
+d72 3
+d79 1
+a79 1
+ * Items for npasswd
+d81 3
+a83 1
+#define CONFIG_FILE "$privlibexp/passwd.conf"	/* Configuration file */
+d85 15
+d109 4
+a112 1
+#define DICTIONARIES "$p_dictlib"		 /* default dictionaries */
+d114 2
+a115 3
+#define	PASSWD_UID	0
+#define	PASSWD_GID	0
+#define	PASSWD_MODE	0444
+d117 1
+a117 3
+#define	SHADOW_UID	0
+#define	SHADOW_GID	0
+#define	SHADOW_MODE	0400
+d119 1
+a119 1
+#define	SHELLS_FILE	"/etc/shells"
+d122 1
+a122 1
+ * Items for checkpasswd library and standalone program
+d124 13
+d138 8
+a145 2
+#define	PASSWD_DIFF_OK	128
+#define	SHDAOW_DIFF_OK	32
+d148 1
+a148 1
+ * More program options
+d150 4
+a153 7
+#undef	DENY_CHSH	/* Define to disable chsh */
+#undef	DENY_CHFN	/* Define to disable chfn */
+#undef	DICT_DISP	/* Define to enable dictionary word display */
+#define	PASSWORD_MATCH_WAIT	3	/* Password match fail delay */
+#undef	LONG_PASSWORD_WARNING	/* Define to enable warnings about passwords
+				 * longer than the configured maximum */
+!GROK!THIS
+a154 1
+$spitshell >>options.h <<'!NO!SUBS!'
+d156 31
+@
+
+
+1.8
+log
+@Add DICT_DISP, PASSWORD_MATCH_WAIT and LONG_PASSWORD_WARNING
+@
+text
+@d47 10
+a72 1
+
+@
+
+
+1.7
+log
+@Add DENY_CHSH and DENY_CHFN options (disabled)
+@
+text
+@d59 4
+@
+
+
+1.6
+log
+@Add DICTIONARIES define
+@
+text
+@d54 6
+@
+
+
+1.5
+log
+@Remove password history defines (now in config.h)
+@
+text
+@d45 2
+@
+
+
+1.4
+log
+@Add PASSWD_DIFF_OK and SHADOW_DIFF_OK
+@
+text
+@a47 3
+#define	PASSWD_HISTORY	"$o_histfile"		/* password history db */
+#define	PASSWD_HISTORY_DEPTH	$o_pwhSize	/* How many items to keep */
+#define	PASSWD_HISTORY_AGE	$o_pwhTime	/* expiration age for history */
+@
+
+
+1.3
+log
+@Update comments, add password history config items
+@
+text
+@d52 3
+@
+
+
+1.2
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d24 3
+a26 1
+ * Configuration options for npasswd and checkpassword
+d30 1
+d32 1
+a32 1
+ * Paths to various files
+d34 1
+a34 1
+#define CONFIG_FILE "$privlibexp/passwd.conf"
+d36 2
+a37 2
+#define CHFN_HELP "$privlibexp/chfn.help"
+#define CHFN_MOTD "$privlibexp/chfn.motd"
+d39 2
+a40 2
+#define CHSH_HELP "$privlibexp/chsh.help"
+#define CHSH_MOTD "$privlibexp/chsh.motd"
+d42 2
+a43 3
+#define PASSWD_HELP "$privlibexp/passwd.help"
+#define PASSWD_MOTD "$privlibexp/passwd.motd"
+#define	PASSWD_HISTORY	"$o_histfile"
+d45 7
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d52 1
+a52 1
+exit 0
+@

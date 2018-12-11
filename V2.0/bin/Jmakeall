@@ -1,0 +1,36 @@
+#! /bin/sh
+#
+# Script to build Makefile.SH from Jmakefile in the distribution
+# subdirectories
+#
+
+if [ ! -f .package ]; then
+	echo Better run  this from the top level
+	exit 1
+fi
+
+cwd=`pwd`
+if [ ! -d $cwd/bin ]; then
+	echo Cannot find bin directory
+	exit 1
+fi
+
+case "$1" in
+	-n)	echo="echo" ;;
+esac
+
+jmkmf="$echo ${cwd}/bin/jmkmf"
+
+echo Building makefile.SH in top level
+$jmkmf
+
+for d in `grep Makefile.SH MANIFEST | awk '{ print $1 }' | sed 's@/Makefile.SH@@'` ; do
+	[ ! -d $d ] && continue
+	echo ""
+	echo Building Makefile.SH in $d
+	depth=`echo $d | tr -cd '/\012' | sed -e s@/@../@g -e 's@^@../@'`
+	( cd $d || exit 1; $jmkmf $depth $d )
+done
+exit 0
+#
+# End %M%

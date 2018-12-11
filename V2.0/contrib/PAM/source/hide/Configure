@@ -1,0 +1,27 @@
+#!/bin/ksh
+
+tf=Config.mk
+cc=cc
+
+[ "`uname -m`" = 'i86pc' ] && cc=gcc
+
+print "" > ${tf}
+
+ostype=`uname -s`
+
+case $ostype in
+
+	SunOS)
+		print 'TARGETS=$(OBJS) libhide.a libhide.so test_libhide'	>> ${tf}
+		print '  CC='$cc' $(INCLUDES) -O'				>> ${tf}
+
+	;;
+
+	HP-UX)
+		print 'TARGETS=$(OBJS) libhide.a libhide.sl test_libhide'	>> ${tf}
+		print '  CC='$cc' $(INCLUDES) -O +Z'				>> ${tf}
+
+	;;
+esac
+
+#END

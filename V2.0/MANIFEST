@@ -1,0 +1,216 @@
+ReleaseNotes		First thing to read
+README.AIX4		Special notes for AIX 4
+NEWS			Latest news
+
+MANIFEST		This file
+COPYRIGHT		Legal stuff
+
+Configure		Portability tool
+Makefile.SH             Produces Makefile
+Makefile.local 		Included by Makefile
+
+config_h.SH		Produces config.h
+
+install.SH		BSD-style install program
+
+bin/BuildTree.sh	Make a symlink "build tree"
+bin/extract-all		Extract all .SH files in MANIFEST
+
+hints/generic.sh	Hints file for Configure
+
+dict/0-README		README file for dictionaries
+dict/Makefile.SH	Makefile for dictionaries
+
+doc/AdminGuide.html	Administrator's manual (HTML)
+doc/AdminGuide.txt	Administrator's manual (text)
+doc/BuildInstall.html	Build & install document (HTML)
+doc/BuildInstall.txt	Build & install document (text)
+doc/Copyright.html	Legal stuff (HTML)
+doc/Copyright.txt	Legal stuff (text)
+doc/Main.html		Manual main  (HTML)
+doc/Main.txt		Manual main  (text)
+doc/Makefile.SH		Produces Makefile
+doc/ManPages.html	Manual page table of contents
+doc/ManPages.txt	Manual page table of contents (text)
+doc/MiscNotes.html	Picky things (HTML)
+doc/MiscNotes.txt	Picky things (text)
+doc/QNA.html		Questions and Answers (HTML)
+doc/QNA.txt		Questions and Answers (text)
+doc/Reference.html	Reference manual (HTML)
+doc/Reference.txt	Reference manual (text)
+doc/Reference_TOC.html	Referenace manual table of contents (HTML)
+doc/Reference_index.html Reference manual entry point (HTML)
+doc/Support.html	Support resources (HTML)
+doc/Support.txt		Support resources (text)
+doc/TOC_frame.html	Table of contents (HTML - frames)
+doc/TOC_std.html	Table of contents (HTML - no frames)
+doc/TOC_std.txt		Table of contents (text)
+doc/home.gif		GIF image 
+doc/index.html		Documentation entry point
+doc/top.gif		GIF image
+doc/BugReport.html	Bug report template
+doc/BugReport.txt	Bug report template
+
+doc/Utah-WormTour.me	University of Utah paper on Morris worm (nroff me form)
+doc/Worm-Utah.ps	University of Utah paper on Morris worm (PostScript)
+doc/Worm-MIT.ps		MIT paper on Morris worm (PostScript)
+doc/PasswordSecurity.ps	CMU paper on password security (PostScript)
+
+doc/checkpassword.1	Manual page for checkpassword program
+doc/checkpassword.cat1	Manual page for checkpassword program (nroff output)
+doc/checkpassword_1.html Manual page for checkpassword program (HTML)
+
+doc/checkpassword.3	Manual page for checkpassword library
+doc/checkpassword.cat3	Manual page for checkpassword library (nroff output)
+doc/checkpassword_3.html Manual page for checkpassword library (HTML)
+
+doc/history_admin.1	Manual page for history_admin
+doc/history_admin.cat1	Manual page for history_admin (nroff output)
+doc/history_admin_1.html Manual page for history_admin (HTML)
+
+doc/makedict.1		Manual page for makedict (nroff source)
+doc/makedict.cat1	Manual page for makedict (nroff output)
+doc/makedict_1.html	Manual page for makedict (HTML)
+
+doc/npasswd.1		Manual page for npasswd (nroff source)
+doc/npasswd.cat1	Manual page for npasswd (nroff output)
+doc/npasswd_1.html	Manual page for npasswd (HTML)
+
+doc/nroff2html.c	Program to convert nroff output to simple HTML
+doc/docfilter.SH	Program to convert nroff output to simple HTML
+
+files/Makefile.SH	Produces Makefile
+files/passwd.conf.SH	Produces sample config file
+files/passwd.help	Help file for "passwd"
+files/passwd.motd	Message file for "passwd" 
+files/chfn.help		Help file for "chfn" 
+files/chfn.motd		Message file for "chfn" 
+files/chsh.help		Help file for "chsh"
+files/chsh.motd		Message file for "chsh" 
+
+src/Makefile.SH		Produces Makefile
+src/Makefile.local	Included by Makefile
+src/version.c.SH	Produces version.c
+src/options.h.SH	Option selection
+src/defines.h		C types and definitions used lots of places
+src/compatibility.h	Compatibility defines
+src/constants.h		Generic constants used lots of places
+src/npasswd.h		Master include for npasswd
+src/main.c		Npasswd main program
+src/chfn.c		Npasswd chfn module
+src/chsh.c		Npasswd chsh module
+src/passwd.c		Npasswd passwd module
+src/configure.c		Npasswd configuration file processor
+
+src/PasswordCheck/Makefile.SH		Produces Makefile
+src/PasswordCheck/Makefile.local	Included by Makefile
+
+src/PasswordCheck/checkpassword.h	Password checker library public defines
+src/PasswordCheck/pwck_defines.h	Password check internal defines
+src/PasswordCheck/pwck_history.h	Password history internal defines
+
+src/PasswordCheck/version.c.SH		Produces version.c
+src/PasswordCheck/checkpassword.c	Standalone password check program
+src/PasswordCheck/history_admin.c	Password history administration program
+
+src/PasswordCheck/pwck_main.c		Password check main
+src/PasswordCheck/pwck_crack.c		Password check module (Crack)
+src/PasswordCheck/pwck_lexical.c	Password check module (Lexical)
+src/PasswordCheck/pwck_local.c		Password check module (Local)
+src/PasswordCheck/pwck_passwd.c		Password check module (Passwd)
+src/PasswordCheck/pwck_history.c	Password check module (History)
+src/PasswordCheck/hist_file.c		History method module (file)
+src/PasswordCheck/hist_dbm.c		History method module (DBM)
+src/PasswordCheck/hist_nis.c		History method module (NIS)
+src/PasswordCheck/hist_osf.c		History method module (OSF/1)
+
+src/PasswordCheck/TestSuite.sh		Password checker test driver
+src/PasswordCheck/test_pwck.c		Password checker test program
+src/PasswordCheck/TestHistory.sh	Password history test driver
+src/PasswordCheck/test_history.c	Password history test program
+
+src/PasswordCheck/cracklib/Makefile.SH	Produces Makefile
+src/PasswordCheck/cracklib/Makefile.local Included by Makefile
+
+src/PasswordCheck/cracklib/README	Cracklib README
+src/PasswordCheck/cracklib/packer.h	Cracklib dictionary packer defines
+src/PasswordCheck/cracklib/genrules.pl	Cracklib rule generator PERL script
+
+src/PasswordCheck/cracklib/rules.c	Cracklib rules module
+src/PasswordCheck/cracklib/packlib.c	Cracklib dictionary routines
+src/PasswordCheck/cracklib/stringlib.c	Cracklib string library routines
+src/PasswordCheck/cracklib/fascist.c	Cracklib password checker
+src/PasswordCheck/cracklib/TestSuite.sh	Cracklib test driver
+
+src/PasswordCheck/cracklib/CREDITS/HISTORY	Cracklib documentation
+src/PasswordCheck/cracklib/CREDITS/MANIFEST	Cracklib documentation
+src/PasswordCheck/cracklib/CREDITS/README.FIRST	Cracklib documentation
+src/PasswordCheck/cracklib/CREDITS/README	Cracklib documentation
+src/PasswordCheck/cracklib/CREDITS/LICENCE	Cracklib documentation
+
+src/PasswordCheck/cracklib/tools/Makefile.SH	Produces Makefile
+src/PasswordCheck/cracklib/tools/Makefile.local	Included by Makefile
+src/PasswordCheck/cracklib/tools/makedict.SH Produces makedict
+
+src/PasswordCheck/cracklib/tools/testgecos.c	Test program for FascistGecos()
+src/PasswordCheck/cracklib/tools/testnpasswd.c	Test program for FascistNpasswd()
+src/PasswordCheck/cracklib/tools/testlib.c	Test program for FascistLook()
+src/PasswordCheck/cracklib/tools/teststr.c	Test high-level dictionary lookup
+src/PasswordCheck/cracklib/tools/testnum.c	Test low-level dictionary lookups
+src/PasswordCheck/cracklib/tools/packer.c	Hashed dictionary creator
+src/PasswordCheck/cracklib/tools/unpacker.c	Hashed dictionary dumper
+
+src/Methods/Makefile.SH		Produces Makefile
+src/Methods/Makefile.local	Included by Makefile
+src/Methods/shadowtab.h.SH	Produces shadowtab.h
+src/Methods/passwdtab.h.SH	Produces passwdtab.h
+src/Methods/pwm_defs.h		Method modules include
+
+src/Methods/pwm_main.c		Methods main module
+src/Methods/pwm_local.c		Local passwd file support
+src/Methods/pwm_nis.c		NIS passwd support
+src/Methods/pwm_nisplus.c	NIS+ passwd/shadow support (Not ready)
+src/Methods/shm_adjunct.c	SunOS 4 shadow password support 
+src/Methods/shm_aix.c		AIX shadow password support
+src/Methods/shm_hpux.c		HP-UX shadow password support
+src/Methods/shm_null.c		Null shadow module
+src/Methods/shm_osf1.c		DEC OSF/1 (Digital UNIX) shadow password support
+src/Methods/shm_shadow.c	System 5 shadow password support
+src/Methods/shm_ultrix.c	Ultrix 4 shadow password support
+
+src/Methods/TestSuite/README		Test suite documentation
+src/Methods/TestSuite/Makefile.SH	Produces Makefile
+src/Methods/TestSuite/pwm_test.c	Method module test driver C program
+src/Methods/TestSuite/TestSuiteSetup.SH	Method module test script library
+src/Methods/TestSuite/TestGetUser.sh	Test script for 'getuser' rtns
+src/Methods/TestSuite/InitTestFiles.sh	Setup dummy passwd/shadow files
+src/Methods/TestSuite/files/etc_passwd.sun4	Dummy sun4 passwd
+src/Methods/TestSuite/files/etc_shadow.sun4	Dummy sun4 adjunct passwd
+src/Methods/TestSuite/files/etc_passwd.sys5	Dummy System 5 passwd
+src/Methods/TestSuite/files/etc_shadow.sys5	Dummy System 5 shadow
+
+src/Common/Makefile.SH		Produces Makefile
+src/Common/Makefile.local	Included by Makefile
+src/Common/common.h		Public include for common object library
+src/Common/compatibility.c	Spackling for UNIX version holes
+src/Common/chop_nl.c		Chop newline
+src/Common/file_util.c		File utility routines
+src/Common/getpass.c		Password read routines
+src/Common/instring.c		String search
+src/Common/messages.c		Message routines
+src/Common/mpw_util.c		Passwd meta-data utility routines
+src/Common/pager.c		Help file pager
+src/Common/pw_util.c		Passwd utility routines
+src/Common/signals.c		Signal handling routines
+src/Common/split.c		String parse routine
+src/Common/term.c		Terminal handling routines
+src/Common/pw_svc.h		Include file for pw_svc.c
+src/Common/pw_svc.c		System service lookup
+src/Common/xatoi.c		Fancy atoi routine
+src/Common/xdecode.c		Fancy data decoder
+
+src/Scripts/Makefile.SH		Produces Makefile
+src/Scripts/installmany.SH	Script to install stuff lots of places
+src/Scripts/savefiles.SH	Script to save vendor programs
+src/Scripts/restorefiles.SH	Script to put vendor programs back
+

@@ -1,0 +1,1027 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; SunOS 5.6 sun4m) [Netscape]">
+   <TITLE>Npasswd Reference Manual</TITLE>
+</HEAD>
+<BODY>
+<A NAME="top"></A>
+<HR WIDTH="100%">
+<CENTER><H1>Npasswd Reference Manual</H1></CENTER>
+<HR WIDTH="100%">
+
+<A NAME="Intro"><H2>Introduction to the configuration file</H2></A>
+<P>
+The configuration file is <B>@NPASSWD-HOME@/passwd.conf</B>.
+This location can changed only by running <I>Configure</I> and rebuilding.
+<P>
+<I>Npasswd</I> will abort if the configuration file has syntax errors, or
+or fails any of the following security requirements:
+<UL>
+<LI> It must be owned by the uid that npasswd runs with (usually root).
+<LI> It must be a regular file (symlinks are <B>not</B> acceptable).
+<LI> It <B>cannot</B> be world writeable.
+</UL>
+<P>
+The syntax of a configuration file can be checked with the <B>-XC</B> option,
+which disables the security checks.
+<P>
+<HR>
+<A NAME="Syntax"><h2>Syntax of the configuration file</H2></A>
+
+<P>
+Blank lines and lines starting with "<B>#</B>" are ignored.
+
+<P>Npasswd performs the functions of three standard UNIX utilities:
+<B>passwd</B>, <B>chfn</B> and <B>chsh</B>.
+Each of these <B>sub-programs</B> have their configuration directives.
+<P>
+<table width=50% cellpadding=2 border=1>
+
+<TR> <TH colspan=4>Configuration directive syntax</TH></TR>
+<TR>
+<TH width=25%> sub-program </TH> 
+<TH width=25%> option</TH>
+<TH width=25%> </TH>
+<TH width=25%> value</TH>
+</TR>
+
+<TR>
+<TD VALIGN=TOP>
+One of <B>passwd</B>, <B>chfn</B>, <B>chsh</B>, or empty.
+A non-empty sub-program must be followed by a period (".")
+</TD>
+
+<TD VALIGN=TOP>
+Sub-program option (see below)
+</TD>
+
+<TD VALIGN=TOP>One or more whitespace characters</TD> 
+
+<TD VALIGN=TOP>
+Value for <I>option</I> (see below)
+</TD>
+</TR>
+
+<TR>
+<TH COLSPAN=4>Value types</TH>
+</TR>
+<TR>
+<TH>number</TH>
+<TD COLSPAN=3>
+May be decimal (with an optional leading minus sign),
+octal (format <B>0NNN</B>) or hex (format <B>0xNNNN</B>)
+</TD>
+</TR>
+
+<TR>
+<TH>path</TH>
+<td colspan=3>UNIX pathname</TD>
+</TR>
+
+<TR>
+<TH>boolean</TH>
+
+<TD COLSPAN=3>
+One of the strings "<B>1</B>", "<B>true" "yes</B>" or "<B>on</B>".
+Any other value is interpreted as <B>false</B>
+</TD>
+
+<TR>
+<TH> string</TH>
+<TD COLSPAN=3>
+Strings can optionally be enclosed in single (') or double (") quotes
+<BR>
+Non-printable ASCII characters can be specified thusly:
+<UL>
+<LI><B>^&lt;</B>caret><B>char</B>" e.g. <B>^X </B>for control-x
+<LI>"<B>\&lt;</B>backslash><B>char</B>" for C special characters (\b \f \h
+\n \r \t \\)</LI>
+<LI> "<B>\</B>0<B>NNN</B>" where <B>NNN</B> is the character value in octal</LI>
+<LI> "<B>\</B>0x<B>NN</B>" where <B>NN</B> is the character value in hex</LI>
+</UL>
+</TD>
+</TABLE>
+
+<P>
+<HR>
+<H2><A NAME="Summary">Summary of configuration directives</H2></A>
+<P>
+
+<TABLE width=50% BORDER CELLPADDING=2>
+<TR>
+<TH COLSPAN=3>Npasswd configuration directives<BR>
+Directive and options are case-insensitive
+</TH>
+</TR>
+
+<TR>
+<TH><B>Directive</B></TH>
+<TH><B>Value<BR>Type</B></TH>
+<TH><B>Description</B></TH>
+</TR>
+
+<TR>
+<TH COLSPAN="3">Directives applicable to all sub-programs</TH>
+</TR>
+
+<TR>
+<TD><A HREF="#MatchTries">MatchTries</A></TD>
+<TD>number</TD>
+<TD>Chances to give user to correctly enter a password.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#MatchWait">MatchWait</A></TD>
+<TD>number</TD>
+<TD>Delay after the user enters an incorrect password.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#PasswdTolerance">PasswdTolerance</A></TD>
+<TD>number</TD>
+<TD>Tolerance between old and new passwd files.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#ShadowTolerance">ShadowTolerance</A></TD>
+<TD>number</TD>
+<TD>Tolerance between old and new shadow files.</TD>
+</TR>
+
+<TR>
+<TH COLSPAN="3">Directives for sub-program "passwd"</TH>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.AlphaOnly">passwd.AlphaOnly</A></TD>
+<TD>boolean</TD>
+<TD>Allow alpha-only passwords</TD>
+</TR>
+
+<TR>
+<TD> <A HREF="#passwd.CharClasses">passwd.CharClasses</A></TD>
+<TD>number</TD>
+<TD>Set number of required character classes.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.Dictionaries">passwd.Dictionaries</A></TD>
+<TD>path</TD>
+<TD>Add to dictionary lookup path.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.DisallowedChars">passwd.DisallowedChars</A></TD>
+<TD>string</TD>
+<TD>Set which characters are not allowed in passwords.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.Help">passwd.Help</A></TD>
+<TD>path</TD>
+<TD>Help file for passwd.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.History">passwd.History</A>
+</TD>
+<TD>See below</TD>
+<TD>Configure history mechanism.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.LengthWarn">passwd.LengthWarn</A></TD>
+<TD>boolean</TD>
+<TD>Warn about passwords over maximum length.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.MaxPassword">passwd.MaxPassword</A></TD>
+<TD>number</TD>
+<TD>Maximum effective password length.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.MaxRepeat">passwd.MaxRepeat</A></TD>
+<TD>number</TD>
+<TD>How many adjacent repeat characters allowed.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.Message">passwd.Message</A></TD>
+<TD>path</TD>
+<TD>Message of the day.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.MinPassword">passwd.MinPassword</A></TD>
+<TD>number</TD>
+<TD>Minimum password length.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.PasswordChecks">passwd.PasswordChecks</A></TD>
+<TD>string</TD>
+<TD>Select password checks.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.PrintableOnly">passwd.PrintableOnly</A></TD>
+<TD>boolean</TD>
+<TD>Deny non-printable characters.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.SingleCase">passwd.SingleCase</A></TD>
+<TD>boolean</TD>
+<TD>Allow single-case passwords.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.WhiteSpace">passwd.WhiteSpace</A></TD>
+<TD>boolean</TD>
+<TD>Allow whitespace characters in passwords.</TD>
+</TR>
+
+<TR>
+<TH COLSPAN="3"> Directives for sub-program "chfn"</TH>
+</TR>
+
+<TR>
+<TD><A HREF="#chfn.Help">chfn.Help</A></TD>
+<TD>path</TD>
+<TD>Help file for chfn.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#passwd.Message">chfn.Message</A></TD>
+<TD>path</TD>
+<TD>Message of the day.</TD>
+</TR>
+
+<TR>
+<TH COLSPAN="3">Directives for sub-program "chsh"</TH>
+</TR>
+
+<TR>
+<TD><A HREF="#chsh.Help">chsh.Help</A></TD>
+<TD>path</TD>
+<TD>Help file for chsh.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#chsh.Message">chsh.Message</A></TD>
+<TD>path</TD>
+<TD>Message of the day.</TD>
+</TR>
+
+<TR>
+<TD><A HREF="#chsh.Shells">chsh.Shells</A></TD>
+<TD>path</TD>
+
+<TD>List of blessed shells.</TD>
+</TR>
+</TABLE>
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+<P>
+<HR WIDTH=50% ALIGN=LEFT>
+<P>
+
+<A NAME="cmd_all"><H2>Directives applicable to all sub-programs</h2></a>
+
+<P>
+<HR ALIGN=LEFT WIDTH=50%>
+<P>
+<A NAME="MatchTries"></A><H3>MatchTries</H3>
+<P>
+<UL>
+<TABLE BORDER CELLPADDING=2>
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+<TR>
+<TD>MatchTries</TD>
+<TD>number</TD>
+<TD>3</TD>
+</TR>
+</TABLE>
+<P>
+How many chances to give the user to correctly enter a password (old or new).
+</UL>
+<P>
+<A NAME="MatchWait"><H3>MatchWait</H3></A>
+<P>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+<TR>
+<TD>MatchWait</TD>
+<TD>number</TD>
+<TD>2</TD>
+</TR>
+</TABLE>
+<P>
+How many seconds to wait after the user enters an incorrect password.
+</UL>
+<P>
+<A NAME="PasswdTolerance"><H3>PasswdTolerance</H3></A>
+
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Usage</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>PasswdTolerance</TD>
+<TD>number</TD>
+<TD>128</TD>
+</TR>
+</TABLE>
+<P>
+After the passwd file changes are done, the size of the new file
+is compared to the size of the old file,
+to guard against data loss due to disk or file system error.
+<B>PasswdTolerance</B> sets how many bytes the new password file
+can be <B>shorter</B> than the original.
+In order to accommodate changes to the finger information, the default
+for this tolerance is generous.
+</UL>
+<P>
+<A NAME="ShadowTolerance"><H3>ShadowTolerance</H3></A>
+<UL>
+<P>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Usage</TH>
+<TH>Type</TH>
+<TH><B>Default value</B></TH>
+</TR>
+
+<TR>
+<TD>ShadowTolerance</TD>
+<TD>number</TD>
+<TD>32</TD>
+</TR>
+</TABLE>
+<P>
+After shadow changes are made, the size of the new shadow file
+is compared to the size of the old shadow file,
+to guard against data loss due to disk or file system error.
+<B>ShadowTolerance</B> sets how many bytes the new shadow file
+can be <B>shorter</B> than the original.
+This setting is much smaller than <B>PasswdTolerance</B>.
+</UL>
+
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+<A NAME="cmd_passwd"><H2>Directives for sub-program "passwd"</H2></A>
+<P>
+<UL>
+See the <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>.
+</UL>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+<A NAME="passwd.AlphaOnly"></A><H3>passwd.AlphaOnly</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.AlphaOnly</TD>
+<TD>boolean</TD>
+<TD>true</TD>
+</TR>
+</TABLE>
+
+<P>Controls whether alpha-only passwords will be accepted. 
+If this option is set, the requirement for
+non-alpha characters in a passwords is dismissed.
+Other character diversity requirements remain in effect.
+</UL>
+
+<P>
+<A NAME="passwd.CharClasses"><H3>passwd.CharClasses</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+<TR>
+<TD>passwd.CharClasses</TD>
+<TD>number</TD>
+<TD>1</TD>
+</TR>
+</TABLE>
+
+<P>Sets how many classes of characters are required.
+<BR>
+The character classes are:
+<ul>
+<li> Upper case alpha.
+<li> Lower case alpha.
+<li> Digits.
+<li> Whitespace.
+<li> Punctuation.
+<li> Control characters.
+</UL>
+<P>
+The higher the class setting, the more diverse mixture of characters required.
+</UL>
+
+<P>
+<A NAME="passwd.Dictionaries"><H3>passwd.Dictionaries</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Usage</TH>
+<TH>Type</TH>
+<TH><B>Default value</B></TH>
+</TR>
+
+<TR>
+<TD>passwd.Dictionaries</TD>
+<TD>path ... path</TD>
+<TD>@NPASSWD-DICT@</TD>
+</TR>
+</TABLE>
+
+<P><B>Passwd.Dictionaries</B> specifies directories containing
+password check dictionaries.
+Each directory is scanned for hashed dictionary files.
+Multiple directories can be specified either in one directive, or by
+multiple directives.
+<P>
+It is a fatal error if any of the following are encountered:
+<ul>
+<li> A directory which cannot be scanned.
+<li> Missing dictionary hash files.
+<li> A dictionary hash file which is not a regular file (symlinks
+are acceptable), or is world-writable.
+</ul>
+</UL>
+
+<P>
+<A NAME="passwd.DisallowedChars"><H3>passwd.DisallowedChars</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+<TR>
+<TD>passwd.DisallowedChars</TD>
+<TD>string</TD>
+<TD>ctrl-c ctrl-s ctrl-q ctrl-d ctrl-h ctrl-j ctrl-m ctrl-o
+ctrl-r ctrl-y ctrl-z ctrl-] ESC ctrl-\ DEL</TD>
+</TR>
+</TABLE>
+
+
+<P>Sets the list of characters (usually non-printable) not allowed in
+passwords. The default list
+includes the typical terminal special characters.
+To supplement the list, put a plus sign as the first character of the string.
+<P>
+If you allow non-printable characters in passwords (the default), it would
+be wise to check your system and add any terminal special characters not in
+the standard list.
+</UL>
+<P>
+<A NAME="passwd.Help"><H3>passwd.Help</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+<TR>
+<TD>passwd.Help</TD>
+<TD>path</TD>
+<TD>@NPASSWD-HOME@/passwd.help</TD>
+</TR>
+</TABLE>
+<P>
+This file is presented if the user enters "?" in response to the
+new password prompt.
+</UL>
+
+
+<A NAME="passwd.History"><H3>passwd.History</H3></A>
+<UL>
+<I>Npasswd</i> can maintain a history of passwords to discourage frequent reuse.
+<P>
+See the
+<A HREF="AdminGuide.html#admin_history">history section</a>
+of <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>.
+<P>
+
+<TABLE BORDER CELLPADDING=2 width=70%>
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+<TH>Description</TH>
+</TR>
+
+<TR>
+<TD>Age</TD>
+<TD>number</TD>
+<TD>180 (days)</TD>
+<TD>Use only passwords younger than N days.
+</TD>
+</TR>
+
+<TR>
+<TD>Depth</TD>
+<TD>number</TD>
+<TD>2</TD>
+<TD>Use only the most recent N <STRONG>old</STRONG> passwords.
+</TD>
+</TR>
+
+<TR>
+<TD>Database</TD>
+<TD>See below</TD>
+<TD>dbm @NPASSWD-HIST@</TD>
+<TD>Select password history database method and location</TD>
+</TR>
+
+<TR>
+<TD></TD>
+<TD><B>none</B></TD>
+<TD colspan=2>Password history is disabled</TD>
+</TR>
+
+<TR>
+<TD></TD>
+<TD><B>file</B> /path/to/file</TD>
+<TD colspan=2>Store history in file /path/to/file.</TD>
+</TR>
+
+<TR>
+<TD></TD>
+<TD><B>dbm</B> /path/to/file</TD>
+<TD colspan=2>Store history in DBM database in /path/to/file.</TD>
+</TR>
+</TABLE>
+</UL>
+
+<A NAME="passwd.LengthWarn"><H3>passwd.LengthWarn</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.LengthWarn</TD>
+<TD>boolean</TD>
+<TD>false</TD>
+</TR>
+</TABLE>
+
+<P>Controls whether a warning message is issued for new passwords
+longer than <B>MaxPassword</B>.  
+This warning is to inform the user that the excess characters are not effective.
+The default is to suppress this message.
+</UL>
+<P>
+<A NAME="passwd.MaxPassword"><H3>passwd.MaxPassword</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Usage</TH>
+<TH>Type</TH>
+<TH><B>Default value</B></TH>
+</TR>
+
+<TR>
+<TD>passwd.MaxPassword</TD>
+<TD>number</TD>
+<TD>8*</TD>
+</TR>
+</TABLE>
+
+<P>Sets the maximum effective length for passwords. This
+reflects a limitation of the standard <I>crypt</I>(3), which encrypts only the
+initial <B>8</B> characters of the plaintext.
+On Ultrix and Digital UNIX (aka OSF/1) with enhanced
+security, this limit is <B>16</B>.
+
+<P>It is <B>not</B> an error for a password to be longer than the maximum,
+but the password checker can be configured to issue a warning.
+See <A HREF="#passwd.LengthWarn"><B>passwd.LengthWarn</B></a>.
+</UL>
+
+<P>
+<A NAME="passwd.MaxRepeat"><H3>passwd.MaxRepeat</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.MaxRepeat</TD>
+<TD>number</TD>
+<TD>3</TD>
+</TR>
+</TABLE>
+
+<P>Controls how many adjacent repeated characters are allowed in passwords.
+</UL>
+
+<P>
+<A NAME="passwd.Message"><H3>passwd.Message</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.Message</TD>
+<TD>path</TD>
+<TD>@NPASSWD-HOME@/passwd.motd</TD>
+</TR>
+</TABLE>
+<P>
+This file contains the "message of the day" for passwd.
+</UL>
+
+<A NAME="passwd.MinPassword"><H3>passwd.MinPassword</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH><B>Usage</B></TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.MinPassword</TD>
+<TD>number</TD>
+<TD>6</TD>
+</TR>
+</TABLE>
+
+<P>Sets the minimum acceptable password length. 
+Passwords shorter than six characters (the default) are very vulnerable to
+guessing attacks.
+</UL>
+
+<P>
+<A NAME="passwd.PasswordChecks"><H3>passwd.PasswordChecks</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.PasswordChecks</TD>
+<TD>string</TD>
+<TD>
+<A HREF="PasswordChecks.html#check_lexical">lexical</A>
+<A HREF="PasswordChecks.html#check_passwd">passwd</A>
+<A HREF="PasswordChecks.html#check_local">local</A>
+<A HREF="PasswordChecks.html#check_history">history</A>
+<A HREF="PasswordChecks.html#check_dictionary">dictionary</A></TD>
+</TR>
+</TABLE>
+<P>
+Specifies the order of password checks.
+See <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>.
+</UL>
+
+<P>
+<A NAME="passwd.PrintableOnly"><H3>passwd.PrintableOnly</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.PrintableOnly</TD>
+<TD>boolean</TD>
+<TD>false</TD>
+</TR>
+</TABLE>
+
+<P>Controls whether non-printable ASCII characters are allowed in passwords.
+Character printability is determined by using <I>isprint</I>(3). If this
+is set, passwords which contain non-printable characters will be rejected.
+Other character diversity requirements remain in effect.
+</UL>
+
+<A NAME="passwd.SingleCase"><H3>passwd.SingleCase</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2>
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.SingleCase</TD>
+<TD>boolean</TD>
+<TD>true</TD>
+</TR>
+</TABLE>
+
+<P>
+Controls whether single-case passwords are accepted. Character case
+is determined by using <I>isupper</I>(3) and <I>islower</I>(3). If this
+option is set the mixed-case requirement is dismissed.
+Other character diversity requirements remain in effect.
+</UL>
+
+<A NAME="passwd.WhiteSpace"><H3>passwd.WhiteSpace</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2>
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>passwd.WhiteSpace</TD>
+<TD>boolean</TD>
+<TD>true</TD>
+</TR>
+</TABLE>
+
+<P>
+Controls whether whitespace characters are allowed in passwords.
+<I>Isspace</I>(3) is used to determine if a character is whitespace.
+</UL>
+
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+<A NAME="cmd_passwd"><H2>Directives for sub-program "chfn"</H2></A>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+
+<A NAME="chfn.Help"><H3>chfn.Help</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>chfn.Help</TD>
+<TD>path</TD>
+<TD>@NPASSWD-HOME@/chfn.help</TD>
+</TR>
+</TABLE>
+<P>
+The help file is presented to the user in response to "?" input.
+</UL>
+
+<P>
+<A NAME="chfn.Message"><H3>chfn.Message</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>chfn.Message</TD>
+<TD>path</TD>
+<TD>@NPASSWD-HOME@/chfn.motd</TD>
+</TR>
+</TABLE>
+<P>
+The message of the day file for <I>chfn</I>.
+</UL>
+
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+<A NAME="cmd_passwd"><H2>Directives for sub-program "chsh"</H2></A>
+<P>
+<P>
+<HR align=left WIDTH=50%>
+<P>
+<A NAME="chsh.Help"><H3>chsh.Help</H2></A>
+<UL>
+<TABLE BORDER CELLPADDING=2>
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>chsh.Help</TD>
+<TD>path</TD>
+<TD>@NPASSWD-HOME@/chsh.help</TD>
+</TR>
+</TABLE>
+<P>
+Help file for chsh. The help file is presented to the user in
+response to "?" input.
+</UL>
+<P>
+<A NAME="chsh.Message"><H3>chsh.Message</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>chsh.Message</TD>
+<TD>path</TD>
+
+<TD>@NPASSWD-HOME@/chsh.motd</TD>
+</TR>
+</TABLE>
+<P>
+The message of the day file for chsh.
+</UL>
+<P>
+<A NAME="chsh.Shells"><H3>chsh.Shells</H3></A>
+<UL>
+<TABLE BORDER CELLPADDING=2 >
+<TR>
+<TH>Directive</TH>
+<TH>Type</TH>
+<TH>Default value</TH>
+</TR>
+
+<TR>
+<TD>chsh.Shells</TD>
+<TD>path</TD>
+<TD>/etc/shells</TD>
+</TR>
+</TABLE>
+<P>
+The list of blessed shells that users can select.  If 
+<I>getusershell</I>(3) is available, this directive is ignored.
+</UL>
+
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+<HR WIDTH="100%">
+<A NAME="CommandLine"><H2>Command line options</H2></A>
+
+<P>
+The main command line options of npasswd control the platform-independent
+features.
+
+<P>Some operating-system specific options may also be 
+supported (e.g. SunOS 4, SunOS 5 and HP-UX).  Others may be
+deferred to the vendor passwd program (usually preserved during
+the initial installation).
+<P>
+Refer to the <A HREF="npasswd_man.html">manual page</A>
+for the full list of supported options.
+<P>
+<TABLE BORDER width=50%>
+
+<TR>
+<Th colspan=3>Command line options<BR>
+Multiple -X options may be given
+</TH>
+</TR>
+
+<TR>
+<TH>-Xc</TH>
+<TD colspan=2>Read the configuration file, output settings and exit
+with 0 status.
+</TD>
+</TR>
+
+<TR>
+<TH>-XC<I>config-file</I></TH>
+<TD colspan=2>Check syntax of <B>config-file</B> and terminate. 
+<BR>Exit status is 0 if file was ok, 1 if not.
+<BR>This option disables configuration file security checks.
+</TD>
+</TR>
+
+<TR>
+<TH>-XD<I>debug-level</I></TH>
+<TD colspan=2>Set debug output level.
+</TD>
+</TR>
+<TR>
+<TD></TD>
+<TH colspan=2>Debug levels</TH>
+</TR>
+<TR><TD></TD> <TD width=10%>none </TD><TD>None.</TD></TR>
+<TR><TD></TD> <TD width=10%>verbose</TD><TD>Mild verbosity.</TD></TR>
+<TR><TD></TD> <TD width=10%>lookup</TD><TD>Trace user lookup.</TD></TR>
+<TR><TD></TD> <TD width=10%>update</TD><TD>Trace user updating.</TD></TR>
+<TR><TD></TD> <TD width=10%>config</TD><TD>Trace configuration processing.</TD></TR>
+<TR><TD></TD> <TD width=10>pwcheck</TD><TD>Trace password checking.</TD></TR>
+<TR><TD></TD> <TD width=10>detail</TD><TD>More detailed tracing.</TD></TR>
+<TR><TD></TD> <TD width=10>all</TD><TD>All debugging.</TD></TR>
+
+<TR>
+<TH>-XF</TH>
+
+<TD colspan=2>Suppress new password checking.
+<BR>This option is restricted to root and should be used
+<strong>very sparingly</strong>.</TD>
+</TR>
+
+<TR>
+<TH>-XI</TH>
+
+<TD colspan=2>Read passwords from standard input instead of <I>/dev/tty</I> 
+<BR>This option is restricted to root.</TD>
+</TR>
+
+<TR>
+<TH>-XV</TH>
+
+<TD colspan=2>Print version and patch level identification.</TD>
+</TR>
+
+<TR>
+<TH>-Xf</TH>
+
+<TD colspan=2>Perform the "chfn" (change finger name) function.</TD>
+</TR>
+
+<TR>
+<TH>-Xs</TH>
+
+<TD colspan=2>Perform the "chsh" (change login shell) function.</TD>
+</TR>
+</TABLE>
+<P>
+<HR>
+<P>
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" align=middle>Home</A>
+<P>
+<HR WIDTH="100%">
+<P>
+Document id @(#) Reference.html 1.12<BR>
+Version 1.12<BR>
+Last modified 10/14/98<P>
+<ADDRESS>
+<A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+<A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</A><BR>
+<A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</A><BR>
+<FONT SIZE="-1">
+<A HREF="Copyright.html">Copyright 1998</A>,
+The University of Texas at Austin.  All rights reserved.</FONT>
+</ADDRESS>
+</BODY></HTML>

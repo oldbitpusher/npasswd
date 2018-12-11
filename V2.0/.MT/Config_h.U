@@ -1,0 +1,3205 @@
+?EUNICE:/* EUNICE:
+?EUNICE: *	This symbol, if defined, indicates that the program is being compiled
+?EUNICE: *	under the EUNICE package under VMS.  The program will need to handle
+?EUNICE: *	things like files that don't go away the first time you unlink them,
+?EUNICE: *	due to version numbering.  It will also need to compensate for lack
+?EUNICE: *	of a respectable link() command.
+?EUNICE: */
+?VMS:/* VMS:
+?VMS: *	This symbol, if defined, indicates that the program is running under
+?VMS: *	VMS.  It is currently only set in conjunction with the EUNICE symbol.
+?VMS: */
+?XENIX:/* XENIX:
+?XENIX: *	This symbol, if defined, indicates thet the program is running under
+?XENIX: *	Xenix (at least 3.0 ?).
+?XENIX: */
+?BSD:/* BSD:
+?BSD: *	This symbol, if defined, indicates that the program is running under
+?BSD: *	a BSD system.
+?BSD: */
+?EUNICE:#$d_eunice EUNICE		/**/
+?VMS:#$d_eunice VMS		/**/
+?XENIX:#$d_xenix XENIX		/**/
+?BSD:#$d_bsd BSD		/**/
+
+?LOC_SED:/* LOC_SED:
+?LOC_SED: *	This symbol holds the complete pathname to the sed program.
+?LOC_SED: */
+?LOC_SED:#define LOC_SED 	"$full_sed"	/**/
+
+?OSNAME:/* OSNAME:
+?OSNAME: *	This symbol contains the name of the operating system, as determined
+?OSNAME: *	by Configure.  You shouldn't rely on it too much; the specific
+?OSNAME: *	feature tests from Configure are generally more reliable.
+?OSNAME: */
+?OSNAME:#define OSNAME "$osname"		/**/
+
+?ABORTSIG:/* ABORTSIG:
+?ABORTSIG: *	This symbol holds the signal number (symbol) used by the abort() call. To
+?ABORTSIG: *	actually define the signal symbol, <signal.h> should be included.
+?ABORTSIG: */
+?ABORTSIG:#define ABORTSIG $abortsig		/**/
+
+?ACTIVE:/* ACTIVE:
+?ACTIVE: *	The name of the active file for the news system.  This file contains
+?ACTIVE: *	the list of active newsgroups.  The name may have ~ on the front.
+?ACTIVE: */
+?ACTIVE_EXP:/* ACTIVE_EXP:
+?ACTIVE_EXP: *	This is the same as ACTIVE, but is filename expanded at configuration
+?ACTIVE_EXP: *	time, for programs that do not want to deal with it themselves.
+?ACTIVE_EXP: */
+?ACTIVE:#define ACTIVE "$active"	/**/
+?ACTIVE_EXP:#define ACTIVE_EXP "$activeexp"	/**/
+
+?MEM_ALIGNBYTES:/* MEM_ALIGNBYTES:
+?MEM_ALIGNBYTES: *	This symbol contains the number of bytes required to align a
+?MEM_ALIGNBYTES: *	double. Usual values are 2, 4 and 8.
+?MEM_ALIGNBYTES: */
+?MEM_ALIGNBYTES:#define MEM_ALIGNBYTES $alignbytes	/**/
+
+?ARCHLIB:/* ARCHLIB:
+?ARCHLIB: *	This variable, if defined, holds the name of the directory in
+?ARCHLIB: *	which the user wants to put architecture-dependent public
+?ARCHLIB: *	library files for $package.  It is most often a local directory
+?ARCHLIB: *	such as /usr/local/lib.  Programs using this variable must be
+?ARCHLIB: *	prepared to deal with filename expansion.  If ARCHLIB is the
+?ARCHLIB: *	same as PRIVLIB, it is not defined, since presumably the
+?ARCHLIB: *	program already searches PRIVLIB.
+?ARCHLIB: */
+?ARCHLIB_EXP:/* ARCHLIB_EXP:
+?ARCHLIB_EXP: *	This symbol contains the ~name expanded version of ARCHLIB, to be used
+?ARCHLIB_EXP: *	in programs that are not prepared to deal with ~ expansion at run-time.
+?ARCHLIB_EXP: */
+?ARCHLIB:#$d_archlib ARCHLIB "$archlib"		/**/
+?ARCHLIB_EXP:#$d_archlib ARCHLIB_EXP "$archlibexp"		/**/
+
+?ARCHNAME:/* ARCHNAME:
+?ARCHNAME: *	This symbol holds a string representing the architecture name.
+?ARCHNAME: *	It may be used to construct an architecture-dependant pathname
+?ARCHNAME: *	where library files may be held under a private library, for
+?ARCHNAME: *	instance.
+?ARCHNAME: */
+?ARCHNAME:#define ARCHNAME "$archname"		/**/
+
+?BASICSHELL:/* BASICSHELL:
+?BASICSHELL: *	This symbol contains the full name of the basic script shell on this
+?BASICSHELL: *	system.  Usual values are /bin/sh, /bin/ksh, /bin/csh.
+?BASICSHELL: */
+?BASICSHELL:#define BASICSHELL "$basicshell"		/**/
+
+?BIN:/* BIN:
+?BIN: *	This symbol holds the path of the bin directory where the package will
+?BIN: *	be installed. Program must be prepared to deal with ~name substitution.
+?BIN: */
+?BIN_EXP:/* BIN_EXP:
+?BIN_EXP: *	This symbol is the filename expanded version of the BIN symbol, for
+?BIN_EXP: *	programs that do not want to deal with that at run-time.
+?BIN_EXP: */
+?BIN:#define BIN "$bin"	/**/
+?BIN_EXP:#define BIN_EXP "$binexp"	/**/
+
+?BITS_PER_BYTE:/* BITS_PER_BYTE:
+?BITS_PER_BYTE: *	This symbol contains the number of bits in a byte, so that the C
+?BITS_PER_BYTE: *	preprocessor can make decisions based on it.
+?BITS_PER_BYTE: */
+?BITS_PER_BYTE:#define BITS_PER_BYTE $bitpbyte		/**/
+
+?BYTEORDER:/* BYTEORDER:
+?BYTEORDER: *	This symbol hold the hexadecimal constant defined in byteorder,
+?BYTEORDER: *	i.e. 0x1234 or 0x4321, etc...
+?BYTEORDER: */
+?BYTEORDER:#define BYTEORDER 0x$byteorder	/* large digits for MSB */
+
+?CHAR_ORDER_SHORT:/* CHAR_ORDER_SHORT:
+?CHAR_ORDER_SHORT: *	Holds the byte ordering of characters in a short. It's a string
+?CHAR_ORDER_SHORT: *	value like "c0c1" on a Big-Endian machine.
+?CHAR_ORDER_SHORT: */
+?CHAR_ORDER_INT:/* CHAR_ORDER_INT:
+?CHAR_ORDER_INT: *	Holds the byte ordering of characters in an int. It's a string
+?CHAR_ORDER_INT: *	value like "c0c1c2c3" on a Big-Endian machine.
+?CHAR_ORDER_INT: */
+?CHAR_ORDER_LONG:/* CHAR_ORDER_LONG:
+?CHAR_ORDER_LONG: *	Holds the byte ordering of characters in a long. It's a string
+?CHAR_ORDER_LONG: *	value like "c0c1c2c3c4c5c6c7" on a 64 bits Big-Endian machine.
+?CHAR_ORDER_LONG: */
+?CHAR_ORDER_SHORT:#define CHAR_ORDER_SHORT	"$chorder_short" /* byte order in a short */
+?CHAR_ORDER_INT:#define CHAR_ORDER_INT "$chorder_int" /* byte order in an int */
+?CHAR_ORDER_LONG:#define CHAR_ORDER_LONG "$chorder_long" /* byte order in a long */
+
+?CHARSIZE:/* CHARSIZE:
+?CHARSIZE: *	This symbol contains the size of a char, so that the C preprocessor
+?CHARSIZE: *	can make decisions based on it.
+?CHARSIZE: */
+?CHARSIZE:#define CHARSIZE $charsize		/**/
+
+?CAT2:/* CAT2:
+?CAT2: *	This macro catenates 2 tokens together.
+?CAT2: */
+?CAT3:/* CAT3:
+?CAT3: *	This macro catenates 3 tokens together.
+?CAT3: */
+?CAT4:/* CAT4:
+?CAT4: *	This macro catenates 4 tokens together.
+?CAT4: */
+?CAT5:/* CAT5:
+?CAT5: *	This macro catenates 5 tokens together.
+?CAT5: */
+?STRINGIFY:/* STRINGIFY:
+?STRINGIFY: *	This macro surrounds its token with double quotes.
+?STRINGIFY: */
+?SCAT2:/* SCAT2:
+?SCAT2: *	This macro catenates 2 tokens together and stringifies the result.
+?SCAT2: */
+?SCAT3:/* SCAT3:
+?SCAT3: *	This macro catenates 3 tokens together and stringifies the result.
+?SCAT3: */
+?SCAT4:/* SCAT4:
+?SCAT4: *	This macro catenates 4 tokens together and stringifies the result.
+?SCAT4: */
+?SCAT5:/* SCAT5:
+?SCAT5: *	This macro catenates 5 tokens together and stringifies the result.
+?SCAT5: */
+?cpp_stuff:#if $cpp_stuff == 1
+?CAT2:#define CAT2(a,b)a/**/b
+?CAT3:#define CAT3(a,b,c)a/**/b/**/c
+?CAT4:#define CAT4(a,b,c,d)a/**/b/**/c/**/d
+?CAT5:#define CAT5(a,b,c,d,e)a/**/b/**/c/**/d/**/e
+?STRINGIFY:#define STRINGIFY(a)"a"
+?cpp_stuff:#define SQuoTe(a)"a
+?cpp_stuff:#define EQuoTe(a)a"
+?SCAT2:#define SCAT2(a,b)EQuoTe(SQuoTe(a)b)
+?SCAT3:#define SCAT3(a,b,c)EQuoTe(SQuoTe(a)b/**/c)
+?SCAT4:#define SCAT4(a,b,c,d)EQuoTe(SQuoTe(a)b/**/c/**/d)
+?SCAT5:#define SCAT5(a,b,c,d,e)EQuoTe(SQuoTe(a)b/**/c/**/d/**/e)
+?cpp_stuff:#endif
+?cpp_stuff:#if $cpp_stuff == 42
+?CAT2:#define CAT2(a,b)a ## b
+?CAT3:#define CAT3(a,b,c)a ## b ## c
+?CAT4:#define CAT4(a,b,c,d)a ## b ## c ## d
+?CAT5:#define CAT5(a,b,c,d,e)a ## b ## c ## d ## e
+?cpp_stuff:#define StGiFy(a)# a
+?STRINGIFY:#define STRINGIFY(a)StGiFy(a)
+?SCAT2:#define SCAT2(a,b)StGiFy(a) StGiFy(b)
+?SCAT3:#define SCAT3(a,b,c)StGiFy(a) StGiFy(b) StGiFy(c)
+?SCAT4:#define SCAT4(a,b,c,d)StGiFy(a) StGiFy(b) StGiFy(c) StGiFy(d)
+?SCAT5:#define SCAT5(a,b,c,d,e)StGiFy(a) StGiFy(b) StGiFy(c) StGiFy(d) StGiFy(e)
+?cpp_stuff:#endif
+?cpp_stuff:#if $cpp_stuff != 1 && $cpp_stuff != 42
+?cpp_stuff:#include "Bletch: How does this C preprocessor catenate tokens?"
+?cpp_stuff:#endif
+
+?CPP_FILE_COM:/* CPP_FILE_COM:
+?CPP_FILE_COM: *	This symbol contains the first part of the string which will invoke
+?CPP_FILE_COM: *	the C preprocessor a file and produce to standard output, preserving
+?CPP_FILE_COM: *	comments. Typical value of "cc -E -C" or "/lib/cpp -C".
+?CPP_FILE_COM: */
+?CPP_STDIN_FLAGS:/* CPP_STDIN_FLAGS:
+?CPP_STDIN_FLAGS: *	This variable contains any flags necessary to get CPP_FILE_COM to
+?CPP_STDIN_FLAGS: *	read from the standard input.
+?CPP_STDIN_FLAGS: */
+?CPP_IGN_HDRS:/* CPP_IGN_HDRS:
+?CPP_IGN_HDRS: *	This symbol is defined if CPP_FILE_COM ignores *.h files.
+?CPP_IGN_HDRS: */
+?CPP_CAN_STDIN:/* CPP_CAN_STDIN:
+?CPP_CAN_STDIN: *	This symbol is defined if CPP_FILE_COM can read standard input
+?CPP_CAN_STDIN: *	directly.
+?CPP_CAN_STDIN: */
+?CPP_FILE_COM:#define CPP_FILE_COM "$cppfilecom"
+?CPP_STDIN_FLAGS:#define CPP_STDIN_FLAGS "$cppstdinflags"
+?CPP_IGN_HDRS:#$d_cppignhdrs CPP_IGN_HDRS		/* does CPP ignore .h files? */
+?CPP_CAN_STDIN:#$d_cppcanstdin CPP_CAN_STDIN 	/* can CPP read stdin directly? */
+
+?CPPSTDIN:/* CPPSTDIN:
+?CPPSTDIN: *	This symbol contains the first part of the string which will invoke
+?CPPSTDIN: *	the C preprocessor on the standard input and produce to standard
+?CPPSTDIN: *	output.	 Typical value of "cc -E" or "/lib/cpp", but it can also
+?CPPSTDIN: *	call a wrapper. See CPPRUN.
+?CPPSTDIN: */
+?CPPMINUS:/* CPPMINUS:
+?CPPMINUS: *	This symbol contains the second part of the string which will invoke
+?CPPMINUS: *	the C preprocessor on the standard input and produce to standard
+?CPPMINUS: *	output.  This symbol will have the value "-" if CPPSTDIN needs a minus
+?CPPMINUS: *	to specify standard input, otherwise the value is "".
+?CPPMINUS: */
+?CPPRUN:/* CPPRUN:
+?CPPRUN: *	This symbol contains the string which will invoke a C preprocessor on
+?CPPRUN: *	the standard input and produce to standard output. It needs to end
+?CPPRUN: *	with CPPLAST, after all other preprocessor flags have been specified.
+?CPPRUN: *	The main difference with CPPSTDIN is that this program will never be a
+?CPPRUN: *	pointer to a shell wrapper, i.e. it will be empty if no preprocessor is
+?CPPRUN: *	available directly to the user. Note that it may well be different from
+?CPPRUN: *	the preprocessor used to compile the C program.
+?CPPRUN: */
+?CPPLAST:/* CPPLAST:
+?CPPLAST: * This symbol is intended to be used along with CPPRUN in the same manner
+?CPPLAST: *	symbol CPPMINUS is used with CPPSTDIN. It contains either "-" or "".
+?CPPLAST: */
+?CPPSTDIN:#define CPPSTDIN "$cppstdin"
+?CPPMINUS:#define CPPMINUS "$cppminus"
+?CPPRUN:#define CPPRUN "$cpprun"
+?CPPLAST:#define CPPLAST "$cpplast"
+
+?getdtablesize:/* getdtablesize:
+?getdtablesize: *	This catches use of the getdtablesize() subroutine, and remaps it
+?getdtablesize: *	to either ulimit(4,0) or NOFILE, if getdtablesize() isn't available.
+?getdtablesize: */
+?VAL_NOFILE:/* VAL_NOFILE:
+?VAL_NOFILE: *	This symbol contains the number of file descriptors available to the
+?VAL_NOFILE: *	process, as determined at configuration time. Unless a static constant
+?VAL_NOFILE: *	is needed, you should rely on getdtablesize() to obtain that number.
+?VAL_NOFILE: */
+?getdtablesize:#$d_gettblsz getdtablesize() $tablesize	/**/
+?VAL_NOFILE:#define VAL_NOFILE $nofile	/* Number of file descriptors */
+
+?HAS_NEWS1_1:/* HAS_NEWS1_1:
+?HAS_NEWS1_1: *	This symbol defined if running NeWS 1.1.
+?HAS_NEWS1_1: */
+?HAS_NEWS1_0:/* HAS_NEWS1_0:
+?HAS_NEWS1_0: *	This symbol defined if running NeWS 1.0.
+?HAS_NEWS1_0: */
+?TEXTCAN:/* TEXTCAN:
+?TEXTCAN: *	Tells path to where the textcan.ps stuff is...
+?TEXTCAN: */
+?HAS_NEWS1_1:#$d_news HAS_NEWS1_1     /**/
+?HAS_NEWS1_0:#$d_news0 HAS_NEWS1_0     /**/
+?TEXTCAN:#define TEXTCAN $d_textcan /**/
+
+?PORTAR:/* PORTAR:
+?PORTAR: *	This manifest constant must be defined to 1 for some implementations
+?PORTAR: *	of ar.h to get the portable ar most everybody uses.
+?PORTAR: */
+?PORTAR:#$d_PORTAR PORTAR 1	/**/
+
+?SHMLBA_WANTS_SYSMACROS:/* SHMLBA_WANTS_SYSMACROS:
+?SHMLBA_WANTS_SYSMACROS: *	This value tells us to include <sys/sysmacros.h> because SHMLBA
+?SHMLBA_WANTS_SYSMACROS: *	needs something from there, probably the ctob() macro.
+?SHMLBA_WANTS_SYSMACROS: */
+?SHMLBA_WANTS_PARAM:/* SHMLBA_WANTS_PARAM:
+?SHMLBA_WANTS_PARAM: *	This value tells us to include <sys/param.h> because SHMLBA needs
+?SHMLBA_WANTS_PARAM: *	something from there, probably the NBPC constant.
+?SHMLBA_WANTS_PARAM: */
+?SHMLBA_WANTS_SEG:/* SHMLBA_WANTS_SEG:
+?SHMLBA_WANTS_SEG: *	This value tells us to include <sys/seg.h> because SHMLBA needs
+?SHMLBA_WANTS_SEG: *	something from there, probably the SNUMSHFT constant.
+?SHMLBA_WANTS_SEG: */
+?SHMLBA_WANTS_IMMU:/* SHMLBA_WANTS_IMMU:
+?SHMLBA_WANTS_IMMU: *	This value tells us to include <sys/immu.h> because SHMLBA needs
+?SHMLBA_WANTS_IMMU: *	something from there, probably the stob() macro.  (tower_600 only?)
+?SHMLBA_WANTS_IMMU: */
+?SHMLBA_WANTS_SYSMACROS:#$d_SHM_MAC	SHMLBA_WANTS_SYSMACROS	/* SHMLBA wants ctob()? */
+?SHMLBA_WANTS_PARAM:#$d_SHM_PRM	SHMLBA_WANTS_PARAM	/* SHMLBA wants NBPC? */
+?SHMLBA_WANTS_SEG:#$d_SHM_SEG	SHMLBA_WANTS_SEG	/* SHMLBA wants SNUMSHFT? */
+?SHMLBA_WANTS_IMMU:#$d_SHM_IMMU	SHMLBA_WANTS_IMMU	/* SHMLBA wants stob()? */
+
+?HAS_ACCESS:/* HAS_ACCESS:
+?HAS_ACCESS: *	This manifest constant lets the C program know that the access()
+?HAS_ACCESS: *	system call is available to check for accessibility using real UID/GID.
+?HAS_ACCESS: *	(always present on UNIX.)
+?HAS_ACCESS: */
+?HAS_ACCESS:#$d_access HAS_ACCESS		/**/
+
+?HAS_ALARM:/* HAS_ALARM:
+?HAS_ALARM: *	This symbol, if defined, indicates that the alarm routine is
+?HAS_ALARM: *	available.
+?HAS_ALARM: */
+?HAS_ALARM:#$d_alarm HAS_ALARM		/**/
+
+?d_attribut:/* HASATTRIBUTE:
+?d_attribut: *	This symbol indicates the C compiler can check for function attributes,
+?d_attribut: *	such as printf formats. This is normally only supported by GNU cc.
+?d_attribut: */
+?d_attribut:#$d_attribut HASATTRIBUTE 	/**/
+?d_attribut:#ifndef HASATTRIBUTE
+?d_attribut:#define __attribute__(_arg_)
+?d_attribut:#endif
+
+?HAS_BCMP:/* HAS_BCMP:
+?HAS_BCMP: *	This symbol is defined if the bcmp() routine is available to
+?HAS_BCMP: *	compare blocks of memory.
+?HAS_BCMP: */
+?HAS_BCMP:#$d_bcmp HAS_BCMP	/**/
+
+?HAS_BCOPY:/* HAS_BCOPY:
+?HAS_BCOPY: *	This symbol is defined if the bcopy() routine is available to
+?HAS_BCOPY: *	copy blocks of memory.
+?HAS_BCOPY: */
+?HAS_BCOPY:#$d_bcopy HAS_BCOPY	/**/
+
+?STAT_MACROS_BROKEN:/* STAT_MACROS_BROKEN:
+?STAT_MACROS_BROKEN: *	This symbol, if defined, indicates that the S_IS*() stat macros
+?STAT_MACROS_BROKEN: *	such as S_ISBLK() give false positive and are thus unusable.
+?STAT_MACROS_BROKEN: *	Your best bet is then to supply your own set.
+?STAT_MACROS_BROKEN: */
+?STAT_MACROS_BROKEN:#$d_brokstat STAT_MACROS_BROKEN 	/**/
+
+?USE_BSDJMP:/* USE_BSDJMP:
+?USE_BSDJMP: *	This symbol, if defined, indicates that the BSD _setjmp and _longjmp
+?USE_BSDJMP: *	routines are available to do non-local gotos wihtout saving or restoring
+?USE_BSDJMP: *	the signal mask flag.
+?USE_BSDJMP: */
+?USE_BSDJMP:#$d_bsdjmp USE_BSDJMP		/**/
+
+?HAS_BZERO:/* HAS_BZERO:
+?HAS_BZERO: *	This symbol is defined if the bzero() routine is available to
+?HAS_BZERO: *	set a memory block to 0.
+?HAS_BZERO: */
+?HAS_BZERO:#$d_bzero HAS_BZERO	/**/
+
+?CASTI32:/* CASTI32:
+?CASTI32: *	This symbol is defined if the C compiler can cast negative
+?CASTI32: *	or large floating point numbers to 32-bit ints.
+?CASTI32: */
+?CASTI32:#$d_casti32	CASTI32		/**/
+
+?CASTNEGFLOAT:/* CASTNEGFLOAT:
+?CASTNEGFLOAT: *	This symbol is defined if the C compiler can cast negative
+?CASTNEGFLOAT: *	numbers to unsigned longs, ints and shorts.
+?CASTNEGFLOAT: */
+?CASTFLAGS:/* CASTFLAGS:
+?CASTFLAGS: *	This symbol contains flags that say what difficulties the compiler
+?CASTFLAGS: *	has casting odd floating values to unsigned long:
+?CASTFLAGS: *		0 = ok
+?CASTFLAGS: *		1 = couldn't cast < 0
+?CASTFLAGS: *		2 = couldn't cast >= 0x80000000
+?CASTFLAGS: *		4 = couldn't cast in argument expression list
+?CASTFLAGS: */
+?CASTNEGFLOAT:#$d_castneg	CASTNEGFLOAT		/**/
+?CASTFLAGS:#define CASTFLAGS $castflags		/**/
+
+?HAS_CBRT:/* HAS_CBRT:
+?HAS_CBRT: *	This symbol, if defined, indicates that the cbrt() (cube root)
+?HAS_CBRT: *	function is available.
+?HAS_CBRT: */
+?HAS_CBRT:#$d_cbrt HAS_CBRT	/**/
+
+?CHARSPRINTF:/* CHARSPRINTF:
+?CHARSPRINTF: *	This symbol is defined if this system declares "char *sprintf()" in
+?CHARSPRINTF: *	stdio.h.  The trend seems to be to declare it as "int sprintf()".  It
+?CHARSPRINTF: *	is up to the package author to declare sprintf correctly based on the
+?CHARSPRINTF: *	symbol.
+?CHARSPRINTF: */
+?CHARSPRINTF:#$d_charsprf	CHARSPRINTF 	/**/
+
+?HAS_CHOWN:/* HAS_CHOWN:
+?HAS_CHOWN: *	This symbol, if defined, indicates that the chown routine is
+?HAS_CHOWN: *	available.
+?HAS_CHOWN: */
+?HAS_CHOWN:#$d_chown HAS_CHOWN		/**/
+
+?HAS_CHROOT:/* HAS_CHROOT:
+?HAS_CHROOT: *	This symbol, if defined, indicates that the chroot routine is
+?HAS_CHROOT: *	available.
+?HAS_CHROOT: */
+?HAS_CHROOT:#$d_chroot HAS_CHROOT		/**/
+
+?HAS_CHSIZE:/* HAS_CHSIZE:
+?HAS_CHSIZE: *	This symbol, if defined, indicates that the chsize routine is available
+?HAS_CHSIZE: *	to truncate files.  You might need a -lx to get this routine.
+?HAS_CHSIZE: */
+?HAS_CHSIZE:#$d_chsize	HAS_CHSIZE		/**/
+
+?HAS_CURSES_KEYPAD:/* HAS_CURSES_KEYPAD:
+?HAS_CURSES_KEYPAD: *	This symbol indicates the availability of the keypad() function
+?HAS_CURSES_KEYPAD: *	of the curses library.
+?HAS_CURSES_KEYPAD: */
+?HAS_CURSES_KEYPAD:#$d_ckeypad HAS_CURSES_KEYPAD	/**/
+
+?HAS_CLOSEDIR:/* HAS_CLOSEDIR:
+?HAS_CLOSEDIR: *	This symbol, if defined, indicates that the closedir() routine is
+?HAS_CLOSEDIR: *	available.
+?HAS_CLOSEDIR: */
+?HAS_CLOSEDIR:#$d_closedir HAS_CLOSEDIR		/**/
+
+?VOID_CLOSEDIR:/* VOID_CLOSEDIR:
+?VOID_CLOSEDIR: *	This symbol, if defined, indicates that the closedir() routine
+?VOID_CLOSEDIR: *	does not return a value.
+?VOID_CLOSEDIR: */
+?VOID_CLOSEDIR:#$d_void_closedir VOID_CLOSEDIR		/**/
+
+?d_const:/* HASCONST:
+?d_const: *	This symbol, if defined, indicates that this C compiler knows about
+?d_const: *	the const type. There is no need to actually test for that symbol
+?d_const: *	within your programs. The mere use of the "const" keyword will
+?d_const: *	trigger the necessary tests.
+?d_const: */
+?d_const:#$d_const HASCONST	/**/
+?d_const:#ifndef HASCONST
+?d_const:#define const
+?d_const:#endif
+
+?HAS_CRYPT:/* HAS_CRYPT:
+?HAS_CRYPT: *	This symbol, if defined, indicates that the crypt routine is available
+?HAS_CRYPT: *	to encrypt passwords and the like.
+?HAS_CRYPT: */
+?HAS_CRYPT:#$d_crypt HAS_CRYPT		/**/
+
+?CSH:/* CSH:
+?CSH: *	This symbol, if defined, indicates that the C-shell exists.
+?CSH: *	If defined, contains the full pathname of csh.
+?CSH: */
+?CSH:#$d_csh CSH "$full_csh"		/**/
+
+?HAS_CTERMID:/* HAS_CTERMID:
+?HAS_CTERMID: *	This symbol, if defined, indicates that the ctermid routine is
+?HAS_CTERMID: *	available to generate filename for terminal.
+?HAS_CTERMID: */
+?HAS_CTERMID:#$d_ctermid HAS_CTERMID		/**/
+
+?HAS_CUSERID:/* HAS_CUSERID:
+?HAS_CUSERID: *	This symbol, if defined, indicates that the cuserid routine is
+?HAS_CUSERID: *	available to get character login names.
+?HAS_CUSERID: */
+?HAS_CUSERID:#$d_cuserid HAS_CUSERID		/**/
+
+?HAS_DBL_DIG:/* HAS_DBL_DIG:
+?HAS_DBL_DIG: *	This symbol, if defined, indicates that this system's <float.h>
+?HAS_DBL_DIG: *	or <limits.h> defines the symbol DBL_DIG, which is the number
+?HAS_DBL_DIG: *	of significant digits in a double precision number.  If this
+?HAS_DBL_DIG: *	symbol is not defined, a guess of 15 is usually pretty good.
+?HAS_DBL_DIG: */
+?HAS_DBL_DIG:#$d_dbl_dig HAS_DBL_DIG 	/* */
+
+?HAS_DIFFTIME:/* HAS_DIFFTIME:
+?HAS_DIFFTIME: *	This symbol, if defined, indicates that the difftime routine is
+?HAS_DIFFTIME: *	available.
+?HAS_DIFFTIME: */
+?HAS_DIFFTIME:#$d_difftime HAS_DIFFTIME		/**/
+
+?HAS_DLERROR:/* HAS_DLERROR:
+?HAS_DLERROR: *	This symbol, if defined, indicates that the dlerror routine is
+?HAS_DLERROR: *	available to return a string describing the last error that
+?HAS_DLERROR: *	occurred from a call to dlopen(), dlclose() or dlsym().
+?HAS_DLERROR: */
+?HAS_DLERROR:#$d_dlerror HAS_DLERROR	/**/
+
+?HAS_DLOPEN:/* HAS_DLOPEN:
+?HAS_DLOPEN: *	This symbol, if defined, indicates that the dlopen routine is
+?HAS_DLOPEN: *	available.
+?HAS_DLOPEN: */
+?HAS_DLOPEN:#$d_dlopen HAS_DLOPEN		/**/
+
+?SETUID_SCRIPTS_ARE_SECURE_NOW:/* SETUID_SCRIPTS_ARE_SECURE_NOW:
+?SETUID_SCRIPTS_ARE_SECURE_NOW: *	This symbol, if defined, indicates that the bug that prevents
+?SETUID_SCRIPTS_ARE_SECURE_NOW: *	setuid scripts from being secure is not present in this kernel.
+?SETUID_SCRIPTS_ARE_SECURE_NOW: */
+?DOSUID:/* DOSUID:
+?DOSUID: *	This symbol, if defined, indicates that the C program should
+?DOSUID: *	check the script that it is executing for setuid/setgid bits, and
+?DOSUID: *	attempt to emulate setuid/setgid on systems that have disabled
+?DOSUID: *	setuid #! scripts because the kernel can't do it securely.
+?DOSUID: *	It is up to the package designer to make sure that this emulation
+?DOSUID: *	is done securely.  Among other things, it should do an fstat on
+?DOSUID: *	the script it just opened to make sure it really is a setuid/setgid
+?DOSUID: *	script, it should make sure the arguments passed correspond exactly
+?DOSUID: *	to the argument on the #! line, and it should not trust any
+?DOSUID: *	subprocesses to which it must pass the filename rather than the
+?DOSUID: *	file descriptor of the script to be executed.
+?DOSUID: */
+?SETUID_SCRIPTS_ARE_SECURE_NOW:#$d_suidsafe SETUID_SCRIPTS_ARE_SECURE_NOW	/**/
+?DOSUID:#$d_dosuid DOSUID		/**/
+
+?HAS_DREM:/* HAS_DREM:
+?HAS_DREM: *	This symbol, if defined, indicates that the drem routine is
+?HAS_DREM: *	available.  This routine is roughly the same as fmod, i.e. it
+?HAS_DREM: *	computes the remainder r=x-n*y, where n=rint(x/y), whereas fmod
+?HAS_DREM: *	uses n=trunc(x/y).
+?HAS_DREM: */
+?HAS_DREM:#$d_drem HAS_DREM		/**/
+
+?HAS_DUP2:/* HAS_DUP2:
+?HAS_DUP2: *	This symbol, if defined, indicates that the dup2 routine is
+?HAS_DUP2: *	available to duplicate file descriptors.
+?HAS_DUP2: */
+?HAS_DUP2:#$d_dup2 HAS_DUP2	/**/
+
+?EOFPIPE:/* EOFPIPE:
+?EOFPIPE: *	This symbol, if defined, indicates that EOF condition will be detected
+?EOFPIPE: *	by the reader of the pipe when it is closed by the writing process.
+?EOFPIPE: *	That is, a select() call on that file descriptor will not block when
+?EOFPIPE: *	only an EOF remains (typical behaviour for BSD systems).
+?EOFPIPE: */
+?EOFPIPE:#$d_eofpipe EOFPIPE		/**/
+
+?HAS_EUC2JIS:/* HAS_EUC2JIS:
+?HAS_EUC2JIS: *	This symbol, if defined, indicates that the euc2jis routine is
+?HAS_EUC2JIS: *	available to convert EUC to JIS.
+?HAS_EUC2JIS: */
+?HAS_EUC2JIS:#$d_euc2jis	HAS_EUC2JIS		/**/
+
+?HAS_FCHMOD:/* HAS_FCHMOD:
+?HAS_FCHMOD: *	This symbol, if defined, indicates that the fchmod routine is available
+?HAS_FCHMOD: *	to change mode of opened files.  If unavailable, use chmod().
+?HAS_FCHMOD: */
+?HAS_FCHMOD:#$d_fchmod HAS_FCHMOD		/**/
+
+?HAS_FCHOWN:/* HAS_FCHOWN:
+?HAS_FCHOWN: *	This symbol, if defined, indicates that the fchown routine is available
+?HAS_FCHOWN: *	to change ownership of opened files.  If unavailable, use chown().
+?HAS_FCHOWN: */
+?HAS_FCHOWN:#$d_fchown HAS_FCHOWN		/**/
+
+?HAS_FCNTL:/* HAS_FCNTL:
+?HAS_FCNTL: *	This symbol, if defined, indicates to the C program that
+?HAS_FCNTL: *	the fcntl() function exists.
+?HAS_FCNTL: */
+?HAS_FCNTL:#$d_fcntl HAS_FCNTL		/**/
+
+?HAS_FD_SET:/* HAS_FD_SET:
+?HAS_FD_SET: *	This symbol, when defined, indicates presence of the fd_set typedef
+?HAS_FD_SET: *	in <sys/types.h>
+?HAS_FD_SET: */
+?HAS_FD_MACROS:/* HAS_FD_MACROS:
+?HAS_FD_MACROS: *	This symbol, when defined,  indicates presence of the macros used to
+?HAS_FD_MACROS: *	manipulate an fd_set.
+?HAS_FD_MACROS: */
+?HAS_FDS_BITS:/* HAS_FDS_BITS:
+?HAS_FDS_BITS: *	This symbol, when defined, indicates presence of the fds_bits member in
+?HAS_FDS_BITS: *	fd_set.  This knowledge is useful if fd_set is available but the macros
+?HAS_FDS_BITS: *	aren't.
+?HAS_FDS_BITS: */
+?HAS_FD_SET:#$d_fd_set HAS_FD_SET	/**/
+?HAS_FD_MACROS:#$d_fd_macros HAS_FD_MACROS	/**/
+?HAS_FDS_BITS:#$d_fds_bits HAS_FDS_BITS	/**/
+
+?HAS_FFS:/* HAS_FFS:
+?HAS_FFS: *	This symbol, if defined, indicates that the ffs routine is available
+?HAS_FFS: *	to find the first bit set in its argument.  If it's not available,
+?HAS_FFS: *	roll your own.
+?HAS_FFS: */
+?HAS_FFS:#$d_ffs HAS_FFS		/**/
+
+?HAS_FGETPOS:/* HAS_FGETPOS:
+?HAS_FGETPOS: *	This symbol, if defined, indicates that the fgetpos routine is
+?HAS_FGETPOS: *	available to get the file position indicator, similar to ftell().
+?HAS_FGETPOS: */
+?HAS_FGETPOS:#$d_fgetpos HAS_FGETPOS	/**/
+
+?FLEXFILENAMES:/* FLEXFILENAMES:
+?FLEXFILENAMES: *	This symbol, if defined, indicates that the system supports filenames
+?FLEXFILENAMES: *	longer than 14 characters.
+?FLEXFILENAMES: */
+?FLEXFILENAMES:#$d_flexfnam	FLEXFILENAMES		/**/
+
+?HAS_FLOCK:/* HAS_FLOCK:
+?HAS_FLOCK: *	This symbol, if defined, indicates that the flock routine is
+?HAS_FLOCK: *	available to do file locking.
+?HAS_FLOCK: */
+?HAS_FLOCK:#$d_flock HAS_FLOCK		/**/
+
+?HAS_FMOD:/* HAS_FMOD:
+?HAS_FMOD: *	This symbol, if defined, indicates that the fmod routine is
+?HAS_FMOD: *	available to compute the remainder r=x-n*y where n=trunc(x/y).
+?HAS_FMOD: */
+?HAS_FMOD:#$d_fmod HAS_FMOD		/**/
+
+?HAS_FORK:/* HAS_FORK:
+?HAS_FORK: *	This symbol, if defined, indicates that the fork routine is
+?HAS_FORK: *	available.
+?HAS_FORK: */
+?HAS_FORK:#$d_fork HAS_FORK		/**/
+
+?HAS_FSETPOS:/* HAS_FSETPOS:
+?HAS_FSETPOS: *	This symbol, if defined, indicates that the fsetpos routine is
+?HAS_FSETPOS: *	available to set the file position indicator, similar to fseek().
+?HAS_FSETPOS: */
+?HAS_FSETPOS:#$d_fsetpos HAS_FSETPOS	/**/
+
+?HAS_FTIME:/* HAS_FTIME:
+?HAS_FTIME: *	This symbol, if defined, indicates that the ftime() routine exists.
+?HAS_FTIME: *	It is basically a sub-second accuracy clock, but is less accurate
+?HAS_FTIME: *	than gettimeofday(2) anyway. The type "Timeval" should be used to
+?HAS_FTIME: *	refer to "struct timeb".
+?HAS_FTIME: */
+?HAS_GETTIMEOFDAY:/* HAS_GETTIMEOFDAY:
+?HAS_GETTIMEOFDAY: *	This symbol, if defined, indicates that the gettimeofday() system
+?HAS_GETTIMEOFDAY: *	call is available for a sub-second accuracy clock. Usually, the file
+?HAS_GETTIMEOFDAY: *	<sys/resource.h> needs to be included (see I_SYS_RESOURCE).
+?HAS_GETTIMEOFDAY: *	The type "Timeval" should be used to refer to "struct timeval".
+?HAS_GETTIMEOFDAY: */
+?HAS_FTIME:#$d_ftime HAS_FTIME		/**/
+?HAS_GETTIMEOFDAY:#$d_gettimeod HAS_GETTIMEOFDAY	/**/
+?d_ftime:@if HAS_FTIME
+?d_ftime:#ifdef HAS_FTIME
+?d_ftime:#define Timeval struct timeb		/* Structure used by ftime() */
+?d_ftime:#endif
+?d_ftime:@end
+?d_ftime:@if HAS_GETTIMEOFDAY
+?d_ftime:#ifdef HAS_GETTIMEOFDAY
+?d_ftime:#define Timeval struct timeval	/* Structure used by gettimeofday() */
+?d_ftime:#endif
+?d_ftime:@end
+
+?HAS_FTRUNCATE:/* HAS_FTRUNCATE:
+?HAS_FTRUNCATE: *	This symbol, if defined, indicates that the ftruncate() subroutine
+?HAS_FTRUNCATE: *	exists.
+?HAS_FTRUNCATE: */
+?HAS_FTRUNCATE:#$d_ftrncate HAS_FTRUNCATE	/**/
+
+?Gconvert:/* Gconvert:
+?Gconvert: *	This preprocessor macro is defined to convert a floating point
+?Gconvert: *	number to a string without a trailing decimal point.  This
+?Gconvert: *	emulates the behavior of sprintf("%g"), but is sometimes much more
+?Gconvert: *	efficient.  If gconvert() is not available, but gcvt() drops the
+?Gconvert: *	trailing decimal point, then gcvt() is used.  If all else fails,
+?Gconvert: *	a macro using sprintf("%g") is used. Arguments for the Gconvert
+?Gconvert: *	macro are: value, number of digits, whether trailing zeros should
+?Gconvert: *	be retained, and the output buffer.
+?Gconvert: *	Possible values are:
+?Gconvert: *		d_Gconvert='gconvert((x),(n),(t),(b))'
+?Gconvert: *		d_Gconvert='gcvt((x),(n),(b))'
+?Gconvert: *		d_Gconvert='sprintf((b),"%.*g",(n),(x))'
+?Gconvert: *	The last two assume trailing zeros should not be kept.
+?Gconvert: */
+?Gconvert:#define Gconvert(x,n,t,b) $d_Gconvert
+
+?HAS_GETGROUPS:/* HAS_GETGROUPS:
+?HAS_GETGROUPS: *	This symbol, if defined, indicates that the getgroups() routine is
+?HAS_GETGROUPS: *	available to get the list of process groups.  If unavailable, multiple
+?HAS_GETGROUPS: *	groups are probably not supported.
+?HAS_GETGROUPS: */
+?HAS_GETGROUPS:#$d_getgrps HAS_GETGROUPS		/**/
+
+?HAS_GETHOSTBYNAME:/* HAS_GETHOSTBYNAME:
+?HAS_GETHOSTBYNAME: *	This symbol, if defined, indicates that the gethostbyname() routine is
+?HAS_GETHOSTBYNAME: *	available to lookup host names in some data base or other.
+?HAS_GETHOSTBYNAME: */
+?HAS_GETHOSTBYNAME:#$d_gethbynm HAS_GETHOSTBYNAME		/**/
+
+?HAS_GETHOSTENT:/* HAS_GETHOSTENT:
+?HAS_GETHOSTENT: *	This symbol, if defined, indicates that the gethostent routine is
+?HAS_GETHOSTENT: *	available to lookup host names in some data base or other.
+?HAS_GETHOSTENT: */
+?HAS_GETHOSTENT:#$d_gethent HAS_GETHOSTENT		/**/
+
+?HAS_GETHOSTID:/* HAS_GETHOSTID:
+?HAS_GETHOSTID: *	This symbol, if defined, indicates that the gethostid system call is
+?HAS_GETHOSTID: *	available to get the host id.
+?HAS_GETHOSTID: */
+?HAS_GETHOSTID:#$d_gethid HAS_GETHOSTID		/**/
+
+?HAS_GETHOSTNAME:/* HAS_GETHOSTNAME:
+?HAS_GETHOSTNAME: *	This symbol, if defined, indicates that the C program may use the
+?HAS_GETHOSTNAME: *	gethostname() routine to derive the host name.  See also HAS_UNAME
+?HAS_GETHOSTNAME: *	and PHOSTNAME.
+?HAS_GETHOSTNAME: */
+?HAS_UNAME:/* HAS_UNAME:
+?HAS_UNAME: *	This symbol, if defined, indicates that the C program may use the
+?HAS_UNAME: *	uname() routine to derive the host name.  See also HAS_GETHOSTNAME
+?HAS_UNAME: *	and PHOSTNAME.
+?HAS_UNAME: */
+?PHOSTNAME:/* PHOSTNAME:
+?PHOSTNAME: *	This symbol, if defined, indicates that the C program may use the
+?PHOSTNAME: *	contents of PHOSTNAME as a command to feed to the popen() routine
+?PHOSTNAME: *	to derive the host name.  See also HAS_GETHOSTNAME and HAS_UNAME.
+?PHOSTNAME: *	Note that the command uses a fully qualified path, so that it is safe
+?PHOSTNAME: *	even if used by a process with super-user privileges.
+?PHOSTNAME: */
+?HAS_GETHOSTNAME:#$d_gethname HAS_GETHOSTNAME	/**/
+?HAS_UNAME:#$d_uname HAS_UNAME		/**/
+?PHOSTNAME:#$d_phostname PHOSTNAME "$aphostname"	/* How to get the host name */
+
+?HAS_GETLOGIN:/* HAS_GETLOGIN:
+?HAS_GETLOGIN: *	This symbol, if defined, indicates that the getlogin routine is
+?HAS_GETLOGIN: *	available to get the login name.
+?HAS_GETLOGIN: */
+?HAS_GETLOGIN:#$d_getlogin HAS_GETLOGIN		/**/
+
+?HAS_GETOPT:/* HAS_GETOPT:
+?HAS_GETOPT: *	This symbol, if defined, indicates that the getopt() routine exists.
+?HAS_GETOPT: */
+?HAS_GETOPT:#$d_getopt HAS_GETOPT		/**/
+
+?HAS_GETPAGESIZE:/* HAS_GETPAGESIZE:
+?HAS_GETPAGESIZE: *	This symbol, if defined, indicates that the getpagesize system call
+?HAS_GETPAGESIZE: *	is available to get system page size, which is the granularity of
+?HAS_GETPAGESIZE: *	many memory management calls.
+?HAS_GETPAGESIZE: */
+?PAGESIZE_VALUE:/* PAGESIZE_VALUE:
+?PAGESIZE_VALUE: *	This symbol holds the size in bytes of a system page (obtained via
+?PAGESIZE_VALUE: *	the getpagesize() system call at configuration time or asked to the
+?PAGESIZE_VALUE: *	user if the system call is not available).
+?PAGESIZE_VALUE: */
+?HAS_GETPAGESIZE:#$d_getpagsz HAS_GETPAGESIZE		/**/
+?PAGESIZE_VALUE:#define PAGESIZE_VALUE $pagesize	/* System page size, in bytes */
+
+?HAS_GETPGID:/* HAS_GETPGID:
+?HAS_GETPGID: *	This symbol, if defined, indicates to the C program that 
+?HAS_GETPGID: *	the getpgid(pid) function is available to get the
+?HAS_GETPGID: *	process group id.
+?HAS_GETPGID: */
+?HAS_GETPGID:#$d_getpgid HAS_GETPGID		/**/
+
+?HAS_GETPGRP:/* HAS_GETPGRP:
+?HAS_GETPGRP: *	This symbol, if defined, indicates that the getpgrp routine is
+?HAS_GETPGRP: *	available to get the current process group.
+?HAS_GETPGRP: */
+?USE_BSD_GETPGRP:/* USE_BSD_GETPGRP:
+?USE_BSD_GETPGRP: *	This symbol, if defined, indicates that getpgrp needs one
+?USE_BSD_GETPGRP: *	arguments whereas USG one needs none.
+?USE_BSD_GETPGRP: */
+?HAS_GETPGRP:#$d_getpgrp HAS_GETPGRP		/**/
+?USE_BSD_GETPGRP:#$d_bsdgetpgrp USE_BSD_GETPGRP	/**/
+
+?HAS_GETPGRP2:/* HAS_GETPGRP2:
+?HAS_GETPGRP2: *	This symbol, if defined, indicates that the getpgrp2() (as in DG/UX)
+?HAS_GETPGRP2: *	routine is available to get the current process group.
+?HAS_GETPGRP2: */
+?HAS_GETPGRP2:#$d_getpgrp2 HAS_GETPGRP2		/**/
+
+?HAS_GETPPID:/* HAS_GETPPID:
+?HAS_GETPPID: *	This symbol, if defined, indicates that the getppid routine is
+?HAS_GETPPID: *	available to get the parent process ID.
+?HAS_GETPPID: */
+?HAS_GETPPID:#$d_getppid HAS_GETPPID		/**/
+
+?HAS_GETPRIORITY:/* HAS_GETPRIORITY:
+?HAS_GETPRIORITY: *	This symbol, if defined, indicates that the getpriority routine is
+?HAS_GETPRIORITY: *	available to get a process's priority.
+?HAS_GETPRIORITY: */
+?HAS_GETPRIORITY:#$d_getprior HAS_GETPRIORITY		/**/
+
+?HAS_GETPWENT:/* HAS_GETPWENT:
+?HAS_GETPWENT: *	This symbol, if defined, indicates that the getpwent() routine
+?HAS_GETPWENT: *	should be used instead of the getpw() routine.
+?HAS_GETPWENT: */
+?HAS_GETPWENT:#$d_getpwent HAS_GETPWENT	/**/
+
+?HAS_GETWD:/* HAS_GETWD:
+?HAS_GETWD: *	This symbol, if defined, indicates that the getwd routine is
+?HAS_GETWD: *	available to get working directory. If not, you should
+?HAS_GETWD: *	probably use getcwd().
+?HAS_GETWD: */
+?HAS_GETWD:#$d_getwd HAS_GETWD		/**/
+
+?HAS_GNULIBC:/* HAS_GNULIBC:
+?HAS_GNULIBC: *	This symbol, if defined, indicates to the C program that 
+?HAS_GNULIBC: *	the GNU C library is being used.
+?HAS_GNULIBC: */
+?HAS_GNULIBC:#$d_gnulibc HAS_GNULIBC  	/**/
+?HAS_TERMLIB:/* HAS_TERMLIB:
+?HAS_TERMLIB: *	This symbol, when defined, indicates that termlib-style routines
+?HAS_TERMLIB: *	are available.  There is nothing to include.
+?HAS_TERMLIB: */
+?HAS_TERMLIB:#$d_havetlib	HAS_TERMLIB	/**/
+
+?HIDDEN_NET:/* HIDDEN_NET:
+?HIDDEN_NET: *	This symbol, if defined, contains the host name that you want to
+?HIDDEN_NET: *	advertise to the outside world.  This name can be different from
+?HIDDEN_NET: *	your actual host name, as long as the machine you specify knows
+?HIDDEN_NET: *	how to forward mail to you.
+?HIDDEN_NET: */
+?HIDDEN_NET:#$d_hidnet HIDDEN_NET "$hiddennet"	/**/
+
+?HAS_HTONL:/* HAS_HTONL:
+?HAS_HTONL: *	This symbol, if defined, indicates that the htonl() routine (and
+?HAS_HTONL: *	friends htons() ntohl() ntohs()) are available to do network
+?HAS_HTONL: *	order byte swapping.
+?HAS_HTONL: */
+?HAS_HTONS:/* HAS_HTONS:
+?HAS_HTONS: *	This symbol, if defined, indicates that the htons() routine (and
+?HAS_HTONS: *	friends htonl() ntohl() ntohs()) are available to do network
+?HAS_HTONS: *	order byte swapping.
+?HAS_HTONS: */
+?HAS_NTOHL:/* HAS_NTOHL:
+?HAS_NTOHL: *	This symbol, if defined, indicates that the ntohl() routine (and
+?HAS_NTOHL: *	friends htonl() htons() ntohs()) are available to do network
+?HAS_NTOHL: *	order byte swapping.
+?HAS_NTOHL: */
+?HAS_NTOHS:/* HAS_NTOHS:
+?HAS_NTOHS: *	This symbol, if defined, indicates that the ntohs() routine (and
+?HAS_NTOHS: *	friends htonl() htons() ntohl()) are available to do network
+?HAS_NTOHS: *	order byte swapping.
+?HAS_NTOHS: */
+?HAS_HTONL:#$d_htonl HAS_HTONL		/**/
+?HAS_HTONS:#$d_htonl HAS_HTONS		/**/
+?HAS_NTOHL:#$d_htonl HAS_NTOHL		/**/
+?HAS_NTOHS:#$d_htonl HAS_NTOHS		/**/
+
+?HAS_INET_ATON:/* HAS_INET_ATON:
+?HAS_INET_ATON: *	This symbol, if defined, indicates to the C program that the
+?HAS_INET_ATON: *	inet_aton() function is available to parse IP address "dotted-quad"
+?HAS_INET_ATON: *	strings.
+?HAS_INET_ATON: */
+?HAS_INET_ATON:#$d_inetaton HAS_INET_ATON		/**/
+
+?USE_INETD:/* USE_INETD:
+?USE_INETD: *	This symbol if defined indicates to the C program that inetd will be
+?USE_INETD: *	in charge of the initial socket connection. The file descriptors 0 and
+?USE_INETD: *	1 have been dup()ed from the original connected socket descriptor and
+?USE_INETD: *	are ready for send() and recv().
+?USE_INETD: */
+?USE_INETD:#$d_inetd USE_INETD		/**/
+
+?INTERNET:/* INTERNET:
+?INTERNET: *	This symbol, if defined, indicates that there is a mailer available
+?INTERNET: *	which supports internet-style addresses (user@site.domain).
+?INTERNET: */
+?INTERNET:#$d_internet	INTERNET	/**/
+
+?HAS_ISASCII:/* HAS_ISASCII:
+?HAS_ISASCII: *	This manifest constant lets the C program know that isascii 
+?HAS_ISASCII: *	is available.
+?HAS_ISASCII: */
+?HAS_ISASCII:#$d_isascii HAS_ISASCII		/**/
+
+?HAS_ITIMER:/* HAS_ITIMER:
+?HAS_ITIMER: *	This symbol, if defined, indicates that the setitimer() routine exists.
+?HAS_ITIMER: */
+?HAS_ITIMER:#$d_itimer HAS_ITIMER	/**/
+
+?SIGNALS_KEPT:/* SIGNALS_KEPT:
+?SIGNALS_KEPT: *	This symbol is defined if signal handlers needn't be reinstated after
+?SIGNALS_KEPT: *	receipt of a signal.
+?SIGNALS_KEPT: */
+?SIGNALS_KEPT:#$d_keepsig SIGNALS_KEPT	/**/
+
+?HAS_KILLPG:/* HAS_KILLPG:
+?HAS_KILLPG: *	This symbol, if defined, indicates that the killpg routine is available
+?HAS_KILLPG: *	to kill process groups.  If unavailable, you probably should use kill
+?HAS_KILLPG: *	with a negative process number.
+?HAS_KILLPG: */
+?HAS_KILLPG:#$d_killpg HAS_KILLPG	/**/
+
+?HAS_LINK:/* HAS_LINK:
+?HAS_LINK: *	This symbol, if defined, indicates that the link routine is
+?HAS_LINK: *	available to create hard links.
+?HAS_LINK: */
+?HAS_LINK:#$d_link HAS_LINK	/**/
+
+?USE_LINUX_STDIO:/* USE_LINUX_STDIO:
+?USE_LINUX_STDIO: *	This symbol is defined if this system has a FILE structure declaring
+?USE_LINUX_STDIO: *	_IO_read_base, _IO_read_ptr, and _IO_read_end in stdio.h.
+?USE_LINUX_STDIO: */
+?USE_LINUX_STDIO:#$d_linuxstd USE_LINUX_STDIO 	/**/
+
+?HAS_LOCALECONV:/* HAS_LOCALECONV:
+?HAS_LOCALECONV: *	This symbol, if defined, indicates that the localeconv routine is
+?HAS_LOCALECONV: *	available for numeric and monetary formatting conventions.
+?HAS_LOCALECONV: */
+?HAS_LOCALECONV:#$d_locconv HAS_LOCALECONV	/**/
+
+?HAS_LOCKF:/* HAS_LOCKF:
+?HAS_LOCKF: *	This symbol, if defined, indicates that the lockf routine is
+?HAS_LOCKF: *	available to do file locking.
+?HAS_LOCKF: */
+?HAS_LOCKF:#$d_lockf HAS_LOCKF		/**/
+
+?HAS_LSTAT:/* HAS_LSTAT:
+?HAS_LSTAT: *	This symbol, if defined, indicates that the lstat routine is
+?HAS_LSTAT: *	available to do file stats on symbolic links.
+?HAS_LSTAT: */
+?HAS_LSTAT:#$d_lstat HAS_LSTAT		/**/
+
+?HAS_MBLEN:/* HAS_MBLEN:
+?HAS_MBLEN: *	This symbol, if defined, indicates that the mblen routine is available
+?HAS_MBLEN: *	to find the number of bytes in a multibye character.
+?HAS_MBLEN: */
+?HAS_MBLEN:#$d_mblen HAS_MBLEN		/**/
+
+?HAS_MBSTOWCS:/* HAS_MBSTOWCS:
+?HAS_MBSTOWCS: *	This symbol, if defined, indicates that the mbstowcs routine is
+?HAS_MBSTOWCS: *	available to covert a multibyte string into a wide character string.
+?HAS_MBSTOWCS: */
+?HAS_MBSTOWCS:#$d_mbstowcs	HAS_MBSTOWCS		/**/
+
+?HAS_MBTOWC:/* HAS_MBTOWC:
+?HAS_MBTOWC: *	This symbol, if defined, indicates that the mbtowc routine is available
+?HAS_MBTOWC: *	to covert a multibyte to a wide character.
+?HAS_MBTOWC: */
+?HAS_MBTOWC:#$d_mbtowc HAS_MBTOWC		/**/
+
+?HAS_MEMCCPY:/* HAS_MEMCCPY:
+?HAS_MEMCCPY: *	This symbol, if defined, indicates that the memccpy routine is available
+?HAS_MEMCCPY: *	to copy a character into a block of memory.  Otherwise you should
+?HAS_MEMCCPY: *	roll your own.
+?HAS_MEMCCPY: */
+?HAS_MEMCCPY:#$d_memccpy HAS_MEMCCPY		/**/
+
+?HAS_MEMCHR:/* HAS_MEMCHR:
+?HAS_MEMCHR: *	This symbol, if defined, indicates that the memchr routine is available
+?HAS_MEMCHR: *	to scan a block of memory for a character.  If undefined, roll your own.
+?HAS_MEMCHR: */
+?HAS_MEMCHR:#$d_memchr HAS_MEMCHR		/**/
+
+?HAS_MEMCMP:/* HAS_MEMCMP:
+?HAS_MEMCMP: *	This symbol, if defined, indicates that the memcmp routine is available
+?HAS_MEMCMP: *	to compare blocks of memory.
+?HAS_MEMCMP: */
+?HAS_MEMCMP:#$d_memcmp HAS_MEMCMP	/**/
+
+?HAS_MEMCPY:/* HAS_MEMCPY:
+?HAS_MEMCPY: *	This symbol, if defined, indicates that the memcpy routine is available
+?HAS_MEMCPY: *	to copy blocks of memory.
+?HAS_MEMCPY: */
+?HAS_MEMCPY:#$d_memcpy HAS_MEMCPY	/**/
+
+?HAS_MEMMOVE:/* HAS_MEMMOVE:
+?HAS_MEMMOVE: *	This symbol, if defined, indicates that the memmove routine is available
+?HAS_MEMMOVE: *	to copy potentially overlapping blocks of memory. This should be used
+?HAS_MEMMOVE: *	only when HAS_SAFE_BCOPY is not defined. If neither is there, roll your
+?HAS_MEMMOVE: *	own version.
+?HAS_MEMMOVE: */
+?HAS_MEMMOVE:#$d_memmove HAS_MEMMOVE	/**/
+
+?HAS_MEMSET:/* HAS_MEMSET:
+?HAS_MEMSET: *	This symbol, if defined, indicates that the memset routine is available
+?HAS_MEMSET: *	to set blocks of memory.
+?HAS_MEMSET: */
+?HAS_MEMSET:#$d_memset HAS_MEMSET	/**/
+
+?HAS_MKDIR:/* HAS_MKDIR:
+?HAS_MKDIR: *	This symbol, if defined, indicates that the mkdir routine is available
+?HAS_MKDIR: *	to create directories.  Otherwise you should fork off a new process to
+?HAS_MKDIR: *	exec /bin/mkdir.
+?HAS_MKDIR: */
+?HAS_MKDIR:#$d_mkdir HAS_MKDIR		/**/
+
+?HAS_MKFIFO:/* HAS_MKFIFO:
+?HAS_MKFIFO: *	This symbol, if defined, indicates that the mkfifo routine is
+?HAS_MKFIFO: *	available to create FIFOs. Otherwise, mknod should be able to
+?HAS_MKFIFO: *	do it for you. However, if mkfifo is there, mknod might require
+?HAS_MKFIFO: *	super-user privileges which mkfifo will not.
+?HAS_MKFIFO: */
+?HAS_MKFIFO:#$d_mkfifo HAS_MKFIFO		/**/
+
+?HAS_MKTIME:/* HAS_MKTIME:
+?HAS_MKTIME: *	This symbol, if defined, indicates that the mktime routine is
+?HAS_MKTIME: *	available.
+?HAS_MKTIME: */
+?HAS_MKTIME:#$d_mktime HAS_MKTIME		/**/
+
+?HAS_MMAP:/* HAS_MMAP:
+?HAS_MMAP: *	This symbol, if defined, indicates that the mmap system call is
+?HAS_MMAP: *	available to map a file into memory.
+?HAS_MMAP: */
+?HAS_MMAP:#$d_mmap HAS_MMAP		/**/
+
+?HAS_MSG:/* HAS_MSG:
+?HAS_MSG: *	This symbol, if defined, indicates that the entire msg*(2) library is
+?HAS_MSG: *	supported (IPC mechanism based on message queues).
+?HAS_MSG: */
+?HAS_MSG:#$d_msg HAS_MSG		/**/
+
+?HAS_MSGCTL:/* HAS_MSGCTL:
+?HAS_MSGCTL: *	This symbol, if defined, indicates that the msgctl() routine is
+?HAS_MSGCTL: *	available to perform message control operations.
+?HAS_MSGCTL: */
+?HAS_MSGCTL:#$d_msgctl HAS_MSGCTL		/**/
+
+?HAS_MSGGET:/* HAS_MSGGET:
+?HAS_MSGGET: *	This symbol, if defined, indicates that the msgget() routine is
+?HAS_MSGGET: *	available to get a new message queue.
+?HAS_MSGGET: */
+?HAS_MSGGET:#$d_msgget HAS_MSGGET		/**/
+
+?HAS_MSGRCV:/* HAS_MSGRCV:
+?HAS_MSGRCV: *	This symbol, if defined, indicates that the msgrcv() routine is
+?HAS_MSGRCV: *	available to extract a message from the message queue.
+?HAS_MSGRCV: */
+?HAS_MSGRCV:#$d_msgrcv HAS_MSGRCV		/**/
+
+?HAS_MSGSND:/* HAS_MSGSND:
+?HAS_MSGSND: *	This symbol, if defined, indicates that the msgsnd() routine is
+?HAS_MSGSND: *	available to send a message into the message queue.
+?HAS_MSGSND: */
+?HAS_MSGSND:#$d_msgsnd HAS_MSGSND		/**/
+
+?HAS_MSYNC:/* HAS_MSYNC:
+?HAS_MSYNC: *	This symbol, if defined, indicates that the msync system call is
+?HAS_MSYNC: *	available to synchronize a mapped file.
+?HAS_MSYNC: */
+?HAS_MSYNC:#$d_msync HAS_MSYNC		/**/
+
+?HAS_MUNMAP:/* HAS_MUNMAP:
+?HAS_MUNMAP: *	This symbol, if defined, indicates that the munmap system call is
+?HAS_MUNMAP: *	available to unmap a region, usually mapped by mmap().
+?HAS_MUNMAP: */
+?HAS_MUNMAP:#$d_munmap HAS_MUNMAP		/**/
+
+?NEWS_ADMIN:/* NEWS_ADMIN:
+?NEWS_ADMIN: *	This symbol, if defined, contains the login name of the news
+?NEWS_ADMIN: *	administrator.
+?NEWS_ADMIN: */
+?NEWS_ADMIN:#$d_newsadm NEWS_ADMIN "$newsadmin"		/**/
+
+?HAS_NICE:/* HAS_NICE:
+?HAS_NICE: *	This symbol, if defined, indicates that the nice routine is
+?HAS_NICE: *	available.
+?HAS_NICE: */
+?HAS_NICE:#$d_nice HAS_NICE		/**/
+
+?NOLINEBUF:/* NOLINEBUF:
+?NOLINEBUF: *	This symbol, if defined, indicates that stdout is not buffered, so that
+?NOLINEBUF: *	the program can call setbuf() or setlinebuf() for efficiency.
+?NOLINEBUF: */
+?NOLINEBUF:#$d_nolnbuf	NOLINEBUF	/**/
+
+?NORMSIG:/* NORMSIG:
+?NORMSIG: *	This symbol, if defined, indicates that normal signal handling routines
+?NORMSIG: *	should be used, as opposed to the ones in 4.1bsd (sigset, etc.).
+?NORMSIG: */
+?NORMSIG:#$d_normsig NORMSIG		/**/
+
+?HAS_OPEN3:/* HAS_OPEN3:
+?HAS_OPEN3: *	This manifest constant lets the C program know that the three
+?HAS_OPEN3: *	argument form of open(2) is available.
+?HAS_OPEN3: */
+?HAS_OPEN3:#$d_open3 HAS_OPEN3		/**/
+
+?HAS_PATHCONF:/* HAS_PATHCONF:
+?HAS_PATHCONF: *	This symbol, if defined, indicates that pathconf() is available
+?HAS_PATHCONF: *	to determine file-system related limits and options associated
+?HAS_PATHCONF: *	with a given filename.
+?HAS_PATHCONF: */
+?HAS_FPATHCONF:/* HAS_FPATHCONF:
+?HAS_FPATHCONF: *	This symbol, if defined, indicates that pathconf() is available
+?HAS_FPATHCONF: *	to determine file-system related limits and options associated
+?HAS_FPATHCONF: *	with a given open file descriptor.
+?HAS_FPATHCONF: */
+?HAS_PATHCONF:#$d_pathconf HAS_PATHCONF		/**/
+?HAS_FPATHCONF:#$d_fpathconf HAS_FPATHCONF		/**/
+
+?HAS_PAUSE:/* HAS_PAUSE:
+?HAS_PAUSE: *	This symbol, if defined, indicates that the pause routine is
+?HAS_PAUSE: *	available to suspend a process until a signal is received.
+?HAS_PAUSE: */
+?HAS_PAUSE:#$d_pause HAS_PAUSE		/**/
+
+?d_perror:/* HAS_PERROR:
+?d_perror: *	This symbol, if defined, indicates that the perror() routine is
+?d_perror: *	available to print system error messages. If not defined, you should
+?d_perror: *	use your own diagnostic routine...
+?d_perror: */
+?d_perror:/* perror:
+?d_perror: *	This symbol is maped to null if the  perror() routine is not
+?d_perror: *	available to print system error messages.
+?d_perror: */
+?d_perror:#$d_perror HAS_PERROR	/**/
+?d_perror:#ifndef HAS_PERROR
+?d_perror:#define perror(s)	;		/* mapped to a null statement */
+?d_perror:#endif
+
+?PIDCHECK:/* PIDCHECK:
+?PIDCHECK: *	This symbol, if defined, means that the kill(pid, 0) will
+?PIDCHECK: *	check for an active pid (i.e. the kernel will run all the
+?PIDCHECK: *	necessary pid checks, but no signal is actually sent).
+?PIDCHECK: */
+?PIDCHECK:#$d_pidcheck PIDCHECK		/**/
+
+?HAS_PIPE:/* HAS_PIPE:
+?HAS_PIPE: *	This symbol, if defined, indicates that the pipe routine is
+?HAS_PIPE: *	available to create an inter-process channel.
+?HAS_PIPE: */
+?HAS_PIPE:#$d_pipe HAS_PIPE		/**/
+
+?HAS_POLL:/* HAS_POLL:
+?HAS_POLL: *	This symbol, if defined, indicates that the poll routine is
+?HAS_POLL: *	available to poll active file descriptors. You may safely
+?HAS_POLL: *	include <poll.h> when this symbol is defined.
+?HAS_POLL: */
+?HAS_POLL:#$d_poll HAS_POLL		/**/
+
+?HAS_POPEN:/* HAS_POPEN:
+?HAS_POPEN: *	This symbol, if defined, indicates that the popen routine is
+?HAS_POPEN: *	available to open a pipe from a process.
+?HAS_POPEN: */
+?HAS_POPEN:#$d_popen HAS_POPEN		/**/
+
+?PORTABLE:/* PORTABLE:
+?PORTABLE: *	This symbol, if defined, indicates to the C program that it should
+?PORTABLE: *	not assume that it is running on the machine it was compiled on.
+?PORTABLE: *	The program should be prepared to look up the host name, translate
+?PORTABLE: *	generic filenames, use PATH, etc.
+?PORTABLE: */
+?PORTABLE:#$d_portable PORTABLE	/**/
+
+?HAS_PSIGNAL:/* HAS_PSIGNAL:
+?HAS_PSIGNAL: *	This symbol, if defined, indicates that the psignal() routine exists.
+?HAS_PSIGNAL: */
+?HAS_PSIGNAL:#$d_psignal HAS_PSIGNAL		/**/
+
+?RASTER_TEK:/* RASTER_TEK:
+?RASTER_TEK: *	Defined if this is a rastertech machine.
+?RASTER_TEK: */
+?RASTER_TEK:#$d_raster RASTER_TEK /**/
+
+?HAS_RDCHK:/* HAS_RDCHK:
+?HAS_RDCHK: *	This symbol, if defined, indicates that the rdchk routine is available
+?HAS_RDCHK: *	to find out if there is input pending on an IO channel.  Generally
+?HAS_RDCHK: *	the routine is used only if FIONREAD and O_NDELAY aren't available.
+?HAS_RDCHK: */
+?HAS_RDCHK:#$d_rdchk HAS_RDCHK		/**/
+
+?HAS_READDIR:/* HAS_READDIR:
+?HAS_READDIR: *	This symbol, if defined, indicates that the readdir routine is
+?HAS_READDIR: *	available to read directory entries. You may have to include
+?HAS_READDIR: *	<dirent.h>. See I_DIRENT.
+?HAS_READDIR: */
+?HAS_READDIR:#$d_readdir HAS_READDIR		/**/
+
+?HAS_SEEKDIR:/* HAS_SEEKDIR:
+?HAS_SEEKDIR: *	This symbol, if defined, indicates that the seekdir routine is
+?HAS_SEEKDIR: *	available. You may have to include <dirent.h>. See I_DIRENT.
+?HAS_SEEKDIR: */
+?HAS_SEEKDIR:#$d_seekdir HAS_SEEKDIR		/**/
+
+?HAS_TELLDIR:/* HAS_TELLDIR:
+?HAS_TELLDIR: *	This symbol, if defined, indicates that the telldir routine is
+?HAS_TELLDIR: *	available. You may have to include <dirent.h>. See I_DIRENT.
+?HAS_TELLDIR: */
+?HAS_TELLDIR:#$d_telldir HAS_TELLDIR		/**/
+
+?HAS_REWINDDIR:/* HAS_REWINDDIR:
+?HAS_REWINDDIR: *	This symbol, if defined, indicates that the rewinddir routine is
+?HAS_REWINDDIR: *	available. You may have to include <dirent.h>. See I_DIRENT.
+?HAS_REWINDDIR: */
+?HAS_REWINDDIR:#$d_rewinddir HAS_REWINDDIR		/**/
+
+?HAS_READLINK:/* HAS_READLINK:
+?HAS_READLINK: *	This symbol, if defined, indicates that the readlink routine is
+?HAS_READLINK: *	available to read the value of a symbolic link.
+?HAS_READLINK: */
+?HAS_READLINK:#$d_readlink HAS_READLINK		/**/
+
+?HAS_REGCOMP:/* HAS_REGCOMP:
+?HAS_REGCOMP: *	This symbol, if defined, indicates that the regcomp() routine is
+?HAS_REGCOMP: *	available to do some regular patern matching (usually on POSIX.2
+?HAS_REGCOMP: *	conforming systems).
+?HAS_REGCOMP: */
+?HAS_REGCMP:/* HAS_REGCMP:
+?HAS_REGCMP: *	This symbol, if defined, indicates that the regcmp() routine is
+?HAS_REGCMP: *	available to do some regular patern matching (usually on System V).
+?HAS_REGCMP: */
+?HAS_RECOMP:/* HAS_RECOMP:
+?HAS_RECOMP: *	This symbol, if defined, indicates that the re_comp() routine is
+?HAS_RECOMP: *	available to do some regular patern matching (usually on BSD). If so,
+?HAS_RECOMP: *	it is likely that re_exec() be available.
+?HAS_RECOMP: */
+?HAS_REGCOMP:#$d_regcomp HAS_REGCOMP		/* POSIX.2 */
+?HAS_REGCMP:#$d_regcmp HAS_REGCMP		/* sysV */
+?HAS_RECOMP:#$d_re_comp HAS_RECOMP		/* BSD */
+
+?HAS_RENAME:/* HAS_RENAME:
+?HAS_RENAME: *	This symbol, if defined, indicates that the rename routine is available
+?HAS_RENAME: *	to rename files.  Otherwise you should do the unlink(), link(), unlink()
+?HAS_RENAME: *	trick.
+?HAS_RENAME: */
+?HAS_RENAME:#$d_rename HAS_RENAME	/**/
+
+?HAS_RMDIR:/* HAS_RMDIR:
+?HAS_RMDIR: *	This symbol, if defined, indicates that the rmdir routine is
+?HAS_RMDIR: *	available to remove directories. Otherwise you should fork off a
+?HAS_RMDIR: *	new process to exec /bin/rmdir.
+?HAS_RMDIR: */
+?HAS_RMDIR:#$d_rmdir HAS_RMDIR		/**/
+
+?HAS_GETRUSAGE:/* HAS_GETRUSAGE:
+?HAS_GETRUSAGE: *	This symbol, if defined, indicates that the getrusage() routine is
+?HAS_GETRUSAGE: *	available to get process statistics with a sub-second accuracy.
+?HAS_GETRUSAGE: *	Inclusion of <sys/resource.h> and <sys/time.h> may be necessary.
+?HAS_GETRUSAGE: */
+?HAS_GETRUSAGE:#$d_rusage HAS_GETRUSAGE		/**/
+
+?HAS_SAFE_BCOPY:/* HAS_SAFE_BCOPY:
+?HAS_SAFE_BCOPY: *	This symbol, if defined, indicates that the bcopy routine is available
+?HAS_SAFE_BCOPY: *	to copy potentially overlapping memory blocks. Otherwise you should
+?HAS_SAFE_BCOPY: *	probably use memmove() or memcpy(). If neither is defined, roll your
+?HAS_SAFE_BCOPY: *	own version.
+?HAS_SAFE_BCOPY: */
+?HAS_SAFE_BCOPY:#$d_safebcpy HAS_SAFE_BCOPY	/**/
+
+?HAS_SAFE_MEMCPY:/* HAS_SAFE_MEMCPY:
+?HAS_SAFE_MEMCPY: *	This symbol, if defined, indicates that the memcpy routine is available
+?HAS_SAFE_MEMCPY: *	to copy potentially overlapping memory blocks. Otherwise you should
+?HAS_SAFE_MEMCPY: *	probably use memmove() or memcpy(). If neither is defined, roll your
+?HAS_SAFE_MEMCPY: *	own version.
+?HAS_SAFE_MEMCPY: */
+?HAS_SAFE_MEMCPY:#$d_safemcpy HAS_SAFE_MEMCPY	/**/
+
+?HAS_SANE_MEMCMP:/* HAS_SANE_MEMCMP:
+?HAS_SANE_MEMCMP: *	This symbol, if defined, indicates that the memcmp routine is available
+?HAS_SANE_MEMCMP: *	and can be used to compare relative magnitudes of chars with their high
+?HAS_SANE_MEMCMP: *	bits set.  If it is not defined, roll your own version.
+?HAS_SANE_MEMCMP: */
+?HAS_SANE_MEMCMP:#$d_sanemcmp HAS_SANE_MEMCMP	/**/
+
+?HAS_SBRK:/* HAS_SBRK:
+?HAS_SBRK: *	This symbol, if defined, indicates that the sbrk system call is
+?HAS_SBRK: *	available to add/relase core. Always true on Unix.
+?HAS_SBRK: */
+?HAS_SBRK:#$d_sbrk HAS_SBRK	/**/
+
+?HAS_SCANDIR:/* HAS_SCANDIR:
+?HAS_SCANDIR: *	This symbol, if defined, indicates that the scandir routine is
+?HAS_SCANDIR: *	available to scan a directory.
+?HAS_SCANDIR: */
+?HAS_SCANDIR:#$d_scandir HAS_SCANDIR	/**/
+
+?SCAN_NL:/* SCAN_NL:
+?SCAN_NL: *	This symbol is defined if the C library routines scanf() and friends
+?SCAN_NL: *	can deal with a '\n' in the input correctly, so that you can say
+?SCAN_NL: *	scanf("%d\n"); instead of scanf("%d"); getc(c); to handle the '\n'.
+?SCAN_NL: */
+?SCAN_NL:#$d_scannl SCAN_NL		/* scanf("%d\n") works */
+
+?SCOREFULL:/* SCOREFULL:
+?SCOREFULL: *	This symbol, if defined, indicates that any scoreboard kept by the
+?SCOREFULL: *	program should be kept on the basis of the user's full name as opposed
+?SCOREFULL: *	to the user's login name.  If the user can change his full name he
+?SCOREFULL: *	can enter multiple scores if this is defined.
+?SCOREFULL: */
+?SCOREFULL:#$d_scorfl SCOREFULL	/**/
+
+?HAS_SELECT:/* HAS_SELECT:
+?HAS_SELECT: *	This symbol, if defined, indicates that the select routine is
+?HAS_SELECT: *	available to select active file descriptors. If the timeout field
+?HAS_SELECT: *	is used, <sys/time.h> may need to be included.
+?HAS_SELECT: */
+?HAS_SELECT:#$d_select HAS_SELECT	/**/
+
+?HAS_SEM:/* HAS_SEM:
+?HAS_SEM: *	This symbol, if defined, indicates that the entire sem*(2) library is
+?HAS_SEM: *	supported.
+?HAS_SEM: */
+?HAS_SEM:#$d_sem HAS_SEM		/**/
+
+?HAS_SEMCTL:/* HAS_SEMCTL:
+?HAS_SEMCTL: *	This symbol, if defined, indicates that the semctl() routine is
+?HAS_SEMCTL: *	available to perform semaphore control operations.
+?HAS_SEMCTL: */
+?HAS_SEMCTL:#$d_semctl HAS_SEMCTL	/**/
+
+?HAS_SEMGET:/* HAS_SEMGET:
+?HAS_SEMGET: *	This symbol, if defined, indicates that the semget() routine is
+?HAS_SEMGET: *	available to get a set of semaphores.
+?HAS_SEMGET: */
+?HAS_SEMGET:#$d_semget HAS_SEMGET	/**/
+
+?HAS_SEMOP:/* HAS_SEMOP:
+?HAS_SEMOP: *	This symbol, if defined, indicates that the semop() routine is
+?HAS_SEMOP: *	available to execute semaphore operations.
+?HAS_SEMOP: */
+?HAS_SEMOP:#$d_semop HAS_SEMOP		/**/
+
+?HAS_SETEGID:/* HAS_SETEGID:
+?HAS_SETEGID: *	This symbol, if defined, indicates that the setegid routine is available
+?HAS_SETEGID: *	to change the effective gid of the current program.
+?HAS_SETEGID: */
+?HAS_SETEGID:#$d_setegid HAS_SETEGID		/**/
+
+?HAS_SETEUID:/* HAS_SETEUID:
+?HAS_SETEUID: *	This symbol, if defined, indicates that the seteuid routine is available
+?HAS_SETEUID: *	to change the effective uid of the current program.
+?HAS_SETEUID: */
+?HAS_SETEUID:#$d_seteuid HAS_SETEUID		/**/
+
+?HAS_SETLINEBUF:/* HAS_SETLINEBUF:
+?HAS_SETLINEBUF: *	This symbol, if defined, indicates that the setlinebuf routine is
+?HAS_SETLINEBUF: *	available to change stderr or stdout from block-buffered or unbuffered
+?HAS_SETLINEBUF: *	to a line-buffered mode.
+?HAS_SETLINEBUF: */
+?HAS_SETLINEBUF:#$d_setlinebuf HAS_SETLINEBUF		/**/
+
+?HAS_SETLOCALE:/* HAS_SETLOCALE:
+?HAS_SETLOCALE: *	This symbol, if defined, indicates that the setlocale routine is
+?HAS_SETLOCALE: *	available to handle locale-specific ctype implementations.
+?HAS_SETLOCALE: */
+?HAS_SETLOCALE:#$d_setlocale HAS_SETLOCALE	/**/
+
+?HAS_SETPGID:/* HAS_SETPGID:
+?HAS_SETPGID: *	This symbol, if defined, indicates that the setpgid(pid, gpid)
+?HAS_SETPGID: *	routine is available to set process group ID.
+?HAS_SETPGID: */
+?HAS_SETPGID:#$d_setpgid HAS_SETPGID	/**/
+
+?HAS_SETPGRP:/* HAS_SETPGRP:
+?HAS_SETPGRP: *	This symbol, if defined, indicates that the setpgrp routine is
+?HAS_SETPGRP: *	available to set the current process group.
+?HAS_SETPGRP: */
+?USE_BSD_SETPGRP:/* USE_BSD_SETPGRP:
+?USE_BSD_SETPGRP: *	This symbol, if defined, indicates that setpgrp needs two
+?USE_BSD_SETPGRP: *	arguments whereas USG one needs none.  See also HAS_SETPGID
+?USE_BSD_SETPGRP: *	for a POSIX interface.
+?USE_BSD_SETPGRP: */
+?HAS_SETPGRP:#$d_setpgrp HAS_SETPGRP		/**/
+?USE_BSD_SETPGRP:#$d_bsdsetpgrp USE_BSD_SETPGRP	/**/
+
+?HAS_SETPGRP2:/* HAS_SETPGRP2:
+?HAS_SETPGRP2: *	This symbol, if defined, indicates that the setpgrp2() (as in DG/UX)
+?HAS_SETPGRP2: *	routine is available to set the current process group.
+?HAS_SETPGRP2: */
+?HAS_SETPGRP2:#$d_setpgrp2 HAS_SETPGRP2		/**/
+
+?HAS_SETPRIORITY:/* HAS_SETPRIORITY:
+?HAS_SETPRIORITY: *	This symbol, if defined, indicates that the setpriority routine is
+?HAS_SETPRIORITY: *	available to set a process's priority.
+?HAS_SETPRIORITY: */
+?HAS_SETPRIORITY:#$d_setprior HAS_SETPRIORITY		/**/
+
+?HAS_SETREGID:/* HAS_SETREGID:
+?HAS_SETREGID: *	This symbol, if defined, indicates that the setregid routine is
+?HAS_SETREGID: *	available to change the real and effective gid of the current
+?HAS_SETREGID: *	process.
+?HAS_SETREGID: */
+?HAS_SETRESGID:/* HAS_SETRESGID:
+?HAS_SETRESGID: *	This symbol, if defined, indicates that the setresgid routine is
+?HAS_SETRESGID: *	available to change the real, effective and saved gid of the current
+?HAS_SETRESGID: *	process.
+?HAS_SETRESGID: */
+?HAS_SETREGID:#$d_setregid HAS_SETREGID		/**/
+?HAS_SETRESGID:#$d_setresgid HAS_SETRESGID		/**/
+
+?HAS_SETREUID:/* HAS_SETREUID:
+?HAS_SETREUID: *	This symbol, if defined, indicates that the setreuid routine is
+?HAS_SETREUID: *	available to change the real and effective uid of the current
+?HAS_SETREUID: *	process.
+?HAS_SETREUID: */
+?HAS_SETRESUID:/* HAS_SETRESUID:
+?HAS_SETRESUID: *	This symbol, if defined, indicates that the setresuid routine is
+?HAS_SETRESUID: *	available to change the real, effective and saved uid of the current
+?HAS_SETRESUID: *	process.
+?HAS_SETRESUID: */
+?HAS_SETREUID:#$d_setreuid HAS_SETREUID		/**/
+?HAS_SETRESUID:#$d_setresuid HAS_SETRESUID		/**/
+
+?HAS_SETRGID:/* HAS_SETRGID:
+?HAS_SETRGID: *	This symbol, if defined, indicates that the setrgid routine is available
+?HAS_SETRGID: *	to change the real gid of the current program.
+?HAS_SETRGID: */
+?HAS_SETRGID:#$d_setrgid HAS_SETRGID		/**/
+
+?HAS_SETRUID:/* HAS_SETRUID:
+?HAS_SETRUID: *	This symbol, if defined, indicates that the setruid routine is available
+?HAS_SETRUID: *	to change the real uid of the current program.
+?HAS_SETRUID: */
+?HAS_SETRUID:#$d_setruid HAS_SETRUID		/**/
+
+?HAS_SETSID:/* HAS_SETSID:
+?HAS_SETSID: *	This symbol, if defined, indicates that the setsid routine is
+?HAS_SETSID: *	available to set the process group ID.
+?HAS_SETSID: */
+?HAS_SETSID:#$d_setsid HAS_SETSID	/**/
+
+?SIGNEDCHAR:/* SIGNEDCHAR:
+?SIGNEDCHAR: *	This symbol, if defined, indicates that characters are a signed type.
+?SIGNEDCHAR: *	If not defined, things declared as signed characters (and that make
+?SIGNEDCHAR: *	use of negative values) should probably be declared as shorts instead.
+?SIGNEDCHAR: */
+?SIGNEDCHAR:#$d_sgndchr SIGNEDCHAR	/**/
+
+?HAS_SHM:/* HAS_SHM:
+?HAS_SHM: *	This symbol, if defined, indicates that the entire shm*(2) library is
+?HAS_SHM: *	supported.
+?HAS_SHM: */
+?HAS_SHM:#$d_shm HAS_SHM		/**/
+
+?HAS_SHMAT:/* HAS_SHMAT:
+?HAS_SHMAT: *	This symbol, if defined, indicates that the shmat() routine is
+?HAS_SHMAT: *	available to attach a shared memory segment to the process space.
+?HAS_SHMAT: */
+?Shmat_t:/* Shmat_t:
+?Shmat_t: *	This symbol holds the return type of the shmat() system call.
+?Shmat_t: *	Usually set to 'void *' or 'char *'.
+?Shmat_t: */
+?HAS_SHMAT_PROTOTYPE:/* HAS_SHMAT_PROTOTYPE:
+?HAS_SHMAT_PROTOTYPE: *	This symbol, if defined, indicates that the sys/shm.h includes
+?HAS_SHMAT_PROTOTYPE: *	a prototype for shmat().  Otherwise, it is up to the program to
+?HAS_SHMAT_PROTOTYPE: *	guess one.  Shmat_t shmat _((int, Shmat_t, int)) is a good guess,
+?HAS_SHMAT_PROTOTYPE: *	but not always right so it should be emitted by the program only
+?HAS_SHMAT_PROTOTYPE: *	when HAS_SHMAT_PROTOTYPE is not defined to avoid conflicting defs.
+?HAS_SHMAT_PROTOTYPE: */
+?HAS_SHMAT:#$d_shmat HAS_SHMAT		/**/
+?Shmat_t:#define Shmat_t $shmattype	/**/
+?HAS_SHMAT_PROTOTYPE:#$d_shmatprototype HAS_SHMAT_PROTOTYPE	/**/
+
+?HAS_SHMCTL:/* HAS_SHMCTL:
+?HAS_SHMCTL: *	This symbol, if defined, indicates that the shmctl() routine is
+?HAS_SHMCTL: *	available to perform shared memory control operations.
+?HAS_SHMCTL: */
+?HAS_SHMCTL:#$d_shmctl HAS_SHMCTL		/**/
+
+?HAS_SHMDT:/* HAS_SHMDT:
+?HAS_SHMDT: *	This symbol, if defined, indicates that the shmdt() routine is
+?HAS_SHMDT: *	available to detach a shared memory segment from the process space.
+?HAS_SHMDT: */
+?HAS_SHMDT:#$d_shmdt HAS_SHMDT		/**/
+
+?HAS_SHMGET:/* HAS_SHMGET:
+?HAS_SHMGET: *	This symbol, if defined, indicates that the shmget() routine is
+?HAS_SHMGET: *	available to request a shared memory segment from the kernel.
+?HAS_SHMGET: */
+?HAS_SHMGET:#$d_shmget HAS_SHMGET		/**/
+
+?HAS_SIGACTION:/* HAS_SIGACTION:
+?HAS_SIGACTION: *	This symbol, if defined, indicates that Vr4's sigaction() routine
+?HAS_SIGACTION: *	is available.
+?HAS_SIGACTION: */
+?HAS_SIGACTION:#$d_sigaction HAS_SIGACTION	/**/
+
+?HAS_SIGBLOCK:/* HAS_SIGBLOCK:
+?HAS_SIGBLOCK: *	This symbol, if defined, indicates that the sigblock routine is
+?HAS_SIGBLOCK: *	available to block signal reception.
+?HAS_SIGBLOCK: */
+?HAS_SIGBLOCK:#$d_sigblock HAS_SIGBLOCK	/**/
+
+?HAS_SIGHOLD:/* HAS_SIGHOLD:
+?HAS_SIGHOLD: *	This symbol, if defined, indicates that the sighold routine is
+?HAS_SIGHOLD: *	available to hold signals.
+?HAS_SIGHOLD: */
+?HAS_SIGHOLD:#$d_sighold HAS_SIGHOLD	/**/
+
+?HAS_SYS_SIGLIST:/* HAS_SYS_SIGLIST:
+?HAS_SYS_SIGLIST: *	This symbol, if defined, indicates that the sys_siglist array is
+?HAS_SYS_SIGLIST: *	available to translate signal numbers to strings.
+?HAS_SYS_SIGLIST: */
+?HAS_SYS_SIGLIST:#$d_siglist HAS_SYS_SIGLIST		/**/
+
+?HAS_SIGSETJMP:/* HAS_SIGSETJMP:
+?HAS_SIGSETJMP: *	This variable indicates to the C program that the sigsetjmp()
+?HAS_SIGSETJMP: *	routine is available to save the calling process's registers
+?HAS_SIGSETJMP: *	and stack environment for later use by siglongjmp(), and
+?HAS_SIGSETJMP: *	to optionally save the process's signal mask.  See
+?HAS_SIGSETJMP: *	Sigjmp_buf, Sigsetjmp, and Siglongjmp.
+?HAS_SIGSETJMP: */
+?Sigjmp_buf:/* Sigjmp_buf:
+?Sigjmp_buf: *	This is the buffer type to be used with Sigsetjmp and Siglongjmp.
+?Sigjmp_buf: */
+?Sigsetjmp:/* Sigsetjmp:
+?Sigsetjmp: *	This macro is used in the same way as sigsetjmp(), but will invoke
+?Sigsetjmp: *	traditional setjmp() if sigsetjmp isn't available.
+?Sigsetjmp: *	See HAS_SIGSETJMP.
+?Sigsetjmp: */
+?Siglongjmp:/* Siglongjmp:
+?Siglongjmp: *	This macro is used in the same way as siglongjmp(), but will invoke
+?Siglongjmp: *	traditional longjmp() if siglongjmp isn't available.
+?Siglongjmp: *	See HAS_SIGSETJMP.
+?Siglongjmp: */
+?d_sigsetjmp:#$d_sigsetjmp HAS_SIGSETJMP	/**/
+?d_sigsetjmp:#ifdef HAS_SIGSETJMP
+?d_sigsetjmp:#define Sigjmp_buf sigjmp_buf
+?d_sigsetjmp:#define Sigsetjmp(buf,save_mask) sigsetjmp((buf),(save_mask))
+?d_sigsetjmp:#define Siglongjmp(buf,retval) siglongjmp((buf),(retval))
+?d_sigsetjmp:#else
+?d_sigsetjmp:#define Sigjmp_buf jmp_buf
+?d_sigsetjmp:#define Sigsetjmp(buf,save_mask) setjmp((buf))
+?d_sigsetjmp:#define Siglongjmp(buf,retval) longjmp((buf),(retval))
+?d_sigsetjmp:#endif
+
+?HAS_SIGSETMASK:/* HAS_SIGSETMASK:
+?HAS_SIGSETMASK: *	This symbol, if defined, indicates that the sigsetmask() routine is
+?HAS_SIGSETMASK: *	available to set current signal mask. Otherwise, you should probably
+?HAS_SIGSETMASK: *	emulate this by using signal(), but fear race conditions...
+?HAS_SIGSETMASK: */
+?HAS_SIGSETMASK:#$d_sigsetmk HAS_SIGSETMASK		/**/
+
+?HAS_SIGVEC:/* HAS_SIGVEC:
+?HAS_SIGVEC: *	This symbol, if defined, indicates that BSD reliable signals are
+?HAS_SIGVEC: *	supported.
+?HAS_SIGVEC: */
+?HAS_SIGVECTOR:/* HAS_SIGVECTOR:
+?HAS_SIGVECTOR: *	This symbol, if defined, indicates that the sigvec() routine is called
+?HAS_SIGVECTOR: *	sigvector() instead, and that sigspace() is provided instead of
+?HAS_SIGVECTOR: *	sigstack().  This is probably only true for HP-UX.
+?HAS_SIGVECTOR: */
+?HAS_SIGINTRP:/* HAS_SIGINTRP:
+?HAS_SIGINTRP: *	This symbol, if defined, indicates that the siginterrupt() routine
+?HAS_SIGINTRP: *	is available.
+?HAS_SIGINTRP: */
+?HAS_SIGVEC:#$d_sigvec HAS_SIGVEC	/**/
+?HAS_SIGVECTOR:#$d_sigvectr HAS_SIGVECTOR	/**/
+?HAS_SIGINTRP:#$d_sigintrp HAS_SIGINTRP	/**/
+
+?HAS_SJIS2JIS:/* HAS_SJIS2JIS:
+?HAS_SJIS2JIS: *	This symbol, if defined, indicates that the sjis2jis routine is
+?HAS_SJIS2JIS: *	available to convert SJIS to JIS.
+?HAS_SJIS2JIS: */
+?HAS_SJIS2JIS:#$d_sjis2jis	HAS_SJIS2JIS		/**/
+
+?HAS_SOCKET:/* HAS_SOCKET:
+?HAS_SOCKET: *	This symbol, if defined, indicates that the BSD socket interface is
+?HAS_SOCKET: *	supported.
+?HAS_SOCKET: */
+?HAS_SOCKETPAIR:/* HAS_SOCKETPAIR:
+?HAS_SOCKETPAIR: *	This symbol, if defined, indicates that the BSD socketpair() call is
+?HAS_SOCKETPAIR: *	supported.
+?HAS_SOCKETPAIR: */
+?USE_OLDSOCKET:/* USE_OLDSOCKET:
+?USE_OLDSOCKET: *	This symbol, if defined, indicates that the 4.1c BSD socket interface
+?USE_OLDSOCKET: *	is supported instead of the 4.2/4.3 BSD socket interface. For instance,
+?USE_OLDSOCKET: *	there is no setsockopt() call.
+?USE_OLDSOCKET: */
+?HAS_SOCKET:#$d_socket HAS_SOCKET		/**/
+?HAS_SOCKETPAIR:#$d_sockpair HAS_SOCKETPAIR	/**/
+?USE_OLDSOCKET:#$d_oldsock USE_OLDSOCKET	/**/
+
+?SPEED_OVER_MEM:/* SPEED_OVER_MEM:
+?SPEED_OVER_MEM: *	This symbol, if defined, indicates that the program can use more
+?SPEED_OVER_MEM: *	memory in order to reduce CPU time.  The symbol doesn't say whether
+?SPEED_OVER_MEM: *	we are more interested in saving text space or data space.
+?SPEED_OVER_MEM: */
+?SPEED_OVER_MEM:#$d_speedopt SPEED_OVER_MEM	/**/
+
+?HAS_STAT:/* HAS_STAT:
+?HAS_STAT: *	This symbol, if defined, indicates that the stat routine is
+?HAS_STAT: *	available to get file status.
+?HAS_STAT: */
+?HAS_STAT:#$d_stat HAS_STAT	/**/
+
+?USE_STAT_BLOCKS:/* USE_STAT_BLOCKS:
+?USE_STAT_BLOCKS: *	This symbol is defined if this system has a stat structure declaring
+?USE_STAT_BLOCKS: *	st_blksize and st_blocks.
+?USE_STAT_BLOCKS: */
+?USE_STAT_BLOCKS:#$d_statblks USE_STAT_BLOCKS 	/**/
+
+?d_stdstdio:/* USE_STDIO_PTR:
+?d_stdstdio: *	This symbol is defined if the _ptr and _cnt fields (or similar)
+?d_stdstdio: *	of the stdio FILE structure can be used to access the stdio buffer
+?d_stdstdio: *	for a file handle.  If this is defined, then the FILE_ptr(fp)
+?d_stdstdio: *	and FILE_cnt(fp) macros will also be defined and should be used
+?d_stdstdio: *	to access these fields.
+?d_stdstdio: */
+?FILE_ptr:/* FILE_ptr:
+?FILE_ptr: *	This macro is used to access the _ptr field (or equivalent) of the
+?FILE_ptr: *	FILE structure pointed to by its argument. This macro will always be
+?FILE_ptr: *	defined if USE_STDIO_PTR is defined.
+?FILE_ptr: */
+?STDIO_PTR_LVALUE:/* STDIO_PTR_LVALUE:
+?STDIO_PTR_LVALUE: *	This symbol is defined if the FILE_ptr macro can be used as an
+?STDIO_PTR_LVALUE: *	lvalue.
+?STDIO_PTR_LVALUE: */
+?FILE_cnt:/* FILE_cnt:
+?FILE_cnt: *	This macro is used to access the _cnt field (or equivalent) of the
+?FILE_cnt: *	FILE structure pointed to by its argument. This macro will always be
+?FILE_cnt: *	defined if USE_STDIO_PTR is defined.
+?FILE_cnt: */
+?STDIO_CNT_LVALUE:/* STDIO_CNT_LVALUE:
+?STDIO_CNT_LVALUE: *	This symbol is defined if the FILE_cnt macro can be used as an
+?STDIO_CNT_LVALUE: *	lvalue.
+?STDIO_CNT_LVALUE: */
+?FILE_filbuf:/* FILE_filbuf:
+?FILE_filbuf: *	This macro is used to access the internal stdio _filbuf function
+?FILE_filbuf: *	(or equivalent), if STDIO_CNT_LVALUE and STDIO_PTR_LVALUE
+?FILE_filbuf: *	are defined.  It is typically either _filbuf or __filbuf.
+?FILE_filbuf: *	This macro will only be defined if both STDIO_CNT_LVALUE and
+?FILE_filbuf: *	STDIO_PTR_LVALUE are defined.
+?FILE_filbuf: */
+?d_stdstdio:#$d_stdstdio USE_STDIO_PTR 	/**/
+?d_stdstdio:#ifdef USE_STDIO_PTR
+?FILE_ptr:#define FILE_ptr(fp)	$stdio_ptr
+?STDIO_PTR_LVALUE:#$d_stdio_ptr_lval STDIO_PTR_LVALUE 		/**/
+?FILE_cnt:#define FILE_cnt(fp)	$stdio_cnt
+?STDIO_CNT_LVALUE:#$d_stdio_cnt_lval STDIO_CNT_LVALUE 		/**/
+?d_stdstdio:#if defined(STDIO_PTR_LVALUE) && defined(STDIO_CNT_LVALUE)
+?FILE_filbuf:#define FILE_filbuf(fp)	$stdio_filbuf 		/**/
+?d_stdstdio:#endif
+?d_stdstdio:#endif
+
+?d_stdiobase:/* USE_STDIO_BASE:
+?d_stdiobase: *	This symbol is defined if the _base field (or similar) of the
+?d_stdiobase: *	stdio FILE structure can be used to access the stdio buffer for
+?d_stdiobase: *	a file handle.  If this is defined, then the FILE_base(fp) macro
+?d_stdiobase: *	will also be defined and should be used to access this field.
+?d_stdiobase: *	Also, the FILE_bufsiz(fp) macro will be defined and should be used
+?d_stdiobase: *	to determine the number of bytes in the buffer.  USE_STDIO_BASE
+?d_stdiobase: *	will never be defined unless USE_STDIO_PTR is.
+?d_stdiobase: */
+?FILE_base:/* FILE_base:
+?FILE_base: *	This macro is used to access the _base field (or equivalent) of the
+?FILE_base: *	FILE structure pointed to by its argument. This macro will always be
+?FILE_base: *	defined if USE_STDIO_BASE is defined.
+?FILE_base: */
+?FILE_bufsiz:/* FILE_bufsiz:
+?FILE_bufsiz: *	This macro is used to determine the number of bytes in the I/O
+?FILE_bufsiz: *	buffer pointed to by _base field (or equivalent) of the FILE
+?FILE_bufsiz: *	structure pointed to its argument. This macro will always be defined
+?FILE_bufsiz: *	if USE_STDIO_BASE is defined.
+?FILE_bufsiz: */
+?d_stdiobase:#$d_stdiobase USE_STDIO_BASE 	/**/
+?d_stdiobase:#ifdef USE_STDIO_BASE
+?FILE_base:#define FILE_base(fp)	$stdio_base
+?FILE_bufsiz:#define FILE_bufsiz(fp)	$stdio_bufsiz
+?d_stdiobase:#endif
+
+?HAS_STRCASECMP:/* HAS_STRCASECMP:
+?HAS_STRCASECMP: *	This symbol, if defined, indicates that the strcasecmp() routine is
+?HAS_STRCASECMP: *	available for case-insensitive string compares.
+?HAS_STRCASECMP: */
+?HAS_STRCASECMP:#$d_strccmp HAS_STRCASECMP	/**/
+
+?HAS_STRCHR:/* HAS_STRCHR:
+?HAS_STRCHR: *	This symbol is defined to indicate that the strchr()/strrchr()
+?HAS_STRCHR: *	functions are available for string searching. If not, try the
+?HAS_STRCHR: *	index()/rindex() pair.
+?HAS_STRCHR: */
+?HAS_INDEX:/* HAS_INDEX:
+?HAS_INDEX: *	This symbol is defined to indicate that the index()/rindex()
+?HAS_INDEX: *	functions are available for string searching.
+?HAS_INDEX: */
+?HAS_STRCHR:#$d_strchr HAS_STRCHR	/**/
+?HAS_INDEX:#$d_index HAS_INDEX	/**/
+
+?HAS_STRCOLL:/* HAS_STRCOLL:
+?HAS_STRCOLL: *	This symbol, if defined, indicates that the strcoll routine is
+?HAS_STRCOLL: *	available to compare strings using collating information.
+?HAS_STRCOLL: */
+?HAS_STRCOLL:#$d_strcoll HAS_STRCOLL	/**/
+
+?HAS_STRCSPN:/* HAS_STRCSPN:
+?HAS_STRCSPN: *	This symbol, if defined, indicates that the strcspn routine is
+?HAS_STRCSPN: *	available to scan strings.
+?HAS_STRCSPN: */
+?HAS_STRCSPN:#$d_strcspn HAS_STRCSPN		/**/
+
+?USE_STRUCT_COPY:/* USE_STRUCT_COPY:
+?USE_STRUCT_COPY: *	This symbol, if defined, indicates that this C compiler knows how
+?USE_STRUCT_COPY: *	to copy structures.  If undefined, you'll need to use a block copy
+?USE_STRUCT_COPY: *	routine of some sort instead.
+?USE_STRUCT_COPY: */
+?USE_STRUCT_COPY:#$d_strctcpy	USE_STRUCT_COPY	/**/
+
+?HAS_STRDUP:/* HAS_STRDUP:
+?HAS_STRDUP: *	This symbol, if defined, indicates that the strdup routine is
+?HAS_STRDUP: *	available to duplicate strings in memory. Otherwise, roll up
+?HAS_STRDUP: *	your own...
+?HAS_STRDUP: */
+?HAS_STRDUP:#$d_strdup HAS_STRDUP		/**/
+
+?HAS_STRERROR:/* HAS_STRERROR:
+?HAS_STRERROR: *	This symbol, if defined, indicates that the strerror routine is
+?HAS_STRERROR: *	available to translate error numbers to strings. See the writeup
+?HAS_STRERROR: *	of Strerror() in this file before you try to define your own.
+?HAS_STRERROR: */
+?HAS_SYS_ERRLIST:/* HAS_SYS_ERRLIST:
+?HAS_SYS_ERRLIST: *	This symbol, if defined, indicates that the sys_errlist array is
+?HAS_SYS_ERRLIST: *	available to translate error numbers to strings. The extern int
+?HAS_SYS_ERRLIST: *	sys_nerr gives the size of that table.
+?HAS_SYS_ERRLIST: */
+?HAS_SYS_ERRNOLIST:/* HAS_SYS_ERRNOLIST:
+?HAS_SYS_ERRNOLIST: *	This symbol, if defined, indicates that the sys_errnolist array is
+?HAS_SYS_ERRNOLIST: *	available to translate an errno code into its symbolic name (e.g.
+?HAS_SYS_ERRNOLIST: * ENOENT). The extern int sys_nerrno gives the size of that table.
+?HAS_SYS_ERRNOLIST: */
+?Strerror:/* Strerror:
+?Strerror: *	This preprocessor symbol is defined as a macro if strerror() is
+?Strerror: *	not available to translate error numbers to strings but sys_errlist[]
+?Strerror: *	array is there.
+?Strerror: */
+?HAS_STRERROR:#$d_strerror HAS_STRERROR		/**/
+?HAS_SYS_ERRLIST:#$d_syserrlst HAS_SYS_ERRLIST	/**/
+?HAS_SYS_ERRNOLIST:#$d_sysernlst HAS_SYS_ERRNOLIST	/**/
+?Strerror:#define Strerror(e) $d_strerrm
+
+?HAS_STRFTIME:/* HAS_STRFTIME:
+?HAS_STRFTIME: *	This symbol, if defined, indicates that the strftime routine is
+?HAS_STRFTIME: *	available to format locale-specific times.
+?HAS_STRFTIME: */
+?HAS_STRFTIME:#$d_strftime HAS_STRFTIME	/**/
+
+?HAS_STRSTR:/* HAS_STRSTR:
+?HAS_STRSTR: *	This symbol, if defined, indicates that the strstr routine is
+?HAS_STRSTR: *	available to find substrings.
+?HAS_STRSTR: */
+?HAS_STRSTR:#$d_strstr HAS_STRSTR	/**/
+
+?HAS_STRTOD:/* HAS_STRTOD:
+?HAS_STRTOD: *	This symbol, if defined, indicates that the strtod routine is
+?HAS_STRTOD: *	available to provide better numeric string conversion than atof().
+?HAS_STRTOD: */
+?HAS_STRTOD:#$d_strtod HAS_STRTOD	/**/
+
+?HAS_STRTOK:/* HAS_STRTOK:
+?HAS_STRTOK: *	This symbol, if defined, indicates that the strtok routine is
+?HAS_STRTOK: *	available to scan strings for tokens.
+?HAS_STRTOK: */
+?HAS_STRTOK:#$d_strtok HAS_STRTOK	/**/
+
+?HAS_STRTOL:/* HAS_STRTOL:
+?HAS_STRTOL: *	This symbol, if defined, indicates that the strtol routine is available
+?HAS_STRTOL: *	to provide better numeric string conversion than atoi() and friends.
+?HAS_STRTOL: */
+?HAS_STRTOL:#$d_strtol HAS_STRTOL	/**/
+
+?HAS_STRTOUL:/* HAS_STRTOUL:
+?HAS_STRTOUL: *	This symbol, if defined, indicates that the strtoul routine is
+?HAS_STRTOUL: *	available to provide conversion of strings to unsigned long.
+?HAS_STRTOUL: */
+?HAS_STRTOUL:#$d_strtoul HAS_STRTOUL	/**/
+
+?HAS_STRXFRM:/* HAS_STRXFRM:
+?HAS_STRXFRM: *	This symbol, if defined, indicates that the strxfrm() routine is
+?HAS_STRXFRM: *	available to transform strings.
+?HAS_STRXFRM: */
+?HAS_STRXFRM:#$d_strxfrm HAS_STRXFRM	/**/
+
+?SU_CHOWN:/* SU_CHOWN:
+?SU_CHOWN: *	This symbol, if defined, indicates that the system allows only root
+?SU_CHOWN: *	can change the owner of a file with chown().
+?SU_CHOWN: */
+?SU_CHOWN:#$d_su_chown SU_CHOWN	/**/
+
+?HAS_SYMLINK:/* HAS_SYMLINK:
+?HAS_SYMLINK: *	This symbol, if defined, indicates that the symlink routine is available
+?HAS_SYMLINK: *	to create symbolic links.
+?HAS_SYMLINK: */
+?HAS_SYMLINK:#$d_symlink HAS_SYMLINK	/**/
+
+?HAS_SYSCALL:/* HAS_SYSCALL:
+?HAS_SYSCALL: *	This symbol, if defined, indicates that the syscall routine is
+?HAS_SYSCALL: *	available to call arbitrary system calls. If undefined, that's tough.
+?HAS_SYSCALL: */
+?HAS_SYSCALL:#$d_syscall HAS_SYSCALL	/**/
+
+?HAS_SYSCONF:/* HAS_SYSCONF:
+?HAS_SYSCONF: *	This symbol, if defined, indicates that sysconf() is available
+?HAS_SYSCONF: *	to determine system related limits and options.
+?HAS_SYSCONF: */
+?HAS_SYSCONF:#$d_sysconf HAS_SYSCONF	/**/
+
+?HAS_SYSLOG:/* HAS_SYSLOG:
+?HAS_SYSLOG: *	This symbol, if defined, indicates that the program can rely on the
+?HAS_SYSLOG: *	system providing syslog().  Otherwise, the syslog code provided by
+?HAS_SYSLOG: *	the package should be used.
+?HAS_SYSLOG: */
+?HAS_SYSLOG:#$d_syslog HAS_SYSLOG	/**/
+
+?HAS_SYSTEM:/* HAS_SYSTEM:
+?HAS_SYSTEM: *	This symbol, if defined, indicates that the system routine is
+?HAS_SYSTEM: *	available to issue a shell command.
+?HAS_SYSTEM: */
+?HAS_SYSTEM:#$d_system HAS_SYSTEM	/**/
+
+?HAS_TABLE:/* HAS_TABLE:
+?HAS_TABLE: *	This symbol, if defined, indicates that the OSF/1 table() system
+?HAS_TABLE: *	call is available to examine/update items from a system table.
+?HAS_TABLE: */
+?HAS_TABLE:#$d_table HAS_TABLE	/**/
+
+?HAS_TCGETPGRP:/* HAS_TCGETPGRP:
+?HAS_TCGETPGRP: *	This symbol, if defined, indicates that the tcgetpgrp routine is
+?HAS_TCGETPGRP: *	available to get foreground process group ID.
+?HAS_TCGETPGRP: */
+?HAS_TCGETPGRP:#$d_tcgetpgrp HAS_TCGETPGRP		/**/
+
+?HAS_TCSETPGRP:/* HAS_TCSETPGRP:
+?HAS_TCSETPGRP: *	This symbol, if defined, indicates that the tcsetpgrp routine is
+?HAS_TCSETPGRP: *	available to set foreground process group ID.
+?HAS_TCSETPGRP: */
+?HAS_TCSETPGRP:#$d_tcsetpgrp HAS_TCSETPGRP		/**/
+
+?HAS_TIME:/* HAS_TIME:
+?HAS_TIME: *	This symbol, if defined, indicates that the time() routine exists.
+?HAS_TIME: */
+?Time_t:/* Time_t:
+?Time_t: *	This symbol holds the type returned by time(). It can be long,
+?Time_t: *	or time_t on BSD sites (in which case <sys/types.h> should be
+?Time_t: *	included).
+?Time_t: */
+?HAS_TIME:#$d_time HAS_TIME		/**/
+?Time_t:#define Time_t $timetype		/* Time type */
+
+?HAS_TIMES:/* HAS_TIMES:
+?HAS_TIMES: *	This symbol, if defined, indicates that the times() routine exists.
+?HAS_TIMES: *	Note that this became obsolete on some systems (SUNOS), which now
+?HAS_TIMES: * use getrusage(). It may be necessary to include <sys/times.h>.
+?HAS_TIMES: */
+?Clock_t:/* Clock_t:
+?Clock_t: *	This symbol holds the type returned by times(). It can be long,
+?Clock_t: *	or clock_t on BSD sites (in which case <sys/types.h> should be
+?Clock_t: *	included).
+?Clock_t: */
+?HAS_TIMES:#$d_times HAS_TIMES		/**/
+?Clock_t:#define Clock_t $clocktype	/* Clock time */
+
+?TM_IN_SYS:/* TM_IN_SYS:
+?TM_IN_SYS: *	This symbol is defined if this system declares "struct tm" in
+?TM_IN_SYS: *	in <sys/time.h> rather than <time.h>.  We can't just say
+?TM_IN_SYS: *	-I/usr/include/sys because some systems have both time files, and
+?TM_IN_SYS: *	the -I trick gets the wrong one.
+?TM_IN_SYS: */
+?TM_IN_SYS:#$d_tminsys TM_IN_SYS 	/**/
+
+?HAS_TRUNCATE:/* HAS_TRUNCATE:
+?HAS_TRUNCATE: *	This symbol, if defined, indicates that the truncate routine is
+?HAS_TRUNCATE: *	available to truncate files.
+?HAS_TRUNCATE: */
+?HAS_TRUNCATE:#$d_truncate HAS_TRUNCATE	/**/
+
+?TZ_MINUTESWEST:/* TZ_MINUTESWEST:
+?TZ_MINUTESWEST: *	This symbol is defined if this system uses tz_minuteswest
+?TZ_MINUTESWEST: *	in time header instead of timezone.
+?TZ_MINUTESWEST: * If not defined, you may have to use struct timeb and ftime() rather
+?TZ_MINUTESWEST: *	than the new gettimeofday() system call.
+?TZ_MINUTESWEST: */
+?TZ_MINUTESWEST:#$d_tzmin TZ_MINUTESWEST		/**/
+
+?HAS_TZNAME:/* HAS_TZNAME:
+?HAS_TZNAME: *	This symbol, if defined, indicates that the tzname[] array is
+?HAS_TZNAME: *	available to access timezone names.
+?HAS_TZNAME: */
+?HAS_TZNAME:#$d_tzname HAS_TZNAME		/**/
+
+?HAS_ULIMIT:/* HAS_ULIMIT:
+?HAS_ULIMIT: *	This symbol, if defined, indicates that the ulimit system call is
+?HAS_ULIMIT: *	available to get the user limits.
+?HAS_ULIMIT: */
+?HAS_ULIMIT:#$d_ulimit HAS_ULIMIT		/**/
+
+?HAS_UMASK:/* HAS_UMASK:
+?HAS_UMASK: *	This symbol, if defined, indicates that the umask routine is
+?HAS_UMASK: *	available to set and get the value of the file creation mask.
+?HAS_UMASK: */
+?HAS_UMASK:#$d_umask HAS_UMASK		/**/
+
+?EMULATE_NDIR:/* EMULATE_NDIR:
+?EMULATE_NDIR: *	This symbol, if defined, indicates that the program should compile
+?EMULATE_NDIR: *	the ndir.c code provided with the package.
+?EMULATE_NDIR: */
+?I_NDIR:/* I_NDIR:
+?I_NDIR: *	This symbol, if defined, indicates that the program should include the
+?I_NDIR: *	system's version of ndir.h, rather than the one with this package.
+?I_NDIR: */
+?EMULATE_NDIR:#$d_usendir EMULATE_NDIR		/**/
+?I_NDIR:#$i_ndir I_NDIR		/**/
+
+?HAS_USLEEP:/* HAS_USLEEP:
+?HAS_USLEEP: *	This symbol, if defined, indicates that the usleep routine is
+?HAS_USLEEP: *	available to let the process sleep on a sub-second accuracy.
+?HAS_USLEEP: */
+?HAS_USLEEP:#$d_usleep HAS_USLEEP		/**/
+
+?UNION_WAIT:/* UNION_WAIT:
+?UNION_WAIT: *	This symbol if defined indicates to the C program that the argument
+?UNION_WAIT: *	for the wait() system call should be declared as 'union wait status'
+?UNION_WAIT: *	instead of 'int status'. You probably need to include <sys/wait.h>
+?UNION_WAIT: *	in the former case (see I_SYSWAIT).
+?UNION_WAIT: */
+?UNION_WAIT3:/* UNION_WAIT3:
+?UNION_WAIT3: *	This symbol if defined indicates to the C program that the first argument
+?UNION_WAIT3: *	for the wait3() system call should be declared as 'union wait status'
+?UNION_WAIT3: *	instead of 'int status'. You probably need to include <sys/wait.h>
+?UNION_WAIT3: *	in the former case (see I_SYSWAIT). It seems safe to assume that the
+?UNION_WAIT3: *	same rule applies to the second parameter of wait4().
+?UNION_WAIT3: */
+?UNION_WAIT:#$d_uwait UNION_WAIT		/**/
+?UNION_WAIT3:#$d_uwait3 UNION_WAIT3	/**/
+
+?HAS_VFORK:/* HAS_VFORK:
+?HAS_VFORK: *	This symbol, if defined, indicates that vfork() exists.
+?HAS_VFORK: */
+?HAS_VFORK:#$d_vfork HAS_VFORK	/**/
+
+?VOIDSIG:/* VOIDSIG:
+?VOIDSIG: *	This symbol is defined if this system declares "void (*signal(...))()" in
+?VOIDSIG: *	signal.h.  The old way was to declare it as "int (*signal(...))()".  It
+?VOIDSIG: *	is up to the package author to declare things correctly based on the
+?VOIDSIG: *	symbol.
+?VOIDSIG: */
+?Signal_t:/* Signal_t:
+?Signal_t: *	This symbol's value is either "void" or "int", corresponding to the
+?Signal_t: *	appropriate return type of a signal handler.  Thus, you can declare
+?Signal_t: *	a signal handler using "Signal_t (*handler)()", and define the
+?Signal_t: *	handler using "Signal_t handler(sig)".
+?Signal_t: */
+?VOIDSIG:#$d_voidsig VOIDSIG 	/**/
+?Signal_t:#define Signal_t $signal_t	/* Signal handler's return type */
+
+?d_volatile:/* HASVOLATILE:
+?d_volatile: *	This symbol, if defined, indicates that this C compiler knows about
+?d_volatile: *	the volatile declaration.
+?d_volatile: */
+?d_volatile:#$d_volatile	HASVOLATILE	/**/
+?d_volatile:#ifndef HASVOLATILE
+?d_volatile:#define volatile
+?d_volatile:#endif
+
+?HAS_VPRINTF:/* HAS_VPRINTF:
+?HAS_VPRINTF: *	This symbol, if defined, indicates that the vprintf routine is available
+?HAS_VPRINTF: *	to printf with a pointer to an argument list.  If unavailable, you
+?HAS_VPRINTF: *	may need to write your own, probably in terms of _doprnt().
+?HAS_VPRINTF: */
+?USE_CHAR_VSPRINTF:/* USE_CHAR_VSPRINTF:
+?USE_CHAR_VSPRINTF: *	This symbol is defined if this system has vsprintf() returning type
+?USE_CHAR_VSPRINTF: *	(char*).  The trend seems to be to declare it as "int vsprintf()".  It
+?USE_CHAR_VSPRINTF: *	is up to the package author to declare vsprintf correctly based on the
+?USE_CHAR_VSPRINTF: *	symbol.
+?USE_CHAR_VSPRINTF: */
+?HAS_VPRINTF:#$d_vprintf HAS_VPRINTF	/**/
+?USE_CHAR_VSPRINTF:#$d_charvspr USE_CHAR_VSPRINTF 	/**/
+
+?HAS_WAIT3:/* HAS_WAIT3:
+?HAS_WAIT3: *	This symbol, if defined, indicates that the wait3() subroutine
+?HAS_WAIT3: *	exists.
+?HAS_WAIT3: */
+?HAS_WAIT3:#$d_wait3 HAS_WAIT3	/**/
+
+?HAS_WAIT4:/* HAS_WAIT4:
+?HAS_WAIT4: *	This symbol, if defined, indicates that wait4() exists.
+?HAS_WAIT4: */
+?HAS_WAIT4:#$d_wait4 HAS_WAIT4	/**/
+
+?HAS_WAITPID:/* HAS_WAITPID:
+?HAS_WAITPID: *	This symbol, if defined, indicates that the waitpid routine is
+?HAS_WAITPID: *	available to wait for child process.
+?HAS_WAITPID: */
+?HAS_WAITPID:#$d_waitpid HAS_WAITPID	/**/
+
+?HAS_WCSTOMBS:/* HAS_WCSTOMBS:
+?HAS_WCSTOMBS: *	This symbol, if defined, indicates that the wcstombs routine is
+?HAS_WCSTOMBS: *	available to convert wide character strings to multibyte strings.
+?HAS_WCSTOMBS: */
+?HAS_WCSTOMBS:#$d_wcstombs HAS_WCSTOMBS	/**/
+
+?HAS_WCTOMB:/* HAS_WCTOMB:
+?HAS_WCTOMB: *	This symbol, if defined, indicates that the wctomb routine is available
+?HAS_WCTOMB: *	to covert a wide character to a multibyte.
+?HAS_WCTOMB: */
+?HAS_WCTOMB:#$d_wctomb HAS_WCTOMB		/**/
+
+?USE_WIFSTAT:/* USE_WIFSTAT:
+?USE_WIFSTAT: *	This symbol, if defined, indicates to the C program that the argument
+?USE_WIFSTAT: *	for the WIFxxx set of macros such as WIFSIGNALED or WIFEXITED can
+?USE_WIFSTAT: *	be of the same kind as the one used to hold the wait() status. Should
+?USE_WIFSTAT: *	only matter on HP-UX, where the macros are incorrectly written and
+?USE_WIFSTAT: *	therefore cause programs using them with an 'union wait' variable
+?USE_WIFSTAT: *	to not compile properly. See also UNION_WAIT.
+?USE_WIFSTAT: */
+?USE_WIFSTAT:#$d_wifstat USE_WIFSTAT		/**/
+
+?HAS_XDRS:/* HAS_XDRS:
+?HAS_XDRS: *	This symbol if defined indicates to the C program that the XDR
+?HAS_XDRS: *	serialization routines are available to transfer data accross
+?HAS_XDRS: *	various architectures.
+?HAS_XDRS: */
+?HAS_XDRS:#$d_xdrs HAS_XDRS	/**/
+
+?DEFEDITOR:/* DEFEDITOR:
+?DEFEDITOR: *	This symbol contains the full pathname of the default editor.
+?DEFEDITOR: */
+?DEFEDITOR:#define DEFEDITOR "$defeditor"		/**/
+
+?DOUBLESIZE:/* DOUBLESIZE:
+?DOUBLESIZE: *	This symbol contains the size of a double, so that the C preprocessor
+?DOUBLESIZE: *	can make decisions based on it.
+?DOUBLESIZE: */
+?DOUBLESIZE:#define DOUBLESIZE $doublesize		/**/
+
+?FLOATSIZE:/* FLOATSIZE:
+?FLOATSIZE: *	This symbol contains the size of a float, so that the C preprocessor
+?FLOATSIZE: *	can make decisions based on it.
+?FLOATSIZE: */
+?FLOATSIZE:#define FLOATSIZE $floatsize		/**/
+
+?Fpos_t:/* Fpos_t:
+?Fpos_t: *	This symbol holds the type used to declare file positions in libc.
+?Fpos_t: *	It can be fpos_t, long, uint, etc... It may be necessary to include
+?Fpos_t: *	<sys/types.h> to get any typedef'ed information.
+?Fpos_t: */
+?Fpos_t:#define Fpos_t $fpostype		/* File position type */
+
+?FPU:/* FPU:
+?FPU: *	String containing the flags for the local floating point unit.
+?FPU: */
+?FPU:#define FPU "$fpu" /**/
+
+?Gid_t:/* Gid_t:
+?Gid_t: *	This symbol holds the return type of getgid() and the type of
+?Gid_t: *	argument to setrgid() and related functions.  Typically,
+?Gid_t: *	it is the type of group ids in the kernel. It can be int, ushort,
+?Gid_t: *	uid_t, etc... It may be necessary to include <sys/types.h> to get
+?Gid_t: *	any typedef'ed information.
+?Gid_t: */
+?Gid_t:#define Gid_t $gidtype		/* Type for getgid(), etc... */
+
+?Groups_t:/* Groups_t:
+?Groups_t: *	This symbol holds the type used for the second argument to
+?Groups_t: *	getgroups().  Usually, this is the same of gidtype, but
+?Groups_t: *	sometimes it isn't.  It can be int, ushort, uid_t, etc... 
+?Groups_t: *	It may be necessary to include <sys/types.h> to get any 
+?Groups_t: *	typedef'ed information.  This is only required if you have
+?Groups_t: *	getgroups().
+?Groups_t: */
+?groupstype:#ifdef HAS_GETGROUPS
+?groupstype:#define Groups_t $groupstype	/* Type for 2nd arg to getgroups() */
+?groupstype:#endif
+
+?I_ARPA_INET:/* I_ARPA_INET:
+?I_ARPA_INET: *	This symbol, if defined, indicates to the C program that it should
+?I_ARPA_INET: *	include <arpa/inet.h> to get inet_addr and friends declarations.
+?I_ARPA_INET: */
+?I_ARPA_INET:#$i_arpainet	I_ARPA_INET		/**/
+
+?I_DB:/* I_DB:
+?I_DB: *	This symbol, if defined, indicates to the C program that it should
+?I_DB: *	include Berkeley's DB include file <db.h>.
+?I_DB: */
+?DB_Prefix_t:/* DB_Prefix_t:
+?DB_Prefix_t: *	This symbol contains the type of the prefix structure element
+?DB_Prefix_t: *	in the <db.h> header file.  In older versions of DB, it was
+?DB_Prefix_t: *	int, while in newer ones it is u_int32_t.
+?DB_Prefix_t: */
+?DB_Hash_t:/* DB_Hash_t:
+?DB_Hash_t: *	This symbol contains the type of the prefix structure element
+?DB_Hash_t: *	in the <db.h> header file.  In older versions of DB, it was
+?DB_Hash_t: *	int, while in newer ones it is size_t.
+?DB_Hash_t: */
+?I_DB:#$i_db I_DB		/**/
+?DB_Hash_t:#define DB_Hash_t	$db_hashtype		/**/
+?DB_Prefix_t:#define DB_Prefix_t	$db_prefixtype  	/**/
+
+?I_DBM:/* I_DBM:
+?I_DBM: *	This symbol, if defined, indicates that <dbm.h> exists and should
+?I_DBM: *	be included.
+?I_DBM: */
+?I_RPCSVC_DBM:/* I_RPCSVC_DBM:
+?I_RPCSVC_DBM: *	This symbol, if defined, indicates that <rpcsvc/dbm.h> exists and
+?I_RPCSVC_DBM: *	should be included.
+?I_RPCSVC_DBM: */
+?I_DBM:#$i_dbm I_DBM	/**/
+?I_RPCSVC_DBM:#$i_rpcsvcdbm I_RPCSVC_DBM	/**/
+
+?I_DIRENT:/* I_DIRENT:
+?I_DIRENT: *	This symbol, if defined, indicates to the C program that it should
+?I_DIRENT: *	include <dirent.h>. Using this symbol also triggers the definition
+?I_DIRENT: *	of the Direntry_t define which ends up being 'struct dirent' or
+?I_DIRENT: *	'struct direct' depending on the availability of <dirent.h>.
+?I_DIRENT: */
+?DIRNAMLEN:/* DIRNAMLEN:
+?DIRNAMLEN: *	This symbol, if defined, indicates to the C program that the length
+?DIRNAMLEN: *	of directory entry names is provided by a d_namlen field.  Otherwise
+?DIRNAMLEN: *	you need to do strlen() on the d_name field.
+?DIRNAMLEN: */
+?Direntry_t:/* Direntry_t:
+?Direntry_t: *	This symbol is set to 'struct direct' or 'struct dirent' depending on
+?Direntry_t: *	whether dirent is available or not. You should use this pseudo type to
+?Direntry_t: *	portably declare your directory entries.
+?Direntry_t: */
+?I_DIRENT:#$i_dirent I_DIRENT		/**/
+?DIRNAMLEN:#$d_dirnamlen DIRNAMLEN	/**/
+?i_dirent:@if I_DIRENT && Direntry_t
+?i_dirent:#define Direntry_t $direntrytype
+?i_dirent:@end
+
+?I_DLD:/* I_DLD:
+?I_DLD: *	This symbol, if defined, indicates that <dld.h> exists and should
+?I_DLD: *	be included before using GNU dynamic loading features.
+?I_DLD: */
+?I_DLD:#$i_dld I_DLD	/**/
+
+?I_DLFCN:/* I_DLFCN:
+?I_DLFCN: *	This symbol, if defined, indicates that <dlfcn.h> exists and should
+?I_DLFCN: *	be included.
+?I_DLFCN: */
+?I_DLFCN:#$i_dlfcn I_DLFCN		/**/
+
+?I_FCNTL:/* I_FCNTL:
+?I_FCNTL: *	This manifest constant tells the C program to include <fcntl.h>.
+?I_FCNTL: */
+?I_FCNTL:#$i_fcntl I_FCNTL	/**/
+
+?I_FLOAT:/* I_FLOAT:
+?I_FLOAT: *	This symbol, if defined, indicates to the C program that it should
+?I_FLOAT: *	include <float.h> to get definition of symbols like DBL_MAX or
+?I_FLOAT: *	DBL_MIN, i.e. machine dependent floating point values.
+?I_FLOAT: */
+?I_FLOAT:#$i_float I_FLOAT		/**/
+
+?I_GDBM:/* I_GDBM:
+?I_GDBM: *	This symbol, if defined, indicates that <gdbm.h> exists and should
+?I_GDBM: *	be included.
+?I_GDBM: */
+?I_GDBM:#$i_gdbm I_GDBM	/**/
+
+?I_GRP:/* I_GRP:
+?I_GRP: *	This symbol, if defined, indicates to the C program that it should
+?I_GRP: *	include <grp.h>.
+?I_GRP: */
+?I_GRP:#$i_grp I_GRP		/**/
+
+?I_LIMITS:/* I_LIMITS:
+?I_LIMITS: *	This symbol, if defined, indicates to the C program that it should
+?I_LIMITS: *	include <limits.h> to get definition of symbols like WORD_BIT or
+?I_LIMITS: *	LONG_MAX, i.e. machine dependant limitations.
+?I_LIMITS: */
+?I_LIMITS:#$i_limits I_LIMITS		/**/
+
+?I_LOCALE:/* I_LOCALE:
+?I_LOCALE: *	This symbol, if defined, indicates to the C program that it should
+?I_LOCALE: *	include <locale.h>.
+?I_LOCALE: */
+?I_LOCALE:#$i_locale	I_LOCALE		/**/
+
+?I_MALLOC:/* I_MALLOC:
+?I_MALLOC: *	This symbol, if defined, indicates to the C program that it should
+?I_MALLOC: *	include <malloc.h>.
+?I_MALLOC: */
+?I_MALLOC:#$i_malloc I_MALLOC		/**/
+
+?I_MATH:/* I_MATH:
+?I_MATH: *	This symbol, if defined, indicates to the C program that it should
+?I_MATH: *	include <math.h>.
+?I_MATH: */
+?I_MATH:#$i_math I_MATH		/**/
+
+?I_MEMORY:/* I_MEMORY:
+?I_MEMORY: *	This symbol, if defined, indicates to the C program that it should
+?I_MEMORY: *	include <memory.h>.
+?I_MEMORY: */
+?I_MEMORY:#$i_memory I_MEMORY		/**/
+
+?I_NDBM:/* I_NDBM:
+?I_NDBM: *	This symbol, if defined, indicates that <ndbm.h> exists and should
+?I_NDBM: *	be included.
+?I_NDBM: */
+?I_NDBM:#$i_ndbm I_NDBM	/**/
+
+?I_NET_ERRNO:/* I_NET_ERRNO:
+?I_NET_ERRNO: *	This symbol, if defined, indicates that <net/errno.h> exists and 
+?I_NET_ERRNO: *	should be included.
+?I_NET_ERRNO: */
+?I_NET_ERRNO:#$i_neterrno I_NET_ERRNO		/**/
+
+?I_NETINET_IN:/* I_NETINET_IN:
+?I_NETINET_IN: *	This symbol, if defined, indicates to the C program that it should
+?I_NETINET_IN: *	include <netinet/in.h>. Otherwise, you may try <sys/in.h>.
+?I_NETINET_IN: */
+?I_SYS_IN:/* I_SYS_IN:
+?I_SYS_IN: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_IN: *	include <sys/in.h> instead of <netinet/in.h>.
+?I_SYS_IN: */
+?I_NETINET_IN:#$i_niin I_NETINET_IN	/**/
+?I_SYS_IN:#$i_sysin I_SYS_IN		/**/
+
+?I_PWD:/* I_PWD:
+?I_PWD: *	This symbol, if defined, indicates to the C program that it should
+?I_PWD: *	include <pwd.h>.
+?I_PWD: */
+?PWQUOTA:/* PWQUOTA:
+?PWQUOTA: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWQUOTA: *	contains pw_quota.
+?PWQUOTA: */
+?PWAGE:/* PWAGE:
+?PWAGE: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWAGE: *	contains pw_age.
+?PWAGE: */
+?PWCHANGE:/* PWCHANGE:
+?PWCHANGE: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWCHANGE: *	contains pw_change.
+?PWCHANGE: */
+?PWCLASS:/* PWCLASS:
+?PWCLASS: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWCLASS: *	contains pw_class.
+?PWCLASS: */
+?PWEXPIRE:/* PWEXPIRE:
+?PWEXPIRE: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWEXPIRE: *	contains pw_expire.
+?PWEXPIRE: */
+?PWCOMMENT:/* PWCOMMENT:
+?PWCOMMENT: *	This symbol, if defined, indicates to the C program that struct passwd
+?PWCOMMENT: *	contains pw_comment.
+?PWCOMMENT: */
+?I_PWD:#$i_pwd I_PWD		/**/
+?PWQUOTA:#$d_pwquota PWQUOTA	/**/
+?PWAGE:#$d_pwage PWAGE	/**/
+?PWCHANGE:#$d_pwchange PWCHANGE	/**/
+?PWCLASS:#$d_pwclass PWCLASS	/**/
+?PWEXPIRE:#$d_pwexpire PWEXPIRE	/**/
+?PWCOMMENT:#$d_pwcomment PWCOMMENT	/**/
+
+?I_REGEX:/* I_REGEX:
+?I_REGEX: *	This symbol, if defined, indicates that <regex.h> exists and should
+?I_REGEX: *	be included.
+?I_REGEX: */
+?I_REGEX:#$i_regex I_REGEX	/**/
+
+?I_SFIO:/* I_SFIO:
+?I_SFIO: *	This symbol, if defined, indicates to the C program that it should
+?I_SFIO: *	include <sfio.h>.
+?I_SFIO: */
+?I_SFIO:#$i_sfio	I_SFIO		/**/
+
+?I_STDDEF:/* I_STDDEF:
+?I_STDDEF: *	This symbol, if defined, indicates that <stddef.h> exists and should
+?I_STDDEF: *	be included.
+?I_STDDEF: */
+?I_STDDEF:#$i_stddef I_STDDEF	/**/
+
+?I_STDLIB:/* I_STDLIB:
+?I_STDLIB: *	This symbol, if defined, indicates that <stdlib.h> exists and should
+?I_STDLIB: *	be included.
+?I_STDLIB: */
+?I_STDLIB:#$i_stdlib I_STDLIB		/**/
+
+?I_STRING:/* I_STRING:
+?I_STRING: *	This symbol, if defined, indicates to the C program that it should
+?I_STRING: *	include <string.h> (USG systems) instead of <strings.h> (BSD systems).
+?I_STRING: */
+?I_STRING:#$i_string I_STRING		/**/
+
+?I_SYS_DIR:/* I_SYS_DIR:
+?I_SYS_DIR: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_DIR: *	include <sys/dir.h>.
+?I_SYS_DIR: */
+?I_SYS_DIR:#$i_sysdir I_SYS_DIR		/**/
+
+?I_SYS_FILE:/* I_SYS_FILE:
+?I_SYS_FILE: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_FILE: *	include <sys/file.h> to get definition of R_OK and friends.
+?I_SYS_FILE: */
+?I_SYS_FILE:#$i_sysfile I_SYS_FILE		/**/
+
+?I_SYS_IOCTL:/* I_SYS_IOCTL:
+?I_SYS_IOCTL: *	This symbol, if defined, indicates that <sys/ioctl.h> exists and should
+?I_SYS_IOCTL: *	be included. Otherwise, include <sgtty.h> or <termio.h>.
+?I_SYS_IOCTL: */
+?I_SYS_FILIO:/* I_SYS_FILIO:
+?I_SYS_FILIO: *	This symbol, if defined, indicates that <sys/filio.h> exists and
+?I_SYS_FILIO: *	should be included instead of <sys/ioctl.h>.
+?I_SYS_FILIO: */
+?I_SYS_BSDIOCTL:/* I_SYS_BSDIOCTL:
+?I_SYS_BSDIOCTL: *	This symbol, if defined, indicates that <sys/bsdioctl.h> exists and should
+?I_SYS_BSDIOCTL: *	be included. Otherwise, try <sys/ioctl.h>. This is primarly intended for
+?I_SYS_BSDIOCTL: *	definitions of sockets options, like SIOCATMARK.
+?I_SYS_BSDIOCTL: */
+?I_SYS_SOCKIO:/* I_SYS_SOCKIO:
+?I_SYS_SOCKIO: *	This symbol, if defined, indicates the <sys/sockio.h> should be included
+?I_SYS_SOCKIO: *	to get socket ioctl options, like SIOCATMARK.
+?I_SYS_SOCKIO: */
+?USE_TIOCNOTTY:/* USE_TIOCNOTTY:
+?USE_TIOCNOTTY: *	This symbol, if defined indicate to the C program that the ioctl()
+?USE_TIOCNOTTY: *	call with TIOCNOTTY should be used to void tty association.
+?USE_TIOCNOTTY: *	Otherwise (on USG probably), it is enough to close the standard file
+?USE_TIOCNOTTY: *	decriptors and do a setpgrp().
+?USE_TIOCNOTTY: */
+?I_SYS_IOCTL:#$i_sysioctl	I_SYS_IOCTL		/**/
+?I_SYS_FILIO:#$i_sysfilio	I_SYS_FILIO		/**/
+?I_SYS_BSDIOCTL:#$i_bsdioctl	I_SYS_BSDIOCTL		/**/
+?I_SYS_SOCKIO:#$i_syssockio I_SYS_SOCKIO	/**/
+?USE_TIOCNOTTY:#$d_voidtty USE_TIOCNOTTY	/**/
+
+?I_SYS_MMAN:/* I_SYS_MMAN:
+?I_SYS_MMAN: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_MMAN: *	include <sys/mman.h>.
+?I_SYS_MMAN: */
+?I_SYS_MMAN:#$i_sysmman	I_SYS_MMAN		/**/
+
+?I_SYS_NDIR:/* I_SYS_NDIR:
+?I_SYS_NDIR: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_NDIR: *	include <sys/ndir.h>.
+?I_SYS_NDIR: */
+?I_SYS_NDIR:#$i_sysndir I_SYS_NDIR	/**/
+
+?I_SYS_PARAM:/* I_SYS_PARAM:
+?I_SYS_PARAM: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_PARAM: *	include <sys/param.h>.
+?I_SYS_PARAM: */
+?I_SYS_PARAM:#$i_sysparam I_SYS_PARAM		/**/
+
+?I_SYS_RESOURCE:/* I_SYS_RESOURCE:
+?I_SYS_RESOURCE: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_RESOURCE: *	include <sys/resource.h>.
+?I_SYS_RESOURCE: */
+?I_SYS_RESOURCE:#$i_sysresrc I_SYS_RESOURCE		/**/
+
+?I_SYS_SELECT:/* I_SYS_SELECT:
+?I_SYS_SELECT: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_SELECT: *	include <sys/select.h> in order to get definition of struct timeval.
+?I_SYS_SELECT: */
+?I_SYS_SELECT:#$i_sysselct I_SYS_SELECT	/**/
+
+?I_SYS_SOCKET:/* I_SYS_SOCKET:
+?I_SYS_SOCKET: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_SOCKET: *	include <sys/socket.h> before performing socket calls.
+?I_SYS_SOCKET: */
+?I_SYS_SOCKET:#$i_syssock I_SYS_SOCKET		/**/
+
+?I_SYS_STAT:/* I_SYS_STAT:
+?I_SYS_STAT: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_STAT: *	include <sys/stat.h>.
+?I_SYS_STAT: */
+?I_SYS_STAT:#$i_sysstat	I_SYS_STAT		/**/
+
+?I_SYS_TABLE:/* I_SYS_TABLE:
+?I_SYS_TABLE: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TABLE: *	include <sys/table.h> for the OSF/1 table() system call.
+?I_SYS_TABLE: */
+?I_SYS_TABLE:#$i_systable I_SYS_TABLE		/**/
+
+?I_SYS_TIMEB:/* I_SYS_TIMEB:
+?I_SYS_TIMEB: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TIMEB: *	include <sys/timeb.h>, in order to define struct timeb (some systems
+?I_SYS_TIMEB: *	define this in <sys/time.h>). This is useful when using ftime().
+?I_SYS_TIMEB: *	You should include <sys/time.h> if I_SYS_TIMEB is not defined,
+?I_SYS_TIMEB: *	nor is I_SYS_TIME.
+?I_SYS_TIMEB: */
+?I_SYS_TIMEB:#$i_systimeb I_SYS_TIMEB		/**/
+
+?I_SYS_TIMES:/* I_SYS_TIMES:
+?I_SYS_TIMES: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TIMES: *	include <sys/times.h>.
+?I_SYS_TIMES: */
+?I_SYS_TIMES:#$i_systimes	I_SYS_TIMES		/**/
+
+?I_SYS_TWG_CF:/* I_SYS_TWG_CF:
+?I_SYS_TWG_CF: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TWG_CF: *	include sys/twg_config.h.
+?I_SYS_TWG_CF: */
+?I_SYS_TWG_CF:#$i_systwgcf I_SYS_TWG_CF	/**/
+
+?I_SYS_TYPES:/* I_SYS_TYPES:
+?I_SYS_TYPES: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TYPES: *	include <sys/types.h>.
+?I_SYS_TYPES: */
+?I_SYS_TYPES:#$i_systypes	I_SYS_TYPES		/**/
+
+?I_SYS_UN:/* I_SYS_UN:
+?I_SYS_UN: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_UN: *	include <sys/un.h> to get UNIX domain socket definitions.
+?I_SYS_UN: */
+?I_SYS_UN:#$i_sysun I_SYS_UN		/**/
+
+?I_SYS_WAIT:/* I_SYS_WAIT:
+?I_SYS_WAIT: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_WAIT: *	include <sys/wait.h>.
+?I_SYS_WAIT: */
+?I_SYS_WAIT:#$i_syswait I_SYS_WAIT	/**/
+
+?I_TERMIO:/* I_TERMIO:
+?I_TERMIO: *	This symbol, if defined, indicates that the program should include
+?I_TERMIO: *	<termio.h> rather than <sgtty.h>.  There are also differences in
+?I_TERMIO: *	the ioctl() calls that depend on the value of this symbol.
+?I_TERMIO: */
+?I_TERMIOS:/* I_TERMIOS:
+?I_TERMIOS: *	This symbol, if defined, indicates that the program should include
+?I_TERMIOS: *	the POSIX termios.h rather than sgtty.h or termio.h.
+?I_TERMIOS: *	There are also differences in the ioctl() calls that depend on the
+?I_TERMIOS: *	value of this symbol.
+?I_TERMIOS: */
+?I_SGTTY:/* I_SGTTY:
+?I_SGTTY: *	This symbol, if defined, indicates that the program should include
+?I_SGTTY: *	<sgtty.h> rather than <termio.h>.  There are also differences in
+?I_SGTTY: *	the ioctl() calls that depend on the value of this symbol.
+?I_SGTTY: */
+?I_TERMIO:#$i_termio I_TERMIO		/**/
+?I_TERMIOS:#$i_termios I_TERMIOS		/**/
+?I_SGTTY:#$i_sgtty I_SGTTY		/**/
+
+?I_TIME:/* I_TIME:
+?I_TIME: *	This symbol, if defined, indicates to the C program that it should
+?I_TIME: *	include <time.h>.
+?I_TIME: */
+?I_SYS_TIME:/* I_SYS_TIME:
+?I_SYS_TIME: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TIME: *	include <sys/time.h>.
+?I_SYS_TIME: */
+?I_SYS_TIME_KERNEL:/* I_SYS_TIME_KERNEL:
+?I_SYS_TIME_KERNEL: *	This symbol, if defined, indicates to the C program that it should
+?I_SYS_TIME_KERNEL: *	include <sys/time.h> with KERNEL defined.
+?I_SYS_TIME_KERNEL: */
+?I_TIME:#$i_time I_TIME		/**/
+?I_SYS_TIME:#$i_systime I_SYS_TIME		/**/
+?I_SYS_TIME_KERNEL:#$i_systimek I_SYS_TIME_KERNEL		/**/
+
+?I_UNISTD:/* I_UNISTD:
+?I_UNISTD: *	This symbol, if defined, indicates to the C program that it should
+?I_UNISTD: *	include <unistd.h>.
+?I_UNISTD: */
+?I_UNISTD:#$i_unistd I_UNISTD		/**/
+
+?I_UTIME:/* I_UTIME:
+?I_UTIME: *	This symbol, if defined, indicates to the C program that it should
+?I_UTIME: *	include <utime.h>.
+?I_UTIME: */
+?I_UTIME:#$i_utime I_UTIME		/**/
+
+?I_VALUES:/* I_VALUES:
+?I_VALUES: *	This symbol, if defined, indicates to the C program that it should
+?I_VALUES: *	include <values.h> to get definition of symbols like MINFLOAT or
+?I_VALUES: *	MAXLONG, i.e. machine dependant limitations.  Probably, you
+?I_VALUES: *	should use <limits.h> instead, if it is available.
+?I_VALUES: */
+?I_VALUES:#$i_values I_VALUES		/**/
+
+?I_STDARG:/* I_STDARG:
+?I_STDARG: *	This symbol, if defined, indicates that <stdarg.h> exists and should
+?I_STDARG: *	be included.
+?I_STDARG: */
+?I_VARARGS:/* I_VARARGS:
+?I_VARARGS: *	This symbol, if defined, indicates to the C program that it should
+?I_VARARGS: *	include <varargs.h>.
+?I_VARARGS: */
+?I_STDARG:#$i_stdarg I_STDARG		/**/
+?I_VARARGS:#$i_varargs I_VARARGS	/**/
+
+?I_VFORK:/* I_VFORK:
+?I_VFORK: *	This symbol, if defined, indicates to the C program that it should
+?I_VFORK: *	include vfork.h.
+?I_VFORK: */
+?I_VFORK:#$i_vfork I_VFORK	/**/
+
+?I_WHOAMI:/* I_WHOAMI:
+?I_WHOAMI: *	This symbol, if defined, indicates that the program may include
+?I_WHOAMI: *	<whoami.h>.
+?I_WHOAMI: */
+?I_WHOAMI:#$i_whoami I_WHOAMI	/**/
+
+?INTSIZE:/* INTSIZE:
+?INTSIZE: *	This symbol contains the value of sizeof(int) so that the C
+?INTSIZE: *	preprocessor can make decisions based on it.
+?INTSIZE: */
+?LONGSIZE:/* LONGSIZE:
+?LONGSIZE: *	This symbol contains the value of sizeof(long) so that the C
+?LONGSIZE: *	preprocessor can make decisions based on it.
+?LONGSIZE: */
+?SHORTSIZE:/* SHORTSIZE:
+?SHORTSIZE: *	This symbol contains the value of sizeof(short) so that the C
+?SHORTSIZE: *	preprocessor can make decisions based on it.
+?SHORTSIZE: */
+?INTSIZE:#define INTSIZE $intsize		/**/
+?LONGSIZE:#define LONGSIZE $longsize		/**/
+?SHORTSIZE:#define SHORTSIZE $shortsize		/**/
+
+?SERVE_SHM:/* SERVE_SHM:
+?SERVE_SHM: *	If defined, tells the C program to use USG shared memory for IPC.
+?SERVE_SHM: */
+?SERVE_MSG:/* SERVE_MSG:
+?SERVE_MSG: *	If defined, tells the C program to use USG message queues for IPC.
+?SERVE_MSG: */
+?SERVE_INET_UDP:/* SERVE_INET_UDP:
+?SERVE_INET_UDP: *	If defined, tells the C program to enable InterNet-domain UDP
+?SERVE_INET_UDP: *	support for IPC.
+?SERVE_INET_UDP: */
+?SERVE_INET_TCP:/* SERVE_INET_TCP:
+?SERVE_INET_TCP: *	If defined, tells the C program to enable InterNet-domain TCP
+?SERVE_INET_TCP: *	support for IPC.
+?SERVE_INET_TCP: */
+?SERVE_UNIX_UDP:/* SERVE_UNIX_UDP:
+?SERVE_UNIX_UDP: *	If defined, tells the C program to enable Unix-domain UDP
+?SERVE_UNIX_UDP: *	support for IPC.
+?SERVE_UNIX_UDP: */
+?SERVE_UNIX_TCP:/* SERVE_UNIX_TCP:
+?SERVE_UNIX_TCP: *	If defined, tells the C program to enable Unix-domain TCP
+?SERVE_UNIX_TCP: *	support for IPC.
+?SERVE_UNIX_TCP: */
+?SERVE_SHM:#$serve_shm	SERVE_SHM	/**/
+?SERVE_MSG:#$serve_msg	SERVE_MSG	/**/
+?SERVE_INET_UDP:#$serve_inet_udp	SERVE_INET_UDP	/**/
+?SERVE_INET_TCP:#$serve_inet_tcp	SERVE_INET_TCP	/**/
+?SERVE_UNIX_UDP:#$serve_unix_udp	SERVE_UNIX_UDP	/**/
+?SERVE_UNIX_TCP:#$serve_unix_tcp	SERVE_UNIX_TCP	/**/
+
+?LOCDIST:/* LOCDIST:
+?LOCDIST: *	This symbol contains the distribution name for the news system that
+?LOCDIST: *	restricts article distribution to the local organization.
+?LOCDIST: */
+?ORGDIST:/* ORGDIST:
+?ORGDIST: *	This symbol contains the distribution name for the news system that
+?ORGDIST: *	restricts article distribution to the organization.
+?ORGDIST: */
+?CITYDIST:/* CITYDIST:
+?CITYDIST: *	This symbol contains the distribution name for the news system that
+?CITYDIST: *	restricts article distribution to the city.
+?CITYDIST: */
+?STATEDIST:/* STATEDIST:
+?STATEDIST: *	This symbol contains the distribution name for the news system that
+?STATEDIST: *	restricts article distribution to the state or province.
+?STATEDIST: */
+?MULTISTATEDIST:/* MULTISTATEDIST:
+?MULTISTATEDIST: *	This symbol contains the distribution name for the news system that
+?MULTISTATEDIST: *	restricts article distribution to a multi-state region.
+?MULTISTATEDIST: */
+?CNTRYDIST:/* CNTRYDIST:
+?CNTRYDIST: *	This symbol contains the distribution name for the news system that
+?CNTRYDIST: *	restricts article distribution to the country.
+?CNTRYDIST: */
+?CONTDIST:/* CONTDIST:
+?CONTDIST: *	This symbol contains the distribution name for the news system that
+?CONTDIST: *	restricts article distribution to the continent.
+?CONTDIST: */
+?LOCDIST:#define LOCDIST "$locdist"		/**/
+?ORGDIST:#define ORGDIST "$orgdist"		/**/
+?CITYDIST:#define CITYDIST "$citydist"		/**/
+?MULTISTATEDIST:#define MULTISTATEDIST "$multistatedist"	/**/
+?STATEDIST:#define STATEDIST "$statedist"		/**/
+?CNTRYDIST:#define CNTRYDIST "$cntrydist"		/**/
+?CONTDIST:#define CONTDIST "$contdist"		/**/
+
+?Off_t:/* Off_t:
+?Off_t: *	This symbol holds the type used to declare offsets in the kernel.
+?Off_t: *	It can be int, long, off_t, etc... It may be necessary to include
+?Off_t: *	<sys/types.h> to get any typedef'ed information.
+?Off_t: */
+?Off_t:#define Off_t $lseektype		/* <offset> type */
+
+?MAILFILE:/* MAILFILE:
+?MAILFILE: *	This symbol contains the interpretable name of the mail spool file
+?MAILFILE: *	for the current user.  The program must be prepared to substitute
+?MAILFILE: *	the HOME directory for %~, and the login id for %L.
+?MAILFILE: */
+?MAILFILE:#define MAILFILE "$mailfile"		/**/
+
+?Free_t:/* Free_t:
+?Free_t: *	This variable contains the return type of free().  It is usually
+?Free_t: * void, but occasionally int.
+?Free_t: */
+?Malloc_t:/* Malloc_t:
+?Malloc_t: *	This symbol is the type of pointer returned by malloc and realloc.
+?Malloc_t: */
+?Malloc_t:#define Malloc_t $malloctype			/**/
+?Free_t:#define Free_t $freetype			/**/
+
+?MYMALLOC:/* MYMALLOC:
+?MYMALLOC: *	This symbol, if defined, indicates that we're using our own malloc.
+?MYMALLOC: */
+?MYMALLOC:#$d_mymalloc MYMALLOC			/**/
+
+?MBOXCHAR:/* MBOXCHAR:
+?MBOXCHAR: *	This symbol contains a character which will match the beginning
+?MBOXCHAR: *	of a mailbox file.
+?MBOXCHAR: */
+?MBOXCHAR:#define MBOXCHAR '$mboxchar'		/**/
+
+?Mode_t:/* Mode_t:
+?Mode_t: *	This symbol holds the type used to declare file modes 
+?Mode_t: *	for systems calls.  It is usually mode_t, but may be
+?Mode_t: *	int or unsigned short.  It may be necessary to include <sys/types.h>
+?Mode_t: *	to get any typedef'ed information.
+?Mode_t: */
+?Mode_t:#define Mode_t $modetype	 /* file mode parameter for system calls */
+
+?MYHOSTNAME:/* MYHOSTNAME:
+?MYHOSTNAME: *	This symbol contains name of the host the program is going to run on.
+?MYHOSTNAME: *	The domain is not kept with hostname, but must be gotten from MYDOMAIN.
+?MYHOSTNAME: *	The dot comes with MYDOMAIN, and need not be supplied by the program.
+?MYHOSTNAME: *	If gethostname() or uname() exist, MYHOSTNAME may be ignored. If MYDOMAIN
+?MYHOSTNAME: *	is not used, MYHOSTNAME will hold the name derived from PHOSTNAME.
+?MYHOSTNAME: */
+?MYDOMAIN:/* MYDOMAIN:
+?MYDOMAIN: *	This symbol contains the domain of the host the program is going to
+?MYDOMAIN: *	run on.  The domain must be appended to HOSTNAME to form a complete
+?MYDOMAIN: *	host name.  The dot comes with MYDOMAIN, and need not be supplied by
+?MYDOMAIN: *	the program.  If the host name is derived from PHOSTNAME, the domain
+?MYDOMAIN: *	may or may not already be there, and the program should check.
+?MYDOMAIN: */
+?MYHOSTNAME:#define MYHOSTNAME "$myhostname"		/**/
+?MYDOMAIN:#define MYDOMAIN "$mydomain"		/**/
+
+?PASSNAMES:/* PASSNAMES:
+?PASSNAMES: *	This symbol, if defined, indicates that full names are stored in
+?PASSNAMES: *	the /etc/passwd file.
+?PASSNAMES: */
+?BERKNAMES:/* BERKNAMES:
+?BERKNAMES: *	This symbol, if defined, indicates that full names are stored in
+?BERKNAMES: *	the /etc/passwd file in Berkeley format (name first thing, everything
+?BERKNAMES: *	up to first comma, with & replaced by capitalized login id, yuck).
+?BERKNAMES: */
+?USGNAMES:/* USGNAMES:
+?USGNAMES: *	This symbol, if defined, indicates that full names are stored in
+?USGNAMES: *	the /etc/passwd file in USG format (everything after - and before ( is
+?USGNAMES: *	the name).
+?USGNAMES: */
+?PASSNAMES:#$d_passnames PASSNAMES /*  (undef to take name from ~/.fullname) */
+?BERKNAMES:#$d_berknames BERKNAMES /* (that is, ":name,stuff:") */
+?USGNAMES:#$d_usgnames USGNAMES  /* (that is, ":stuff-name(stuff):") */
+
+?VAL_O_NONBLOCK:/* VAL_O_NONBLOCK:
+?VAL_O_NONBLOCK: *	This symbol is to be used during open() or fcntl(F_SETFL) to turn on
+?VAL_O_NONBLOCK: *	non-blocking I/O for the file descriptor. Note that there is no way
+?VAL_O_NONBLOCK: *	back, i.e. you cannot turn it blocking again this way. If you wish to
+?VAL_O_NONBLOCK: *	alternatively switch between blocking and non-blocking, use the
+?VAL_O_NONBLOCK: *	ioctl(FIOSNBIO) call instead, but that is not supported by all devices.
+?VAL_O_NONBLOCK: */
+?VAL_EAGAIN:/* VAL_EAGAIN:
+?VAL_EAGAIN: *	This symbol holds the errno error code set by read() when no data was
+?VAL_EAGAIN: *	present on the non-blocking file descriptor.
+?VAL_EAGAIN: */
+?RD_NODATA:/* RD_NODATA:
+?RD_NODATA: *	This symbol holds the return code from read() when no data is present
+?RD_NODATA: *	on the non-blocking file descriptor. Be careful! If EOF_NONBLOCK is
+?RD_NODATA: *	not defined, then you can't distinguish between no data and EOF by
+?RD_NODATA: *	issuing a read(). You'll have to find another way to tell for sure!
+?RD_NODATA: */
+?EOF_NONBLOCK:/* EOF_NONBLOCK:
+?EOF_NONBLOCK: *	This symbol, if defined, indicates to the C program that a read() on
+?EOF_NONBLOCK: *	a non-blocking file descriptor will return 0 on EOF, and not the value
+?EOF_NONBLOCK: *	held in RD_NODATA (-1 usually, in that case!).
+?EOF_NONBLOCK: */
+?VAL_O_NONBLOCK:#define VAL_O_NONBLOCK $o_nonblock
+?VAL_EAGAIN:#define VAL_EAGAIN $eagain
+?RD_NODATA:#define RD_NODATA $rd_nodata
+?EOF_NONBLOCK:#$d_eofnblk EOF_NONBLOCK
+
+?NEWSLEVEL:/* NEWSLEVEL:
+?NEWSLEVEL: *	The current revision level of the Usenet news system, encoded
+?NEWSLEVEL: *	as 1000 * major rev + 10 * minor rev + sub rev.  For instance,
+?NEWSLEVEL: *	news 2.10.3 is encode as 2103, and 2.11 as 2110.
+?NEWSLEVEL: */
+?NEWSLEVEL:#define NEWSLEVEL $newslevel	/**/
+
+?NEWSLIB:/* NEWSLIB:
+?NEWSLIB: *	This symbol contains the name of the directory serving as the news
+?NEWSLIB: *	library.  The program must be prepared to do ~ expansion on it.
+?NEWSLIB: */
+?NEWSLIB_EXP:/* NEWSLIB_EXP:
+?NEWSLIB_EXP: *	This symbol is the ~ expanded version of NEWSLIB, for programs that
+?NEWSLIB_EXP: *	do not wish to deal with it at run-time.
+?NEWSLIB_EXP: */
+?NEWSLIB:#define NEWSLIB "$newslib"		/**/
+?NEWSLIB_EXP:#define NEWSLIB_EXP "$newslibexp"	/**/
+
+?NEWSSPOOL:/* NEWSSPOOL:
+?NEWSSPOOL: *	This symbol contains the directory name where news articles are
+?NEWSSPOOL: *	spooled.  The program must be prepared to do ~ expansion on it.
+?NEWSSPOOL: */
+?NEWSSPOOL_EXP:/* NEWSSPOOL_EXP:
+?NEWSSPOOL_EXP: *	This is the same as NEWSSPOOL, but is filename expanded at
+?NEWSSPOOL_EXP: *	configuration time, for use in programs not willing to do so
+?NEWSSPOOL_EXP: *	at run-time.
+?NEWSSPOOL_EXP: */
+?NEWSSPOOL:#define NEWSSPOOL "$newsspool"	/**/
+?NEWSSPOOL_EXP:#define NEWSSPOOL_EXP "$newsspoolexp"	/**/
+
+?NLIST_PREFIX:/* NLIST_PREFIX:
+?NLIST_PREFIX: *	This manifest constant holds the string of characters which should
+?NLIST_PREFIX: *	preceed the symbol name when doing an nlist search.
+?NLIST_PREFIX: */
+?NLIST_FOUND:/* NLIST_FOUND:
+?NLIST_FOUND: *	This manifest constant holds the member of the nlist structure which
+?NLIST_FOUND: *	is nonzero if an nlist search succeeds.
+?NLIST_FOUND: */
+?NLIST_PREFIX:#define NLIST_PREFIX $nlist_pfx	/**/
+?NLIST_FOUND:#define NLIST_FOUND $nlist_fnd	/**/
+
+?ORGNAME:/* ORGNAME:
+?ORGNAME: *	This symbol contains either the organizaton name or the full pathname
+?ORGNAME: *	of a file containing the organization name, which the program must
+?ORGNAME: *	be prepared to open and substitute the contents of.
+?ORGNAME: */
+?ORGNAME:#define ORGNAME "$orgname"		/**/
+
+?PERLPATH:/* PERLPATH:
+?PERLPATH: *	This symbol contains the absolute location of the perl interpeter.
+?PERLPATH: */
+?PERLPATH:#define PERLPATH "$perlpath"		/**/
+
+?Pid_t:/* Pid_t:
+?Pid_t: *	This symbol holds the type used to declare process ids in the kernel.
+?Pid_t: *	It can be int, uint, pid_t, etc... It may be necessary to include
+?Pid_t: *	<sys/types.h> to get any typedef'ed information.
+?Pid_t: */
+?Pid_t:#define Pid_t $pidtype		/* PID type */
+
+?INSTALLPREFIX:/* INSTALLPREFIX:
+?INSTALLPREFIX: *	This symbol contains the name of the install prefix for this package.
+?INSTALLPREFIX: */
+?INSTALLPREFIX:#define INSTALLPREFIX "$prefix"		/**/
+
+?PREFSHELL:/* PREFSHELL:
+?PREFSHELL: *	This symbol contains the full name of the preferred user shell on this
+?PREFSHELL: *	system.  Usual values are /bin/csh, /bin/ksh, /bin/sh.
+?PREFSHELL: */
+?PREFSHELL:#define PREFSHELL "$prefshell"		/**/
+
+?PRIVLIB:/* PRIVLIB:
+?PRIVLIB: *	This symbol contains the name of the private library for this package.
+?PRIVLIB: *	The library is private in the sense that it needn't be in anyone's
+?PRIVLIB: *	execution path, but it should be accessible by the world.  The program
+?PRIVLIB: *	should be prepared to do ~ expansion.
+?PRIVLIB: */
+?PRIVLIB_EXP:/* PRIVLIB_EXP:
+?PRIVLIB_EXP: *	This symbol contains the ~name expanded version of PRIVLIB, to be used
+?PRIVLIB_EXP: *	in programs that are not prepared to deal with ~ expansion at run-time.
+?PRIVLIB_EXP: */
+?PRIVLIB:#define PRIVLIB "$privlib"		/**/
+?PRIVLIB_EXP:#define PRIVLIB_EXP "$privlibexp"		/**/
+
+?prototype:/* CAN_PROTOTYPE:
+?prototype: *	If defined, this macro indicates that the C compiler can handle
+?prototype: *	function prototypes.
+?prototype: */
+?DOTS:/* DOTS:
+?DOTS: *	This macro is used to specify the ... in function prototypes which
+?DOTS: *	have arbitrary additional arguments.
+?DOTS: */
+?NXT_ARG:/* NXT_ARG:
+?NXT_ARG: *	This macro is used to separate arguments in the declared argument list.
+?NXT_ARG: */
+?P_FUNC:/* P_FUNC:
+?P_FUNC: *	This macro is used to declare "private" (static) functions.
+?P_FUNC: *	It takes three arguments: the function type and name, a parenthesized
+?P_FUNC: *	traditional (comma separated) argument list, and the declared argument
+?P_FUNC: *	list (in which arguments are separated with NXT_ARG, and additional
+?P_FUNC: *	arbitrary arguments are specified with DOTS).  For example:
+?P_FUNC: *
+?P_FUNC: *		P_FUNC(int foo, (bar, baz), int bar NXT_ARG char *baz[])
+?P_FUNC: */
+?P_FUNC_VOID:/* P_FUNC_VOID:
+?P_FUNC_VOID: *	This macro is used to declare "private" (static) functions that have
+?P_FUNC_VOID: *	no arguments.  The macro takes one argument: the function type and name.
+?P_FUNC_VOID: *	For example:
+?P_FUNC_VOID: *
+?P_FUNC_VOID: *		P_FUNC_VOID(int subr)
+?P_FUNC_VOID: */
+?V_FUNC:/* V_FUNC:
+?V_FUNC: *	This macro is used to declare "public" (non-static) functions.
+?V_FUNC: *	It takes three arguments: the function type and name, a parenthesized
+?V_FUNC: *	traditional (comma separated) argument list, and the declared argument
+?V_FUNC: *	list (in which arguments are separated with NXT_ARG, and additional
+?V_FUNC: *	arbitrary arguments are specified with DOTS).  For example:
+?V_FUNC: *
+?V_FUNC: *		V_FUNC(int main, (argc, argv), int argc NXT_ARG char *argv[])
+?V_FUNC: */
+?V_FUNC_VOID:/* V_FUNC_VOID:
+?V_FUNC_VOID: *	This macro is used to declare "public" (non-static) functions that have
+?V_FUNC_VOID: *	no arguments.  The macro takes one argument: the function type and name.
+?V_FUNC_VOID: *	For example:
+?V_FUNC_VOID: *
+?V_FUNC_VOID: *		V_FUNC_VOID(int fork)
+?V_FUNC_VOID: */
+?_:/* _:
+?_: *	This macro is used to declare function parameters for folks who want
+?_: *	to make declarations with prototypes using a different style than
+?_: *	the above macros.  Use double parentheses.  For example:
+?_: *
+?_: *		int main _((int argc, char *argv[]));
+?_: */
+?prototype:#$prototype	CAN_PROTOTYPE	/**/
+?prototype:#ifdef CAN_PROTOTYPE
+?NXT_ARG:#define	NXT_ARG ,
+?DOTS:#define	DOTS , ...
+?V_FUNC:#define	V_FUNC(name, arglist, args)name(args)
+?P_FUNC:#define	P_FUNC(name, arglist, args)static name(args)
+?V_FUNC_VOID:#define	V_FUNC_VOID(name)name(void)
+?P_FUNC_VOID:#define	P_FUNC_VOID(name)static name(void)
+?_:#define	_(args) args
+?prototype:#else
+?NXT_ARG:#define	NXT_ARG ;
+?DOTS:#define	DOTS
+?V_FUNC:#define	V_FUNC(name, arglist, args)name arglist args;
+?P_FUNC:#define	P_FUNC(name, arglist, args)static name arglist args;
+?V_FUNC_VOID:#define	V_FUNC_VOID(name)name()
+?P_FUNC_VOID:#define	P_FUNC_VOID(name)static name()
+?_:#define	_(args) ()
+?prototype:#endif
+
+?PTRSIZE:/* PTRSIZE:
+?PTRSIZE: *	This symbol contains the size of a pointer, so that the C preprocessor
+?PTRSIZE: *	can make decisions based on it.
+?PTRSIZE: */
+?PTRSIZE:#define PTRSIZE $ptrsize		/**/
+
+?RANDBITS:/* RANDBITS:
+?RANDBITS: *	This symbol contains the number of bits of random number the rand()
+?RANDBITS: *	function produces.  Usual values are 15, 16, and 31.
+?RANDBITS: */
+?RANDBITS:#define RANDBITS $randbits		/**/
+
+?nrand:/* nrand:
+?nrand: *	This macro is to be used to generate uniformly distributed
+?nrand: *	random numbers over the range [0., 1.].
+?nrand: */
+?seednrand:/* seednrand:
+?seednrand: *	This symbol defines the macro to be used in seeding the
+?seednrand: *	random number generator (see nrand).
+?seednrand: */
+?nrand:#define nrand()		$mrand		/**/
+?seednrand:#define seednrand(x)	$seedfunc(x)	/**/
+
+?register1:/* register1:
+?register1: *	This symbol, along with register2, register3, etc. is either the word
+?register1: *	"register" or null, depending on whether the C compiler pays attention
+?register1: *	to this many register declarations.  The intent is that you don't have
+?register1: *	to order your register declarations in the order of importance, so you
+?register1: *	can freely declare register variables in sub-blocks of code and as
+?register1: *	function parameters.  Do not use register<n> more than once per routine.
+?register1: */
+?register1:#define register1 $reg1		/**/
+?register2:#define register2 $reg2		/**/
+?register3:#define register3 $reg3		/**/
+?register4:#define register4 $reg4		/**/
+?register5:#define register5 $reg5		/**/
+?register6:#define register6 $reg6		/**/
+?register7:#define register7 $reg7		/**/
+?register8:#define register8 $reg8		/**/
+?register9:#define register9 $reg9		/**/
+?register10:#define register10 $reg10	/**/
+?register11:#define register11 $reg11	/**/
+?register12:#define register12 $reg12	/**/
+?register13:#define register13 $reg13	/**/
+?register14:#define register14 $reg14	/**/
+?register15:#define register15 $reg15	/**/
+?register16:#define register16 $reg16	/**/
+
+?ROOTID:/* ROOTID:
+?ROOTID: *	This symbol contains the uid of root, normally 0.
+?ROOTID: */
+?ROOTID:#define ROOTID $rootid		/**/
+
+?HAS_SMART_SBRK:/* HAS_SMART_SBRK:
+?HAS_SMART_SBRK: *	This symbol is defined when the sbrk() system call may be used with
+?HAS_SMART_SBRK: *	a negative argument to lower the break value, therefore releasing
+?HAS_SMART_SBRK: *	core to the system. If not, you'd probably be better off using the
+?HAS_SMART_SBRK: *	mmap() system call.
+?HAS_SMART_SBRK: */
+?HAS_SMART_SBRK:#$sbrksmart HAS_SMART_SBRK /**/
+
+?Caddr_t:/* Caddr_t:
+?Caddr_t: *	This symbol holds the type of a core address. It is inteded to be used
+?Caddr_t: *	to safely declare the return type of system calls like sbrk(). It might
+?Caddr_t: *	be necessary to include <sys/types.h> as well.
+?Caddr_t: */
+?Caddr_t:#define Caddr_t $sbrktype	/* <core address> type */
+
+?SCRIPTDIR:/* SCRIPTDIR:
+?SCRIPTDIR: *	This symbol holds the name of the directory in which the user wants
+?SCRIPTDIR: *	to put publicly executable scripts for the package in question.  It
+?SCRIPTDIR: *	is often a directory that is mounted across diverse architectures.
+?SCRIPTDIR: *	Programs must be prepared to deal with ~name expansion.
+?SCRIPTDIR: */
+?SCRIPTDIR_EXP:/* SCRIPTDIR_EXP:
+?SCRIPTDIR_EXP: *	This is the same as SCRIPTDIR, but is filename expanded at
+?SCRIPTDIR_EXP: *	configuration time, for use in programs not prepared to do
+?SCRIPTDIR_EXP: *	~name substitutions at run-time.
+?SCRIPTDIR_EXP: */
+?SCRIPTDIR:#define SCRIPTDIR "$scriptdir"	/**/
+?SCRIPTDIR_EXP:#define SCRIPTDIR_EXP "$scriptdirexp"	/**/
+
+?Select_fd_set_t:/* Select_fd_set_t:
+?Select_fd_set_t: *	This symbol holds the type used for the 2nd, 3rd, and 4th
+?Select_fd_set_t: *	arguments to select.  Usually, this is 'fd_set *', if HAS_FD_SET
+?Select_fd_set_t: *	is defined, and 'int *' otherwise.  This is only useful if you 
+?Select_fd_set_t: *	have select(), of course.
+?Select_fd_set_t: */
+?Select_fd_set_t:#define Select_fd_set_t 	$selecttype	/**/
+
+?SH_PATH:/* SH_PATH:
+?SH_PATH: *	This symbol contains the full pathname to the shell used on this
+?SH_PATH: *	on this system to execute Bourne shell scripts.  Usually, this will be
+?SH_PATH: *	/bin/sh, though it's possible that some systems will have /bin/ksh,
+?SH_PATH: *	/bin/pdksh, /bin/ash, /bin/bash, or even something such as
+?SH_PATH: *	D:/bin/sh.exe.
+?SH_PATH: */
+?SH_PATH:#define SH_PATH "$sh"  /**/
+
+?shm_for:/* S_SHM_FOR:
+?shm_for: *	This symbol identifies what we chose for the target system's
+?shm_for: *	default shared memory configuration parameters.
+?shm_for: */
+?shm_for:/* S_SHM_ATT:
+?shm_for: *	This symbol holds the default "place" to attach shared memory.
+?shm_for: *	Values are "HIGH", "ZERO", and "LOW".
+?shm_for: */
+?shm_for:/* S_SHM_LIM:
+?shm_for: *	This symbol holds the default upper bound address limit if shared
+?shm_for: *	memory is attached HIGH.  If zero, there is no upper limit.
+?shm_for: */
+?shm_for:#ifdef SERVE_SHM
+?shm_for:#define S_SHM_FOR "$shm_for"
+?shm_for:#define S_SHM_ATT "$shm_att"
+?shm_for:#define S_SHM_LIM "$shm_lim"
+?shm_for:#endif
+
+?SIG_NAME:/* SIG_NAME:
+?SIG_NAME: *	This symbol contains a list of signal names in order of
+?SIG_NAME: *	signal number. This is intended
+?SIG_NAME: *	to be used as a static array initialization, like this:
+?SIG_NAME: *		char *sig_name[] = { SIG_NAME };
+?SIG_NAME: *	The signals in the list are separated with commas, and each signal
+?SIG_NAME: *	is surrounded by double quotes. There is no leading SIG in the signal
+?SIG_NAME: *	name, i.e. SIGQUIT is known as "QUIT".
+?SIG_NAME: *	Gaps in the signal numbers (up to NSIG) are filled in with NUMnn,
+?SIG_NAME: *	etc., where nn is the actual signal number (e.g. NUM37).
+?SIG_NAME: *	The signal number for sig_name[i] is stored in sig_num[i].
+?SIG_NAME: *	The last element is 0 to terminate the list with a NULL.  This
+?SIG_NAME: *	corresponds to the 0 at the end of the sig_num list.
+?SIG_NAME: */
+?SIG_NUM:/* SIG_NUM:
+?SIG_NUM: *	This symbol contains a list of signal numbers, in the same order as the
+?SIG_NUM: *	SIG_NAME list. It is suitable for static array initialization, as in:
+?SIG_NUM: *		int sig_num[] = { SIG_NUM };
+?SIG_NUM: *	The signals in the list are separated with commas, and the indices
+?SIG_NUM: *	within that list and the SIG_NAME list match, so it's easy to compute
+?SIG_NUM: *	the signal name from a number or vice versa at the price of a small
+?SIG_NUM: *	dynamic linear lookup. 
+?SIG_NUM: *	Duplicates are allowed, but are moved to the end of the list.
+?SIG_NUM: *	The signal number corresponding to sig_name[i] is sig_number[i].
+?SIG_NUM: *	if (i < NSIG) then sig_number[i] == i.  
+?SIG_NUM: *	The last element is 0, corresponding to the 0 at the end of
+?SIG_NUM: *	the sig_name list.
+?SIG_NUM: */
+?SIG_NAME:#define SIG_NAME "`echo $sig_name | sed 's/ /","/g'`",0	/**/
+?SIG_NUM:#define SIG_NUM `echo $sig_num 0 | sed 's/ /,/g'`	/**/
+
+?SITEARCH:/* SITEARCH:
+?SITEARCH: *	This symbol contains the name of the private library for this package.
+?SITEARCH: *	The library is private in the sense that it needn't be in anyone's
+?SITEARCH: *	execution path, but it should be accessible by the world.  The program
+?SITEARCH: *	should be prepared to do ~ expansion.
+?SITEARCH: *	The standard distribution will put nothing in this directory.
+?SITEARCH: *	Individual sites may place their own extensions and modules in
+?SITEARCH: *	this directory.
+?SITEARCH: */
+?SITEARCH_EXP:/* SITEARCH_EXP:
+?SITEARCH_EXP: *	This symbol contains the ~name expanded version of SITEARCH, to be used
+?SITEARCH_EXP: *	in programs that are not prepared to deal with ~ expansion at run-time.
+?SITEARCH_EXP: */
+?SITEARCH:#define SITEARCH "$sitearch"		/**/
+?SITEARCH_EXP:#define SITEARCH_EXP "$sitearchexp"		/**/
+
+?SITELIB:/* SITELIB:
+?SITELIB: *	This symbol contains the name of the private library for this package.
+?SITELIB: *	The library is private in the sense that it needn't be in anyone's
+?SITELIB: *	execution path, but it should be accessible by the world.  The program
+?SITELIB: *	should be prepared to do ~ expansion.
+?SITELIB: *	The standard distribution will put nothing in this directory.
+?SITELIB: *	Individual sites may place their own extensions and modules in
+?SITELIB: *	this directory.
+?SITELIB: */
+?SITELIB_EXP:/* SITELIB_EXP:
+?SITELIB_EXP: *	This symbol contains the ~name expanded version of SITELIB, to be used
+?SITELIB_EXP: *	in programs that are not prepared to deal with ~ expansion at run-time.
+?SITELIB_EXP: */
+?SITELIB:#define SITELIB "$sitelib"		/**/
+?SITELIB_EXP:#define SITELIB_EXP "$sitelibexp"		/**/
+
+?Size_t:/* Size_t:
+?Size_t: *	This symbol holds the type used to declare length parameters
+?Size_t: *	for string functions.  It is usually size_t, but may be
+?Size_t: *	unsigned long, int, etc.  It may be necessary to include
+?Size_t: *	<sys/types.h> to get any typedef'ed information.
+?Size_t: */
+?Size_t:#define Size_t $sizetype	 /* length paramater for string functions */
+
+?CAN_KEEPALIVE:/* CAN_KEEPALIVE:
+?CAN_KEEPALIVE: *	This symbol if defined indicates to the C program that the SO_KEEPALIVE
+?CAN_KEEPALIVE: *	option of setsockopt() will work as advertised in the manual.
+?CAN_KEEPALIVE: */
+?CAN_KEEPALIVE:#$d_keepalive CAN_KEEPALIVE		/**/
+
+?SSize_t:/* SSize_t:
+?SSize_t: *	This symbol holds the type used by functions that return
+?SSize_t: *	a count of bytes or an error condition.  It must be a signed type.
+?SSize_t: *	It is usually ssize_t, but may be long or int, etc.
+?SSize_t: *	It may be necessary to include <sys/types.h> or <unistd.h>
+?SSize_t: *	to get any typedef'ed information.
+?SSize_t: *	We will pick a type such that sizeof(SSize_t) == sizeof(Size_t).
+?SSize_t: */
+?SSize_t:#define SSize_t $ssizetype	 /* signed count of bytes */
+
+?STARTPERL:/* STARTPERL:
+?STARTPERL: *	This symbol is the string that should be put on the front of a
+?STARTPERL: *	perl script to make sure (hopefully) that it runs with perl and
+?STARTPERL: *	not under some shell. That line should be followed by the classical
+?STARTPERL: *	invocation magic:
+?STARTPERL: *		eval 'exec perl -S $0 ${1+"$@"}'
+?STARTPERL: *			if $running_under_some_shell;
+?STARTPERL: *	to guarantee perl startup should the shell execute the script at first.
+?STARTPERL: */
+?STARTPERL:#define STARTPERL "$startperl"
+
+?STDCHAR:/* STDCHAR:
+?STDCHAR: *	This symbol is defined to be the type of char used in stdio.h.
+?STDCHAR: *	It has the values "unsigned char" or "char".
+?STDCHAR: */
+?STDCHAR:#define STDCHAR $stdchar	/**/
+
+?SUNSCANF:/* SUNSCANF:
+?SUNSCANF: *	This variable is set if this system runs with the Sun version
+?SUNSCANF: *	of scanf.
+?SUNSCANF: */
+?SUNSCANF:#$sunscanf 	SUNSCANF  /**/
+
+?Uid_t:/* Uid_t:
+?Uid_t: *	This symbol holds the type used to declare user ids in the kernel.
+?Uid_t: *	It can be int, ushort, uid_t, etc... It may be necessary to include
+?Uid_t: *	<sys/types.h> to get any typedef'ed information.
+?Uid_t: */
+?Uid_t:#define Uid_t $uidtype		/* UID type */
+
+?vaproto:/* CAN_VAPROTO:
+?vaproto: *	This variable is defined on systems supporting prototype declaration
+?vaproto: *	of functions with a variable number of arguments.
+?vaproto: */
+?_V:/* _V:
+?_V: *	This macro is used to declare function parameters in prototypes for
+?_V: *	functions with a variable number of parameters. Use double parentheses.
+?_V: *	For example:
+?_V: *
+?_V: *		int printf _V((char *fmt, ...));
+?_V: *
+?_V: *	Remember to use the plain simple _() macro when declaring a function
+?_V: *	with no variable number of arguments, since it might be possible to
+?_V: *	have a non-effect _V() macro and still get prototypes via _().
+?_V: */
+?vaproto:#$vaproto CAN_VAPROTO	/**/
+?_V:#ifdef CAN_VAPROTO
+?_V:#define	_V(args) args
+?_V:#else
+?_V:#define	_V(args) ()
+?_V:#endif
+
+?voidflags:/* VOIDFLAGS:
+?voidflags: *	This symbol indicates how much support of the void type is given by this
+?voidflags: *	compiler.  What various bits mean:
+?voidflags: *
+?voidflags: *	    1 = supports declaration of void
+?voidflags: *	    2 = supports arrays of pointers to functions returning void
+?voidflags: *	    4 = supports comparisons between pointers to void functions and
+?voidflags: *		    addresses of void functions
+?voidflags: *	    8 = suports declaration of generic void pointers
+?voidflags: *
+?voidflags: *	The package designer should define VOIDUSED to indicate the requirements
+?voidflags: *	of the package.  This can be done either by #defining VOIDUSED before
+?voidflags: *	including config.h, or by defining defvoidused in Myinit.U.  If the
+?voidflags: *	latter approach is taken, only those flags will be tested.  If the
+?voidflags: *	level of void support necessary is not present, defines void to int.
+?voidflags: */
+?voidflags:#ifndef VOIDUSED
+?voidflags:#define VOIDUSED $defvoidused
+?voidflags:#endif
+?voidflags:#define VOIDFLAGS $voidflags
+?voidflags:#if (VOIDFLAGS & VOIDUSED) != VOIDUSED
+?voidflags:#define void int		/* is void to be avoided? */
+?voidflags:#define M_VOID			/* Xenix strikes again */
+?voidflags:#endif
+
+?DBM_PASSWD:/* DBM_PASSWD:
+?DBM_PASSWD: *	Enable support for DBM passwd files.
+?DBM_PASSWD: */
+?USE_NIS:/* USE_NIS:
+?USE_NIS: *	Enable NIS (YP) support.
+?USE_NIS: */
+?SECURE_RPC:/* SECURE_RPC:
+?SECURE_RPC: *	Enable secure RPC support.
+?SECURE_RPC: */
+?USE_NISPLUS:/* USE_NISPLUS:
+?USE_NISPLUS: *	Enable NIS+ support.
+?USE_NISPLUS: */
+?HAS_NISPASSWD:/* HAS_NISPASSWD:
+?HAS_NISPASSWD: *	Use nispasswd interface for changes (Solaris 2.5 *Not Yet Implimented*)
+?HAS_NISPASSWD: */
+?USE_HESIOD:/* USE_HESIOD:
+?USE_HESIOD: *	Enable Hesiod support.
+?USE_HESIOD: */
+?USE_KERBEROS:/* USE_KERBEROS:
+?USE_KERBEROS: *	Enable Kerebos support.
+?USE_KERBEROS: */
+?HAS_SVCCONF:/* HAS_SVCCONF:
+?HAS_SVCCONF: *	This symbol indicates the presence of /etc/svc.conf
+?HAS_SVCCONF: */
+?HAS_NSSWITCH:/* HAS_NSSWITCH:
+?HAS_NSSWITCH: *	This symbol indicates the presence of /etc/nsswitch.conf
+?HAS_NSSWITCH: */
+?PARANOID_UIDCHECK:/* PARANOID_UIDCHECK:
+?PARANOID_UIDCHECK: *	Enables "paranoid user checking" option.
+?PARANOID_UIDCHECK: */
+?OSF1_AUTH:/* OSF1_AUTH:
+?OSF1_AUTH: *	Enables OSF/1 (Digital UNIX) auth support.
+?OSF1_AUTH: */
+?ULTRIX_AUTH:/* ULTRIX_AUTH:
+?ULTRIX_AUTH: *	Enables Ultrix 4 auth support.
+?ULTRIX_AUTH: */
+?AIX_AUTH:/* AIX_AUTH:
+?AIX_AUTH: *	Enables AIX auth support.
+?AIX_AUTH: */
+?HPUX_AUTH:/* HPUX_AUTH:
+?HPUX_AUTH: *	Enables HP/UX auth support.
+?HPUX_AUTH: */
+?PASSWD_DICTIONARIES:/* PASSWD_DICTIONARIES:
+?PASSWD_DICTIONARIES: *	Path to default dictionary collection.
+?PASSWD_DICTIONARIES: */
+?PASSWD_HISTORY_DB:/* PASSWD_HISTORY_DB:
+?PASSWD_HISTORY_DB: *	Path to the history database.
+?PASSWD_HISTORY_DB: */
+?PASSWD_HISTORY_GID:/* PASSWD_HISTORY_GID:
+?PASSWD_HISTORY_GID: *	GID of the history database.
+?PASSWD_HISTORY_GID: */
+?HAS_UTSNAME_H:/* HAS_UTSNAME_H:
+?HAS_UTSNAME_H: *	Defined if <sys/utsname.h> is available
+?HAS_UTSNAME_H: */
+?HAS_UTSNAME_H:#$p_utsname	HAS_UTSNAME_H	/**/
+?USE_NIS:#$p_nis	USE_NIS		/**/
+?USE_NISPLUS:#$p_nisplus	USE_NISPLUS	/**/
+?HAS_NISPASSWD:#$p_nispasswd	HAS_NISPASSWD	/**/
+?USE_HESIOD:#$p_hesiod	USE_HESIOD	/**/
+?USE_KERBEROS:#$p_kerberos	USE_KERBEROS	/**/
+?HAS_SVCCONF:#$p_svcconf	HAS_SVCCONF	/**/
+?HAS_NSSWITCH:#$p_nsswitch	HAS_NSSWITCH	/**/
+?DBM_PASSWD:#$p_dbmpw 	DBM_PASSWD	/**/
+?OSF1_AUTH:#$p_osf1auth OSF1_AUTH	/**/
+?ULTRIX_AUTH:#$p_u4auth 	ULTRIX_AUTH	/**/
+?AIX_AUTH:#$p_aixauth 	AIX_AUTH	/**/
+?HPUX_AUTH:#$p_hpuxauth	HPUX_AUTH	/**/
+?SECURE_RPC:#$p_secure_rpc SECURE_RPC	/**/
+?PARANOID_UIDCHECK:#$p_paranoid	PARANOID_UIDCHECK 	/**/
+?PASSWD_DICTIONARIES:#define	PASSWD_DICTIONARIES "$p_dictionaries"	/**/
+?PASSWORD_HISTORY_DB:#define	PASSWORD_HISTORY_DB "$p_history"	/**/
+
+?HAS_CLNT_SPERRNO:/* HAS_CLNT_SPERRNO:
+?HAS_CLNT_SPERRNO: *	This symbol, if defined, indicates that clnt_sperrno exists.
+?HAS_CLNT_SPERRNO: */
+?HAS_CLNT_SPERRNO:#$p_clnt_sperrno	HAS_CLNT_SPERRNO	/**/
+
+?HAS_FGETPWENT:/* HAS_FGETPWENT:
+?HAS_FGETPWENT: *	This symbol, if defined, indicates that libc fgetpwent should be used.
+?HAS_FGETPWENT: */
+?HAS_FGETPWENT:#$p_fgetpwent	HAS_FGETPWENT	/**/
+
+?HAS_FGETSPENT:/* HAS_FGETSPENT:
+?HAS_FGETSPENT: *	This symbol, if defined, indicates that the fgetspent routine exists.
+?HAS_FGETSPENT: */
+?HAS_FGETSPENT:#$p_fgetspent	HAS_FGETSPENT	/**/
+
+?HAS_GETUSERSHELL:/* HAS_GETUSERSHELL:
+?HAS_GETUSERSHELL: *	This symbol, if defined, indicates that getusershell exists.
+?HAS_GETUSERSHELL: */
+?HAS_GETUSERSHELL:#$p_getusershell	HAS_GETUSERSHELL	/**/
+
+?HAS_LCKPWDF:/* HAS_LCKPWDF:
+?HAS_LCKPWDF: *	This symbol, if defined, indicates that lckpwdf and ulckpwdf exist.
+?HAS_LCKPWDF: */
+?HAS_LCKPWDF:#$p_lckpwdf	HAS_LCKPWDF	/**/
+
+?HAS_PUTPWENT:/* HAS_PUTPWENT:
+?HAS_PUTPWENT: *	This symbol, if defined, indicates that the putpwent routine exists.
+?HAS_PUTPWENT: */
+?HAS_PUTPWENT:#$p_putpwent	HAS_PUTPWENT	/**/
+
+?HAS_XDR_PASSWD:/* HAS_XDR_PASSWD:
+?HAS_XDR_PASSWD: *	This symbol, if defined, indicates that the xdr_passwd routine exists
+?HAS_XDR_PASSWD: */
+?HAS_XDR_UID:/* HAS_XDR_UID:
+?HAS_XDR_UID: *	This symbol, if defined, indicates that the xdr_uid_t routine exists
+?HAS_XDR_UID: */
+?HAS_XENCRYPT:/* HAS_XENCRYPT:
+?HAS_XENCRYPT: *	This symbol, if defined, indicates that the xencrypt routine exists
+?HAS_XENCRYPT: */
+?HAS_XDR_PASSWD:#$p_xdr_passwd HAS_XDR_PASSWD		/**/
+?HAS_XDR_UID_T:#$p_xdr_uid_t HAS_XDR_UID_T			/**/
+?HAS_XENCRYPT:#$p_xencrypt HAS_XENCRYPT			/**/
+
+?HAS_POSIX_SIGNALS:/* HAS_POSIX_SIGNALS:
+?HAS_POSIX_SIGNALS: *	This symbol, if defined, indicates that the POSIX signal routines exist.
+?HAS_POSIX_SIGNALS: */
+?HAS_POSIX_SIGNALS:#$p_sigposix	HAS_POSIX_SIGNALS	/**/
+
+?HAS_SYSINFO:/* HAS_SYSINFO:
+?HAS_SYSINFO: *	This symbol, if defined, indicates that the
+?HAS_SYSINFO: *	sysinfo and ugetrlimit routines can be used.
+?HAS_SYSINFO: */
+?HAS_SYSINFO:#$p_sysinfo	HAS_SYSINFO	/**/
+
+?HAS_POSIX_TTY:/* HAS_POSIX_TTY:
+?HAS_POSIX_TTY: *	This symbol, if defined, indicates that the POSIX terminal routines exist.
+?HAS_POSIX_TTY: */
+?HAS_POSIX_TTY:#$p_ttyposix	HAS_POSIX_TTY	/**/
+
+?USE_UTMPX:/* USE_UTMPX:
+?USE_UTMPX: *	This symbol if defined, indicates that extended wtmp form is used
+?USE_UTMPX: */
+?USE_UTMPX:#$p_utmpx	USE_UTMPX	/**/
+
+?UIDS_ARE_SIGNED:/* UIDS_ARE_SIGNED:
+?UIDS_ARE_SIGNED: *	This variable is defined if uid_t is a signed quanity
+?UIDS_ARE_SIGNED: */
+?UIDS_ARE_SIGNED:#$uidsigned	UIDS_ARE_SIGNED	/* */
+

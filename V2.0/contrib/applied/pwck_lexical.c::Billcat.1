@@ -1,0 +1,47 @@
+Return-Path: bill@billcat.cc.sunysb.edu 
+Received: from curly.cc.utexas.edu (root@curly.cc.utexas.edu [128.83.42.1])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id OAA10894
+	for <clyde@motown.cc.utexas.edu>; Thu, 4 Dec 1997 14:28:24 -0600 (CST)
+Received: from billcat.cc.sunysb.edu (bill@billcat.cc.sunysb.edu [129.49.2.31])
+	by curly.cc.utexas.edu (8.8.5/8.8.5/cc-uts-1.19) with ESMTP id OAA09888
+	for <npasswd-bugs@uts.cc.utexas.edu>; Thu, 4 Dec 1997 14:28:16 -0600 (CST)
+Received: from localhost (bill@localhost) by billcat.cc.sunysb.edu (8.8.7/8.8.3) with SMTP id PAA13817 for <npasswd-bugs@uts.cc.utexas.edu>; Thu, 4 Dec 1997 15:23:57 -0500 (EST)
+Date: Thu, 4 Dec 1997 15:23:57 -0500 (EST)
+From: Bill <bill@billcat.cc.sunysb.edu>
+X-Sender: bill@billcat
+X-Status: Equivilant fix in rel 1.13 & 1.14
+To: npasswd-bugs@uts.cc.utexas.edu
+Subject: patch for npasswd-2.0b4/src/PasswordCheck/pwck_lexical.c
+Message-ID: <Pine.SOL.3.96.971204151136.13806A-100000@billcat>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 732
+
+
+There is a bug in pwck_lexical, where the array ws_cnt is not properly
+cleared. Here is a patch to fix this.
+
+phoenix.128% rcsdiff pwck_lexical.c
+===================================================================
+RCS file: RCS/pwck_lexical.c,v
+retrieving revision 1.1
+diff -r1.1 pwck_lexical.c
+86c88
+<       memset((void *)&ws_cnt, 0, sizeof ws_cnt);
+---
+>       memset((void *)&ws_cnt, 0, (sizeof ws_cnt) * P_MAX);
+88c90
+<       bzero((char *)&ws_cnt, sizeof ws_cnt);
+---
+>       bzero((char *)&ws_cnt, (sizeof ws_cnt) * P_MAX);
+
+
+Hope this helps.
+
+            Ackkk! It's...
+ __  /|  /
+ \ o.0'         Bill Reilly           |  bill@ic.sunysb.edu
+ =(___)=        System Staff          |
+    U       SUNY at Stony Brook       |
+
+

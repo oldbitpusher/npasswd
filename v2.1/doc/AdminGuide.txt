@@ -1,0 +1,284 @@
+
+   ______________________________________________________________________
+   
+                        Npasswd Administration Guide
+   ______________________________________________________________________
+   
+More about password checking
+
+   Npasswd subjects password candidates to a series of guessability
+   tests. The password is accepted only if it passes all of them.
+   
+   Which tests are used and the order of application is customizable in
+   the configuration file. Some tests are mandatory, and others optional
+   (as noted below).
+   
+   The password tests are:
+     * History (optional)
+     * Lexical (mandatory)
+     * Local (optional)
+     * Passwd (mandatory)
+     * Dictionary (mandatory)
+       
+  History
+  
+       Password history discourages too frequent password reuse.
+       Password candidates are compared to the passwords in the users'
+       history and rejected if found. When a password change is done, the
+       encrypted new password is stored in the history database.
+       Access to the history database should be restricted. However,
+       should the database fall into hostile hands, the security exposure
+       would be minimal. Passwords in the history got there because
+       npasswd was happy with them, hence they should be hard to guess.
+       See [1]below for details.
+       The password history database location and storage method can be
+       specified in the configuration file. The history methods available
+       are:
+          + Plain file.
+          + DBM database (recommended and default if DBM is available).
+       Npasswd supports the password history mechanism of Digital UNIX
+       (OSF/1) "enhanced security" mode, and uses it in lieu of the
+       history database.
+       See also: The [2]password history section of the [3]Npasswd
+       Reference Manual.
+       
+  Lexical
+  
+   The lexical check includes:
+          + Enforcing a minimum length of six characters.
+          + Checking for non-printable or forbidden characters. Some
+            applications or libraries may not deal properly with
+            whitespace and/or control characters in passwords. Default is
+            to allow non-printable and whitespace characters except
+            common tty control characters (e.g. control-s, control-q,
+            control-z).
+          + Denying excessive adjacent repeated characters.
+          + Encouraging a diversity of character classes (mixed case,
+            numbers, punctuation).
+          + Looking for easily guessed patterns (U.S. Social Security,
+            telephone numbers).
+       These criteria can be modified via the configuration file.
+       See also: The [4]password checking section of the [5]Npasswd
+       Reference Manual.
+       
+  Local
+  
+   This is the hook for the insertion of site-specific tests. The
+       standard code checks if the candidate is a variation of the system
+       hostname, aliases, or entries in the users' .rhosts.
+       
+  Passwd
+  
+       The candidate is examined to see if it is derived from the users'
+       passwd information.
+       
+  Dictionary
+  
+   Npasswd checks the candidate against words in various dictionaries.
+       The candidate is rejected if it can be derived from any word in
+       the dictionaries. A variant of the Crack password guessing code is
+       used for this purpose.
+       See also: The [6]dictionary section of the [7]Npasswd Reference
+       Manual.
+   ___________________________________
+   
+More about dictionaries
+
+   Crack, the most popular password guessing program, makes extensive use
+   of word collections. Each word is permuted in various ways, encrypted
+   and compared to the target cyphertext. The more words that Crack has
+   available, the more passwords it will guess.
+   
+   The primary function of npasswd is to frustrate bad guys running
+   Crack. To this end, some of Crack has been incorporated into npasswd.
+   
+   Dictionaries are a set of hash files optimized for fast lookup. They
+   are constructed from word lists, which are text files with one word
+   per line. The dictionary hash files are created with [8]makedict,
+   which produces files with the suffixes .pwd, .pwi and .hwm. The hash
+   files are probably are not portable between CPU architectures, and
+   take up more disk space their source data.
+   
+   The dictionary hash files normally live in the dictionary directory
+   (), but can be placed elsewhere and pointed to in the
+   [9]configuration file. Multiple dictionary directories can be given.
+   
+   To make a dictionary accessible to npasswd, copy the hash files (or
+   make symlinks) into the appropriate directory. The files should be
+   world-readable. Npasswd will reject any dictionary with a
+   world-writable hash file.
+   
+   You can have numerous dictionaries, each generated from a distinct
+   group of words (the suggested way), or one large dictionary.
+   
+   The more dictionary words available to npasswd, the fewer passwords it
+   will accept. The passwords it does accept will be harder (but not
+   impossible) to guess. The downside is that users may get more
+   frustrated trying to think up acceptable passwords.
+   
+   There is more about password checking and dictionaries in the
+   [10]Questions And Answers.
+   ___________________________________
+   
+  Dictionary management examples
+  
+   To convert a Crack dictionary:
+          crack-directory/xdawg crack-dictionary-name (without the '.dwg'
+          extension)
+          /makedict -o new-dictionary crack-dictionary-name
+          
+   To make a new dictionary:
+          /makedict -o new-dictionary list-1 ... list-n
+          
+   To add words to an existing dictionary:
+          /makedict -o existing-dictionary -m
+          existing-dictionary list-1 ... list-n
+          
+   To remove a dictionary:
+          rm -f dict-name.hwm dict-name.pwd dict-name.pwi
+          
+   To view the contents of a dictionary:
+          /unpacker dict-name | more
+   ___________________________________
+   
+More about password history
+
+   The password history mechanism controls password reuse. If the history
+   mechanism is active, npasswd fetches the password history for a user
+   and compares the candidate to the active passwords in the history. A
+   password is active if it is younger than the age limit and within the
+   depth limit.
+   
+   The age and depth limits can be set in the [11]configuration file.
+   
+   The history mechanism is inactive unless the database file(s) exist.
+   The installation process does not create the database. Use the
+   [12]history_admin utility to create and manage the database.
+   
+  Security considerations
+  
+   By default the history database file(s) are created read-write only by
+   owner (typically root). This is done to shield the old passwords from
+   public view, even though npasswd was happy with them so they should be
+   less susceptible to being guessed.
+   
+   For other programs to access the history database (e.g. checkpassword)
+   they may need to run as root. It is not advisable to install
+   checkpassword as set-uid to root (though it will behave properly). A
+   suggested solution is below.
+   
+  Special considerations for clusters
+  
+   If npasswd is being used on a member of a cluster which shares a
+   password file, the password history database must in a directory which
+   the other cluster members mount and can write to, preferably with root
+   access.
+   
+   An alternative is to make the history database owned by a non-root
+   user (this works around NFS root access issues). In that case, npasswd
+   will attempt to use setreuid(2) to temporarily change its effective
+   uid to the owner of the database to update it.
+   
+   Here is how to change the ownership of the history database:
+
+#
+# If you are creating the history from scratch
+#
+/history_admin -v load < /dev/null
+# The confirmation message includes the history database path
+chown new-owner history-file*
+#
+# If you want checkpassword to access the history database, do
+#
+cd /tmp_mnt/usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck
+make CHECKPW_MODE=4111 CHECKPW_FLAGS="-o new-owner" checkpassword-install
+   ___________________________________
+   
+  Password history maintenance
+  
+   The history database requires periodic maintenance. Old and excess
+   passwords, and entries for users no longer in the password file need
+   removing. Periodically (weekly or monthly), run [13]history_admin from
+   cron. Make this purge a part of what is done upon deleting users from
+   the password file.
+   ___________________________________
+   
+  History management examples
+  
+   To create the default database:
+          history_admin load < /dev/null
+          
+   Populating alternate DBM database from a file:
+          history_admin -m dbm -f /tmp/new-history -i test-data load
+          
+   To purge the default database with the default limits:
+          history_admin -l purge
+          
+   To ignore the configuration file settings:
+          history_admin -c /dev/null ...
+   ___________________________________
+   
+Files Installed
+
+   The following files and directories are installed as part of npasswd.
+   All of these files (except the configuration file) can be relocated by
+   directives in the configuration file.
+   
+   The path  can be changed by re-running [14]Configure.
+   
+   Default location What it is
+    Directory where all the parts live
+   /usr/lib/passwd/xbin Directory where vendor utilities are saved
+    Main repository for hashed dictionary files
+    Directory for npasswd documentation
+    Directory for miscellaneous programs
+   /passwd.conf The npasswd configuration file
+   /chfn.help
+   /chfn.motd Help and message-of-the-day for chfn
+   sub-program
+   /chsh.help
+   /chsh.motd Help and message-of-the-day for chsh
+   sub-program
+   /passwd.motd
+   /passwd.motd Help and message-of-the-day for passwd
+   sub-program
+    Password history database
+     _________________________________________________________________
+   
+   [15][LINK]Top    [16][LINK]Home
+   ______________________________________________________________________
+   
+   Document id @(#) AdminGuide.html 1.10
+   Version 1.10
+   Last modified 10/14/98
+   
+   
+    [17]Clyde Hoover
+    [18]Academic Computing Services and Instructional Technology
+    Services
+    [19]The University of Texas at Austin
+    [20]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./AdminGuide.html#admin_history
+   2. file://localhost/./Reference.html#passwd.History
+   3. file://localhost/./Reference.html
+   4. file://localhost/./Reference.html#passwd.cmd_passwd
+   5. file://localhost/./Reference.html
+   6. file://localhost/./Reference.html#passwd.Dictionaries
+   7. file://localhost/./Reference.html
+   8. file://localhost/./makedict_1.html
+   9. file://localhost/./Reference.html#passwd.Dictionaries
+  10. file://localhost/./QNA.html
+  11. file://localhost/./Reference.html#passwd.History
+  12. file://localhost/./history_admin_1.html
+  13. file://localhost/./history_admin_1.html
+  14. file://localhost/./BuildInstall.html
+  15. file://localhost/./AdminGuide.html#top
+  16. file://localhost/./TOC_std.html
+  17. mailto:c.hoover@cc.utexas.edu
+  18. http://www.utexas.edu/cc
+  19. http://www.utexas.edu/
+  20. file://localhost/./Copyright.html

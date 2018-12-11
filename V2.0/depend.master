@@ -1,0 +1,212 @@
+#
+# source depedancies for npasswd.
+# Partly based on the output of make_source_depend
+#
+NONE MANIFEST
+SCCS COPYRIGHT
+SCCS README-PATCH
+SCCS README.AIX4
+SOURCE Configure U/SCCS/s.End.U U/SCCS/s.MyOptions.U U/SCCS/s.Myinit.U
+SOURCE Configure U/SCCS/s.Tr.U U/SCCS/s.ccflags.U U/SCCS/s.df.U
+SOURCE Configure U/SCCS/s.ld.U U/SCCS/s.p_clntsperrno.U U/SCCS/s.p_crypt.U
+SOURCE Configure U/SCCS/s.p_fgetpwent.U U/SCCS/s.p_lckpwdf.U
+SOURCE Configure U/SCCS/s.p_putpwent.U U/SCCS/s.p_rpcsvc.U
+SOURCE Configure U/SCCS/s.p_sigposix.U U/SCCS/s.p_sysinfo.U
+SOURCE Configure U/SCCS/s.p_ttyposix.U U/SCCS/s.uidsigned.U
+SOURCE Makefile.SH ./Jmakefile ./Jmake.local
+SCCS ./Jmakefile
+SCCS ./Jmake.local
+NONE Makefile.local
+NONE config_h.SH
+NONE bin/BuildTree
+NONE hints/generic.sh
+
+SOURCE doc/Makefile.SH doc/Jmakefile Jmake.local
+SCCS doc/Jmakefile
+SCCS doc/AdminGuide.html
+SOURCE doc/AdminGuide.txt doc/AdminGuide.html
+SCCS doc/BugReport.html 
+SOURCE doc/BugReport.txt doc/BugReport.html
+SCCS doc/BuildInstall.html
+SOURCE doc/BuildInstall.txt doc/BuildInstall.html
+SCCS doc/Copyright.html
+SOURCE doc/Copyright.txt doc/Copyright.html
+SCCS doc/Main.html
+SOURCE doc/Main.txt doc/Main.html
+SCCS doc/ManPages.html
+SOURCE doc/ManPages.txt doc/ManPages.html
+SCCS doc/MiscNotes.html
+SOURCE doc/MiscNotes.txt doc/MiscNotes.html
+SCCS doc/QNA.html
+SOURCE doc/QNA.txt doc/QNA.html
+SCCS doc/Reference.html
+SOURCE doc/Reference.txt doc/Reference.html
+SCCS doc/Reference_index.html
+SCCS doc/Reference_TOC.html
+SCCS doc/Support.html
+SOURCE doc/Support.txt doc/Support.html
+SCCS doc/TOC_frame.html
+SCCS doc/TOC_std.html
+SOURCE doc/TOC_std.txt doc/TOC_std.html
+SCCS doc/checkpassword.1
+SOURCE doc/checkpassword_1.html doc/checkpassword.1
+SOURCE doc/checkpassword.cat1 doc/checkpassword.1
+SCCS doc/checkpassword.3
+SOURCE doc/checkpassword_3.html doc/checkpassword.3
+SOURCE doc/checkpassword.cat3 doc/checkpassword.3
+SCCS doc/index.html
+SCCS doc/npasswd.1
+SOURCE doc/npasswd_1.html doc/npasswd.1
+SOURCE doc/npasswd.cat1 doc/npasswd.1
+SCCS doc/history_admin.1
+SOURCE doc/history_admin_1.html doc/history_admin.1
+SOURCE doc/history_admin.cat1 doc/history_admin.1
+SCCS doc/makedict.1
+SOURCE doc/makedict_1.html doc/makedict.1
+SOURCE doc/makedict.cat1 doc/makedict.1
+SCCS doc/nroff2html.c
+SCCS doc/docfilter.SH
+NONE doc/PasswordSecurity.ps
+NONE doc/Utah-WormTour.me
+NONE doc/Worm-MIT.ps
+NONE doc/Worm-Utah.ps
+
+SOURCE files/Makefile.SH files/Jmakefile Jmake.local
+SCCS files/Jmakefile
+NONE files/Makefile.local
+SCCS files/passwd_conf.SH
+NONE files/passwd.help
+NONE files/passwd.motd
+NONE files/chfn.help
+NONE files/chfn.motd
+NONE files/chsh.help
+NONE files/chsh.motd
+
+SOURCE src/Makefile.SH src/Jmakefile Jmake.local
+SCCS src/Jmakefile
+NONE src/Makefile.local
+SCCS src/version.c.SH
+SCCS src/options.h.SH
+SCCS src/defines.h
+SCCS src/compatibility.h
+SCCS src/constants.h
+SCCS src/npasswd.h
+SCCS src/main.c
+SCCS src/chfn.c
+SCCS src/chsh.c
+SCCS src/passwd.c
+SCCS src/configure.c
+
+SOURCE src/PasswordCheck/Makefile.SH src/PasswordCheck/Jmakefile Jmake.local 
+SCCS src/PasswordCheck/Jmakefile
+NONE src/PasswordCheck/Makefile.local
+SCCS src/PasswordCheck/TestHistory.sh
+SCCS src/PasswordCheck/TestSuite.sh
+
+SCCS src/PasswordCheck/checkpassword.c
+SCCS src/PasswordCheck/checkpassword.h
+SCCS src/PasswordCheck/hist_dbm.c
+SCCS src/PasswordCheck/hist_file.c
+SCCS src/PasswordCheck/hist_nis.c
+SCCS src/PasswordCheck/hist_osf.c
+SCCS src/PasswordCheck/history_admin.c
+SCCS src/PasswordCheck/pwck_crack.c
+SCCS src/PasswordCheck/pwck_defines.h
+SCCS src/PasswordCheck/pwck_history.c
+SCCS src/PasswordCheck/pwck_history.c
+SCCS src/PasswordCheck/pwck_history.h
+SCCS src/PasswordCheck/pwck_lexical.c
+SCCS src/PasswordCheck/pwck_local.c
+SCCS src/PasswordCheck/pwck_main.c
+SCCS src/PasswordCheck/pwck_passwd.c
+SCCS src/PasswordCheck/test_history.c
+SCCS src/PasswordCheck/test_pwck.c
+SCCS src/PasswordCheck/version.c.SH
+
+
+SOURCE src/PasswordCheck/cracklib/Makefile.SH src/PasswordCheck/cracklib/Jmakefile Jmake.local 
+SCCS src/PasswordCheck/cracklib/Jmakefile
+NONE src/PasswordCheck/cracklib/Makefile.local
+SCCS src/PasswordCheck/cracklib/rules.c
+SCCS src/PasswordCheck/cracklib/packer.h
+SCCS src/PasswordCheck/cracklib/packlib.c
+SCCS src/PasswordCheck/cracklib/genrules.pl
+SCCS src/PasswordCheck/cracklib/stringlib.c
+SCCS src/PasswordCheck/cracklib/fascist.c
+SCCS src/PasswordCheck/cracklib/TestSuite.sh
+
+NONE src/PasswordCheck/cracklib/CREDITS/HISTORY
+NONE src/PasswordCheck/cracklib/CREDITS/MANIFEST
+NONE src/PasswordCheck/cracklib/CREDITS/README.FIRST
+NONE src/PasswordCheck/cracklib/CREDITS/README
+NONE src/PasswordCheck/cracklib/CREDITS/LICENCE
+
+SOURCE src/PasswordCheck/cracklib/tools/Makefile.SH src/PasswordCheck/cracklib/tools/Jmakefile Jmake.local
+SCCS src/PasswordCheck/cracklib/tools/Jmakefile
+NONE src/PasswordCheck/cracklib/tools/Makefile.local
+NONE src/PasswordCheck/cracklib/tools/README
+SCCS src/PasswordCheck/cracklib/tools/makedict.SH
+SCCS src/PasswordCheck/cracklib/tools/teststr.c
+SCCS src/PasswordCheck/cracklib/tools/testnum.c
+SCCS src/PasswordCheck/cracklib/tools/testlib.c
+SCCS src/PasswordCheck/cracklib/tools/packer.c
+SCCS src/PasswordCheck/cracklib/tools/unpacker.c
+SCCS src/PasswordCheck/cracklib/tools/testgecos.c 
+SCCS src/PasswordCheck/cracklib/tools/testnpasswd.c
+
+SOURCE src/Methods/Makefile.SH src/Methods/Jmakefile Jmake.local
+SCCS src/Methods/Jmakefile
+NONE src/Methods/Makefile.local
+SCCS src/Methods/shadowtab.h.SH
+SCCS src/Methods/passwdtab.h.SH
+SCCS src/Methods/pwm_defs.h
+SCCS src/Methods/pwm_main.c
+SCCS src/Methods/pwm_local.c
+SCCS src/Methods/pwm_nis.c
+SCCS src/Methods/pwm_nisplus.c
+SCCS src/Methods/shm_aix.c
+SCCS src/Methods/shm_adjunct.c
+SCCS src/Methods/shm_hpux.c
+SCCS src/Methods/shm_null.c
+SCCS src/Methods/shm_osf1.c
+SCCS src/Methods/shm_shadow.c
+SCCS src/Methods/shm_ultrix.c
+
+SCCS src/Methods/TestSuite/README
+SOURCE src/Methods/TestSuite/Makefile.SH src/Methods/TestSuite/Jmakefile
+SCCS src/Methods/TestSuite/Jmakefile
+SCCS src/Methods/TestSuite/pwm_test.c 
+SCCS src/Methods/TestSuite/TestSuiteSetup.SH 
+SCCS src/Methods/TestSuite/TestGetUser.sh
+SCCS src/Methods/TestSuite/InitTestFiles.sh
+
+SOURCE src/Common/Makefile.SH src/Common/Jmakefile Jmake.local
+SCCS src/Common/Jmakefile
+NONE src/Common/Makefile.local
+SCCS src/Common/common.h
+SCCS src/Common/chop_nl.c
+SCCS src/Common/compatibility.c
+SCCS src/Common/file_util.c
+SCCS src/Common/getpass.c
+SCCS src/Common/instring.c
+SCCS src/Common/messages.c
+SCCS src/Common/mpw_util.c
+SCCS src/Common/pw_svc.h
+SCCS src/Common/pw_svc.c
+SCCS src/Common/pw_util.c
+SCCS src/Common/signals.c
+SCCS src/Common/split.c
+SCCS src/Common/xatoi.c
+SCCS src/Common/xdecode.c
+
+SOURCE src/Scripts/Makefile.SH src/Scripts/Jmakefile Jmake.local
+SCCS src/Scripts/Jmakefile
+NONE src/Scripts/Makefile.local
+SCCS src/Scripts/installmany.SH
+SCCS src/Scripts/savefiles.SH
+SCCS src/Scripts/restorefiles.SH
+
+SOURCE dict/Makefile.SH dict/Jmakefile Jmake.local
+SCCS dict/Jmakefile
+SCCS dict/0-Index
+SCCS dict/0-README

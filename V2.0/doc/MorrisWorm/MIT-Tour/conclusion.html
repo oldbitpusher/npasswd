@@ -1,0 +1,178 @@
+<HTML>
+<HEADER>
+<link rel=stylesheet type="text/css" href="../../npasswd.css">
+
+<title>With Microscope and Tweezers: Conclusion</title>
+<link rev="made" href="mailto:eichin@mit.edu">
+</HEADER>
+<BODY>
+<h1>With Microscope and Tweezers:</h1>
+<h2>An Analysis of the Internet Virus of November 1988</h2>
+<h3>Conclusion</h3>
+
+<UL>
+<LI> Lessons and Open Issues
+  <UL>
+  <LI> Lessons from the Community's Reactions
+  <LI> General Points for the Future
+  </UL>
+</UL><p>
+
+<A NAME="lessons">
+<h4>Lessons and Open Issues</h4>
+
+The virus incident taught many important lessons.  It also
+brought up many more difficult issues which need to be
+addressed in the future.<p>
+
+<h5>Lessons from the Community's Reactions</h5>
+
+The chronology of events is interesting.  The manner in which the
+Internet community reacted to the virus attack points out areas of
+concern or at least issues for future study.
+<p>
+
+<ul>
+<li> Connectivity was important.  Sites which disconnected from the network at
+the first sign of trouble hurt themselves and the community.  Not only
+could they not report their experiences and findings, but they
+couldn't get timely bug fixes.  Furthermore, other sites using them as
+mail relays were crippled, thus delaying delivery of important mail,
+such as Andy Sudduth's Thursday morning posting, until after the
+crisis had passed.  Sites like MIT and Berkeley were able to
+collaborate in a meaningful manner because they never took themselves
+off the network.
+
+<li> The ``old boy network'' worked.  People called and sent electronic mail 
+to the people they knew and trusted and much good communication happened.
+This can't be formalized but it did function quite well in the face of
+the crisis.
+
+<li> Late night authentication is an interesting problem.  How did you know
+that it really is MIT on the phone?  How did you know that Keith Bostic's
+patch to <code>sendmail</code> is really a fix and isn't introducing
+a new problem?  Did Keith really send the fix or was it his evil twin,
+Skippy?
+
+<li> Whom do you call?  If you need to talk to the manager of the Ohio
+State University network at 3:00am whom do you call?  How many people can
+find that information, and is the information up to date?
+
+<li> Speaker phones and conference calling proved very useful.  
+
+<li> How groups formed and who led them is a fascinating topic for future
+study.  Don Alvarez of the MIT Center for Space Research presented his
+observations on this at the NCSC meeting.
+
+<li> Misinformation and illusions ran rampant.  Mike Muuss categorized
+several of these at the NCSC meeting.  Our spotting of a handshake
+with <code>ernie</code> is but one example.  
+
+<li> Tools were not as important as one would have expectd.  Most of
+decompiling work was done manually with no more tools than a disassembler
+(<samp>adb</samp>) and an architecture manual.  Based
+on its experience with PC viruses, the NCSC feels that more
+sophisticated tools must be developed.  While this may be true for
+future attacks, it was not the case for this attack.
+
+<li> Source availability was important.  All of the sites which responded 
+quickly and made progress in truly understanding the virus had UNIX
+source code.
+
+<li> The academic sites performed best.  Government and commercial
+sites lagged behind places like Berkeley and MIT in figuring out what
+was going on and creating solutions.
+
+<li> Managing the press was critical.  We were not distracted by the
+press and were able to be quite productive.  The MIT News office did a
+fine job keeping the press informed and out of the way.  Batching the
+numerous requests into one press conference helped tremendously.  The
+Berkeley group, among others, reported that it was difficult to get
+work done with the press constantly hounding them.
+
+</ul>
+<p>
+
+<h5>General Points for the Future</h5>
+
+More general issues have popped to the surface because of the virus.
+These include the following:
+<p>
+
+<ul>
+
+<li> Least Privilege.  This basic security principle is frequently ignored 
+and this can result in disaster.
+
+<li> ``We have met the enemy and he is us.''  The alleged author of the virus 
+has made contributions to the computer security field and was by
+any definition an insider; the attack did not come from an outside
+source who obtained sensitive information, and restricting information
+such as source code would not have helped prevent this incident.
+
+<li> Diversity is good.  Though the virus picked on the most widespread
+operating system used on the Internet and on the two most popular
+machine types, most of the machines on the network were never in
+danger.  A wider variety of implementations is probably good, not bad.
+There is a direct analogy with biological genetic diversity to be
+made.
+
+<li> ``The cure shouldn't be worse than the disease.''  Chuck Cole made this 
+point and Cliff Stoll also argued that it may be more expensive to
+prevent such attacks than it is to clean up after them.  Backups are
+good.  It may be cheaper to restore from backups than to try to figure
+out what damage an attacker has done<a href="bibliography.html#ncsc">[ncsc]</a>.
+
+<li> Defenses <em> must</em> be at the host level, not the network level.  Mike
+Muuss and Cliff Stoll have made this point quite eloquently<a href="bibliography.html#ncsc">[ncsc]</a>.  The
+network performed its function perfectly and should not be faulted;
+the tragic flaws were in several application programs.  Attempts to
+fix the network are misguided.  
+Jeff Schiller likes to use an analogy
+with the highway system: 
+anybody can drive up to your house and
+probably break into your home, but that does not mean we should
+close down the roads or put armed guards on the exit ramps.
+
+<li> Logging information is important.  
+The <code>inetd</code> and <code>telnetd</code> interaction logging the source of
+virus attacks turned out to be a lucky break, but even so many sites
+did not have enough logging information available to identify the
+source or times of infection.  This greatly hindered the responses,
+since people frequently had to install new programs which logged more
+information.  On the other hand, logging information tends to
+accumulate quickly and is rarely referenced.  Thus it is frequently
+automatically purged.  If we log helpful information, but find it is
+quickly purged, we have not improved the situtation much at all.  Mike
+Muusspoints out that frequently one can retrieve such information from
+backups<a href="bibliography.html#ncsc">[ncsc]</a>, but this is not always true.
+
+<li> Denial of service attacks are easy.  The Internet is amazingly
+vulnerable to such attacks.  These attacks are quite difficult to
+prevent, but we could be much better prepared to identify their sources
+than we are today.  For example, currently it is not hard to
+imagine writing a program or set of programs which crash two-thirds of
+the existing Sun Workstations or other machines implementing Sun's
+Network Filesystem (NFS).  This is serious since such machines are the
+most common computers connected to the Internet.  Also, the total lack
+of authentication and authorization for network level routing makes it
+possible for an ordinary user to disrupt communications for a large
+portion of the Internet.  Both tasks could be easily done in a manner
+which makes tracking down the initiator extremely difficult, if not
+impossible.
+
+<li> A central security fix repository may be a good idea.  Vendors <em> must</em>
+participate.  End users, who likely only want to get their work
+done, must be educated about the importance of installing security fixes.
+
+<li> Knee-jerk reactions should be avoided.  Openness and free flow of
+information is the whole point of networking, and funding agencies
+should not be encouraged to do anything damaging to this without very
+careful consideration.  Network connectivity proved its worth as an
+aid to collaboration by playing an invaluable role in the defense and
+analysis efforts during the crisis, despite the sites which
+isolated themselves.
+
+</ul>
+</body>
+</html>

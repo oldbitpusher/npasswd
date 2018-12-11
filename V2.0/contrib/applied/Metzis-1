@@ -1,0 +1,33 @@
+Return-Path: Yiannis.Metzis@qed.qld.gov.au 
+Received: from inet03.citec.qld.gov.au (firewall-user@inet03.citec.qld.gov.au [203.5.10.10])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with SMTP id RAA05712
+	for <clyde@motown.cc.utexas.edu>; Tue, 13 Jan 1998 17:15:52 -0600 (CST)
+Received: by inet03.citec.qld.gov.au; id JAA28865; Wed, 14 Jan 1998 09:15:44 +1000
+Received: from smtp.qed.qld.gov.au(edhosvr1.qed.qld.gov.au 203.104.2.8) by inet03 via smap (V2.0)
+	id xma028717; Wed, 14 Jan 98 09:15:31 +1000
+Received: by smtp.qed.qld.gov.au for clyde@motown.cc.utexas.edu
+Date: Wed, 14 Jan 1998 09:15:29 +1000 (EST)
+From: Yiannis Metzis <ymet0@qed.qld.gov.au>
+To: Clyde Hoover <clyde@motown.cc.utexas.edu>
+Subject: Re: npasswd bugs 
+In-Reply-To: <199801131846.MAA03408@diana.cc.utexas.edu>
+Message-ID: <Pine.GSO.3.96.980114083311.20669A-100000@edhosvr1.qed.qld.gov.au>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 459
+
+
+
+On Tue, 13 Jan 1998, Clyde Hoover wrote:
+ 
+> The -XF and -XI options are not supposed to work for non-root users.
+ 
+That's right. The problem is that this does NOT happen. When I tested
+npasswd as non-root user it let me run these options without complaining
+as it was supposed to do. That happens because "CallerUid" has not been
+initialised prior to running the case statement and evaluates always as "0"
+which causes the test to fail.
+ 
+Yiannis Metzis
+
+

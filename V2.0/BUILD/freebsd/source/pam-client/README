@@ -1,0 +1,14 @@
+
+ USAGE:
+
+  Compile software
+
+  $ make clean
+  $ make config
+  $ make
+
+  Save a copy of the client just compiled for this
+  server type and OS for later installation.
+
+  $ make save
+

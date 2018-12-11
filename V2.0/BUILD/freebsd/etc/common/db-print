@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+#!/usr/local/bin/perl5
+
+  use Fcntl;
+  use NDBM_File;
+
+  dbmopen(%dbm,"/usr/lib/passwd/etc/history",0666);
+
+  $db_separator = ':';
+
+  foreach (sort keys %dbm)
+  {
+	printf "[ %-20s ]\n", $_;
+	foreach(split /$db_separator/, $dbm{$_})
+	{
+		($passwd,$date) = split /,/;
+		printf "             %-15s - %s\n", $passwd, scalar(localtime($date));
+	}
+  }
+
+  dbmclose( %dbm );
+
+  print "\n";
+
+#END

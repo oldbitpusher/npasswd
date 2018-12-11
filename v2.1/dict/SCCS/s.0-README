@@ -1,0 +1,25 @@
+h43411
+s 00014/00000/00000
+d D 1.1 98/07/21 10:41:12 clyde 1 0
+c date and time created 98/07/21 10:41:12 by clyde
+e
+u
+U
+t
+T
+I 1
+Npasswd dictionary README %W% %G% 
+
+The word list distribution is available at:
+
+	ftp://ftp.cc.utexas.edu/people/clyde/npasswd/words
+
+The installation procedure (invoked via make) will build hash
+databases from the word lists and install them in the default npasswd
+dictionary directory.
+
+The lists are compressed with GNU compress (gzip).
+
+See the file "WORDS-TO-USE" in the distribution for help.
+
+E 1

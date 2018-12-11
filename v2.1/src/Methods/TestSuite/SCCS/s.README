@@ -1,0 +1,37 @@
+h59279
+s 00025/00000/00000
+d D 1.1 98/03/31 14:25:56 clyde 1 0
+c date and time created 98/03/31 14:25:56 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+
+%W% %G% (cc.utexas.edu)
+
+This is the verification suite for the pasword database method modules.
+
+Test C programs:
+	getuser - Calls pw_getuserbyname().
+		* Tests method autoselect (e.g. nsswitch.conf) & configuration
+		* Tests multi-level user lookup
+		* Allows method selection override on command line to force
+		  testing of specific lookup method without having to
+		  call it directly.
+
+
+Test sh scripts:
+	TestGetUser.sh - Wrapper for tests of getuser
+	InitTestFiles.sh - Sets up dummy passwd & shadow files
+
+
+Procedure:
+	make depend
+	make
+	sh InitTestFiles.sh
+	sh TestGetUser.sh
+
+E 1

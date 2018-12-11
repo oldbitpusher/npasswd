@@ -1,0 +1,4 @@
+Welcome to npasswd, a more secure passwd program.  Npasswd checks the password
+you enter against your finger information and a word dictionary to see if it
+would be guessable.  It will not allow guessable passwords.  If you have any
+comments or questions, please send mail to hsupport.

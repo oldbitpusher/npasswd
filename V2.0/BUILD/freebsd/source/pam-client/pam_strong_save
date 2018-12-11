@@ -1,0 +1,29 @@
+#!/bin/ksh
+
+SharedObject="`echo pam_strongpw.s[ol].1`"
+OSversion="`uname -s`.`uname -r`"
+[ "`uname -m`" = 'i86pc' ] && OSversion="${OSversion}.`uname -m`"
+SD="../../pam_client.${OSversion}"
+
+umask 0022
+
+printf " Shared Library [ %-20s ]\n" $SharedObject
+printf " Version        [ %-20s ]\n" $OSversion
+
+[ -d $SD ] || mkdir $SD
+chmod 0770 $SD
+chmod g+s $SD
+
+/bin/cp ${SharedObject} ${SD}/${SharedObject}
+/bin/chmod 0755 ${SD}/${SharedObject}
+/bin/chown root:root ${SD}/${SharedObject}
+/bin/ls -ald ${SD}/${SharedObject}
+
+[ "`uname -s`" = 'SunOS' ] && OS="`uname -s`-`uname -p`" || OS="`uname -s`-`uname -m|sed 's=/==g'`"
+/bin/cp pwstrongchk  ../../bin/${OS}/
+/bin/chmod 0755      ../../bin/${OS}/pwstrongchk
+/bin/chown root:root ../../bin/${OS}/pwstrongchk
+/bin/ls -ald         ../../bin/${OS}/pwstrongchk
+
+print
+#END

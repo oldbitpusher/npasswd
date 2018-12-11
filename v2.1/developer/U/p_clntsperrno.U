@@ -1,0 +1,19 @@
+?RCS:
+?RCS: @(#)p_clntsperrno.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_clntsperrno' - see if p_clntsperrno routine exists
+?RCS:
+?MAKE:p_clnt_sperrno: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_clnt_sperrno
+?S:p_clnt_sperrno:
+?S:    This variable is set to 'true' if the clnt_sperrno routine exists.
+?S:.
+?C:HAS_CLNT_SPERRNO:
+?C:	This symbol, if defined, indicates that clnt_sperrno exists.
+?C:.
+?H:#$p_clnt_sperrno	HAS_CLNT_SPERRNO	/**/
+?H:.
+set clnt_sperrno p_clnt_sperrno
+eval "$inlibc"
+

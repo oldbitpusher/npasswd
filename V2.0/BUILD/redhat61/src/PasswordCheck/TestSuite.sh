@@ -1,0 +1,1 @@
+../..//../../src/PasswordCheck/TestSuite.sh

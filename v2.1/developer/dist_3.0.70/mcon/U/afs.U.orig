@@ -1,0 +1,30 @@
+?RCS: $Id: afs.U,v 3.0.1.1 1993/08/24 12:24:43 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: afs.U,v $
+?RCS: Revision 3.0.1.1  1993/08/24  12:24:43  ram
+?RCS: patch3: created
+?RCS:
+?MAKE:afs: Nothing
+?MAKE:	-pick add $@ %<
+?S:afs:
+?S:	This variable is set to 'true' if AFS (Andrew File System) is used
+?S:	on the system, 'false' otherwise.
+?S:.
+: is AFS running?
+echo " "
+if test -d /afs; then
+	echo "AFS may be running... I'll be extra cautious then..." >&4
+	afs=true
+else
+	echo "AFS does not seem to be running..." >&4
+	afs=false
+fi
+

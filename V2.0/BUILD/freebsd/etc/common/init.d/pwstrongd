@@ -1,0 +1,33 @@
+#!/sbin/sh
+#
+# Copyright (c) 2000 by Texas Instruments, Inc
+# All rights reserved.
+#
+#ident	"@(#)pwstrong	1.00	00/01/20 XXX"
+
+case "$1" in 
+'start')
+	if [ -x /usr/lib/passwd/bin/pwstrongd ]; then
+		LD_LIBRARY_PATH=/usr/lib/passwd/lib:${LD_LIBRARY_PATH}
+		SHLIB_PATH=/usr/lib/passwd/lib:${SHLIB_PATH}
+		export LD_LIBRARY_PATH SHLIB_PATH
+		/usr/lib/passwd/bin/pwstrongd
+	fi	
+
+	;;
+
+'stop')
+	pid=`/usr/bin/ps -eo pid,comm | /usr/bin/awk '{ if ($2 == "/usr/lib/passwd/bin/pwstrongd") print $1 }'`
+	if test "$pid"
+	then
+		/usr/bin/kill $pid
+	fi
+
+	;;
+
+*)
+	echo "Usage: $0 { start | stop }"
+	exit 1
+	;;
+esac
+exit 0

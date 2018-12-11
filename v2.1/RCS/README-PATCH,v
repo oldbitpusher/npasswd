@@ -1,0 +1,39 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	98.10.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+How to apply npasswd patches
+
+1. Extract the patch archive into the top level npasswd directory:
+
+	tar xpvf patch-YY.tar
+
+2. Read "PATCH-YY/NEWS" to see what this patch does and if
+   you want it.
+
+3. To apply patches and replace changed sources:
+
+	sh PATCH-YY/COMMANDS
+
+Document $Id$ 
+
+@

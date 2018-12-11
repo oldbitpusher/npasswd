@@ -1,0 +1,11 @@
+Configure
+Makefile.SH
+doc/AdminGuide.txt
+doc/Makefile.SH
+doc/Reference.txt
+doc/checkpassword.cat3
+doc/checkpassword_3.html
+doc/history_admin.cat1
+doc/history_admin_1.html
+doc/npasswd.cat1
+doc/npasswd_1.html

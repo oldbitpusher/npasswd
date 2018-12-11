@@ -1,0 +1,7 @@
+nproot:*:0:1:Operator:/:/bin/csh
+nobody:*:65534:65534::/:
+daemon:*:1:1::/:
+sys:*:2:2::/:/bin/csh
+bin:*:3:3::/bin:
+joeblow:##joeblow:166:100:User with adjunct password:/home/joeblow:/bin/csh
+joeblue:FhH5QWY.dfrnc:167:200:User with local password:/home/joeblue:/bin/csh

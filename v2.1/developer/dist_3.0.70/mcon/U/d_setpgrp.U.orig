@@ -1,0 +1,94 @@
+?RCS: $Id: d_setpgrp.U,v 3.0.1.2 1995/07/25 13:59:30 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: d_setpgrp.U,v $
+?RCS: Revision 3.0.1.2  1995/07/25  13:59:30  ram
+?RCS: patch56: re-arranged compile line to include ldflags before objects
+?RCS:
+?RCS: Revision 3.0.1.1  1994/10/29  16:15:37  ram
+?RCS: patch36: added 'ldflags' to the test compile line (ADO)
+?RCS: patch36: call ./usg explicitely instead of relying on PATH
+?RCS:
+?RCS: Revision 3.0  1993/08/18  12:07:09  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:d_setpgrp d_bsdpgrp: cat rm +cc +libs +ccflags +ldflags Inlibc \
+	Guess Setvar
+?MAKE:	-pick add $@ %<
+?S:d_setpgrp:
+?S:	This variable conditionally defines HAS_SETPGRP if setpgrp() is
+?S:	available to set the current process group.
+?S:.
+?S:d_bsdpgrp:
+?S:	This variable conditionally defines USE_BSDPGRP if the notion of
+?S:	process group is the BSD one. This means setpgrp needs two arguments
+?S:	whereas USG one needs none.
+?S:.
+?C:HAS_SETPGRP (SETPGRP):
+?C:	This symbol, if defined, indicates that the setpgrp routine is
+?C:	available to set the current process group.
+?C:.
+?C:USE_BSDPGRP (BSDPGRP):
+?C:	This symbol, if defined, indicates that the BSD notion of process
+?C:	group is to be used. For instance, you have to say setpgrp(pid, pgrp)
+?C:	instead of the USG setpgrp().
+?C:.
+?H:#$d_setpgrp HAS_SETPGRP		/**/
+?H:#$d_bsdpgrp USE_BSDPGRP		/**/
+?H:.
+?T:xxx
+?LINT:set d_setpgrp d_bsdpgrp
+: see if setpgrp exists
+set setpgrp d_setpgrp
+eval $inlibc
+
+@if USE_BSDPGRP || d_bsdpgrp
+: see which flavor of setpgrp is in use
+case "$d_setpgrp" in
+"$define")
+	echo " "
+	$cat >set.c <<EOP
+main()
+{
+	if (getuid() == 0) {
+		printf("(I see you are running Configure as super-user...)\n");
+		setuid(1);
+	}
+	if (-1 == setpgrp(1, 1))
+		exit(1);
+	exit(0);
+}
+EOP
+	if $cc $ccflags $ldflags -o set set.c $libs >/dev/null 2>&1; then
+		./set 2>/dev/null
+		case $? in
+		0) echo "You have to use setpgrp() instead of setpgrp(pid, pgrp)." >&4
+			val="$undef";;
+		*) echo "You have to use setpgrp(pid, pgrp) instead of setpgrp()." >&4
+			val="$define";;
+		esac
+	else
+		if ./usg; then
+			xxx="USG one, i.e. you use setpgrp()."
+			val="$undef"
+		else
+			xxx="BSD one, i.e. you use setpgrp(pid, pgrp)."
+			val="$define"
+		fi
+		echo "Assuming your setpgrp is a $xxx" >&4
+	fi
+	;;
+*) val="$undef";;
+esac
+set d_bsdpgrp
+eval $setvar
+$rm -f set set.c
+
+@end

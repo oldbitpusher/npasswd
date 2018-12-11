@@ -1,0 +1,264 @@
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+NNNNAAAAMMMMEEEE
+     history_admin - administer password history database
+
+SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+     /history_admin [ -aaaa _a_g_e ] [ -cccc  _f_i_l_e  ]  [  -dddd
+     _d_e_p_t_h  ]  [  -ffff _f_i_l_e ] [ -iiii _f_i_l_e ] [ -llll ] [ -mmmm _f_o_r_m_a_t ] [ -XXXX
+     _o_p_t_i_o_n ] [ -vvvv ] function
+
+DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+     The hhhhiiiissssttttoooorrrryyyy____aaaaddddmmmmiiiinnnn utility  maintains  the  password  history
+     database used by nnnnppppaaaasssssssswwwwdddd, to control password reuse.
+
+     The form of history database entries is:
+
+          nnnnaaaammmmeeee:ppppaaaasssssssswwwwdddd,ttttiiiimmmmeeee----ssssttttaaaammmmpppp:. . .:ppppaaaasssssssswwwwdddd,ttttiiiimmmmeeee----ssssttttaaaammmmpppp:
+
+          nnnnaaaammmmeeee Is the user name.
+
+          ppppaaaasssssssswwwwdddd,ttttiiiimmmmeeee----ssssttttaaaammmmpppp
+               The encrypted password and the time  the  password
+               was  entered into the database.  There can be mul-
+               tiple such items in a history entry.
+
+          This utility should be run as root, or by the user  who
+          owns  the history database.  Creation of a new database
+          may require root privileges.
+
+OOOOPPPPTTTTIIIIOOOONNNNSSSS
+     -aaaa _t_i_m_e
+          Set the password history age limit to _a_g_e days.  A set-
+          ting of 0 disables the age limit.
+
+     -cccc _f_i_l_e
+          Use  configuration  file  _f_i_l_e  instead   of   _n_p_a_s_s_w_d-
+          _l_i_b/ppppaaaasssssssswwwwdddd....ccccoooonnnnffff.
+
+     -dddd _d_e_p_t_h
+          Set the old password retention limit to _d_e_p_t_h.  A  set-
+          ting of 0 disables the depth limit.
+
+     -ffff _f_i_l_e
+          Path to the history database.  If ffffiiiilllleeee is ''''@@@@'''' then  the
+          default database path is used.
+
+     -iiii _f_i_l_e
+          Input data.  Standard input is read if no input file is
+          given.
+
+     -llll   Log errors with _s_y_s_l_o_g(3).
+
+     -mmmm _f_o_r_m_a_t
+          Select database format.
+
+
+
+SunOS 5.6                 Last change:                          1
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+          _f_i_l_e History is stored in a text file.
+
+          _d_b_m  History is stored in a DBM database.  This is  the
+               default if the NDBM library is available.
+
+     -XXXX _o_p_t_i_o_n
+          Set special options:
+
+          DDDD_n   Set internal debug level to _n.  See  the  "Command
+               line  options"  section  in  the _N_p_a_s_s_w_d _R_e_f_e_r_e_n_c_e
+               _M_a_n_u_a_l for the available debugging levels.
+
+          hhhh    Print help text.
+
+          VVVV    Print version information.
+
+     -vvvv   Verbose.
+
+     function
+          Select maintenance function.
+
+          _d_u_m_p Dumps the database to standard output.
+
+          _l_o_a_d Reads  history  records  (of  the  form  described
+               above) from the input and populates the database.
+
+          _m_e_r_g_e
+               Reads  history  records  (of  the  form  described
+               above)  from  the  input  and merges them into the
+               database.
+
+          _p_u_r_g_e
+               Cleans the database of old and excess passwords:
+
+               +o    Removes entries for users who are not in  the
+                    password file.
+
+               +o    Removes passwords which are  too  old.   This
+                    limit  is  set  in  the nnnnppppaaaasssssssswwwwdddd configuration
+                    file, but can be overridden by the -aaaa option.
+
+               +o    Removes excess passwords.  There is  a  limit
+                    to how many passwords are kept for each user.
+                    The limit is set in the nnnnppppaaaasssssssswwwwdddd configuration
+                    file, but can be overridden by the -dddd option.
+
+     HHHHiiiissssttttoooorrrryyyy____aaaaddddmmmmiiiinnnn exits with 0 status if successful, and  1  for
+     failure.
+
+EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+     Running a periodic database clean from _c_r_o_n:
+          history_admin -l purge 2> purge-errors
+
+
+
+SunOS 5.6                 Last change:                          2
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+     Creating the default database:
+          history_admin load < /dev/null
+
+     Populating alternate DBM database from a file:
+          history_admin -m dbm -f /tmp/new-history -i test-data load
+
+     Removing a user from the default database:
+          history_admin dump | grep -v "^username:" | history_admin load
+
+DDDDIIIIAAAAGGGGNNNNOOOOSSSSTTTTIIIICCCCSSSS
+     Config file error 'ffffiiiilllleeeennnnaaaammmmeeee' line nnnn; _m_e_s_s_a_g_e
+          An error was encountered in the configuration file.
+
+     Database error file 'ffffiiiilllleeeennnnaaaammmmeeee' method 'wwwwhhhhaaaatttt' error '_m_e_s_s_a_g_e'
+          A bad database path or method was specified on the com-
+          mand line.
+
+     No history database
+          The history mechanism has been disabled in  the  confi-
+          guration file or the history database is missing.
+
+     Unknown function 'wwwwhhhhaaaatttt'
+          An unknown function was given.
+
+     No memory for . . .
+          Temporary memory allocation failed.
+
+     Cannot make temp file 'ffffiiiilllleeeennnnaaaammmmeeee', error _e_r_r_n_o
+          Failure to create database temporary file.
+
+     Cannot make DBM 'ffffiiiilllleeeennnnaaaammmmeeee'
+          Failure to create DBM database.
+
+     History purge errors - new database left in 'ffffiiiilllleeeennnnaaaammmmeeee'
+          An error was encountered in purging the history.    The
+          database was left unchanged.
+
+     History load/merge errors - new database left in 'ffffiiiilllleeeennnnaaaammmmeeee'
+          A serious error was encountered doing a database create
+          or merge.
+
+     DBM _d_e_l_e_t_e|_r_e_p_l_a_c_e|_i_n_s_e_r_t for uuuusssseeeerrrr failed
+          The deletion, replacment or insertion of  a  DBM  entry
+          failed.
+
+     Replace DBM 'ffffiiiilllleeee' failed
+          A serious error was encountered loading a  DBM  dataah-
+          base.
+
+FFFFIIIILLLLEEEESSSS
+      - the default history database
+
+
+
+
+SunOS 5.6                 Last change:                          3
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+BBBBUUUUGGGGSSSS
+     Undoubtedly there are more bugs than have already been noted
+     (and fixed).
+
+SSSSEEEEEEEE AAAALLLLSSSSOOOO
+     npasswd(1), checkpassword(3)
+     _N_p_a_s_s_w_d _R_e_f_e_r_e_n_c_e _M_a_n_u_a_l
+
+AAAAUUUUTTTTHHHHOOOORRRR
+     Clyde Hoover
+     Academic Computing  Services  and  Instructional  Technology
+     Services
+     The University of Texas at Austin
+     c.hoover@cc.utexas.edu
+     8c9 1998, The  University  of  Texas  at  Austin.  All  rights
+     reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SunOS 5.6                 Last change:                          4
+
+
+

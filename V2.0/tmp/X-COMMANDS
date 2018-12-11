@@ -1,0 +1,3 @@
+mv -f Configure Configure.pre
+mv -f Makefile.SH Makefile.SH.pre
+mv -f doc/Makefile.SH doc/Makefile.SH.pre

@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# @(#)install-cgi	1.1 05/15/97
+#
+echo Installing npasswd distribution kit in $HOME/public_html
+umask 02
+tar cf - setup-cgi cgi-bin/npasswd* npasswd | \
+	( cd $HOME/public_html ; tar xpfv - )
+
+here=`pwd`
+cd $HOME/public_html
+sh setup-cgi `dirname $here`
+#
+# End install-cgi

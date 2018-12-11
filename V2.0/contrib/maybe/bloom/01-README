@@ -1,0 +1,29 @@
+Make options:
+------------
+
+(Edit "Makefile" to change them.)
+
+DEBUG controls location of the filter (local or /usr/adm) and a small
+amount of print during checks.
+
+VOWEL_STRIP controls whether the program rejects passwords which can be
+derived from dictionary words by deleting vowels (mysterious --> mystrs).
+Strictly speaking, the program won't block all Crack-guessable
+passwords unless this option is set, but these are relatively unlikely
+passwords and this option adds substantially to the size of the filter
+derived from a given word list.
+
+LONG_REVERSE controls whether the program rejects passwords which can
+be derived from dictionary words by reversing and truncating to 8
+characters (mysterious --> suoirets).  Note that even with the option
+unset the program would reject "suoiretsym" and "oiretsym".  Strictly
+speaking, the program won't block all Crack-guessable passwords unless
+this option is set, but these are relatively unlikely passwords and
+this option adds substantially to the size of the filter derived from a
+given word list.
+
+The Makefile as it stands has DEBUG set and VOWEL_STRIP and
+LONG_REVERSE unset.  Note that for the latter two options to take
+effect the filter-maker must have been compiled with those options
+set.  The filter in "checkpasswd.filter" was made with those options
+unset.

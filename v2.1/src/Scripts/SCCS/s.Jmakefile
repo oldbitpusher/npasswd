@@ -1,0 +1,218 @@
+h37960
+s 00003/00001/00069
+d D 1.7 98/07/16 14:51:51 clyde 7 6
+c Change install invocation
+e
+s 00011/00003/00059
+d D 1.6 98/07/16 09:22:39 clyde 6 5
+c 1. Use new config path vars
+c 2. Add Describe() settings
+c 3. Change how scripts are extracted & processed
+e
+s 00005/00023/00057
+d D 1.5 98/07/14 16:26:02 clyde 5 4
+c Major rework
+e
+s 00051/00001/00029
+d D 1.4 98/05/05 16:21:12 clyde 4 3
+c 1. Add copyright notice 
+c 2. Use local definitions
+e
+s 00008/00008/00022
+d D 1.3 97/05/01 13:54:25 clyde 3 2
+c Change savefiles and restorefiles to .SH source
+e
+s 00003/00001/00027
+d D 1.2 97/04/28 14:40:28 clyde 2 1
+c Add restorefiles
+e
+s 00028/00000/00000
+d D 1.1 96/09/19 15:20:03 clyde 1 0
+c date and time created 96/09/19 15:20:03 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+;#
+D 4
+;# Make npasswd utility scripts
+E 4
+I 4
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+E 4
+;#
+I 4
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+E 4
+;# %W% %G% (cc.utexas.edu)
+;#
+I 4
+
+;#
+;# Makefile for npasswd utility scripts
+;#
+#include "../../Jmake.local"
+
+E 4
+D 2
+SCRIPTS =	savefiles installmany
+E 2
+I 2
+D 3
+SCRIPTS =	savefiles restorefiles installmany
+E 3
+I 3
+D 6
+Initialize(SCRIPTDIR, $privlibexp)
+E 6
+I 6
+Initialize(BIN, $p_utildir)
+E 6
+D 5
+++SCRIPTS installmany
+E 5
+E 3
+E 2
+
+D 5
+#define	MakeScriptFromsh(file) @!\
+file^^:	file^^.sh @@\
+	-rm -f file @@\
+	cp file^^.sh file @@\
+	chmod +x file @@\
+                       @!\
+file^^.sh:
+E 5
+I 5
+D 6
+ShellScriptTarget(installmany savefiles restorefiles)
+E 6
+I 6
+ALL = savefiles restorefiles
+E 6
+E 5
+
+D 3
+all:	${SCRIPTS}
+E 3
+I 3
+D 5
+all:: ${SCRIPTS}
+E 5
+I 5
+D 6
+TerminalDependancy(installmany.SH savefiles.SH restorefiles.SH)
+E 6
+I 6
+Describe(all,	Make npasswd utility scripts)
+AllTarget(installmany $(ALL))
+E 6
+E 5
+E 3
+
+I 6
+ThingFromSH(installmany $(ALL))
+
+Describe(install,	Install npasswd utility scripts)
+Describe(de-install,	Remove npasswd utility scripts)
+D 7
+InstallMultipleDestFlags(install,$(ALL),$(BIN),^^)
+E 7
+I 7
+|expand s!$(ALL)!
+InstallScript(!s,$(BIN))
+-expand
+E 7
+
+HelpTarget()
+E 6
+D 3
+depend:
+	@echo Nothing to depend on
+
+E 3
+D 5
+MakeScriptFromsh(installmany)
+E 5
+I 5
+NoDebug()
+NoDepend()
+NoLint()
+E 5
+
+D 3
+MakeScriptFromsh(savefiles)
+E 3
+I 3
+D 5
+ShellScriptTarget(savefiles restorefiles)
+E 3
+
+I 2
+D 3
+MakeScriptFromsh(restorefiles)
+
+E 3
+E 2
+clean:
+	-rm -f ${SCRIPTS}
+
+I 3
+depend:
+	@echo Nothing to depend on
+
+I 4
+lint:
+	@echo Nothing to lint
+E 4
+
+I 4
+LocalNoDebug()
+
+E 5
+E 4
+E 3
+/* End %M% */
+E 1

@@ -1,0 +1,176 @@
+;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# @(#)Jmakefile	1.25 07/20/98 (cc.utexas.edu)
+;#
+
+;#
+;# Makefile for password checker application & library
+;#
+#include "../../Jmake.local"
+
+>INSTALL
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../Common -Icracklib)
+Initialize(LIB_DIR, $p_installdir)
+
+SetSubdirs(cracklib)		/* Want cracklib to be built always */
+
+Describe(CHECKPW_MODE,	Install mode for checkpassword (Variable))
+Describe(CHECKPW_FLAGS,	Additional install flags for checkpassword (Variable))
+CHECKPW_MODE	= 0555
+CHECKPW_FLAGS	=
+
+COMOBJ = ../Common/libcomobj.a
+
+PRIVATE	= pwcheck			/* Private library name */
+PRIVATE_A = lib$(PRIVATE).a
+
+PUBLIC	= checkpassword			/* Public library name */
+PUBLIC_A =  lib$(PUBLIC).a
+
+PWCK_SRC = \
+	pwck_main.c \
+	pwck_crack.c \
+	pwck_history.c \
+	pwck_lexical.c \
+	pwck_local.c \
+	pwck_passwd.c
+
+HIST_SRC = \
+	hist_file.c \
+	hist_dbm.c \
+	hist_nis.c \
+	hist_osf.c
+
+PWCK_OBJ = \
+|expand f!$(PWCK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+HIST_OBJ = \
+|expand f!$(HIST_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+;#
+;# These Cracklib objects are included in the library
+;# This list needs to match that in cracklib/Makefile
+;#
+CRACK_LIB = cracklib/libcrack.a
+
+/* Source list is created only to build object file list */
+CRACK_SRC = \
+	cracklib/fascist.c \
+	cracklib/packlib.c \
+	cracklib/rules.c \
+	cracklib/stringlib.c
+
+CRACK_OBJ = \
+|expand f!$(CRACK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+;#
+;# Libraries that checkpassword depends upon.
+;# Make the dependancy upon the *library*, not the *object* files
+;# to avoid having to have dependancies for every cracklib object.
+;#
+AllTarget($(CRACK_LIB))
+
+ThingFromSH(version.c)
+
+;#
+;# The private library - just password check routines
+;#
+NormalLibraryTarget($(PRIVATE), $(PWCK_SRC) $(HIST_SRC), $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ))
+
+
+;#
+;# The public library - including routines from common object lib
+;#
+NormalLibraryTarget($(PUBLIC), $(PWCK_SRC) $(HIST_SRC), pwck_all.o)
+PrelinkedRelocatableTarget(pwck_all, $(PWCK_OBJ) $(HIST_OBJ) $(CRACK_OBJ) $(COMOBJ),^^)
+Describe(install, Install public password check library)
+InstallLibrary($(PUBLIC), $(LIB_DIR))
+
+;#
+;# Build checkpassword application
+;#
+Describe(checkpassword, Build the password check program)
+NormalProgramTarget(checkpassword, checkpassword.c version.c, checkpassword.o version.o $(PUBLIC_A))
+Describe(install, 	Install checkpassword application)
+
+install::	checkpassword-install
+
+checkpassword-install:	checkpassword
+	$(INSTALL) -c -s -m $(CHECKPW_MODE) $(CHECKPW_FLAGS) checkpassword $(LIB_DIR)
+
+;#
+;# Build history_admin application
+;#
+Describe(history_admin, Build the history administration program)
+NormalProgramTarget(history_admin,history_admin.c,history_admin.o $(PRIVATE_A) $(COMOBJ))
+Describe(install,	Install history_admin application)
+InstallProgram(history_admin, $(LIB_DIR))
+
+;#
+;# Build Cracklib
+;#
+XdirLibMake(crack, cracklib)
+XdirLibMake(comobj, ../Common)
+
+;#
+;# Build test programs
+;#
+NormalProgramTarget(test_pwck,test_pwck.c,test_pwck.o $(PRIVATE_A) $(COMOBJ))
+NormalProgramTarget(test_history,test_history.c,test_history.o $(PRIVATE_A) $(COMOBJ))
+
+DebugTarget()
+DebugSubdirs()
+DependTarget()
+DependSubdirs()
+
+Describe(lint, Check C sources with lint)
+LintTarget()
+
+/* End Jmakefile */

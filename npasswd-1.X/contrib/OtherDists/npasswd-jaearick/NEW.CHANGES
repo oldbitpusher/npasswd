@@ -1,0 +1,28 @@
+My new changes:
+
+1) removed system() calls from npasswd.c and checkpasswd/pwck_dict.c,
+to avoid setuid traps.  Sorry, I don't like system() calls in setuid
+programs...  The system() call in pw_yp.c needs to go too.
+   In npasswd.c, I just open the motd file and dump it out via putchar
+instead of doing a system call to write it out.  This file shouldn't
+be so long that it needs more/pg.
+
+2) The old version of checkpasswd/pwck_dict.c used a system call to fgrep
+to search the dictionary for the password.  I didn't like the system() call,
+I didn't like the fact that the cleartext password was stuffed into a file
+while the grep was running, and I didn't like the fact that the grep was
+taking 40 seconds on a 1.6 million word dictionary.  This was using the
+HP-UX version of fgrep on a HP 9000.  GNU grep would find the same word in
+17 seconds, but this was still too slow.
+   I wrote a poor man's search routine (pwck_search.c) that will quickly
+discover if the password is in an ordered, unique wordlist.  It lseeks
+around in the file until it gets close to the area where the password
+might be in the list, and then strncmp's word by word after that.  It
+will return a yes or no on a password in less than a second.
+
+3) I gathered up wordlists in every language I could find (mostly from
+sable.ox.ac.uk in pub/wordlists), and put them into subdirectory wordlists.
+I changed the Makefile and wrote a word-filtering program so that a monster
+dictionary gets constructed as a part of the install process, so that
+my pseudo-grep scheme works.
+

@@ -1,0 +1,1 @@
+../../../../../../src/PasswordCheck/cracklib/SCCS/s.rules.c

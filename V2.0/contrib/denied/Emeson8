@@ -1,0 +1,102 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA08588
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:54:49 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01541
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:54:44 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA14598
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:54:39 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08803; Wed, 10 Dec 1997 10:56:00 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101756.KAA08803@zlin.Colorado.EDU>
+Subject: Additional function for npasswd lib
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:56:00 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 2422
+
+I think it unlikely you would add this to the library, but just in case
+you feel it's worthwhile...
+
+This function is meant to be called by a program that needs to check
+a proposed password for strength before it goes and changes it.
+It accepts the configuration file name as a parameter, which we needed
+here.
+And since I had to rebuild the library for it, I just make a local
+library which includes your libcomobj.a and libpwcheck.a (which already
+includes crack...).
+
+By the way, I noticed your notes mention updating to a newer crack.
+We look forward to this as npasswd seems to accept some passwords which
+we hoped it would deny.
+
+@@@@@@@@@@@@@@@@@@@@  Start of function   @@@@@@@@@@@@@@@@@@@
+/* 
+ * DRE 12/2/1997  -  testpw.c
+ * Send a word to npasswd's password check routines and see
+ * if it is acceptable or not.
+ *
+ * last modified - 12/4/1997
+ */
+
+#include "./compatibility.h"
+#include "./checkpasswd.h"
+#include "./pw_svc.h"
+#include "./options.h"
+
+#define DEFAULT_CONFIG "/usr/local/npasswd/lib/passwd/passwd-default.conf"
+#define PW_OK 1
+#define PW_BAD 0
+
+struct pw_svc   svc;	/* I get a compiler error if this isn't defined,
+			 * I don't use it.
+			 */
+
+int     DebugLevel = 0;			/* For messages module */
+char    *ProgramName = "checkpasswd";	/* For messages module */
+
+testpw(pw, pw_msg, ConfigFile, junk)
+char   *pw,	/* WARNING - the size of this string must be at 
+		 * least 1 more than the Maxpassword length 
+		 */
+       *pw_msg,
+       *ConfigFile;
+struct passwd *junk;
+
+{  char ibuf[BUFSIZ];
+
+   int   cfline = 0;     /* Config file line number */
+   FILE  *config_f;            /* Config file pointer */
+
+   checkpassword_init();
+
+   /*
+    * Read the configuration file
+    */
+   if (strcmp(ConfigFile,"") == 0 ) strcpy(ConfigFile,DEFAULT_CONFIG);
+   if ((config_f = fopen(ConfigFile, "r")) == NULL) 
+      die("Cannot open configuration file \"%s\"\n", ConfigFile);
+   while (fgets(ibuf, BUFSIZ, config_f)) {
+      cfline++;
+      if (checkpassword_configure(ibuf, pw_msg) == 0)
+         die("File \"%s\"; line %d; %s\n",ConfigFile, cfline, pw_msg);
+   }
+   (void) fclose(config_f);
+
+   /* check the password */
+   if(checkpassword(pw, junk, pw_msg)) return(PW_OK);
+   else return(PW_BAD);
+}
+@@@@@@@@@@@@@@@@@@@@        end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

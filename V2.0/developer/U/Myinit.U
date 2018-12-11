@@ -1,0 +1,106 @@
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?X: 
+?X: This file sets certain default variables used by Configure.  They
+?X: may override or added to definitions in Init.U.
+?X: 
+?MAKE:Myinit p_osName p_osRev p_osMajor p_osMinor p_osMicro +libswanted +privlib +lib:\
+	 tr test Guess Loc Oldconfig osname osvers package Myread
+?MAKE:	-pick add $@ %<
+?S:p_osName:
+?S:     This variable is set to the OS name.
+?S:.
+?S:p_osRev:
+?S:     This variable is set to the OS revision designation
+?S:.
+?S:p_osMajor:
+?S:     This variable is set to the major (first digit) of the OS rev.
+?S:.
+?S:p_osMinor:
+?S:     This variable is set to the minor (second digit) of the OS rev.
+?S:.
+?S:p_osMicro:
+?S:     This variable is set to the "micro" (everything after second digit) of the OS rev.
+?S:.
+?X: Determine operating system revision
+?X:
+?X: The code below makes use of the osname and osvers variables set earlier.
+?X: The system name, major and minor versions are used for gang selection of features and
+?X: tailoring the compilation environment. 
+?X:
+?T: t
+echo " " >& 4
+if $test -f /etc/redhat-release; then
+	osname='redhat';
+	t=`sed 's/.* release \([0-9]*.[0-9]*\).*/\1/' /etc/redhat-release`
+	if $test -n "$t"; then
+		osvers=$t;
+	fi
+fi
+p_osName=$osname
+p_osRev=$osvers
+p_osMajor=`echo $p_osRev | sed 's/\..*//'`
+p_osMinor=`echo $p_osRev | sed -e "s/^$p_osMajor\.//" -e 's/\..*//'| $tr -d '[a-z]'`
+p_osMicro=`echo $p_osRev | sed -e "s/^$p_osMajor\.$p_osMinor\.//"  | $tr -d '[a-z]'`
+if $test $osname = 'solaris'; then
+	t=`uname -s | ./tr '[A-Z]' '[a-z]'`
+	: The difference between Solaris 2 and SunOS 5 may matter
+	if $test "$t" -eq 'sunos'; then
+		p_osName=$t
+		if $test $p_osMajor -eq 2; then
+			p_osMajor=5
+			p_osRev=`echo $osvers | sed 's/2\./5./'`
+		fi
+	fi
+fi
+echo "System is $p_osName; Major version $p_osMajor; Minor version $p_osMinor" >&4
+
+?X:
+?X: Redhat Linux 7 has a PAM module which uses Cracklib for password checking
+?X:
+if $test -f /lib/security/pam_cracklib.so -o -f /usr/lib/security/pam_cracklib.so; then
+	cat 1>&4 <<EOF
+This system already has cracklib password checking available.
+See README.Linux
+EOF
+	rp='Continue anyway'
+	dflt='n'
+	. ./myread
+	case "$ans" in
+	n)	exit 0;;
+	esac
+fi
+
+: List of libraries wanted by $package
+libswanted='net inet nsl'
+
+
+: Add to path places where cpp may lurk
+: $test -d /usr/ccs/bin && PATH=/usr/ccs/bin:$PATH
+: $test -d /usr/ccs/lib && PATH=/usr/ccs/lib:$PATH
+
+?X:
+?X: Different things are needed for different UNIX variants.
+?X: In particular, the "d_socket" unit does not find -lnsl on SunOS 5.
+?X: There is also a name collision for "libauth" between SunOS 5 and
+?X: Ultrix 4.  So libraries that won't be found by the per-feature
+?X: (library) units are put into the "libswanted" variable imported by
+?X: "libs.U".
+?X:
+case "${p_osName}_${p_osRev}" in
+	sunos_4*)	libswanted='' ;;
+	ultrix*)	libswanted="$libswanted auth" ;;
+	dec_osf*)	libswanted="$libswanted security" ;;
+	aix_4*)		libswanted="$libswanted s"
+			usenm=false ;;
+	irix_6*)	usenm=false ;;
+esac
+
+: Defaults for other settings
+privlib='/usr/lib/passwd'
+
+if $test -z "$prefix"; then
+	prefix='/usr'
+fi
+

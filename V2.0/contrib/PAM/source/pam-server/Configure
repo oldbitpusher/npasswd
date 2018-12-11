@@ -1,0 +1,24 @@
+#!/bin/ksh
+
+tf=Makefile
+
+print "" > ${tf}
+
+OSTYPE=`uname -s`
+
+[ $OSTYPE = 'SunOS' ] && IDENT=`uname -p`
+[ $OSTYPE = 'HP-UX' ] && IDENT=`uname -m | sed 's=/==g'`
+
+
+case ${OSTYPE} in
+
+SunOS)
+	print "include Makefile.${IDENT}"	>> $tf
+;;
+
+HP-UX)
+	print "include Makefile.${OSTYPE}"	>> $tf
+;;
+esac
+
+#END

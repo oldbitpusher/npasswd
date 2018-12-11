@@ -1,0 +1,801 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.11
+date	2001.11.24.15.32.38;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.10.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@Add RCS ident flags
+@
+text
+@<HTML>
+<!--
+$RCSfile: AdminGuide.html,v
+$Log$
+-->
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.05 [en] (X11; U; SunOS 5.6 sun4m) [Netscape]">
+   <TITLE>Npasswd Administration Guide</TITLE>
+</HEAD>
+<BODY>
+<A NAME="top"></A>
+<HR WIDTH="100%">
+<CENTER>
+<H1>Npasswd Administration Guide</H1></CENTER>
+
+<HR WIDTH="100%">
+
+<A NAME="passwd_check"><H2>More about password checking</H2></A>
+
+<P><I>Npasswd</I> subjects password candidates to a series of guessability
+tests. The password is accepted only if it passes all of them.
+
+<P>Which tests are used and the order of application is customizable in the
+configuration file. Some tests are mandatory, and others optional (as noted
+below).
+
+<P>The password tests are:
+<UL>
+<LI> History (optional)</LI>
+<LI> Lexical (mandatory)</LI>
+<LI> Local (optional)</LI>
+<LI> Passwd (mandatory)</LI>
+<LI> Dictionary (mandatory)</LI>
+</UL>
+
+<H3>History</H3>
+<ul>
+<P>
+Password history discourages too frequent password reuse.
+
+<P>Password candidates are compared to the passwords in the users' history
+and rejected if found. When a password change is done, the encrypted
+new password is stored in the history database.
+
+<P>Access to the history database should be restricted.
+However, should the database fall into hostile hands, the security
+exposure would be minimal. Passwords in the history got there because
+<I>npasswd</I> was happy with them, hence they should be hard to guess.
+See <A HREF="#admin_history">below</A> for details.
+
+<P>The password history database location and storage method can be specified
+in the configuration file. The history methods available are:
+<UL>
+<LI> Plain file.</LI>
+<LI> DBM database (recommended and default if DBM is available).</LI>
+</UL>
+<I>Npasswd</I> supports the password history mechanism of Digital UNIX
+(OSF/1) "enhanced security" mode, and uses it in lieu of the history database.
+
+<P>
+See also:
+The <A HREF="Reference.html#passwd.History">password history</A>
+section of the <A HREF="Reference.html"><I>Npasswd Reference Manual</I>.</A>
+</ul>
+<H3> Lexical</H3>
+<ul>
+The lexical check includes:
+<UL>
+<LI>
+Enforcing a minimum length of <B>six</B> characters.</LI>
+
+<LI>
+Checking for non-printable or forbidden characters. Some applications or
+libraries may not deal properly with whitespace and/or control characters
+in passwords. Default is to allow non-printable and whitespace characters
+except common tty control characters (e.g. control-s, control-q, control-z).</LI>
+
+<LI> Denying excessive adjacent repeated characters.</LI>
+
+<LI>
+Encouraging a diversity of character classes (mixed case, numbers, punctuation).</LI>
+
+<LI>
+Looking for easily guessed patterns (U.S. Social Security, telephone numbers).</LI>
+</UL>
+These criteria can be modified via the configuration file.
+<P>
+See also:
+The <A HREF="Reference.html#passwd.cmd_passwd">password checking</A>
+section of the <A HREF="Reference.html"><I>Npasswd Reference Manual</I>.</A>
+</ul>
+
+<h3>Local</H3>
+<ul>
+This is the hook for the insertion of site-specific tests.
+The standard code checks if the candidate is a variation of the system
+hostname, aliases, or entries in the users' <B>.rhosts.</B>
+</ul>
+
+<H3>Passwd</H3>
+<ul>
+<P>
+The candidate is examined to see if it is derived from the users' <I>passwd</I>
+information.
+</ul>
+
+<H3> Dictionary</H3>
+<ul>
+<I>Npasswd</I> checks the candidate against words in various <I>dictionaries</I>.
+The candidate is rejected if it can be derived from any word in the dictionaries.
+A variant of the <I>Crack</I> password guessing code is used for this purpose.
+<P>
+See also:
+The <A HREF="Reference.html#passwd.Dictionaries">dictionary</A>
+section of the <A HREF="Reference.html"><I>Npasswd Reference Manual</I></A>.<br>
+</ul>
+
+<HR WIDTH="50%" align=left>
+
+<H2>More about dictionaries</H2>
+<P>
+<I>Crack</i>, the most popular password guessing program, makes extensive
+use of word collections. Each word is permuted in various ways, encrypted
+and compared to the target cyphertext. The more words that Crack has available,
+the more passwords it <B>will</B> guess.
+<P>
+The primary function of <I>npasswd</I> is to frustrate bad guys running Crack.
+To this end, some of Crack has been incorporated into <I>npasswd</i>.
+<P>
+<B>Dictionaries</B> are a set of hash files optimized for fast lookup.
+They are
+constructed from <b>word lists</b>, which are text files with one word per line.
+The dictionary hash files are created with 
+<A HREF="makedict_1.html">makedict</A>, which 
+produces files with the suffixes <b>.pwd</b>, <b>.pwi</b> and
+<b>.hwm</b>.
+The hash files are probably are not portable between CPU architectures, 
+and take up more disk space their source data.
+<P>
+The dictionary hash files normally live in the dictionary directory
+(<b>@@NPASSWD-DICT@@</b>), but can be placed elsewhere
+and pointed to in the <A HREF="Reference.html#passwd.Dictionaries">
+configuration file</A>.  Multiple dictionary directories can be given.
+<P>
+To make a dictionary accessible to <I>npasswd</I>, copy the hash files
+(or make symlinks) into the appropriate directory.
+The files should be <B>world-readable</B>. <I>Npasswd</I>
+will reject any dictionary with a <B>world-writable</B> hash file.</LI>
+<P>
+You can have numerous dictionaries, each generated from a distinct group
+of words (the suggested way), or one large dictionary.
+<P>
+The more dictionary words available to <I>npasswd</I>, the fewer passwords
+it will accept. The passwords it <B>does</B> accept will be harder (but
+not impossible) to guess. The downside is that users may get more frustrated
+trying to think up acceptable passwords.
+<P>
+There is more about password checking and dictionaries in the
+<A HREF="QNA.html"><b>Questions And Answers</b></a>.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<H3>Dictionary management examples</H3>
+<P>
+<DL>
+<DT>
+<P>
+To convert a Crack dictionary:</DT>
+
+<DD>
+<TT>crack-directory/xdawg crack-dictionary-name (without the '.dwg' extension)</TT></DD>
+
+<BR><TT>@@NPASSWD-UTIL@@/makedict -o new-dictionary crack-dictionary-name</TT>
+<DT>
+<P>
+To make a new dictionary:</DT>
+
+<DD>
+<TT>@@NPASSWD-UTIL@@/makedict -o new-dictionary list-1 ... list-n</TT></DD>
+
+<DT>
+<P>
+To add words to an existing dictionary:</DT>
+
+<DD>
+<TT>@@NPASSWD-UTIL@@/makedict -o existing-dictionary -m existing-dictionary list-1 ... list-n</TT></DD>
+
+<DT>
+<P>
+To remove a dictionary:</DT>
+
+<DD>
+<TT>rm -f dict-name.hwm dict-name.pwd dict-name.pwi</TT></DD>
+
+<DT>
+<P>
+To view the contents of a dictionary:</DT>
+
+<DD>
+<TT>@@NPASSWD-UTIL@@/unpacker dict-name | more</TT></DD>
+</DL>
+
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+
+<A NAME="admin_history"> <H2>More about password history</H2> </A>
+<P>
+The password history mechanism controls password reuse. If the history
+mechanism is active, <I>npasswd</I> fetches the password history for a
+user and compares the candidate to the active passwords in the history.
+A password is <B>active</B> if it is younger than the age limit and
+within the depth limit.
+<P>
+The age and depth limits can be set in the
+<A HREF="Reference.html#passwd.History">configuration file</A>.
+<P>
+The history mechanism is inactive unless the database file(s) exist.
+The installation process <B>does not</B> create the database.
+Use the <I><A HREF="history_admin_1.html">history_admin</A></I>
+utility to create and manage the database.
+<P>
+<H3>Security considerations</H3>
+<P>
+By default the history database file(s) are created
+read-write only by owner (typically root).  This is done to shield
+the old passwords from public view, even though
+<I>npasswd</I> was happy with them so they should be less susceptible to
+being guessed.
+<P>
+For other programs to access the history database (e.g. <I>checkpassword</I>)
+they may need to run as root.  It is <B>not</B> advisable to install
+<B>checkpassword</B> as set-uid to root (though it will behave properly).
+A suggested solution is below.
+<P>
+<H3> Special considerations for clusters</H3>
+<P>
+If <I>npasswd</I> is being used on a member of a 
+cluster which shares a password file, the password
+history database <B>must</B> in a directory which the other
+cluster members mount and can write to, preferably with root access.
+
+<P>An alternative is to make the history database owned by
+a non-root user (this works around NFS root access issues). In that
+case, <I>npasswd</I> will attempt to use <I>setreuid</I>(2) to
+temporarily change its effective uid to the owner of the database to update it.
+<P>
+Here is how to change the ownership of the history database:
+<UL>
+<PRE>
+#
+# If you are creating the history from scratch
+#
+@@NPASSWD-HOME@@/history_admin -v load < /dev/null
+# The confirmation message includes the history database path
+chown <B>new-owner</B> history-file*
+#
+# If you want <B>checkpassword</B> to access the history database, do
+#
+cd @@NPASSWD-SRC@@/src/PasswordCheck
+make CHECKPW_MODE=4111 CHECKPW_FLAGS="-o <B>new-owner</B>" checkpassword-install
+</PRE>
+</UL>
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<H3>Password history maintenance</H3>
+<P>
+The history database requires periodic maintenance. Old and excess passwords,
+and entries for users no longer in the password file need removing.
+Periodically (weekly or monthly),
+run <I><A HREF="history_admin_1.html">history_admin</A></I>
+from <I>cron</I>. Make this purge a part of what is done upon deleting
+users from the password file.
+<P>
+<HR WIDTH="50%" align=left>
+<P>
+<H3>History management examples</H3>
+<P>
+<DL>
+<DT> <P> To create the default database:</DT>
+
+<DD> <TT>history_admin load &lt; /dev/null</TT></DD>
+
+<DT> <P> Populating alternate DBM database from a file:</DT>
+
+<DD> <TT>history_admin -m dbm -f /tmp/new-history -i test-data load</TT></DD>
+
+<DT> <P>To purge the default database with the default limits:</DT>
+
+<DD> <TT>history_admin -l purge</TT></DD>
+
+<DT> <P> To ignore the configuration file settings:</DT>
+
+<DD> <TT>history_admin -c /dev/null ...</TT></DD>
+</DL>
+
+<P>
+<HR WIDTH="50%" ALIGN=LEFT>
+<P>
+<H2>Files Installed</H2>
+<P>
+The following files and directories are installed as part of <I>npasswd</I>.
+All of these files 
+(except the configuration file) can be relocated by directives
+in the configuration file.
+<P>
+The path <B>@@NPASSWD-HOME@@</B> can be changed by re-running
+<A HREF="BuildInstall.html"><I>Configure</I></A>.
+
+<P>
+<TABLE BORDER CELLSPACING=2 CELLPADDING=2 >
+<TR>
+<TH>Default location</TH>
+
+<TH>What it is</TH>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HOME@@</TT></TD>
+<TD>Directory where all the parts live</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-XBIN@@</TT></TD>
+<TD>Directory where vendor utilities are saved</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-DICT@@</TT></TD>
+<TD>Main repository for hashed dictionary files</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-DOCS@@</TT></TD>
+<TD>Directory for <I>npasswd</I> documentation</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-UTIL@@</TT></TD>
+<TD>Directory for miscellaneous programs</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HOME@@/passwd.conf</TT></TD>
+<TD>The <I>npasswd </I>configuration file</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HOME@@/chfn.help</TT>
+<BR><TT>@@NPASSWD-HOME@@/chfn.motd</TT></TD>
+<TD>Help and message-of-the-day for <I>chfn</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HOME@@/chsh.help</TT>
+<BR><TT>@@NPASSWD-HOME@@/chsh.motd</TT></TD>
+<TD>Help and message-of-the-day for <I>chsh</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HOME@@/passwd.motd</TT>
+<BR><TT>@@NPASSWD-HOME@@/passwd.motd</TT></TD>
+
+<TD>Help and message-of-the-day for <I>passwd</I> sub-program</TD>
+</TR>
+
+<TR>
+<TD><TT>@@NPASSWD-HIST@@</TT></TD>
+
+<TD>Password history database</TD>
+</TR>
+</TABLE>
+
+<P>
+<HR>
+<P>
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+<HR WIDTH="100%">
+<P>
+<BR>Version $Revision: 1.10 $
+<BR>Last modified $Date: 1998/10/14 00:00:00 $
+
+<P>
+<ADDRESS>
+<A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A><br>
+<A HREF="http://www.utexas.edu/cc">Academic Computing Services and
+Instructional Technology Services</A><br>
+<A HREF="http://www.utexas.edu/">The University of Texas at Austin</A><br>
+<FONT SIZE=-1><A HREF="Copyright.html">Copyright 1998</A>, The University
+of Texas at Austin. All rights reserved.</FONT>
+</ADDRESS>
+</BODY>
+</HTML>
+@
+
+
+1.10
+log
+@Update history_admin examples
+@
+text
+@d2 4
+d385 2
+a386 3
+Document id %Z% $RCSfile$ $Revision$
+<BR>Version $Revision$
+<BR>Last modified $Date$
+@
+
+
+1.9
+log
+@Spell check
+@
+text
+@d284 1
+a284 1
+<DD> <TT>history_admin -m dbm -f /tmp/new-history load &lt; test-data</TT></DD>
+d286 1
+a286 1
+<DT> <P> To purge the default database with the default limits:</DT>
+@
+
+
+1.8
+log
+@Add stuff about history database owner and mode
+@
+text
+@d225 1
+a225 1
+<I>npasswd</I> was happy with them so they should be less susecptible to
+d230 2
+a231 2
+<I>checkpasword</I> as set-uid to root (though it will behave properly
+if setuid).  A suggested solution is below.
+d264 1
+a264 1
+<H3>Password history maintenace</H3>
+d338 1
+a338 1
+<TD>Directory for miscellanous programs</TD>
+@
+
+
+1.7
+log
+@Add comment about history database ownerships
+@
+text
+@d42 1
+a42 1
+<P>Access to the history database is restricted.
+d220 1
+a220 7
+The history database file(s) are protected to be read-write by owner and
+read-only by the group selected during package configuration.
+Programs needing read-only access to the database (e.g. <I>checkpassword</I>)
+are installed set-gid to this gid.
+
+<H3>
+Special considerations for clusters</H3>
+d222 13
+a243 1
+
+d245 17
+@
+
+
+1.6
+log
+@Update path tokens
+@
+text
+@d42 2
+a43 3
+<P>The history database should generally be accessible only
+to root. See <A HREF="#admin_history">below</A> for details.
+Should the database fall into hostile hands, the security
+d46 1
+d216 8
+a223 3
+Explicit action is required to enable it. Use the
+<I><A HREF="history_admin_1.html">history_admin</A></I>
+utility to manage password history.
+@
+
+
+1.5
+log
+@Use path tokens and fix links
+@
+text
+@d138 1
+a138 1
+(<b>@@NPASSWD-DICTS</b>), but can be placed elsewhere
+d170 1
+a170 1
+<BR><TT>@@NPASSWD-LIB@@/makedict -o new-dictionary crack-dictionary-name</TT>
+d176 1
+a176 1
+<TT>@@NPASSWD-LIB@@/makedict -o new-dictionary list-1 ... list-n</TT></DD>
+d183 1
+a183 1
+<TT>@@NPASSWD-LIB@@/makedict -o existing-dictionary -m existing-dictionary list-1 ... list-n</TT></DD>
+d197 1
+a197 1
+<TT>@@NPASSWD-LIB@@/unpacker dict-name | more</TT></DD>
+d277 1
+a277 1
+The path <B>@@NPASSWD-LIB@@</B> can be changed by re-running
+d289 1
+a289 1
+<TD><TT>@@NPASSWD-LIB@@</TT></TD>
+d299 1
+a299 1
+<TD><TT>@@NPASSW-DICTS@@</TT></TD>
+d304 1
+a304 1
+<TD><TT>@@NPASSWD-LIB@@/doc</TT></TD>
+d309 6
+a314 1
+<TD><TT>@@NPASSWD-LIB@@/passwd.conf</TT></TD>
+d319 2
+a320 2
+<TD><TT>@@NPASSWD-LIB@@/chfn.help</TT>
+<BR><TT>@@NPASSWD-LIB@@/chfn.motd</TT></TD>
+d325 2
+a326 2
+<TD><TT>@@NPASSWD-LIB@@/chsh.help</TT>
+<BR><TT>@@NPASSWD-LIB@@/chsh.motd</TT></TD>
+d331 2
+a332 2
+<TD><TT>@@NPASSWD-LIB@@/passwd.motd</TT>
+<BR><TT>@@NPASSWD-LIB@@/passwd.motd</TT></TD>
+@
+
+
+1.4
+log
+@Another cleanup pass
+@
+text
+@d86 1
+a86 1
+The <A HREF="Reference.html#passwd.SingleCase">password checking</A>
+d131 1
+a131 1
+<A HREF="makedict_man.html">makedict</A>, which 
+d156 1
+a156 2
+<A HREF="FAQ.html"><b>Frequently Asked Questions</b></a>.
+
+a161 2
+The <A HREF="makedict_man.html"><I>makedict</I></A> and
+<A HREF="makedict_man.html"><I>unpacker</I></A> programs are in @@NPASSWD-LIB@@.
+d170 1
+a170 1
+<BR><TT>makedict -o new-dictionary crack-dictionary-name</TT>
+d176 1
+a176 1
+<TT>makedict -o new-dictionary list-1 ... list-n</TT></DD>
+d183 1
+a183 1
+<TT>makedict -o existing-dictionary -m existing-dictionary list-1 ... list-n</TT></DD>
+d197 1
+a197 1
+<TT>unpacker dict-name | more</TT></DD>
+d204 1
+a204 2
+<a name="admin_history"></a>
+<H2>More about password history</H2>
+d217 1
+a217 1
+<I><A HREF="history_admin_man.html">history_admin</A></I>
+d241 1
+a241 1
+run <I><A HREF="history_admin_man.html">history_admin</A></I>
+@
+
+
+1.3
+log
+@Change name and fix a link
+@
+text
+@d15 1
+a15 1
+<H2>More about password checking</H2>
+a52 1
+<LI> NIS map (code in place but not tested).</LI>
+d127 1
+a127 1
+<B>Dictionaries</B> are a set of hash files optimized for fast lookups.
+d130 1
+a130 1
+The dictionary hash files are created via 
+d137 2
+a138 2
+These hash files normally live in the main dictionary directory
+(<b>npasswd-lib/dictionaries</b>), but can be placed elsewhere
+d140 1
+a140 1
+configuration file</A>.
+d163 2
+a164 2
+The <I><A HREF="makedict_man.html">makedict</A></I> and <I><A HREF="makedict_man.html">unpacker</A></I>
+programs are in the <I>npasswd</I> install directory.
+d212 11
+a222 1
+user and compares the candidate to each password in the history.
+a223 14
+<P>The history mechanism is inactive unless the database file(s) exist.
+Explicit action is required to enable it. Use the <I><A HREF="history_admin_man.html">history_admin</A></I>
+utility to manage the password history mechanism.
+
+<P>There are two criteria for what passwords are active in the history:
+<UL>
+<LI>
+Passwords older than N days are ignored.</LI>
+
+<LI>
+Of the young enough passwords, only the last N are valid.</LI>
+</UL>
+These criteria can be set in the <A HREF="Reference.html#passwd.History">configuration
+file</A>.
+d227 4
+a230 4
+There are special considerations in locating the history database. If a
+system is part of a cluster which shares a password file, the password
+history database <B>must</B> on a shared file system to which the other
+cluster members can write, preferably with root permission.
+d232 4
+a235 4
+<P>If this is not possible, change the ownership of the history database
+files to a non root user. If <I>npasswd</I> cannot update the history database
+as root, it will attempt to use <I>setreuid</I>(2) to temporarily change
+effective uid to the owner of the database and try again to update it.
+a236 4
+<P>The password history mechanism should support something other than files,
+and there is untested code stubbed in for using NIS. The proper solution
+would be RPC-based, but that is a lot of work which even the systems that
+support password history (e.g. Digital UNIX), have not done.
+d272 1
+a272 1
+<HR WIDTH="50%" align=left>
+d281 2
+a282 2
+The path <B>/usr/lib/passwd</B> can be changed by re-running
+<A HREF="BuildInstall.html"><B>Configure</B></A>.
+d293 1
+a293 2
+<TD><TT>/usr/lib/passwd</TT></TD>
+
+d298 1
+a298 2
+<TD><TT>/usr/lib/passwd/xbin</TT></TD>
+
+d303 2
+a304 3
+<TD><TT>/usr/lib/passwd/dictionaries</TT></TD>
+
+<TD>Directory where the hashed <I>Crack </I>dictionaries live</TD>
+d308 1
+a308 2
+<TD><TT>/usr/lib/passwd/doc</TT></TD>
+
+d313 1
+a313 2
+<TD><TT>/usr/lib/passwd/passwd.conf</TT></TD>
+
+d318 2
+a319 3
+<TD><TT>/usr/lib/passwd/chfn.help</TT>
+<BR><TT>/usr/lib/passwd/chfn.motd</TT></TD>
+
+d324 2
+a325 3
+<TD><TT>/usr/lib/passwd/chsh.help</TT>
+<BR><TT>/usr/lib/passwd/chsh.motd</TT></TD>
+
+d330 2
+a331 2
+<TD><TT>/usr/lib/passwd/passwd.help</TT>
+<BR><TT>/usr/lib/passwd/passwd.motd</TT></TD>
+d337 1
+a337 1
+<TD><TT>/usr/lib/passwd/history</TT></TD>
+@
+
+
+1.2
+log
+@Change title
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd: Administrator's guide</TITLE>
+d11 1
+a11 1
+<H1>Npasswd: Administrator's Guide</H1></CENTER>
+d43 1
+a43 1
+to root. See <a href="#admin_history">below</a> for details.
+d290 2
+a291 2
+The path <b>/usr/lib/passwd</b> can be changed by re-running
+<a href="Build.html"><b>Configure</b></a>.
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a5 1
+   <TITLE>Npasswd Administrators Guide</TITLE>
+d11 1
+a11 1
+<H1>Administrators Guide</H1></CENTER>
+@

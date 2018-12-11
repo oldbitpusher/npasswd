@@ -1,0 +1,230 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.3
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Update path tokens
+@
+text
+@'\"
+'\" Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+'\" All rights reserved.
+'\"
+'\" By using this software the USER indicates that he or she has read,
+'\" understood and will comply with the following:
+'\"
+'\" U. T. Austin hereby grants USER permission to use, copy, modify, and
+'\" distribute this software and its documentation for any purpose and
+'\" without fee, provided that:
+'\"
+'\" 1. the above copyright notice appears in all copies of the software
+'\"    and its documentation, or portions thereof, and 
+'\" 2. a full copy of this notice is included with the software and its
+'\"    documentation, or portions thereof, and 
+'\" 3. neither the software nor its documentation, nor portions thereof,
+'\"    is sold for profit. Any commercial sale or license of this software,
+'\"    copies of the software, its associated documentation and/or
+'\"    modifications of either is strictly prohibited without the prior
+'\"    consent of U. T. Austin. 
+'\" 
+'\" Title to copyright to this software and its associated documentation
+'\" shall at all times remain with U. T. Austin. No right is granted to
+'\" use in advertising, publicity or otherwise any trademark, service
+'\" mark, or the name of U. T. Austin.
+'\" 
+'\" This software and any associated documentation are provided "as is,"
+'\" and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+'\" IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+'\" PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+'\" DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+'\" OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+'\" University of Texas System, its Regents, officers, and employees shall
+'\" not be liable under any circumstances for any direct, indirect, special,
+'\" incidental, or consequential damages with respect to any claim by USER
+'\" or any third party on account of or arising from the use, or inability
+'\" to use, this software or its associated documentation, even if U. T.
+'\" Austin has been advised of the possibility of those damages.
+'\" 
+'\" Submit commercialization requests to: Office of the Executive Vice
+'\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+'\" 78712, ATTN: Technology Licensing Specialist.
+'\"
+'\" $Id$ (cc.utexas.edu)
+'\"
+.TH makedict 1
+.SH NAME
+makedict \- build npasswd dictionaries
+.br
+packer \- pack hashed dictionary files
+.br
+unpacker \- unpack hashed dictionary files
+.SH SYNOPSIS
+@@NPASSWD-UTIL@@/\fBmakedict\fP
+.BI \-\^o " output"
+[
+.BI \-\^m " source"
+] [
+.BI \-\^T " temp"
+] 
+words ... words
+.br
+@@NPASSWD-UTIL@@/\fBpacker\fP dictionary-name
+.br
+@@NPASSWD-UTIL@@/\fBunpacker\fP dictionary-name
+.SH DESCRIPTION
+.B Makedict
+builds the hashed dictionaries used by
+.BR npasswd .
+The dictionary hash files are built from \fIword lists\fP, which
+are text files with one word per line.
+.PP
+Three hashed files are created with the suffixes \fB.hwm\fP, \fB.pwd\fP, and \fB.pwi\fP .
+.PP
+.B Packer
+is a low-level utility which reads words (one per line) from standard
+input and packs them into hash files.
+.B Makedict
+is a smart front-end to 
+.BR packer ,
+and is the preferred tool for dictionary building.
+.PP
+.B Unpacker
+dumps dictionary hashes to standard output, one word per line.
+.SH OPTIONS
+.PP
+Options for
+.BR makedict .
+.TP
+.BI \-\^o " output"
+Create the dictionary 
+.BR output .
+.TP
+.BI \-\^m " source"
+Merge in words in dictionary
+.BR source .
+.TP
+.BI \-\^T " temp"
+Use 
+.B temp
+as the temporary directory for sorting.  Use this option if the default
+temporary directory used by
+.IR sort (1)
+is small.
+.TP
+.I words ... words
+Word lists. Compressed files (ending with \fB.Z\fP or \fB.gz\fP) can be used.
+.PP
+.B Packer
+and 
+.B unpacker
+take one argument \- the name of the dictionary file to pack or unpack.
+.SH EXAMPLES
+.PP
+To make the dictionary 'my-dict':
+.RS
+.nf
+makedict -o my-dict word-list-1 ... word-list-n
+.fi
+.sp
+Will produce the files \fBmy-dict.pwd\fP,
+\fBmy-dict.pwi\fP and \fBmy-dict.hwm\fP.
+.RE
+.PP
+To add words to an existing dictionary:
+.RS
+.nf
+makedict -o existing-dict -m existing-dict word-list-1 ... word-list-n
+.fi
+.RE
+.SH DIAGNOSTICS
+.TP 5
+Missing option to -o
+No output file was specified.
+.TP 5
+Missing option to -T
+No temporary directory was specified.
+.TP 5
+Missing option to -m
+No merge dictionary was specified.
+.TP 5
+Empty or missing hash file \fIname\fP
+One of the dictionary hash files came up empty, either because the
+sources were empty or a filesytem error occurred.
+.SH BUGS
+The input to
+.B packer
+.B must
+.B be
+.BR sorted ,
+else the result hash files will be faulty.  Use 
+.B makedict
+instead.
+.SH "SEE ALSO"
+npasswd(1)
+.br
+\fINpasswd Reference Manual\fP
+.SH AUTHOR
+Clyde Hoover
+.br
+Academic Computing Services and Instructional Technology Services
+.br
+The University of Texas at Austin
+.br
+c.hoover@@cc.utexas.edu
+.br
+\(co 1998, The University of Texas at Austin. All rights reserved. 
+'\"
+'\" End $RCSfile$
+@
+
+
+1.2
+log
+@ Use path tokens
+@
+text
+@d54 1
+a54 1
+@@NPASSWD-LIB@@/\fBmakedict\fP
+d63 1
+a63 1
+\fInpasswd-lib\fP/\fBpacker\fP dictionary-name
+d65 1
+a65 1
+\fInpasswd-lib\fP/\fBunpacker\fP dictionary-name
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d54 1
+a54 1
+\fInpasswd-lib\fP/\fBmakedict\fP
+@

@@ -1,0 +1,8 @@
+
+              File                 |      Old symbol      |      New symbol
+-----------------------------------+----------------------+---------------------
+src/Common/xdecode.c               | P                    | _
+src/PasswordCheck/cracklib/rules.c | P                    | _
+src/PasswordCheck/history_admin.c  | NDBM                 | I_NDBM
+src/PasswordCheck/pwck_history.h   | NDBM                 | I_NDBM
+src/PasswordCheck/test_pwck.c      | P                    | _

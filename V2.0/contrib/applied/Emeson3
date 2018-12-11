@@ -1,0 +1,43 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06327
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:10:25 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01012
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:10:20 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13629
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:10:11 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08719; Wed, 10 Dec 1997 10:12:14 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101712.KAA08719@zlin.Colorado.EDU>
+Subject: Changes #3
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:12:14 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 867
+
+@@@@@@@@@@@@@@@@@@@@  Start of diffs   @@@@@@@@@@@@@@@@@@@
+*** pwck_defines.h.orig Fri Nov 21 13:17:14 1997
+--- pwck_defines.h      Wed Dec 10 09:39:07 1997
+***************
+*** 42,47 ****
+--- 42,48 ----
+                alpha_only,     /* All-alpha passwords ok or not */
+                print_only,     /* Printable characters only */
+                run_length,     /* Maximum length of character runs */
++               min_char_class, /* Minimum # of char classes */
+                min_length,     /* Minimum password length */
+                max_length;     /* Maximum effective length */
+        dictionary      *dictionaries; /* List of dictionaries to check */
+@@@@@@@@@@@@@@@@@@@@     end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

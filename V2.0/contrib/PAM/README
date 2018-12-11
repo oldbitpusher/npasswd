@@ -1,0 +1,26 @@
+###
+##
+#
+#    Strong Password Strength Checker.
+#    based on npasswd
+#
+#    bin		Binaries
+#    dictionaries	Crack check dictionaries
+#    etc		Config and other support files
+#    include		C header files for source code.
+#    install		Installation & UnInstallation scripts
+#    lib		Shared libraries
+#    pam_client.*	Pam modules ready for installation
+#    source		Complete source code.
+#
+# Instructions:
+#
+#  1. Un-tar/gunzip this distribution.
+#
+#  2. Edit / Configure the etc/passwd.conf file for your site.
+#
+#  3. use the install script to install the server.
+#
+#  4. use the install script on each client
+#
+

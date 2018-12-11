@@ -1,0 +1,1 @@
+../../../../../../src/Methods/TestSuite/SCCS/s.TestGetUser.sh

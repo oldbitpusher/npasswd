@@ -1,0 +1,16 @@
+
+How to apply npasswd patches
+
+1. Extract the patch archive into the top level npasswd directory:
+
+	tar xpvf patch-YY.tar
+
+2. Read "PATCH-YY/NEWS" to see what this patch does and if
+   you want it.
+
+3. To apply patches and replace changed sources:
+
+	sh PATCH-YY/COMMANDS
+
+Document @(#)README-PATCH	1.1 10/15/98 
+

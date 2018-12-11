@@ -1,0 +1,22 @@
+
+INCLUDES=-I../../include
+OBJX=
+OBJS=pwstrongd.o pwstrongc.o
+ SRC=pwstrongd.c pwstrongc.c
+
+LIBS=-lsocket -lnsl -L../../lib/SunOS-i386 -lpwcheck -lhide -lcomobj -lstrongconfig
+
+  CC=gcc $(INCLUDES) $(LIBS) -O -DTI_ITSS_PW_CHECK
+  CC=gcc $(INCLUDES) $(LIBS)
+
+all: $(OBJX) $(SRC) pwstrongd pwstrongc
+
+
+clean:
+	/bin/rm -f $(OBJS) pwstrongd pwstrongc core
+
+install: all
+	@./install_ksh
+
+config:
+	@./Configure

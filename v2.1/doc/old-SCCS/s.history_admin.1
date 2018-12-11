@@ -1,0 +1,474 @@
+h04356
+s 00009/00004/00280
+d D 1.9 98/10/15 14:39:37 clyde 9 8
+c Add '@' syntax for history database path
+e
+s 00001/00001/00283
+d D 1.8 98/10/14 09:41:13 clyde 8 7
+c Update depth limit info
+e
+s 00000/00010/00284
+d D 1.7 98/10/13 14:39:08 clyde 7 6
+c Remove disclaimer about 'file' method in BUGS section
+e
+s 00030/00028/00264
+d D 1.6 98/10/13 14:36:49 clyde 6 5
+c 1. Add -i and -XV options
+c 2. Update diagnostics section
+c 3. Update examples
+c 4. Update merge explanation
+e
+s 00028/00001/00264
+d D 1.5 98/10/01 10:56:42 clyde 5 4
+c Add 'merge' function, disclaimer under 'BUGS'
+e
+s 00004/00004/00261
+d D 1.4 98/07/20 16:12:33 clyde 4 3
+c Spell check
+e
+s 00001/00001/00264
+d D 1.3 98/07/16 09:13:11 clyde 3 2
+c Update path tokens
+e
+s 00003/00001/00262
+d D 1.2 98/07/08 17:05:11 clyde 2 1
+c Add path expansion tokens
+e
+s 00263/00000/00000
+d D 1.1 98/06/24 16:47:17 clyde 1 0
+c date and time created 98/06/24 16:47:17 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+'\"
+'\" Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+'\" All rights reserved.
+'\"
+'\" By using this software the USER indicates that he or she has read,
+'\" understood and will comply with the following:
+'\"
+'\" U. T. Austin hereby grants USER permission to use, copy, modify, and
+'\" distribute this software and its documentation for any purpose and
+'\" without fee, provided that:
+'\"
+'\" 1. the above copyright notice appears in all copies of the software
+'\"    and its documentation, or portions thereof, and 
+'\" 2. a full copy of this notice is included with the software and its
+'\"    documentation, or portions thereof, and 
+'\" 3. neither the software nor its documentation, nor portions thereof,
+'\"    is sold for profit. Any commercial sale or license of this software,
+'\"    copies of the software, its associated documentation and/or
+'\"    modifications of either is strictly prohibited without the prior
+'\"    consent of U. T. Austin. 
+'\" 
+'\" Title to copyright to this software and its associated documentation
+'\" shall at all times remain with U. T. Austin. No right is granted to
+'\" use in advertising, publicity or otherwise any trademark, service
+'\" mark, or the name of U. T. Austin.
+'\" 
+'\" This software and any associated documentation are provided "as is,"
+'\" and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+'\" IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+'\" PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+'\" DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+'\" OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+'\" University of Texas System, its Regents, officers, and employees shall
+'\" not be liable under any circumstances for any direct, indirect, special,
+'\" incidental, or consequential damages with respect to any claim by USER
+'\" or any third party on account of or arising from the use, or inability
+'\" to use, this software or its associated documentation, even if U. T.
+'\" Austin has been advised of the possibility of those damages.
+'\" 
+'\" Submit commercialization requests to: Office of the Executive Vice
+'\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+'\" 78712, ATTN: Technology Licensing Specialist.
+'\"
+'\" %W% %G% (cc.utexas.edu)
+'\"
+.TH history_admin 1
+.SH NAME
+history_admin \- administer password history database
+.SH SYNOPSIS
+D 2
+\fInpasswd-lib\fB/history_admin\fR
+E 2
+I 2
+D 3
+@NPASSWD-LIB@/history_admin\fR
+E 3
+I 3
+@NPASSWD-UTIL@/history_admin\fR
+E 3
+E 2
+[
+.B \-\^a
+.I age
+] [
+.B \-\^c
+.I file
+] [
+.B \-\^d
+.I depth
+] [
+.B \-\^f
+.I file
+] [
+I 6
+.B \-\^i
+.I file
+] [
+E 6
+.B \-\^l
+] [
+.B \-\^m
+.I format
+] [
+.B \-\^X
+.I option
+] [
+.B \-\^v
+] function
+.SH DESCRIPTION
+The 
+.B history_admin
+utility maintains the password history database used by
+.BR npasswd ,
+to control password reuse.
+.PP
+The form of history database entries is:
+.RS
+.sp
+D 4
+\fBname\fP:\fBpasswd\fP,\fBtimestamp\fP:.\ .\ .:\fBpasswd\fP,\fBtimestamp\fP:
+E 4
+I 4
+\fBname\fP:\fBpasswd\fP,\fBtime-stamp\fP:.\ .\ .:\fBpasswd\fP,\fBtime-stamp\fP:
+E 4
+.TP
+.B name
+Is the user name.
+.TP
+D 4
+.B passwd\fP,\fBtimestamp
+E 4
+I 4
+.B passwd\fP,\fBtime-stamp
+E 4
+The encrypted password and the time the password was entered into the database.
+There can be multiple such items in a history entry.
+.PP
+This utility should be run as root, or by the user who owns the history
+D 4
+database.  Creation of a new database may require root privleges.
+E 4
+I 4
+database.  Creation of a new database may require root privileges.
+E 4
+.RE
+.SH OPTIONS
+.TP
+.BI \-\^a " time"
+Set the password history age limit to
+.I age
+days.
+A setting of 0 disables the age limit.
+.TP
+.BI \-\^c " file"
+Use configuration file
+.I file 
+instead of \fInpasswd-lib\fP/\fBpasswd.conf\fP.
+.TP
+.BI \-\^d " depth"
+D 8
+Set the password retention limit to 
+E 8
+I 8
+Set the old password retention limit to 
+E 8
+.IR depth .
+A setting of 0 disables the depth limit.
+.TP
+.BI \-\^f " file"
+D 9
+Path to the history database.
+E 9
+I 9
+Path to the history database.  If 
+.B file
+is 
+.B '@'
+then the default database path is used.
+E 9
+.TP
+I 6
+.BI \-\^i " file"
+Input data.  Standard input is read if no input file is given.
+.TP
+E 6
+.B \-\^l
+Log errors with
+.IR syslog (3).
+.TP
+.BI \-\^m " format"
+Select database format.
+.RS
+.TP
+.I file
+History is stored in a text file.
+.TP
+.I dbm
+D 9
+History is stored in a DBM database.  This is the default format
+if the DBM routines are available.
+E 9
+I 9
+History is stored in a DBM database.  This is the default
+if the NDBM library is available.
+E 9
+.RE
+.TP
+.BI \-\^X " option"
+Set special options:
+.RS
+.TP
+.BI D n
+Set internal debug level to
+.IR n .
+See the "Command line options" section in the
+\fINpasswd Reference Manual\fP for the available debugging levels.
+I 6
+.TP
+.BI h
+Print help text.
+.TP
+.BI V
+Print version information.
+E 6
+.RE
+.TP
+.B \-\^v
+Verbose.
+.TP
+function
+D 4
+Select maintanance function.
+E 4
+I 4
+Select maintenance function.
+E 4
+.RS
+.TP
+.I dump
+Dumps the database to standard output.
+.TP
+.I load
+Reads history records (of the form described above)
+D 6
+from standard input and populates the database.
+E 6
+I 6
+from the input and populates the database.
+E 6
+.TP
+I 5
+.I merge
+Reads history records (of the form described above)
+D 6
+from standard input and merges them into the database.
+.RS
+.IP \(bu
+If the database method is
+.IR file ,
+the entries for users in the database will be replaced with the
+last record read from the input for that user.
+.IP \(bu
+If the database method is
+.IR dbm ,
+users in the database will have the input records merged into
+their entries.
+.RE
+E 6
+I 6
+from the input and merges them into the database.
+E 6
+.TP
+E 5
+.I purge
+Cleans the database of old and excess passwords:
+.RS
+.IP \(bu
+Removes entries for users who are not in the password file.
+.IP \(bu
+Removes passwords which are too old.  This limit is set in the 
+.B npasswd
+configuration file, but can be overridden by the
+.B \-\^a
+option.
+.IP \(bu
+Removes excess passwords.  There is a limit to how many passwords
+are kept for each user.
+The limit is set in the
+.B npasswd
+configuration file, but can be overridden by the
+.B \-\^d
+option.
+.RE
+.RE
+.PP
+.B History_admin
+exits with 0 status if successful, and 1 for failure.
+.SH EXAMPLES
+.PP
+Running a periodic database clean from 
+.IR cron :
+.RS
+.nf
+history_admin\ \-\^l\ purge\ 2>\ purge-errors
+.fi
+.RE
+.PP
+Creating the default database:
+.RS
+.nf
+D 6
+history_admin\ load\ <\ /dev/null
+E 6
+I 6
+history_admin\ load <\ /dev/null
+E 6
+.fi
+.RE
+.PP
+Populating alternate DBM database from a file:
+.RS
+.nf
+D 6
+history_admin\ \-\^m\ dbm\ \-\^f\ /tmp/new-history\ load\ <\ test-data
+E 6
+I 6
+history_admin\ \-\^m\ dbm\ \-\^f\ /tmp/new-history\ -i\ test-data\ load
+E 6
+.fi
+.RE
+.PP
+Removing a user from the default database:
+.RS
+.nf
+history_admin\ dump\ |\ grep\ \-\^v\ "^username:"\ |\ history_admin\ load
+.fi
+.RE
+.SH DIAGNOSTICS
+.TP 5
+Config file error '\fBfilename\fP' line \fBn\fP; \fImessage\fP
+An error was encountered in the configuration file.  
+.TP 5
+Database error file '\fBfilename\fP' method '\fBwhat\fP' error '\fImessage\fP'
+D 6
+A bad database path or format was given.
+E 6
+I 6
+A bad database path or method was specified on the command line.
+E 6
+.TP 5
+No history database
+D 6
+The history mechanism has been disabled in the configuration file.
+E 6
+I 6
+The history mechanism has been disabled in the configuration file or
+the history database is missing.
+E 6
+.TP 5
+Unknown function '\fBwhat\fP'
+An unknown function was given.
+.TP 5
+I 6
+No memory for .\ .\ .
+Temporary memory allocation failed.
+.TP 5
+E 6
+Cannot make temp file '\fBfilename\fP', error \fIerrno\fP
+Failure to create database temporary file.
+.TP 5
+Cannot make DBM '\fBfilename\fP'
+Failure to create DBM database.
+.TP 5
+D 6
+No memory for DBM key copy
+Temporary memory allocation failed.
+.TP 5
+Filter popen failed
+The 
+.IR popen (3s)
+to process the flat history file format failed.
+.TP 5
+E 6
+History purge errors - new database left in '\fBfilename\fP'
+An error was encountered in purging the history.   The database was
+left unchanged.
+.TP 5
+D 6
+History load errors - new database left in '\fBfilename\fP'
+An error was encountered trying to create a database.
+E 6
+I 6
+History load/merge errors - new database left in '\fBfilename\fP'
+A serious error was encountered doing a database create or merge.
+.TP 5
+DBM \fIdelete|replace|insert\fP for \fBuser\fP failed
+The deletion, replacment or insertion of a DBM entry failed.
+.TP 5
+Replace DBM '\fBfile\fP' failed
+A serious error was encountered loading a DBM dataahbase.
+E 6
+I 2
+.SH FILES
+@NPASSWD-HIST@ \- the default history database
+E 2
+.SH BUGS
+D 5
+Undoubtedly there are bugs.  They are not known at this time.
+E 5
+I 5
+Undoubtedly there are more bugs than have already been noted
+(and fixed).
+D 7
+.sp
+The
+.I file
+method implimentation is unsophisticated, so the
+.I merge
+function does not work quite as nicely as it does for the
+.I dbm
+method.  For this and other reasons, the
+.I file
+method is not recommended.
+E 7
+E 5
+.SH "SEE ALSO"
+D 9
+npasswd(1)
+E 9
+I 9
+npasswd(1),
+checkpassword(3)
+E 9
+.br
+\fINpasswd Reference Manual\fP
+.SH AUTHOR
+Clyde Hoover
+.br
+Academic Computing Services and Instructional Technology Services
+.br
+The University of Texas at Austin
+.br
+c.hoover@cc.utexas.edu
+.br
+\(co 1998, The University of Texas at Austin. All rights reserved. 
+'\"
+'\" End %M%
+E 1

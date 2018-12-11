@@ -1,0 +1,139 @@
+#!/bin/ksh
+###
+#
+# Strong Password Server Installation Script
+#
+# Copyright 1998-2001, Texas Instruments. All rights reserved.
+#
+# By using this software the USER indicates that he or she has read,
+# understood and will comply with the following:
+#
+# 1. the above copyright notice appears in all copies of the software
+#    and its documentation, or portions thereof, and 
+# 2. a full copy of this notice is included with the software and its
+#    documentation, or portions thereof, and 
+# 3. neither the software nor its documentation, nor portions thereof,
+#    is sold for profit. Any commercial sale or license of this software,
+#    copies of the software, its associated documentation and/or
+#    modifications of either is strictly prohibited without the prior
+#    consent of Texas Instruments.
+# 4. This software and any associated documentation are provided "as is,"
+#    and any issues, problems are yours to deal with. The USER takes
+#    full responsibility for the performance of this software.
+#
+#
+#  Author: Victor Burns
+#          Texas Instruments, 2001
+#
+#
+###
+#
+
+export PATH=/usr/bin:/etc:/sbin:/usr/sbin
+ 
+OSversion="`uname -s`.`uname -r`"
+[ "`uname -m`" = 'i86pc' ] && OSversion="${OSversion}.`uname -m`"
+XD=${0%/*}
+XD=${XD%/install}
+[ "$XD" = '.' ] && XD=`/usr/bin/pwd`
+[ "$XD" = ''  ] && XD=`/usr/bin/pwd`
+XD=${XD%/install}
+SD="${XD}/pam_client.${OSversion}"
+
+umask 0022
+
+### Source Setup Config File
+. ${XD}/install/install-settings
+
+print  "\n Client PAM Module installer\n"
+
+[ -d $SD ] || print " Warning: Pre-compiled PAM Client not found at:\n    $SD\n\n"
+[ -d $SD ] || exit 0
+
+[ -d "/usr/lib/security" ] || { print "Error: /usr/lib/security not found.\n"; exit 1; }
+
+cd $SD || { print "Error during install(dir)"; exit 0; }
+SharedObject="`echo pam_strongpw.s[ol].1`"
+[ -f "$SharedObject" ] || { print "Error during install(file)"; exit 0; }
+
+printf " Shared Library [ %-20s ]\n" $SharedObject
+printf " Version        [ %-20s ]\n" $OSversion
+print  ""
+
+### Remove old link if already exists
+
+[ -h /usr/lib/security/${SharedObject%.?} ] && /bin/rm -f /usr/lib/security/${SharedObject%.?}
+
+### Install client
+
+/bin/tar cf - $SharedObject | ( cd /usr/lib/security; /bin/tar xf - )
+/bin/ln -s $SharedObject /usr/lib/security/${SharedObject%.?}
+
+/bin/chmod 0755      /usr/lib/security/${SharedObject}
+/bin/chown root:root /usr/lib/security/${SharedObject}
+/bin/ls -ald         /usr/lib/security/${SharedObject}
+
+### /usr/lib/passwd cannot be a link
+
+if [ -h ${REALPATH} ]
+then
+	print
+	print "  WARNING - Installation path exists as link."
+	print "            [ $REALPATH ]"
+	print
+	print "  exited."
+	print
+	exit -1
+fi
+
+### Install daemon test program
+
+[ "`uname -s`" = 'SunOS' ] && OSversion="`uname -s`-`uname -p`" || OSversion="`uname -s`-`uname -m | sed 's=/==g'`"
+cd ${SRC_PATH}/bin/${OSversion} || { print "ERROR - ${SRC_PATH}/bin/${OSversion} not exist"; exit -1; }
+[ -d ${REALPATH}/bin ] || mkdir -m 0755 -p ${REALPATH}/bin
+tar cf - pwstrongchk | ( cd ${REALPATH}/bin ; tar xf - )
+ls -ald ${REALPATH}/bin/pwstrongchk
+
+### Install Configuration File
+
+if [ -f ${REALPATH}/etc/passwd.conf ]
+then
+	print
+	print "  INFO - Password Strength Configuration file exists. (preserved)"
+	print
+else
+	print
+	print "  INFO - Installing Strength Configuration file."
+	print "         [ ${REALPATH}/etc/passwd.conf ]"
+	print
+
+	mkdir -m 0755 -p ${REALPATH}/etc
+
+	if [ -f ${XD}/etc/passwd.conf ]
+	then
+		cd ${XD}/etc
+		tar cf - passwd.conf | ( cd ${REALPATH}/etc ; tar xf - )
+	fi
+fi
+
+### Close
+
+ print
+ print " Reminder: The PAM module can be activated by editing the PAM"
+ print "           configuration file to look like one of the examples"
+ print "           below."
+ print
+ print "   Solaris Setup: /etc/pam.conf"
+ print
+ print "    other password requisite /usr/lib/security/pam_strongpw.so.1"
+ print "    other password required  /usr/lib/security/pam_unix.so.1     use_first_pass"
+ print "    other password requisite /usr/lib/security/pam_strongpw.so.1 use_first_pass update_db"
+ print
+ print "   HP-UX   Setup: /etc/pam.conf"
+ print
+ print "    passwd password required /usr/lib/security/pam_strongpw.sl.1"
+ print "    passwd password required /usr/lib/security/libpam_unix.1     use_first_pass"
+ print "    passwd password required /usr/lib/security/pam_strongpw.sl.1 use_first_pass update_db"
+ print
+
+### END

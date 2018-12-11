@@ -1,0 +1,41 @@
+h50716
+s 00001/00001/00019
+d D 1.2 97/05/05 17:05:56 clyde 2 1
+c Put evaled strings in ""
+e
+s 00020/00000/00000
+d D 1.1 95/04/05 16:09:51 clyde 1 0
+c date and time created 95/04/05 16:09:51 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_lckpwdf' - see if the lckpwdf routine exists
+?RCS:
+?MAKE:p_lckpwdf: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_lckpwdf
+?S:p_lckpwdf:
+?S:	This variable is set to 'true' if the lckpwdf and unlckpwdf 
+?S:	routines exist in libc.
+?S:.
+?C:HAS_LCKPWDF:
+?C:	This symbol, if defined, indicates that lckpwdf and ulckpwdf exist.
+?C:.
+?H:#$p_lckpwdf	HAS_LCKPWDF	/**/
+?H:.
+set lckpwdf p_lckpwdf
+D 2
+eval $inlibc
+E 2
+I 2
+eval "$inlibc"
+E 2
+
+E 1

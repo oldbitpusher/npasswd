@@ -1,0 +1,608 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	98.11.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.09.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.08.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.07.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Add SymlinkSourceFile() macro
+@
+text
+@/*
+ * Makefile fragment to setup npasswd Jmakefiles
+ *
+ * Should be #included as early as possible in Jmakefile
+ *
+ * $Id$ (cc.utexas.edu)
+ */
+;#
+;# This file is auto-generated from Makefile.SH - all persistent
+;# changes should be made there.
+;#
+;# Makefile.SH is itself generated from "Jmakefile" by jmake.
+;#
+;# Jmakefile is included in the developer kit.
+;# See the Npasswd Support Guide (Support.html).
+;#
+
+/* --------------------------------------------------------------- *
+ *
+ *		Initialization section
+ *
+ * --------------------------------------------------------------- *
+ */
+
+/*
+ * Set flags
+ *	X_CCDEBUG = Compiler debug flags (from config.sh)
+ *	X_CFLAGS = Complete compile flags
+ *	X_LDFLAGS = Complete loader flags
+ */
+Initialize(X_CCDEBUG, $cc_dbflags)
+Initialize(X_COPT, $optimize)
+Initialize(X_CFLAGS, $ccflags $cc_osflags $(INCLUDE_PATH))
+
+Initialize(X_LDFLAGS, $ldflags)
+Initialize(X_LOCAL_CFLAGS, ^^)
+
+Initialize(LOCAL_FLAGS, Makefile.local)
+
+/*
+ * Set standard compile & load flags to include debug settings
+ *	X_LOCAL_CFLAGS = Compiler /linker debug / npasswd test switches
+ * (the ++VAR syntax does not work for JCFLAGS)
+ */
+Initialize(JCFLAGS, $(X_CFLAGS) $(X_COPT) $(X_LOCAL_CFLAGS))
+Initialize(JLDFLAGS, $(X_LDFLAGS) $(X_LOCAL_CFLAGS))
+Initialize(LNS, $lns)
+
+/*
+ * Flags for "make depend"
+ */
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+
+/*
+ * Flags for "make lint"
+ */
+Initialize(LINTFLAGS, $(X_CFLAGS) $ccflags)
+
+#define HelpTarget()	@@!\
+;#	@@!\
+;# "make help" will show useful targets	@@!\
+;#	@@!\
+help::	@@@@\
+	@@echo Targets in Makefile	@@@@\
+	-@@sed -n 's/^##[ 	]/	/p' Makefile
+
+#define Describe(_target,_text) @@!\
+# @@!\
+# _target	@@!\
+#	_text	@@!\
+# @@!\
+## _target:		_text
+
+/*
+ * NoDist
+ *	Do-nothing dist target for current directory
+ */
+#define	NoDist()	@@!\
+dist:	@@@@\
+	-@@echo Nothing to dist in $(CURRENT)
+/*
+ * SymlinkSourceFile:
+ *	Snag source file from some other directory
+ */
+#define SymlinkSourceFile(_src,_dir)		@@!\
+>RM @@!\
+_src:  _dir/_src		@@@@\
+	$(RM) $@@		@@@@\
+	$(LNS) $? $@@		@@!\
+
+/*
+ * SubdirDist
+ *	Do dist target in subdirs
+ */
+#define	SubdirDist(_dirs)	@@!\
+##_ dist::	 Make dist in (_dirs) @@!\
+# @@!\
+NamedTargetSubdirsRule(_dirs,dist,dist,^^)
+
+/*
+ * ThingFromSH
+ *	Build thing from .SH script without the baggage of ShellScriptTarget()
+ */
+#define	ThingFromSH(what)	@@!\
+|expand t!what! 	@@!\
+CustomThingFromSH(!t,!t) @@!\
+-expand
+
+/*
+ * CustomThingFromSH
+ *	Build thing from .SH script when the source name does not
+ *	match the target name.
+ */
+#define	CustomThingFromSH(_target,_src)	@@!\
+>RM	@@!\
+_target:	_src^^.SH	@@@@\
+	@@$(RM) _target	@@@@\
+	@@sh _src^^.SH	@@@@\
+ @@!\
+_src^^.SH:	@@@@\
+	@@exit 0;	@@!\
+
+/*
+ * ScriptFromsh
+ *	Make thing .sh script
+ */
+#define ScriptFromsh(_file) @@!\
+>RM		@@!\
+_file^^: _file^^.sh 		@@@@\
+	$(RM) _file		@@@@\
+	cp _file^^.sh _file	@@@@\
+	chmod +x _file		@@@@\
+  @@!\
+_file^^.sh:	@@@@\
+	@@exit 0;	@@!\
+   
+
+/*
+ * XdirLibMake 
+ *	Similar to RemoteDependency or CommonSubdirsRule macros,
+ *	which doesn't do quite what I want.
+ */
+#define XdirLibMake(_target,_dir)       @@!\
+>MAKE			@@!\
+ForceTarget()		@@!\
+_dir/lib^^_target^^.a:     .FORCE	@@@@\
+        cd _dir; $(MAKE) $(MFLAGS) lib^^_target^^.a
+
+/*
+ * XdirMake 
+ *	Similar to RemoteDependency or CommonSubdirsRule macros,
+ *	which doesn't do quite what I want.
+ */
+#define XdirMake(_tag,_target,_dir)       @@!\
+>MAKE			@@!\
+ForceTarget()		@@!\
+_tag::     .FORCE	@@@@\
+        cd _dir; $(MAKE) $(MFLAGS) _target
+
+/*
+ * NoLint
+ *	Null lint target
+ */
+#define NoLint()       @@!\
+lint: @@@@\
+	-@@echo Nothing to lint in $(CURRENT)
+
+/*
+ * NoDepend
+ *	Null depend target
+ */
+#define NoDepend()       @@!\
+depend: @@@@\
+	-@@echo No dependancies in $(CURRENT)
+
+/*
+ * Final
+ */
+#define	TerminalDependancy(what)	@@!\
+|expand t!what! 	@@!\
+!t:	@@@@\
+	@@exit 0;	@@!\
+ @@!\
+-expand
+
+
+/*
+ * DebugTarget
+ *	Targets for building debug binaries
+ */
+#define	DebugTarget() @@!\
+;# --------------------------------------------------------------- @@!\
+;# Set compile flags to build debug and test versions @@!\
+;# --------------------------------------------------------------- @@!\
+include $(LOCAL_FLAGS)		@@!\
+   @@!\
+;# @@!\
+;# debug-none @@!\
+;#	 Set Makefile to build production binary @@!\
+;##_ debug-none:	Set Makefile to build production binary @@!\
+;# @@!\
+debug-none:: @@@@\
+	@@$(RM) -f $(LOCAL_FLAGS) @@@@\
+	@@cp /dev/null $(LOCAL_FLAGS) @@@@\
+	@@echo "Set flags in $(CURRENT) to build production binary (test off)" @@@@\
+	@@echo "Do \"make realclean\" to remove old objects @@!\
+   @@!\
+;# @@!\
+;# debug-dbx @@!\
+;#	Set Makefile to build debugger friendly binary) @@!\
+;##_ debug-dbx:	Set Makefile to build debugger friendly binary) @@!\
+;# @@!\
+debug-dbx:: @@@@\
+	@@$(RM) -f $(LOCAL_FLAGS) @@@@\
+	@@echo 'X_LOCAL_CFLAGS = ${X_CCDEBUG} -DCDEBUG=1' > ${LOCAL_FLAGS} @@@@\
+	@@echo 'X_COPT='	>> ${LOCAL_FLAGS} @@@@\
+	@@echo "Set flags in $(CURRENT) to build debugger friendly binary (test level 1)" @@@@\
+	@@echo "Do \"make realclean\" to remove old objects @@!\
+   @@!\
+;# @@!\
+;# debug-files @@!\
+;#	 Set Makefile to build binary which uses local files) @@!\
+;##_ debug-files: Set Makefile to build binary which uses local files @@!\
+;# @@!\
+debug-files:: @@@@\
+	@@$(RM) -f $(LOCAL_FLAGS) @@@@\
+	@@echo 'X_LOCAL_CFLAGS = ${X_CCDEBUG} -DCDEBUG=2' > $(LOCAL_FLAGS) @@@@\
+	@@echo 'X_COPT='	>> $(LOCAL_FLAGS) @@@@\
+	@@echo "Set flags in $(CURRENT) to build binary which uses local files (test level 2)" @@@@\
+	@@echo "Do \"make realclean\" to remove old objects @@!\
+   @@!\
+;# @@!\
+;# debug-system  @@!\
+;#	Set Makefile to build non-production test binary @@!\
+;##_ debug-system:	Set Makefile to build non-production test binary @@!\
+;# @@!\
+debug-system:: @@@@\
+	@@$(RM) -f $(LOCAL_FLAGS) @@@@\
+	@@echo 'X_LOCAL_CFLAGS = ${X_CCDEBUG} -DCDEBUG=3' > $(LOCAL_FLAGS) @@@@\
+	@@echo 'X_COPT='	>> $(LOCAL_FLAGS) @@@@\
+	@@echo "Set flags in $(CURRENT) to build non-production test binary (test level 3)" @@@@\
+	@@echo "Do \"make realclean\" to remove old objects	@@!\
+ @@!\
+;# Have "make depend" reset compile flags		@@!\
+ @@!\
+depend::						@@@@\
+	-@@cp /dev/null $(LOCAL_FLAGS)
+
+
+/*
+ * NoDebug()
+ *	Define do-nothing debug targets
+ */
+#define	NoDebug() @@!\
+;# --------------------------------------------------------------- @@!\
+;# Do-nothing debug targets @@!\
+;# --------------------------------------------------------------- @@!\
+|expand t!none dbx files system! @@!\
+debug-!t:: @@@@\
+	@@echo Nothing to debug in $(CURRENT) @@!\
+    @@!\
+-expand
+
+
+/*
+ * DebugCustomSubdir()
+ *	Define debug targets for subdirectories
+ */
+#define	DebugCustomSubdir(_subdirs) @@!\
+>MAKE @@!\
+;# --------------------------------------------------------------- @@!\
+;# Set debugging flags in sub-directories @@!\
+;# --------------------------------------------------------------- @@!\
+|expand d!_subdirs! @@!\
+debug-none:: @@@@\
+	cd !d; $(MAKE) $(MFLAGS) debug-none @@!\
+    @@!\
+debug-dbx:: @@@@\
+	cd !d; $(MAKE) $(MFLAGS) debug-dbx @@!\
+    @@!\
+debug-files:: @@@@\
+	cd !d; $(MAKE) $(MFLAGS) debug-files @@!\
+    @@!\
+debug-system:: @@@@\
+	cd !d; $(MAKE) $(MFLAGS) debug-system @@!\
+    @@!\
+-expand
+
+/*
+ * DebugSubdirs()
+ *	Recursive subdirectory debug make
+ */
+#define	DebugSubdirs() @@!\
+;# --------------------------------------------------------------- @@!\
+;# Set debugging flags in sub-directories @@!\
+;# --------------------------------------------------------------- @@!\
+|expand t!none dbx files system! @@!\
+# debug-!t @@!\
+##_ debug-!t:	Set debug level  @@!\
+# @@!\
+NamedTargetSubdirs(debug-!t,debug-!t,^^) @@!\
+-expand
+
+/*
+ * DebugMulti()
+ *	Define debug targets which points to another thing
+ */
+#define	DebugMulti(_what) @@!\
+|expand t!none dbx files system! @@!\
+# debug-!t @@!\
+##_ debug-!t:	Set debug level  @@!\
+# @@!\
+debug-!t::	_what		@@!\
+   @@!\
+-expand
+
+/*
+ * SpecialSubdirsRule:
+ *	Recursively make a series of steps in the specified directories.
+ */
+#define SpecialSubdirsRule(target,dirs)	@@!\
+>MAKE @@!\
+target::		@@@@\
+	@@case '${MFLAGS}' in *[ik]*) set +e;; esac; \			@@@@\
+	for i in dirs ;\						@@@@\
+	do \								@@@@\
+		(cd $$i ; echo $(VERB) "in $(DIR)$$i..."; \		@@@@\
+			$(MAKE) $(MFLAGS) $(FLAGS) $(TARGET)); \	@@@@\
+	done
+
+
+/*
+ * SpecialNamedTargetSubdirs:
+ *	Recursively make a series of steps.
+ */
+#define SpecialNamedTargetSubdirs(name,what,target,verb,flags)	@@!\
+>MAKE	@@!\
+name:: 							@@@@\
+	@@$(MAKE) what TARGET=target VERB=verb FLAGS=flags
+
+/* End $RCSfile$ */
+@
+
+
+1.6
+log
+@Fix problem with macros going too deep
+@
+text
+@d47 1
+d81 9
+@
+
+
+1.5
+log
+@Use TerminalDependancy() macro in more places
+@
+text
+@d110 2
+a111 2
+TerminalDependancy(_src^^.SH)	@@!\
+ @@!\
+a112 1
+
+d124 3
+a126 2
+TerminalDependancy(_file^^.sh)	@@!\
+  @@!\
+@
+
+
+1.4
+log
+@1. Change arg for ThingFromSH() 2. Add CustomThingFromSH()
+@
+text
+@d110 1
+a110 1
+_src^^.SH:	@@!\
+d118 1
+a118 1
+#define ScriptFromsh(file) @@!\
+d120 7
+a126 6
+file^^: file^^.sh 		@@@@\
+	$(RM) file		@@@@\
+	cp file^^.sh file	@@@@\
+	chmod +x file		@@@@\
+		@@!\
+file^^.sh:
+a127 1
+
+@
+
+
+1.3
+log
+@Substantial revision
+@
+text
+@d92 9
+d104 1
+a104 1
+#define	ThingFromSH(_target,_src)	@@!\
+d107 2
+a108 2
+	$(RM) _target	@@@@\
+	sh _src^^.SH	@@@@\
+@
+
+
+1.2
+log
+@Add help target, add to LocalEnd macro
+@
+text
+@d14 2
+a15 1
+;# The Jmakefile source is part of the Npasswd Developers Kit.
+a16 2
+;# See "doc/ProgrammerGuide.html" for help.
+;#
+d64 1
+a64 1
+	-@@sed -n 's/^##_[ 	]/	/p' Makefile
+d66 1
+a66 1
+#define Describe(target,text) @@!\
+d68 2
+a69 2
+# target	@@!\
+#	text	@@!\
+d71 1
+a71 1
+##_ target:		text
+d74 2
+a75 3
+ * SubdirLibMake 
+ *	Like the standard RemoteDependency or CommonSubdirsRule macros,
+ *	neither of which does quite what I want.
+d77 48
+a124 1
+#define LocalSubdirLibMake(target,dir)       @@!\
+d127 2
+a128 2
+dir/target:     .FORCE	@@@@\
+        cd dir; $(MAKE) $(MFLAGS) target
+d131 3
+a133 3
+ * SubdirXMake 
+ *	Like the standard RemoteDependency or CommonSubdirsRule macros,
+ *	neither of which does quite what I want.
+d135 1
+a135 1
+#define LocalSubdirMake(tag,target,dir)       @@!\
+d138 2
+a139 2
+tag::     .FORCE	@@@@\
+        cd dir; $(MAKE) $(MFLAGS) target
+d142 2
+a143 2
+ * LocalEnd
+ *	Invoke this as the last effective thing in Jmakefile
+d145 3
+a147 8
+#define	LocalEnd()	@@!\
+Describe(depend, Build Makefile dependancies)		@@!\
+DependTarget()		@@!\
+Describe(lint, Check C sources with lint)		@@!\
+LintTarget()	@@!\
+	@@!\
+depend::	@@@@\
+	@@cp /dev/null $(LOCAL_FLAGS)
+d149 7
+d158 12
+a169 1
+ * LocalDebug
+d172 1
+a172 1
+#define	LocalDebug() @@!\
+d187 1
+a187 1
+	@@echo "Do \"make clean\" to remove old objects @@!\
+d199 1
+a199 1
+	@@echo "Do \"make clean\" to remove old objects @@!\
+d211 1
+a211 1
+	@@echo "Do \"make clean\" to remove old objects @@!\
+d223 6
+a228 1
+	@@echo "Do \"make clean\" to remove old objects
+d230 1
+d232 1
+a232 1
+ * LocalNoDebug()
+d235 1
+a235 1
+#define	LocalNoDebug() @@!\
+d247 1
+a247 1
+ * SubdirDebug()
+d250 1
+a250 1
+#define	SubdirDebug(subdirs) @@!\
+d255 1
+a255 1
+|expand d!subdirs! @@!\
+d271 16
+a286 1
+ * LocalDebugMulti()
+d289 1
+a289 1
+#define	LocalDebugMulti(what) @@!\
+d291 4
+a294 1
+debug-!t::	what		@@!\
+d298 24
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 1
+a12 2
+;# Makefile.SH is itself generated from "Jmakefile" by the jmake program
+;# (of the "dist" package).
+d14 1
+a14 1
+;# The Jmakefile source for this file is in the "Npasswd Developers Kit"
+d16 1
+a16 1
+;# See TOPDIR/doc/Developer.html for details.
+d39 2
+d59 7
+a65 6
+;#
+;# "make help" will show useful targets
+;#
+help::
+	@@echo Targets in Makefile
+	-@@sed -n 's/^##_[ 	]/	/p' Makefile | sort
+d100 1
+a100 1
+#define	LocalEnd	@@!\
+d104 4
+a107 1
+LintTarget()
+d109 1
+a117 1
+LOCAL_FLAGS = Makefile.local	@@!\
+@

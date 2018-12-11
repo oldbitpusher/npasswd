@@ -1,0 +1,266 @@
+<BODY><PRE>
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+<B>NAME</B>
+     history_admin - administer password history database
+
+<B>SYNOPSIS</B>
+     /history_admin [ -<B>a </B><I>age </I>] [ -<B>c  </B><I>file  </I>]  [  -<B>d</B>
+     <I>depth  </I>]  [  -<B>f </B><I>file </I>] [ -<B>i </B><I>file </I>] [ -<B>l </B>] [ -<B>m </B><I>format </I>] [ -<B>X</B>
+     <I>option </I>] [ -<B>v </B>] function
+
+<B>DESCRIPTION</B>
+     The <B>history_admin </B>utility  maintains  the  password  history
+     database used by <B>npasswd</B>, to control password reuse.
+
+     The form of history database entries is:
+
+          <B>name</B>:<B>passwd</B>,<B>time-stamp</B>:. . .:<B>passwd</B>,<B>time-stamp</B>:
+
+          <B>name </B>Is the user name.
+
+          <B>passwd</B>,<B>time-stamp</B>
+               The encrypted password and the time  the  password
+               was  entered into the database.  There can be mul-
+               tiple such items in a history entry.
+
+          This utility should be run as root, or by the user  who
+          owns  the history database.  Creation of a new database
+          may require root privileges.
+
+<B>OPTIONS</B>
+     -<B>a </B><I>time</I>
+          Set the password history age limit to <I>age </I>days.  A set-
+          ting of 0 disables the age limit.
+
+     -<B>c </B><I>file</I>
+          Use  configuration  file  <I>file  </I>instead   of   <I>npasswd</I>-
+          <I>lib</I>/<B>passwd.conf</B>.
+
+     -<B>d </B><I>depth</I>
+          Set the old password retention limit to <I>depth</I>.  A  set-
+          ting of 0 disables the depth limit.
+
+     -<B>f </B><I>file</I>
+          Path to the history database.  If <B>file </B>is <B>'@' </B>then  the
+          default database path is used.
+
+     -<B>i </B><I>file</I>
+          Input data.  Standard input is read if no input file is
+          given.
+
+     -<B>l   </B>Log errors with <I>syslog</I>(3).
+
+     -<B>m </B><I>format</I>
+          Select database format.
+
+
+
+SunOS 5.6                 Last change:                          1
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+          <I>file </I>History is stored in a text file.
+
+          <I>dbm  </I>History is stored in a DBM database.  This is  the
+               default if the NDBM library is available.
+
+     -<B>X </B><I>option</I>
+          Set special options:
+
+          <B>D</B><I>n   </I>Set internal debug level to <I>n</I>.  See  the  "Command
+               line  options"  section  in  the <I>Npasswd Reference</I>
+               <I>Manual </I>for the available debugging levels.
+
+          <B>h    </B>Print help text.
+
+          <B>V    </B>Print version information.
+
+     -<B>v   </B>Verbose.
+
+     function
+          Select maintenance function.
+
+          <I>dump </I>Dumps the database to standard output.
+
+          <I>load </I>Reads  history  records  (of  the  form  described
+               above) from the input and populates the database.
+
+          <I>merge</I>
+               Reads  history  records  (of  the  form  described
+               above)  from  the  input  and merges them into the
+               database.
+
+          <I>purge</I>
+               Cleans the database of old and excess passwords:
+
+               <B>o    </B>Removes entries for users who are not in  the
+                    password file.
+
+               <B>o    </B>Removes passwords which are  too  old.   This
+                    limit  is  set  in  the <B>npasswd </B>configuration
+                    file, but can be overridden by the -<B>a </B>option.
+
+               <B>o    </B>Removes excess passwords.  There is  a  limit
+                    to how many passwords are kept for each user.
+                    The limit is set in the <B>npasswd </B>configuration
+                    file, but can be overridden by the -<B>d </B>option.
+
+     <B>History_admin </B>exits with 0 status if successful, and  1  for
+     failure.
+
+<B>EXAMPLES</B>
+     Running a periodic database clean from <I>cron</I>:
+          history_admin -l purge 2&gt purge-errors
+
+
+
+SunOS 5.6                 Last change:                          2
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+     Creating the default database:
+          history_admin load &lt /dev/null
+
+     Populating alternate DBM database from a file:
+          history_admin -m dbm -f /tmp/new-history -i test-data load
+
+     Removing a user from the default database:
+          history_admin dump | grep -v "^username:" | history_admin load
+
+<B>DIAGNOSTICS</B>
+     Config file error '<B>filename</B>' line <B>n</B>; <I>message</I>
+          An error was encountered in the configuration file.
+
+     Database error file '<B>filename</B>' method '<B>what</B>' error '<I>message</I>'
+          A bad database path or method was specified on the com-
+          mand line.
+
+     No history database
+          The history mechanism has been disabled in  the  confi-
+          guration file or the history database is missing.
+
+     Unknown function '<B>what</B>'
+          An unknown function was given.
+
+     No memory for . . .
+          Temporary memory allocation failed.
+
+     Cannot make temp file '<B>filename</B>', error <I>errno</I>
+          Failure to create database temporary file.
+
+     Cannot make DBM '<B>filename</B>'
+          Failure to create DBM database.
+
+     History purge errors - new database left in '<B>filename</B>'
+          An error was encountered in purging the history.    The
+          database was left unchanged.
+
+     History load/merge errors - new database left in '<B>filename</B>'
+          A serious error was encountered doing a database create
+          or merge.
+
+     DBM <I>delete</I>|<I>replace</I>|<I>insert </I>for <B>user </B>failed
+          The deletion, replacment or insertion of  a  DBM  entry
+          failed.
+
+     Replace DBM '<B>file</B>' failed
+          A serious error was encountered loading a  DBM  dataah-
+          base.
+
+<B>FILES</B>
+      - the default history database
+
+
+
+
+SunOS 5.6                 Last change:                          3
+
+
+
+
+
+
+User Commands                                    history_admin(1)
+
+
+
+<B>BUGS</B>
+     Undoubtedly there are more bugs than have already been noted
+     (and fixed).
+
+<B>SEE ALSO</B>
+     npasswd(1), checkpassword(3)
+     <I>Npasswd Reference Manual</I>
+
+<B>AUTHOR</B>
+     Clyde Hoover
+     Academic Computing  Services  and  Instructional  Technology
+     Services
+     The University of Texas at Austin
+     c.hoover@cc.utexas.edu
+     8c9 1998, The  University  of  Texas  at  Austin.  All  rights
+     reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SunOS 5.6                 Last change:                          4
+
+
+
+</PRE></BODY>

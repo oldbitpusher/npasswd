@@ -1,0 +1,216 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, UT Austin">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (X11; I; SunOS 5.5 sun4m) [Netscape]">
+	<title>Npasswd Miscellaneous Notes</title>
+</HEAD>
+<BODY>
+<A NAME="top"></A>
+
+<HR WIDTH="100%">
+<CENTER>
+<H1>
+Npasswd Miscellaneous Notes</H1></CENTER>
+
+<HR WIDTH="100%">
+<P><font size=+1>
+UNIX platforms and features
+which <I>npasswd</I> is known to support: </P></font>
+
+<CENTER><TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2>
+<TR>
+<TH> UNIX platform </TH>
+<TH> Supported features </TH>
+</TR>
+
+<TR>
+<TD align=center>
+SunOS 5<br>
+(Solaris 2)
+</TD>
+
+<TD align=center>
+Shadow passwords<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+SunOS 4<br>
+(Solaris 1)
+</TD>
+<TD align=center>
+Adjunct passwords<BR>
+Secure RPC<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+Digital UNIX<br>
+(OSF/1) 3.X and 4.X
+</TD>
+<TD align=center>
+Enhanced security<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+HP-UX<br>
+</TD>
+<TD align=center>
+Enhanced security<b>*</b><BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+AIX 4<br>
+</TD>
+<TD align=center>
+Shadow passwords<b>*</b><BR>
+NIS passwords
+</TD>
+</TR>
+<tr>
+<td colspan=2 align=center><b>*</b>See below</td>
+</tr>
+
+</TABLE></CENTER>
+
+<P>
+<H3>SunOS 4 (Solaris 1)</H2>
+
+<UL>
+Support for SunOS 4 is still included, but I have ceased development.
+Secure RPC and adjunct passwords are supported, though not thoroughly tested.
+<I>Npasswd</I> will build with either the standard (/usr/ucb/cc) compiler
+or the Sun (/usr/lang/acc) compiler.
+
+</UL>
+
+<H3> SunOS 5 (Solaris 2)</H3>
+
+<UL>
+<P>
+<I>Npasswd</i> <B>does not</B> support NIS+.
+<P>
+Getting passwords out of
+NIS+ is easy, and even updating them is straightforward.
+NIS+ credentials are complicated to manage.
+<P>
+It is possible but not a good idea to have the login
+password and the NIS+ key phrase be different.  Hence, when
+the login password is changed, the key phrase should be  updated.
+The API for doing this has changed in every version of Solaris, and was
+undocumented.
+<P>
+There is an application which does this (nisaddcred), but either
+takes the key phrase from the command line or reads it from /dev/tty.
+Neither choice is suitable for use by <i>npasswd</i>.
+</UL>
+
+<H3> Digital UNIX (aka OSF/1) 3 and 4</H3>
+
+<UL>Support for enhanced security is included, though it has
+not been extensively
+tested.  Do <b>not</b> interchange binaries between Digital UNIX versions
+3 and 4 - the shadow password structure is different.
+</UL>
+
+<H2> AIX 4</H2>
+
+<UL>
+<P>
+Support for shadow passwords is included, but has been only lightly tested.
+
+<P>AIX 4.1 has many password restrictions which can be set per-user or
+system wide.  These include lexical requirements, dictionary searches
+(though not nearly as vigorous that done by <I>npasswd</I>) and a
+hook for external password check modules.  Judicious use  of
+these restrictions should result in passwords which are harder to crack.
+<P>
+You may desire to tune these password restrictions first <B>before</B>
+converting to <I>npasswd</I>.
+
+<P>The words lists from this distribution could be used as password check 
+dictionaries.
+
+<P>There are a number of other password restrictions available on AIX 4,
+and a password history mechanism, none of which are supported by
+<I>npasswd</I>.
+
+<P>
+</UL>
+ 
+<H3>HP-UX</H3>
+
+<UL>
+The support for HP-UX
+enhanced security was contributed by Mike Stute (mstute@compucom.com).
+I do not have a HP-UX system available to verify these changes or fix bugs.
+</UL>
+
+<H3>IRIX</H3>
+
+<UL>
+Works under IRIX 6.3.  The <B>-Wl,-w</B> compiler option 
+is needed to suppress superfluous loader warning messages.
+</UL>
+
+<H2> Password history</H2>
+
+<UL>The code which maintains password history in a NIS map is untested.
+This can only
+be used if Secure RPC is being used (e.g. SunOS 4 system with C2 security
+active).
+<P>
+Password history in a NIS map (or NIS+ table) would work much better
+for a cluster, rather than sharing a history file with NFS.  One
+approach would be to define an RPC service to query and update
+password history, and provide a daemon, which would be
+started at boot time on the system having the password file.
+</UL>
+
+<H2>Enhanced security support</H2>
+<UL>
+<P>
+The major UNIX vendors have security facilities which
+<b>should</b> facilitate the development of programs
+such as <i>npasswd</i>.
+The mechanisms are often complex, sometimes the API is not
+well documented, nor is sample code available.
+<P>
+Hence, <I>npasswd</I> makes minimal use of such facilities.
+</UL>
+
+<P>
+<HR WIDTH="100%">
+<P>
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+
+<HR WIDTH="100%">
+<P>
+Document id %Z% $RCSfile: MiscNotes.html,v $ $Revision: 1.6 $<BR>
+Version $Revision: 1.6 $<BR>
+Last modified $Date: 1998/07/20 00:00:00 $<P>
+<ADDRESS>
+  <A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</a><br>
+  <A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 1998</a>,
+The University of Texas at Austin.  All rights reserved.</font>
+</ADDRESS>
+</BODY></HTML>

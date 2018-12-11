@@ -1,0 +1,28 @@
+#!/bin/ksh
+
+tf=Config.mk
+cc=cc
+
+[ "`uname -m`" = 'i86pc' ] && cc=gcc
+
+print "" > ${tf}
+
+ostype=`uname -s`
+
+case $ostype in
+
+SunOS)
+	print '  CC='$cc' $(INCLUDES) -O'    >> ${tf}
+	print '  TARGETS=libstrongconfig.so' >> ${tf}
+
+	;;
+
+HP-UX)
+	print '  AR=ar'                      >> ${tf}
+	print '  CC='$cc' $(INCLUDES) -O +Z' >> ${tf}
+	print '  TARGETS=libstrongconfig.sl' >> ${tf}
+
+	;;
+esac
+
+#END

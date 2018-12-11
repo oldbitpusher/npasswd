@@ -1,0 +1,21 @@
+#
+# npasswd configuration file
+#
+# dictionary -  Specify dictionary to look in.
+#	 There may be multiple such entries.
+dictionary	/usr/local/dict/words
+
+# singlecase	yes | [no]	- Pass single-case passwords
+singlecase	yes
+
+# minlength	N [5]	- Minimum password length
+ minlength	6
+
+# maxlength	N [8]	Maximum effective password length
+#			(for warning purposes only)
+maxlength	11
+
+# printonly	yes | [no] 	- Allow only printable characters
+
+# badchars	"<string>"	- Replace illegal character list
+# badchars	+"<string>"	- Add to illegal character list

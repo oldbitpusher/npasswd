@@ -1,0 +1,148 @@
+case $CONFIG in
+'')
+	if test -f config.sh; then TOP=.;
+	elif test -f ../config.sh; then TOP=..;
+	elif test -f ../../config.sh; then TOP=../..;
+	elif test -f ../../../config.sh; then TOP=../../..;
+	elif test -f ../../../../config.sh; then TOP=../../../..;
+	else
+		echo "Can't find config.sh."; exit 1
+	fi
+	. $TOP/config.sh
+	;;
+esac
+: This forces SH files to create target in same directory as SH file.
+: This is so that make depend always knows where to find SH derivatives.
+case "$0" in
+*/*) cd `expr X$0 : 'X\(.*\)/'` ;;
+esac
+echo "Extracting makedict (with variable substitutions)"
+: This section of the file will have variable substitutions done on it.
+: Move anything that needs config subs from !NO!SUBS! section to !GROK!THIS!.
+: Protect any dollar signs and backticks that you do not want interpreted
+: by putting a backslash in front.  You may delete these comments.
+$spitshell >makedict <<!GROK!THIS!
+$startsh
+
+TR=$tr
+TRUP="$trup"
+TRDOWN="$trdown"
+PACKER=$p_utildir/packer	# The program that packs the dictionary
+UNPACKER=$p_utildir/unpacker	# The program that unpacks the dictionary
+
+!GROK!THIS!
+
+: In the following dollars and backticks do not need the extra backslash.
+$spitshell >>makedict <<'!NO!SUBS!'
+#
+# @(#)makedict.SH	1.6 07/16/98 (cc.utexas.edu)
+#
+###
+# This program is copyright Alec Muffett 1993. The author disclaims all
+# responsibility or liability with respect to it's usage or its effect
+# upon hardware or computer systems, and maintains copyright as set out
+# in the "LICENCE" document which accompanies distributions of Crack v4.0
+# and upwards.
+###
+#
+# This script is used to build the dictionary hash files
+#
+# Usage:
+#	mkdict -o output-dict
+#		[-T /tmp/dir (alternate tmp dir)]
+#		[-m merge-with-dict]
+#		dict-source1 dict-source2 ...
+#
+### In case of explosion, rerun with with "-T" option pointing to a lot
+### of free space in a directory somewhere.
+
+Usage="Usage: $0 -o output-dict [-m source-dict] [-T /tmp/dir] dict-source1 dict-source2 ..."
+SORT="sort"
+
+if [ $# -lt 1 ]; then
+	echo $Usage
+	exit 1
+fi
+while [ -n "$1" ]; do
+	case $1 in
+	-m*)	src_dict=`expr $1 : '-s\(.*\)'`
+		if [ -z "$src_dict" ]; then
+			shift
+			src_dict=${1?"Missing option to -m"}
+		fi
+		;;
+
+	-o*)	dest_dict=`expr $1 : '-o\(.*\)'`
+		if [ -z "$dest_dict" ]; then
+			shift
+			dest_dict=${1?"Missing option to -o"}
+		fi
+		;;
+
+	-T*)	tmp=`expr $1 : '-T\(.*\)'`
+		if [ -z "$tmp" ]; then
+			shift
+			tmp=${1?"Missing option to -T"}
+		fi
+		;;
+
+	*)	break
+		;;
+	esac
+	shift
+done
+#
+# Add the directory where this program lives to PATH
+# so that 'packer' will be found (if needed)
+#
+if [ ! -f $PACKER ]; then
+	bn=`basename $0`
+	pn=`expr $0 : "\(.*\)/$bn"`
+	PACKER="$pn/$PACKER"
+	UNPACKER="$pn/$UNPACKER"
+fi
+
+if [ -z "$dest_dict" ]; then
+	echo No output file given
+	echo $Usage
+	exit 1
+fi
+[ -n "$tmp" ] && SORT="$SORT -T $tmp"
+
+OUT=${dest_dict}.TMP
+(
+	[ -n "$src_dict" ] && $UNPACKER $src_dict
+	for f in $*; do
+		for x in '' .Z .gz ''; do
+			if [ -f "$f$x" ]; then
+				f=$f$x
+				break
+			fi
+		done
+		case "$f" in
+		*.Z)	zcat $f;;
+		*.gz)	gunzip --stdout $f;;
+		*)	cat $f;;
+		esac
+	done
+) |	grep -v '^#' | \
+	grep -v '^$' | \
+	$TR "$TRUP" "$TRDOWN" | \
+	$SORT | \
+	uniq | \
+	$PACKER $OUT		# Build the dictionary
+
+for t in hwm pwd pwi; do
+	if [ -s $OUT.$t ]; then
+		mv $OUT.$t $dest_dict.$t
+	else
+		echo Empty or missing hash file $OUT.$t
+	fi
+done
+echo Made dictionary $dest_dict
+exit 0
+#
+# End makedict.SH
+!NO!SUBS!
+chmod 755 makedict
+$eunicefix makedict

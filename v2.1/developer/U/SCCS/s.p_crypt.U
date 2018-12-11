@@ -1,0 +1,142 @@
+h58432
+s 00001/00001/00032
+d D 1.4 98/03/26 11:23:02 clyde 4 3
+c Fix typo
+e
+s 00002/00002/00031
+d D 1.3 97/05/05 17:06:04 clyde 3 2
+c Put evaled strings in ""
+e
+s 00002/00052/00031
+d D 1.2 96/08/30 15:50:18 clyde 2 1
+c Remove getpass() probe
+e
+s 00083/00000/00000
+d D 1.1 95/04/05 16:09:50 clyde 1 0
+c date and time created 95/04/05 16:09:50 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit %M% - see which crypt program to use
+?RCS:
+D 2
+?MAKE:p_getpass p_crypt: cc test rm Setvar Inlibc
+E 2
+I 2
+D 4
+?MAKEp_crypt: test Setvar Inlibc
+E 4
+I 4
+?MAKE:p_crypt: test Setvar Inlibc
+E 4
+E 2
+?MAKE:	-pick add $@ %<
+D 2
+?LINT:set p_crypt p_getpass
+?S:p_getpass:
+?S:	This variable is true if getpass the built-in getpass is to be used
+?S:.
+E 2
+I 2
+?LINT:set p_crypt
+E 2
+?S:p_crypt:
+?S:	This variable is set the name of the crypt routine to use
+?S:.
+D 2
+?C:NEED_GETPASS:
+?C:	This variable is true if getpass the built-in getpass is to be used
+?C:.
+?H:#$p_getpass	NEED_GETPASS	/**/
+?H:.
+?T:t pwlen needgt8
+?F:getpass getpass.c
+E 2
+
+D 2
+needgt8=''
+E 2
+t=''
+set bigcrypt t
+D 3
+eval $inlibc
+E 3
+I 3
+eval "$inlibc"
+E 3
+echo ' '
+if $test $t = "$define"; then
+	echo 'Using bigcrypt() for encrypting passwords'
+	p_crypt='bigcrypt'
+D 2
+	needgt8='yes'
+E 2
+else
+	t=''
+	set crypt16 t
+D 3
+	eval $inlibc
+E 3
+I 3
+	eval "$inlibc"
+E 3
+	if $test $t = "$define"; then
+		echo 'Using crypt16() for encrypting passwords'
+		p_crypt='crypt16'
+D 2
+		needgt8='yes'
+E 2
+	else
+		echo 'Using crypt() for encrypting passwords'
+		p_crypt='crypt'
+	fi
+fi
+echo ' '
+D 2
+if $test -n "$needgt8"; then
+	echo 'main(){char *getpass(); exit(strlen(getpass("Type 1234567890:")));}' > getpass.c
+	$cc -o getpass getpass.c >/dev/null 2>&1
+	if $test ! -f getpass ; then
+		echo 'Failed to build getpass() test program' >&4
+		exit 1
+	fi
+	while true; do
+		echo ' '
+		echo 'Testing how many characters getpass() returns'
+		echo 'Make sure you enter the string exactly as prompted'
+		echo ' '
+		./getpass
+		pwlen=$?
+		echo ' '
+		if $test $pwlen -lt 8; then
+			echo "It appears that you didn't enter the entire test string"
+			echo "Let's try that again"
+			continue
+		fi
+		if $test $pwlen -eq 8; then
+			echo 'This getpass returns only 8 charcters'
+			echo 'The built-in version will be used'
+			p_getpass="$define";
+			break
+		fi
+		if $test $pwlen -gt 8; then
+			echo "Your libc getpass returns long strings - we'll use it"
+			p_getpass="$undef";
+			break
+		fi
+	done
+else
+	p_getpass="$undef"
+fi
+echo ' '
+$rm -f getpass getpass.c
+E 2
+
+E 1

@@ -1,0 +1,25 @@
+?RCS: $Id: Configdir.U,v 3.0 1993/08/18 12:04:49 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: Configdir.U,v $
+?RCS: Revision 3.0  1993/08/18  12:04:49  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?MAKE:Configdir: Nothing
+?MAKE:	-pick add $@ %<
+: create .config dir to save info across Configure sessions
+test -d ../.config || mkdir ../.config
+cat >../.config/README <<EOF
+This directory created by Configure to save information that should
+persist across sessions.
+
+You may safely delete it if you wish.
+EOF
+

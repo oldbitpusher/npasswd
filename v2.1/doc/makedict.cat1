@@ -1,0 +1,132 @@
+
+
+
+User Commands                                         makedict(1)
+
+
+
+NNNNAAAAMMMMEEEE
+     makedict - build npasswd dictionaries
+     packer - pack hashed dictionary files
+     unpacker - unpack hashed dictionary files
+
+SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+     /mmmmaaaakkkkeeeeddddiiiicccctttt -oooo _o_u_t_p_u_t [ -mmmm _s_o_u_r_c_e ] [ -TTTT _t_e_m_p  ]
+     words ... words
+     /ppppaaaacccckkkkeeeerrrr dictionary-name
+     /uuuunnnnppppaaaacccckkkkeeeerrrr dictionary-name
+
+DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+     MMMMaaaakkkkeeeeddddiiiicccctttt builds the hashed  dictionaries  used  by  nnnnppppaaaasssssssswwwwdddd.
+     The  dictionary  hash files are built from _w_o_r_d _l_i_s_t_s, which
+     are text files with one word per line.
+
+     Three hashed files are created with the suffixes ....hhhhwwwwmmmm, ....ppppwwwwdddd,
+     and ....ppppwwwwiiii .
+
+     PPPPaaaacccckkkkeeeerrrr is a low-level utility which  reads  words  (one  per
+     line)  from  standard  input and packs them into hash files.
+     MMMMaaaakkkkeeeeddddiiiicccctttt is a smart front-end to ppppaaaacccckkkkeeeerrrr,  and  is  the  pre-
+     ferred tool for dictionary building.
+
+     UUUUnnnnppppaaaacccckkkkeeeerrrr dumps dictionary hashes  to  standard  output,  one
+     word per line.
+
+OOOOPPPPTTTTIIIIOOOONNNNSSSS
+     Options for mmmmaaaakkkkeeeeddddiiiicccctttt.
+
+     -oooo _o_u_t_p_u_t
+          Create the dictionary oooouuuuttttppppuuuutttt.
+
+     -mmmm _s_o_u_r_c_e
+          Merge in words in dictionary ssssoooouuuurrrrcccceeee.
+
+     -TTTT _t_e_m_p
+          Use tttteeeemmmmpppp as the temporary directory for  sorting.   Use
+          this  option if the default temporary directory used by
+          _s_o_r_t(1) is small.
+
+     _w_o_r_d_s ... _w_o_r_d_s
+          Word lists. Compressed files (ending with  ....ZZZZ  or  ....ggggzzzz)
+          can be used.
+
+     PPPPaaaacccckkkkeeeerrrr and uuuunnnnppppaaaacccckkkkeeeerrrr take one argument - the name of the dic-
+     tionary file to pack or unpack.
+
+EEEEXXXXAAAAMMMMPPPPLLLLEEEESSSS
+     To make the dictionary 'my-dict':
+          makedict -o my-dict word-list-1 ... word-list-n
+
+
+
+
+SunOS 5.6                 Last change:                          1
+
+
+
+
+
+
+User Commands                                         makedict(1)
+
+
+
+          Will produce the  files  mmmmyyyy----ddddiiiicccctttt....ppppwwwwdddd,  mmmmyyyy----ddddiiiicccctttt....ppppwwwwiiii  and
+          mmmmyyyy----ddddiiiicccctttt....hhhhwwwwmmmm.
+
+     To add words to an existing dictionary:
+          makedict -o existing-dict -m existing-dict word-list-1 ... word-list-n
+
+DDDDIIIIAAAAGGGGNNNNOOOOSSSSTTTTIIIICCCCSSSS
+     Missing option to -o
+          No output file was specified.
+
+     Missing option to -T
+          No temporary directory was specified.
+
+     Missing option to -m
+          No merge dictionary was specified.
+
+     Empty or missing hash file _n_a_m_e
+          One of the dictionary hash files came up empty,  either
+          because  the  sources  were  empty or a filesytem error
+          occurred.
+
+BBBBUUUUGGGGSSSS
+     The input to ppppaaaacccckkkkeeeerrrr mmmmuuuusssstttt bbbbeeee ssssoooorrrrtttteeeedddd,  else  the  result  hash
+     files will be faulty.  Use mmmmaaaakkkkeeeeddddiiiicccctttt instead.
+
+SSSSEEEEEEEE AAAALLLLSSSSOOOO
+     npasswd(1)
+     _N_p_a_s_s_w_d _R_e_f_e_r_e_n_c_e _M_a_n_u_a_l
+
+AAAAUUUUTTTTHHHHOOOORRRR
+     Clyde Hoover
+     Academic Computing  Services  and  Instructional  Technology
+     Services
+     The University of Texas at Austin
+     c.hoover@cc.utexas.edu
+     8c9 1998, The  University  of  Texas  at  Austin.  All  rights
+     reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SunOS 5.6                 Last change:                          2
+
+
+

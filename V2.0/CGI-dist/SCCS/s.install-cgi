@@ -1,0 +1,26 @@
+h28945
+s 00014/00000/00000
+d D 1.1 97/05/15 16:21:50 clyde 1 0
+c date and time created 97/05/15 16:21:50 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+#!/bin/sh
+#
+# %W% %G%
+#
+echo Installing npasswd distribution kit in $HOME/public_html
+umask 02
+tar cf - setup-cgi cgi-bin/npasswd* npasswd | \
+	( cd $HOME/public_html ; tar xpfv - )
+
+here=`pwd`
+cd $HOME/public_html
+sh setup-cgi `dirname $here`
+#
+# End %M%
+E 1

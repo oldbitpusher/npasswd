@@ -1,0 +1,26 @@
+#!/bin/ksh
+
+#LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/admin/pam_strong/lib
+#export LD_LIBRARY_PATH
+
+integer x=0
+
+while :
+do
+#  ./pwstrongc --server halo --uname twik --password `hostname`
+## ./pwstrongc --server halo --uname twik --password Gob41Xcz
+#  ./pwstrongc --server halo --uname twik --get
+#  ./pwstrongc --server halo --uname vpk  --get
+
+   ./pwstrongc --server halo --uname vpk  --get
+   ./pwstrongc --server halo --uname vicb --get
+   ./pwstrongc --server halo --uname twik --get
+   ./pwstrongc --server halo --uname tr   --get
+  
+#  x=x+1
+#  if [ x -gt 3 ]
+#  then
+#	x=0
+#	touch ../../etc/passwd.conf
+#  fi
+done

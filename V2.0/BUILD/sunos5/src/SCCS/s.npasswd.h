@@ -1,0 +1,1 @@
+../../../../src/SCCS/s.npasswd.h

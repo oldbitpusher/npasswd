@@ -1,0 +1,38 @@
+h61377
+s 00026/00000/00000
+d D 1.1 95/04/05 16:10:00 clyde 1 0
+c date and time created 95/04/05 16:10:00 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'uidsigned' - attempt to find out if uids are signed or unsigned
+?RCS:	The test is pretty simple minded and will fail unless the user "nobody"
+?RCS: 	is in the password file.
+?RCS:
+?MAKE:uidsigned: passcat awk
+?MAKE:	-pick add $@ %<
+?S:uidsigned:
+?S:     This variable is set if uid_t is a signed type.
+?S:.
+?C:UIDS_ARE_SIGNED:
+?C:	This variable is defined if uid_t is a signed quanity
+?C:.
+?H:#$uidsigned	UIDS_ARE_SIGNED	/* */
+?H:.
+:
+echo " "
+case "`$passcat | grep nobody | $awk 'BEGIN { FS=":" } { print $3 }'`" in 
+	-*)	uidsigned="$define"
+		echo "It looks like uids are signed on this system." >& 4
+		;;
+	*)	uidsigned="$undef"
+		;;
+esac
+
+E 1

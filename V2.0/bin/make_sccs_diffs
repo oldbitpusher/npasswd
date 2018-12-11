@@ -1,0 +1,159 @@
+#! /usr/local/bin/perl
+#
+# @(#)make_sccs_diffs	1.2 10/15/98
+#
+require 'getopts.pl';
+
+use English;
+use File::Basename;
+
+&Getopts('o:n:r:v:');
+
+$DiffCmd = 'diff -c';
+
+die "No -o \n" unless ($opt_o);
+die "No -n \n" unless ($opt_n);
+die "No -v \n" unless ($opt_v);
+
+$pdir = "PATCH-$opt_v/";
+unless (-d $pdir) {
+	mkdir $pdir,0755 || die "Cannot make patch dir $pdir\n";
+}
+
+$Diffs = "${pdir}DIFFS";
+$TarList = "${pdir}FILES";
+$Sources = "${pdir}SOURCES";
+$Commands = "${pdir}COMMANDS";
+$Output = "${pdir}PATCH.tar";
+
+open (OV, $opt_o) || die "$opt_o open $ERRNO\n";
+while (<OV>) {
+	chop;
+	next if (/^#/ || /^$/);
+	($mode, $target, $src_fn, $src_id) = split;
+
+	$target =~ s@^\./@@;
+	$SRC_fn{$target} = $src_fn;
+	$SRC_id{$target} = $src_id;
+}
+close(OV);
+
+#
+# Open new version list
+#
+open (NV, $opt_n) || die "$opt_n open $ERRNO\n";
+print <<EOF;
+rm -f $Output $Sources $TarList $Commands $Diffs
+
+sccs_diff()
+{
+	# vers=\$1; src=\$2; target=\$3
+	echo SCCS patch for \$3 sid = \$1
+	(sccs get -p -r\$1 \$2 | $DiffCmd - \$3 >> $Diffs) 2>/dev/null
+}
+ 
+copy2package()
+{
+	if [ -d "$pdir" ]; then
+		n=`basename \$1`
+		rm -f $pdir\$n
+		cp \$1 $pdir\$n
+		add2package $pdir\$n
+	else
+		add2package \$1
+	fi
+}
+
+add2package()
+{
+	echo \$1 >> $TarList
+}
+
+add2srcs()
+{
+	echo Add source \$1
+	echo \$1 >> $Sources
+	echo mv -f \$1 \$1.pre >> $Commands
+}
+
+copy2package NEWS
+copy2package README-PATCH
+
+cat > $Commands <<EOC
+if [ ! -d $pdir ]; then
+	echo Cannot find patch directory $pdir
+	exit 1
+fi
+echo Applying patch $opt_v
+
+EOC
+
+EOF
+
+while (<NV>) {
+	chop;
+	next if (/^#/ || /^$/);
+	($mode, $target, $src_fn, $vers) = split;
+
+	$target =~ s@^\./@@;
+	#
+	# New file
+	#
+	unless (defined($SRC_fn{$target})) {
+		$Commands{$target} = "# Missing\n add2srcs $target;";
+		next;
+	}
+	#
+	# SCCS file
+	#
+	if ($mode eq 'SCCS') {
+		if ($src_fn eq $SRC_fn{$target}) {
+			my $t = $SRC_id{$target};
+			next if ($vers eq $t);
+			$Commands{$target} = "# Version old=$SRC_id{$target} new=$vers\n sccs_diff $t $src_fn $target";
+		} else {
+			$Commands{$target} = "# Source change\n add2srcs $target;\n";
+		}
+		next;
+	}
+	#
+	# A dervied file - check versions of antecedents
+	#
+	if ($mode eq 'SOURCE') {
+		my $tag = '';
+		$tag = 'Source change'
+			if ($src_fn ne $SRC_fn{$target});
+		$tag = "Version old=$SRC_id{$target} new=$vers"
+			if ($vers ne $SRC_id{$target});
+		$Commands{$target} =  "# $tag\n add2srcs $target;"
+			if ($tag ne '');
+	}
+}
+
+foreach $fn (sort keys %Commands) {
+	print $Commands{$fn}, "\n";
+}
+print <<EOF;
+add2package $Diffs
+if [ -s $Sources ]; then
+	tar cf ${Sources}.tar `cat $Sources`
+	echo echo Extracting replacement sources ... >> $Commands
+	echo tar xpfv ${Sources}.tar >> $Commands
+	add2package ${Sources}.tar
+fi
+cat >> $Commands <<EOC
+mv -f NEWS NEWS.pre
+mv -f ${pdir}NEWS .
+echo Patching sources ...
+patch -p0 < $Diffs
+
+EOC
+
+add2package $Commands
+
+echo Creating patch tar archive $Output ...
+tar cfv $Output `cat $TarList`
+EOF
+
+exit 0;
+# End make_sccs_diffs

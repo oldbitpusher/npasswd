@@ -1,0 +1,32 @@
+h05055
+s 00020/00000/00000
+d D 1.1 98/06/26 10:29:05 clyde 1 0
+c date and time created 98/06/26 10:29:05 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+
+%W% %G% (cc.utexas.edu)
+
+README for npasswd distribution of CrackLib.
+
+CrackLib is an offshoot of the the version 5 "Crack" software, and
+contains a considerable number of ideas nicked from the new software.
+
+The original Cracklib documentation is in the directory CREDITS.
+
+Modifications have been made to the Cracklib source to integrate it
+into npasswd/checkpassword.
+
+Cracklib was written by Alec Muffett (alecm@crypto.dircon.co.uk), and
+modified for use in npasswd by Clyde Hoover (c.hoover@cc.utexas.edu).
+
+There is scant documentation about Cracklib other than the source.  But 
+if you are getting into this sort of business, then reading C programs
+should be pretty straightforward.
+
+E 1

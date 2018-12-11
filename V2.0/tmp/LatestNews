@@ -1,0 +1,24 @@
+Latest npasswd news	%G%
+
+Patch 04	10/14/98
+	* 
+
+Patch 03	9/24/98
+	* Fixes the "Cannot talk to NIS server" problem under Solaris 2. 
+
+Patch 02	9/22/98
+	* Fixes the build problems on Digital UNIX 4.0d.
+
+Patch 01	9/18/98
+	* Fixes build problems when NIS support is not enabled.
+	* Fixes a problem with the configuration directive "PrintOnly", which
+	  was renamed "PrintableOnly" during the last development cycle but
+	  the change did not get propigated everywhere.
+
+Platform status:
+
+AIX 4.1		Builds, installs, changes local passwords
+SunOS 4.1.4	Builds, installs, changes local and NIS passwords 
+SunOS 5.5	Builds, installs, changes local passwords 
+IRIX 6.1	Builds, installs, changes local passwords 
+Digital UNIX 4.0	Builds, installs

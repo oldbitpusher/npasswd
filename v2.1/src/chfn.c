@@ -1,0 +1,195 @@
+/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ * 
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@www.utexas.edu
+ *
+ */
+
+/*
+ *	This program duplicates the manual page behavior of the 4.XBSD
+ *	chfn(1) command.
+ */
+#include "npasswd.h"
+#include "Methods/pwm_defs.h"
+
+#ifndef lint
+static char sccsid[] = "$Id: chfn.c,v 1.15 2002/10/02 15:46:34 clyde Exp $ (cc.utexas.edu) %P%";
+#endif
+
+Config_Value char	*Chfn_Help = CHFN_HELP,
+			*Chfn_Motd = CHFN_MOTD;
+
+#define	GECOS_SIZE	128
+
+private int	check_name _((char *));
+private int	check_roomnum _((char *));
+private int	check_phone _((char *));
+
+struct gecosFields {
+	char	*label;
+	int	(*check)();
+	char	*oldvalue;
+};
+
+/* These must be in the right order */
+private struct gecosFields Fields[] = {
+	{ "Name",		check_name },
+	{ "Office number",	check_roomnum },
+	{ "Office phone",	check_phone },
+	{ "Home phone",		check_phone },
+	{ 0 },
+};
+
+public void chfn(theUser, theCaller)
+struct mpasswd	*theUser,
+		*theCaller;
+{
+	char	newGecos[GECOS_SIZE];
+	char	*t;
+	char	**oldGecos;
+	char	**x;
+	int	field;
+	int	ismore = 1;
+	struct gecosFields *gptr;
+	struct mpasswd	*newUser;
+
+#ifdef	USE_NIS
+	yp_password(theUser);	/* If a NIS client get user password */
+#endif
+	if (theCaller->mpw_uid &&
+	    strcmp(theCaller->mpw_name, theUser->mpw_name))
+		die("Permission denied.\n");
+
+	motd(Chfn_Motd, 0);
+	newGecos[0] = 0;
+
+	if (!XSwitches[Xsw_UseStdin]) {
+		printf("Changing finger information for %s on %s\n",
+			theUser->mpw_name, theUser->pws_loc);
+		printf("Default values are printed inside of '[]'\n");
+		printf("To accept the default, type <return>\n");
+		printf("To have a blank entry, type the word 'none'\n");
+		printf("For more information, type '?'\n");
+		fflush(stdout);
+	}
+	oldGecos = split(theUser->mpw_gecos, ',', 0, 0);
+
+	for (gptr = Fields, x = oldGecos; gptr->label; gptr++) {
+		if (x && *x) gptr->oldvalue = *x++;
+		else gptr->oldvalue = "";
+	}
+
+	for (field = 0; (&Fields[field])->label; field++) {
+		char	inbuf[GECOS_SIZE];
+
+		gptr = &Fields[field];
+		if (!XSwitches[Xsw_UseStdin])
+			printf("%s [%s]: ", gptr->label, gptr->oldvalue);
+
+		if (fgets(inbuf, GECOS_SIZE, stdin) == NULL) {
+			if (feof(stdin)) {
+				printf("\nFinger information unchanged\n");
+				return;
+			}
+			else {
+				die("Error while reading stdin.\n");
+			}
+		}
+		chop_nl(inbuf);
+		if (strcmp(inbuf, "?") == 0) {
+			motd(Chfn_Help, "Sorry, there is no help.\n");
+			field--;
+			continue;
+		} else if (*inbuf == '\0') {
+			(void) strncpy(inbuf, gptr->oldvalue, sizeof inbuf);
+		} else if (strcasecmp(inbuf, "none") == 0) {
+			inbuf[0] = 0;
+		} else {
+			if (!(gptr->check)(inbuf)) {
+				printf("Invalid %s: %s\n", gptr->label, inbuf);
+				fflush(stdout);
+				field--;
+				continue;
+			}
+		}
+		(void) strcat(newGecos, inbuf);
+		(void) strcat(newGecos, ",");
+	}
+	t = strrchr(newGecos, ',');
+	*t = 0;
+
+	newUser = copympwent(theUser, (struct mpasswd *)0);
+	newUser->mpw_gecos = newGecos;
+
+	pw_replace(theUser, newUser, CHG_GECOS);
+	syslog(LOG_INFO,
+	       "Finger information changed on %s for %s by %s\n",
+	       theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+}
+
+/*
+ *	check_name	- check for valid user name
+ *	check_roomnum	- check for valid room number
+ *	check_phone	- check for valid phone number
+ *
+ *	These three routines can be used to provide sanity checks for 
+ *	 values to be stored in the password file gecos fields.
+ *
+ *	Return 1 if field is OK
+ *	       0 if not.
+ */
+
+private int
+check_name (name)
+	char	*name;
+{
+	for ( ; *name; name++ ) {
+		if (*name == ':' || *name == ',' || !isprint(*name)) {
+			return(0);
+		}
+	}
+	return(1);
+}
+
+private int
+check_roomnum (num)
+char	*num;
+{
+	for ( ; *num != '\0' ; num++ ) {
+		if (*num == ':' || *num == ',' || !isprint(*num)) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+private int
+check_phone (phonenum)
+char	*phonenum;
+{
+	for ( ; *phonenum != '\0' ; phonenum++ ) {
+		if (!isdigit (*phonenum) && *phonenum != '-' &&
+		    *phonenum != '(' && *phonenum != ')') {
+			return 0;
+		}
+		/* Space is ok */
+	}
+	return 1;
+}
+/*
+ * End $RCSfile: chfn.c,v $
+ */

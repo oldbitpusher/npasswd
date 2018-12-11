@@ -1,0 +1,45 @@
+h63137
+s 00033/00000/00000
+d D 1.1 97/05/15 16:21:49 clyde 1 0
+c date and time created 97/05/15 16:21:49 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+
+%W% %G%
+
+Installing the CGI distribution system
+
+
+This is built to work on our home directory CGI setup.
+
+Files to install:
+	cgi-bin/
+		npasswd-request.cgi	The CGI script
+			Needs symlinks to:
+			npasswd-register.cgi
+			npasswd-download.cgi
+			npasswd-admin.cgi
+
+		npasswd.index	The download manifest
+
+	npasswd/	 Top level 
+
+	npasswd/v1.0/	Version 1.0 subdirectory 
+		npasswd-1.2.4.tar.Z	- Version 1.2.4
+		index.html
+
+	npasswd/v2.0/	Version 2.0 subdirectory 
+		index.html
+		doc/	Link tree for manual from master sources
+		npasswd-2.0b4.tar.Z	- 2.0 source
+		npasswd-2.0b4_develop.tar.Z - 2.0 developers kit
+		README			- README file
+
+Run 'install-cgi' to make this happen.
+
+E 1

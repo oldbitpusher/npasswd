@@ -1,0 +1,14 @@
+#!/bin/ksh
+
+for P in config hide pam-client pam-server
+do
+	(
+		cd $P
+		print "  INFO - Clean  $P"
+		make clean	> /dev/null 2>&1
+		print "  INFO - Config $P"
+		make config	> /dev/null 2>&1
+		print "  INFO - Compile / Install $P"
+		make install
+	)
+done

@@ -1,0 +1,26 @@
+?RCS:
+?RCS: @(#)p_ttyposix.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_ttyposix' - see if POSIX tty routines exist
+?RCS:
+?MAKE:p_ttyposix: Inlibc Setvar
+?MAKE:	-pick add $@ %<
+?LINT:set p_ttyposix
+?S:p_ttyposix:
+?S:    This variable is set to 'true' if the POSIX terminal routines exist
+?S:.
+?C:HAS_POSIX_TTY:
+?C:	This symbol, if defined, indicates that the POSIX terminal routines exist.
+?C:.
+?H:#$p_ttyposix	HAS_POSIX_TTY	/**/
+?H:.
+: see if tcgetattr exists
+echo " "
+if set tcgetattr val -f p_ttyposix; eval "$csym"; $val; then
+        echo 'POSIX tty routines found.' >&4
+        p_ttyposix="$define"
+else
+        echo 'No POSIX tty routines.' >&4
+        p_ttyposix="$undef"
+fi
+

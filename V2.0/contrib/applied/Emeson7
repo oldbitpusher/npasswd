@@ -1,0 +1,124 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06841
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:20:38 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01176
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:20:35 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13862
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:20:30 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08771; Wed, 10 Dec 1997 10:22:28 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101722.KAA08771@zlin.Colorado.EDU>
+Subject: Changes #7
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:22:28 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 1912
+
+@@@@@@@@@@@@@@@@@@@@  Start of diffs   @@@@@@@@@@@@@@@@@@@
+*** Reference.html.orig	Thu Dec  4 15:42:12 1997
+--- Reference.html	Fri Dec  5 10:47:05 1997
+***************
+*** 184,190 ****
+  </TR>
+  
+  <TR>
+! <TD><A HREF="#passwd.AlphaOnly">passwd.AlphaOK</A></TD>
+  
+  <TD>boolean</TD>
+  
+--- 184,190 ----
+  </TR>
+  
+  <TR>
+! <TD><A HREF="#passwd.AlphaOnly">passwd.AlphaOnly</A></TD>
+  
+  <TD>boolean</TD>
+  
+***************
+*** 192,197 ****
+--- 192,205 ----
+  </TR>
+  
+  <TR>
++ <TD><A HREF="#passwd.MinCharClass">passwd.MinCharClass</A></TD>
++  
++ <TD>1-5</TD>
++  
++ <TD>Minimum number of character classes</TD>
++ </TR>
++ 
++ <TR>
+  <TD><A HREF="#passwd.MinPassword">passwd.MinPassword</A></TD>
+  
+  <TD>number</TD>
+***************
+*** 425,431 ****
+  
+  <TD>path</TD>
+  
+! <TD>&lt;library-directory>/dictionaries</TD>
+  </TR>
+  </TABLE>
+  
+--- 433,439 ----
+  
+  <TD>path</TD>
+  
+! <TD>None</TD>
+  </TR>
+  </TABLE>
+  
+***************
+*** 495,502 ****
+--- 503,539 ----
+  is not signifcant. If this flag is set, the requirement for non-alpha characters
+  in a passwords is dismissed.
+  
++ new
+  <P>
+  <HR>
++ <H2>
++ <A NAME="passwd.MinCharClass"></A>passwd.MinCharClass</H2>
++  
++ <TABLE BORDER CELLPADDING=2 >
++ <TR>
++ <TD><B>Directive</B></TD>
++  
++ <TD><B>Type</B></TD>
++  
++ <TD><B>Default value</B></TD>
++ </TR>
++  
++ <TR>
++ <TD>passwd.MinCharClass</TD>
++  
++ <TD>1-5</TD>
++  
++ <TD>1</TD>
++ </TR>
++ </TABLE>
++  
++  
++ <P>Sets the minimum number of different character classes needed in a 
++ password.  The five character classes are: lower case letters, upper 
++ case letters, digits, punctuation/symbols, and control characters.
++  
++ <P>
++ <HR>
+  <H2>
+  <A NAME="passwd.MinPassword"></A>passwd.MinPassword</H2>
+  
+@@@@@@@@@@@@@@@@@@@@     end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

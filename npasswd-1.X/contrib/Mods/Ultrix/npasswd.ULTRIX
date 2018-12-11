@@ -1,0 +1,733 @@
+Return-Path: pcl@oxford.ac.uk
+Posted-Date:  Tue, 7 Apr 92 16:37:28 +0100
+Received: from sun3.nsfnet-relay.ac.uk by emx.utexas.edu (5.61/1.9)
+	id AA16313; Tue, 7 Apr 92 10:49:38 -0500
+Via: sun3.nsfnet-relay.ac.uk; Tue, 7 Apr 1992 16:32:07 +0100
+Received: from black.ox.ac.uk by oxmail.ox.ac.uk with SMTP (PP) 
+          id <00500-0@oxmail.ox.ac.uk>; Tue, 7 Apr 1992 16:33:25 +0100
+From: Paul Leyland <pcl@oxford.ac.uk>
+Date: Tue, 7 Apr 92 16:37:28 +0100
+Message-Id: <26167.9204071537@black.ox.ac.uk>
+To: clyde@emx.utexas.edu
+Subject: npasswd for Ultrix UPGRADE and ENHANCED security
+Cc: pcl@oxford.ac.uk
+
+
+
+
+Clyde:
+
+I think I have successfully ported your npasswd package to Ultrix
+under the shadow-password scheme DEC calls UPGRADE and ENHANCED
+security.
+
+I've had to modify Makefile and npasswd.c slightly and completely
+re-write a pw_enhanced.c based on your code in pw_passwd.c
+
+I've given it some testing, including line-by-line execution in dbx
+and successful tests on a real DEC5500 running Ultrix 4.2 and UPGRADE
+security level.  Of course, I don't *guarantee* it's bug-free, but I
+don't know of more than one bug/feature.
+
+This one bug is mostly harmless: there is a facility under the Ultrix
+authorization mechanism to require the use of machine-generated
+passwords.  I do not know what is the best way to proceed -- I could
+in principle punt to the DEC passwd program; I could write my own
+password generator or I could ignore it and allow the user to choose a
+password as usual.  I chose the last course of action.  I don't
+believe machine-generated passwords are a good idea for a variety of
+reasons I'll expand on if you really want to know.
+
+
+When is version 2.0 of npasswd coming out?  High on my wish list are
+are tidier distribution (use only the jpl code, because of its better
+checking, rather than messy sub-directories, vanilla and jpl versions)
+and tighter tests on GECOS field derived passwords.
+
+I'll include context diffs for the Makefile and npasswd.c and the
+entire source of pw_enhanced.c below.  You may want to tidy up some of
+the commentary to get it into your house style.
+
+Cheers,
+	Paul
+
+P.S.  Look for the 8<--->8 lines
+
+
+8<------------------diff -c npasswd.c.orig npasswd.c------------------->8
+
+*** npasswd.c.orig	Fri Jan 25 16:34:59 1991
+--- npasswd.c	Tue Apr  7 15:06:59 1992
+***************
+*** 11,16 ****
+--- 11,21 ----
+  /*This code may be distributed freely, provided this notice is retained. */
+  /*                                                                       */
+  /* --------------------------------------------------------------------  */
++ 
++ /* Minor changes by Paul Leyland (pcl@oxford.ac.uk) for Ultrix UPGRADE
++  * or ENHANCED security levels.
++  */
++ 
+  /*
+   *	This program duplicates the manual page behavior of the 4.XBSD
+   *	passwd(1) command.  It can be configured for use with a variety
+***************
+*** 78,90 ****
+  static int	retries = 3;		/* Retry limit */
+  static int	from_prog = 0;		/* Data source is a program */
+  
+! static char	username[16],	/* Name of user changing password */
+! 		password[16];	/* Current password (encrypted) */
+  
+! char	pbuf[16],		/* Password read buffer 1 */
+! 	pbuf2[16],		/* Password read buffer 2 */
+! 	ppbuf[16],		/* Current password */
+! 	mylogin[16];		/* My login name (saved) */
+  
+  char	*getpass(),
+  	*malloc(),
+--- 83,95 ----
+  static int	retries = 3;		/* Retry limit */
+  static int	from_prog = 0;		/* Data source is a program */
+  
+! static char	username[32],	/* Name of user changing password */
+! 		password[32];	/* Current password (encrypted) */
+  
+! char	pbuf[32],		/* Password read buffer 1 */
+! 	pbuf2[32],		/* Password read buffer 2 */
+! 	ppbuf[32],		/* Current password */
+! 	mylogin[32];		/* My login name (saved) */
+  
+  char	*getpass(),
+  	*malloc(),
+***************
+*** 101,113 ****
+  /*
+   *	passwd - change the password for a user.
+   *
+!  *	This program impliments the 'passwd' command.
+   */
+  main(argc, argv)
+  int	argc;
+  char	*argv[];
+  {
+! 	char	*myname, mysavedname[16];/* My login name */
+  	struct passwd *pw;		/* My passwd entry */
+  	int	opt;			/* Option processing temp */
+  	extern char	*optarg;	/* From getopt() */
+--- 106,118 ----
+  /*
+   *	passwd - change the password for a user.
+   *
+!  *	This program implements the 'passwd' command.
+   */
+  main(argc, argv)
+  int	argc;
+  char	*argv[];
+  {
+! 	char	*myname, mysavedname[32];/* My login name */
+  	struct passwd *pw;		/* My passwd entry */
+  	int	opt;			/* Option processing temp */
+  	extern char	*optarg;	/* From getopt() */
+***************
+*** 197,202 ****
+--- 202,210 ----
+  	if (strcmp(username, mylogin) == 0 && getuid()) {
+  		if (pw_getuserbyname(username, password) == 0)
+  			quit(1, "Cannot get your password information.\n");
++ 
++ 		if (pw_permission() == 0)
++ 			quit(0, "Permission denied.\n");
+  		if (password[0])
+  			getpassword(password, ppbuf, sizeof(ppbuf));
+  	}
+***************
+*** 242,248 ****
+  		}
+  		/* Disallow new password == old password */
+  		if (pw_compare(password, pbuf)) {
+! 			printf("New password must be different than old; try again.\n");
+  			if (from_prog)
+  				quit(0, (char *)0);
+  			else
+--- 250,256 ----
+  		}
+  		/* Disallow new password == old password */
+  		if (pw_compare(password, pbuf)) {
+! 			printf("New password must be different from old; try again.\n");
+  			if (from_prog)
+  				quit(0, (char *)0);
+  			else
+
+8<-----------------diff -c Makefile.orig Makefile---------------------->8
+
+*** Makefile.orig	Fri Jan 25 16:34:58 1991
+--- Makefile	Tue Apr  7 15:29:26 1992
+***************
+*** 17,32 ****
+  #	@(#)Makefile.dist	1.11 11/26/90 (cc.utexas.edu)
+  
+  #	Top of install tree
+! DEST	=
+  
+  #	Where the binary lives
+! BINDIR = /bin
+  
+  #	Where condfiguration files live
+! ADMDIR	= /usr/adm
+  
+  #	Where manual pages live
+! MANDIR	= /usr/man/man1
+  
+  #	Mode for binary
+  IMODE	= 4511
+--- 17,32 ----
+  #	@(#)Makefile.dist	1.11 11/26/90 (cc.utexas.edu)
+  
+  #	Top of install tree
+! DEST  = /usr/local/sys/
+  
+  #	Where the binary lives
+! BINDIR = bin
+  
+  #	Where condfiguration files live
+! ADMDIR        = adm
+  
+  #	Where manual pages live
+! MANDIR        = /usr/local/man/man1
+  
+  #	Mode for binary
+  IMODE	= 4511
+***************
+*** 83,91 ****
+  # ---------------------------------------------------------------
+  
+  #
+! #	Ultrix 4.0 (highly mutated 4.2)
+! # ULTRIX	= -DBSD4_3 -DNDBM -DNO_CLNT_SPERRNO -DXFGETPWENT -DXPUTPWENT
+! # LIB_RPCSVC	=
+  
+  #	Using 4.3BSD hashed password file
+  # BSD = -DBSD4_3 -DNDBM
+--- 83,91 ----
+  # ---------------------------------------------------------------
+  
+  #
+! #	Ultrix 4.2 (highly mutated BSD 4.2)
+! ULTRIX	= -DBSD4_3 -DNDBM -DNO_CLNT_SPERRNO -DXFGETPWENT -DXPUTPWENT
+! LIB_AUTH	= -lauth
+  
+  #	Using 4.3BSD hashed password file
+  # BSD = -DBSD4_3 -DNDBM
+***************
+*** 94,100 ****
+  # SYS5 = -DSYSV
+  
+  #	If running under SunOS 4.X (funky tty ioctls)
+! # SUNOS = -DSUNOS4
+  
+  
+  # ---------------------------------------------------------------
+--- 94,100 ----
+  # SYS5 = -DSYSV
+  
+  #	If running under SunOS 4.X (funky tty ioctls)
+! #SUNOS = -DSUNOS4
+  
+  
+  # ---------------------------------------------------------------
+***************
+*** 113,120 ****
+  # PUTPWENT = -DXPUTPWENT
+  
+  #	-DXFGETPWENT provides fgetpwent() if not in libc.
+! # FGETPWENT = -DXFGETPWENT
+  
+  # ---------------------------------------------------------------
+  #	Program building
+  # ---------------------------------------------------------------
+--- 113,132 ----
+  # PUTPWENT = -DXPUTPWENT
+  
+  #	-DXFGETPWENT provides fgetpwent() if not in libc.
+! FGETPWENT = -DXFGETPWENT
+  
++ #	-DADJUNCT lets YP version of npasswd change adjunct
++ #	passwords via YP.  (dank@blacks.jpl.nasa.gov)
++ # ADJUNCT = -DADJUNCT
++ 
++ #	-DUPDATE_YP causes YP version of npasswd (when run on
++ #	a YP master) to update the YP tables after updating 
++ #	the local passwd file.  Don't enable this if you have
++ #	set up your master to have a YP-slave-like /etc/passwd
++ #	and are keeping the real data somewhere else for update
++ #	via YP.  (dank@blacks.jpl.nasa.gov)
++ #UPDATE_YP = -DUPDATE_YP
++ 
+  # ---------------------------------------------------------------
+  #	Program building
+  # ---------------------------------------------------------------
+***************
+*** 125,134 ****
+--- 137,148 ----
+  #	'XFLAGS' are the configuration flags exported to sub-makes.
+  #	Change '-O' in XFLAGS to $(DEBUG) for development work,
+  #	change to '-g' to use source debugger.
++ #XFLAGS	= $(DEBUG) $(BSD) $(SYS5) $(SUNOS) $(ULTRIX)
+  XFLAGS	= -O $(BSD) $(SYS5) $(SUNOS) $(ULTRIX)
+  
+  #	'CFLAGS' are the flags for npasswd only
+  CFLAGS	= $(XFLAGS) $(SYSLOG) $(GETPASS) $(PUTPWENT) $(FGETPWENT) \
++ 	$(ADJUNCT) $(UPDATE_YP) \
+  	$(HFD) $(CFD) $(MFD) $(PWFD) $(PWTD) $(PWSD)
+  
+  #	Change the following line to $(DEBUG) for debugging
+***************
+*** 142,148 ****
+  #	for 'all'
+  #
+  # all:	yp_passwd		# Build YP version
+! # all:	pw_passwd		# Build standard version
+  # all:	ui_passwd		# Build UT CC userinfo version
+  
+  first::
+--- 156,163 ----
+  #	for 'all'
+  #
+  # all:	yp_passwd		# Build YP version
+! #all:	pw_passwd		# Build standard version
+! all:	en_passwd		# Build Ultrix enhanced
+  # all:	ui_passwd		# Build UT CC userinfo version
+  
+  first::
+***************
+*** 160,166 ****
+--- 175,190 ----
+  pw_passwd:	$(OBJ_PW)
+  	$(CC) -o $(PASSWD) $(LDFLAGS) $(OBJ_PW) 
+  
++ 
+  # ---------------------------------------------------------------
++ #	Ultrix enhanced version
++ # ---------------------------------------------------------------
++ OBJ_PW	= npasswd.o pw_enhanced.o $(CHKLIB)
++ 
++ en_passwd:	$(OBJ_PW)
++ 	$(CC) -o $(PASSWD) $(LDFLAGS) $(OBJ_PW) $(LIB_AUTH) 
++ 
++ # ---------------------------------------------------------------
+  #	Yellow Pages version
+  # ---------------------------------------------------------------
+  OBJ_YP	= npasswd.o pw_yp.o $(CHKLIB)
+***************
+*** 216,222 ****
+  
+  install.man::
+  	@echo Customize a manual page
+! #	install -c -m 0444 npasswd.1 $(DEST)$(MANDIR)
+  
+  # ---------------------------------------------------------------
+  #	Make copy of password file for testing
+--- 240,246 ----
+  
+  install.man::
+  	@echo Customize a manual page
+! 	install -c -m 0444 npasswd.1 $(MANDIR)
+  
+  # ---------------------------------------------------------------
+  #	Make copy of password file for testing
+
+
+8<------------------------pw_enhanced.c------------------------------------>8
+
+/* --------------------------------------------------------------------   */
+/*                                                                        */
+/* Author: Clyde Hoover                                                   */
+/* Computation Center                                                     */
+/* The University of Texas at Austin                                      */
+/* Austin, Texas 78712                                                    */
+/* clyde@emx.utexas.edu                                                   */
+/* uunet!cs.utexas.edu!ut-emx!clyde                                       */
+/*                                                                        */
+/* This code may be distributed freely, provided this notice is retained. */
+/*                                                                        */
+/* --------------------------------------------------------------------   */
+/* pw_passwd - Routines for dealing with password files. Handles V7 / *.* BSD / Sys V format. */
+
+/* Additions by Paul Leyland (pcl@oxford.ac.uk) for Ultrix UPGRADE or ENHANCED security levels */
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <signal.h>
+#include <errno.h>
+#include <pwd.h>
+#include <fcntl.h>
+#include <auth.h>
+#include <time.h>
+#include <ndbm.h>
+
+#define	SLOP	128	 /* Size difference tolerated old <> new passwd file */
+
+typedef struct passwd passwd;
+typedef struct passwd *passwdp;
+
+static passwd theUser,		       /* The user to change */
+   Me;				       /* The user who invoked command */
+static uid_t myuid,		       /* Uid of program */
+   mytempfile = 0;		       /* Does PASSWD_TEMP belong to me? */
+static AUTHORIZATION theAuth;
+
+/* File names */
+#ifndef	PASSWD_FILE
+#define	PASSWD_FILE	"/etc/passwd"
+#endif
+
+#ifndef	PASSWD_SAVE
+#define	PASSWD_SAVE	"/etc/opasswd"
+#endif
+
+#ifndef	PASSWD_TEMP
+#define	PASSWD_TEMP	"/etc/ptmp"
+#endif
+
+#define	PASSWD_MODE	0644
+
+#ifdef	DEBUG
+static char *passwdtemp = "./etc_ptmp",
+*passwdfile = "./etc_passwd",
+*savefile = "./etc_opasswd";
+
+#else
+static char *passwdtemp = PASSWD_TEMP,
+*passwdfile = PASSWD_FILE,
+*savefile = PASSWD_SAVE;
+
+#endif
+
+extern int errno;
+
+char *getlogin (), *crypt (), *crypt16 (); 
+uid_t getuid ();
+size_t strlen ();
+
+int checkpasswd ();
+extern void quit (),randomstring ();
+
+/* pw_initialize - set up */
+pw_initialize ()
+{
+   passwdp metmp;			       /* Temp */
+   char *myname = getlogin ();	       /* Name of invoker */
+   AUTHORIZATION *a;		       /* Another temp. */
+
+#ifdef	DEBUG
+   setpwfile (passwdfile);
+#endif
+   myuid = getuid ();
+   if (myname && *myname)
+   {
+      if ((metmp = getpwnam (myname)) == NULL)
+	 quit (1, "Cannot get user identification from name.\n");
+   }
+   else
+   {
+      if ((metmp = getpwuid (myuid)) == NULL)
+	 quit (1, "Cannot get user identification from uid.\n");
+   }
+
+   a = getauthuid (myuid);
+   if (a == 0)
+      quit (1, "Cannot get auth record.\n");
+   _cpauth (a, &theAuth);
+   _cppasswd (metmp, &Me);
+   if (!strcmp (Me.pw_passwd, "*"))
+      Me.pw_passwd = theAuth.a_password;
+   return (1);
+}
+
+/* pw_getuserbyname - get password
+
+Returns 1 if passwd info found for <name> 0 otherwise */
+
+pw_getuserbyname (name, passwdb)
+char *name,			       /* User name */
+  *passwdb;			       /* Where to stuff password */
+{
+   passwdp p;			       /* Temp */
+   AUTHORIZATION *a;		       /* Ditto */
+
+   if ((p = getpwnam (name)) == NULL)
+      return (0);
+   _cppasswd (p, &theUser);
+
+
+/* Is the encrypted password in p, (UPGRADE) or do we have to get the Auth record (ENHANCED) ? */
+
+   if (strcmp ("*", p->pw_passwd))
+   {				       /* In p */
+      (void) strcpy (passwdb, p->pw_passwd);
+   }
+   else
+   {
+      a = getauthuid (p->pw_uid);
+      if (a == NULL)
+	 return (0);
+      _cpauth (a, &theAuth);
+      (void) strcpy (passwdb, a->a_password);
+   }
+   return (1);
+}
+
+/* pw_permission - check password change permission
+
+Returns 1 if password can be changed 0 if not */
+pw_permission ()
+{
+/* First off, am I root? */
+
+   if (myuid == 0)
+      return 1;
+
+/* Am I trying to change someone else's password? */
+
+   if (strcmp (Me.pw_name, theUser.pw_name))
+      return (0);
+
+/* Fine.  Now, have I been allowed to change my own password at all? */
+
+   if (!(theAuth.a_authmask & A_CHANGE_PASSWORD))
+      return 0;
+
+/* Now, what to do if forced to use generated passwords.  Punt to original passwd?  Let's ignore
+   for the moment. */
+
+/* Changed too recently? */
+
+   if (time ((long *) 0) - theAuth.a_pass_mod < theAuth.a_pw_minexp)
+      quit (1, "Password changed too recently.\n");
+
+   return (1);
+}
+
+/* pw_compare - compare old and new passwords
+
+Returns 1 if check = new, 0 if not */
+
+pw_compare (current, check)
+char *current,			       /* Current pw (encrypted) */
+  *check;			       /* check pw (plain) */
+{
+   if (!*current)
+      return (0);
+
+   if (strlen (current) == (size_t) 13)	       /* UPGRADE */
+      return (!strcmp (current, crypt (check, current)));
+   else				       /* ENHANCED */
+      return (!strcmp (current, crypt16 (check, current)));
+}
+
+/* pw_check - sanity check password.  Right now just calls the password check program
+
+Returns 1 if password is ok to use, 0 otherwise */
+
+pw_check (newpw)
+char *newpw;			       /* New password (plain) */
+{
+/* Put other administrative checks here */
+   return (checkpasswd (theUser.pw_uid, newpw));
+}
+
+/* pw_replace - replace password in passwd file */
+pw_replace (newpwd, curpwd)
+
+char *newpwd,			       /* New password (plain) */
+  *curpwd;			       /* Old password (plain) */
+
+/* Lint complains about curpwd not used.  Fossil? */
+{
+   long oldsigs,		       /* Signal mask save */
+      blocksigs = sigmask (SIGINT) |   /* Signals to block */
+   sigmask (SIGQUIT) |		       /* while updating */
+   sigmask (SIGTSTP);		       /* password file */
+   passwdp px;			       /* Temp */
+   char salt[4];		       /* Encryption salt */
+   FILE *tf;			       /* File ptr to new passwd file */
+   int fd;			       /* File desc. to new passwd file */
+   struct stat oldstat,		       /* Stat of current passwd file */
+      newstat;			       /* Stat of new passwd file */
+
+/* Prepare password entry 'theUser' for replacement */
+   randomstring (salt, sizeof (salt));
+   theUser.pw_passwd = "*";	       /* Always '*' in /etc/passwd */
+   strcpy (theAuth.a_password, crypt16 (newpwd, salt));	/* Real one in auth DB */
+   (void) umask (0);
+   (void) stat (passwdfile, &oldstat);
+   fd = open (passwdtemp, O_WRONLY | O_CREAT | O_EXCL, PASSWD_MODE);
+   if (fd < 0)
+   {
+      if (errno == EEXIST)
+	 quit (0, "Password file busy - try again.\n");
+      perror ("Tempfile create");
+      quit (1, "Cannot create temp file.\n");
+   }
+   mytempfile = 1;
+   if ((tf = fdopen (fd, "w")) == NULL)
+      quit (1, "Cannot fdopen temp file.");
+   oldsigs = sigblock (blocksigs);
+   setpwent ();
+   while ((px = getpwent ()) != NULL)
+   {
+      if (px->pw_name == 0 || px->pw_name[0] == 0)	/* Sanity check */
+	 continue;
+      if (strcmp (px->pw_name, theUser.pw_name) == 0)
+	 px = &theUser;
+      (void) putpwent (px, tf);
+   }
+   endpwent ();
+   (void) fflush (tf);
+   (void) fstat (fileno (tf), &newstat);
+   (void) fclose (tf);
+
+/* Check if the new password file is complete.  Since the encrypted password is of a fixed length,
+   the new file should be roughly the same size as the old one. */
+
+   if (newstat.st_size < (oldstat.st_size - SLOP))
+      quit (1, "New password file appears to be incomplete - aborting.\n");
+
+   if (rename (passwdfile, savefile) < 0)
+   {
+      perror ("Password file save");
+      unlink (passwdtemp);
+      quit (1, "Can't save password file");
+   }
+   if (rename (passwdtemp, passwdfile) < 0)
+   {
+      perror ("Password file replace");
+      (void) unlink (passwdtemp);
+      (void) link (savefile, passwdfile);
+      quit (1, "Can't replace password file");
+   }
+   updatedbm ();
+
+/* Ok, /etc/passwd in good shape -- update auth DB */
+
+   theAuth.a_pass_mod = time ((long *) 0);
+#ifdef DEBUG
+   fprintf (stderr, "About to storeauthent()\n");
+#else
+   if (storeauthent (&theAuth))
+      quit (1, "Can't update auth database.\n");
+#endif
+   (void) sigsetmask (oldsigs);
+}
+
+/* pw_cleanup - clean up after myself */
+
+pw_cleanup (code)
+int code;			       /* 0 for normal, 1 for abort *//* NOTUSED */
+{
+   if (mytempfile)
+      (void) unlink (passwdtemp);
+}
+
+/* _newstr - copy string into new storage */
+static char *_newstr (s)
+char *s;			       /* String to copy */
+{
+   register char *t;		       /* Temp */
+   void *malloc ();
+
+   if (s == NULL)
+      return (0);
+   t = (char *) malloc (strlen (s) + 1);
+   if (t == NULL)
+      quit (1, "No memory.\n");
+   (void) strcpy (t, s);
+   return (t);
+}
+
+/* _cppasswd - copy a passwd structure */
+static _cppasswd (f, t)
+passwdp f,			       /* From */
+   t;				       /* To */
+{
+   *t = *f;
+   t->pw_name = _newstr (f->pw_name);
+   t->pw_passwd = _newstr (f->pw_passwd);
+   t->pw_comment = _newstr (f->pw_comment);
+   t->pw_gecos = _newstr (f->pw_gecos);
+   t->pw_dir = _newstr (f->pw_dir);
+   t->pw_shell = _newstr (f->pw_shell);
+}
+
+/* _cpauth - copy a passwd structure */
+static _cpauth (f, t)
+AUTHORIZATION *f,			       /* From */
+   *t;				       /* To */
+{
+   t->a_uid = f->a_uid;
+   strcpy (t->a_password, f->a_password);
+   t->a_pass_mod = f->a_pass_mod;
+   t->a_pw_minexp = f->a_pw_minexp;
+   t->a_pw_maxexp = f->a_pw_maxexp;
+   t->a_authmask = f->a_authmask;
+   t->a_fail_count = f->a_fail_count;
+   (t->a_audit).audit_id = (f->a_audit).audit_id;
+   (t->a_audit).audit_control = (f->a_audit).audit_control;
+   bcopy ((t->a_audit).audit_mask,
+	  (f->a_audit).audit_mask,
+	  sizeof (AUDIT_MASK));
+   bcopy (t->a_privs,
+	  f->a_privs,
+	  sizeof (PRIVILEGE_MASK));
+}
+
+/* Update the hashed password data base */
+
+#define	SCOPY(S) xp = (S); while (*cp++ = *xp++)
+#define	BCOPY(B) bcopy((char *)&(B), cp, sizeof(int)); cp += sizeof(int)
+
+updatedbm ()
+{
+   DBM *pwd;			       /* DBM data base passwd */
+   register char *cp,		       /* Data storage pointer */
+     *xp;			       /* String copy pointer */
+   datum key,			       /* DBM key datum */
+      data;			       /* DBM data store datum */
+   char buf[512];		       /* Data buffer */
+
+   pwd = dbm_open (passwdfile, O_RDWR, 0);
+   if (pwd == 0)
+      return;
+   cp = buf;
+/* Pack passwd entry in the form expected by the getpw* routines */
+   SCOPY (theUser.pw_name);
+   SCOPY (theUser.pw_passwd);
+   BCOPY (theUser.pw_uid);
+   BCOPY (theUser.pw_gid);
+   BCOPY (theUser.pw_quota);
+   SCOPY (theUser.pw_comment);
+   SCOPY (theUser.pw_gecos);
+   SCOPY (theUser.pw_dir);
+   SCOPY (theUser.pw_shell);
+
+   data.dptr = buf;
+   data.dsize = cp - buf;
+   key.dptr = theUser.pw_name;
+   key.dsize = strlen (theUser.pw_name);
+   if (dbm_store (pwd, key, data, DBM_REPLACE) < 0)
+   {
+      perror ("dbm_store (name)");
+      quit (1, "Can't store passwd entry (name key).\n");
+   }
+   key.dptr = (char *) &theUser.pw_uid;
+   key.dsize = sizeof (int);
+   if (dbm_store (pwd, key, data, DBM_REPLACE) < 0)
+   {
+      perror ("dbm_store (uid)");
+      quit (1, "Can't store passwd entry (uid key).\n");
+   }
+   dbm_close (pwd);
+}

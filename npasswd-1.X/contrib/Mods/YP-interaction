@@ -1,0 +1,80 @@
+Return-Path: ccwj@wrasse.jcu.edu.au
+Received: from emx.cc.utexas.edu by sirius.cc.utexas.edu (5.61/1.34/CCOS 1.3)
+	id AA12725; Wed, 5 Aug 92 00:08:25 -0500
+Posted-Date:  Wed, 05 Aug 92 15:04:10 +1000
+Received: from wrasse.jcu.edu.au by emx.cc.utexas.edu (5.61/1.10)
+	id AA14772; Wed, 5 Aug 92 00:08:56 -0500
+Received: by wrasse.jcu.edu.au (5.57/1.34)
+	id AA10457; Wed, 5 Aug 92 15:04:17 +1000
+Message-Id: <9208050504.AA10457@wrasse.jcu.edu.au>
+To: npasswd-bugs@emx.cc.utexas.edu
+Cc: ccwj@wrasse.jcu.edu.au
+Subject: npasswd and yellow pages password file
+Date: Wed, 05 Aug 92 15:04:10 +1000
+From: ccwj@wrasse.jcu.edu.au
+X-Mts: smtp
+
+
+
+
+Sorry for being a pest again but I found another problem with npasswd
+that may or may not be perculiar to Ultrix. When changing a password
+for root whom exists in /etc/passwd not YP passwd, /etc/passwd would be
+written back as illustrated below. This is critical with one of our
+passsword files as the entry +::0:0::: is a YP security breach. I also
+found that it added the "::0:0:::" to the end of any other + or -
+entries that may exixt.
+
+Old /etc/passwd
+---------------
+root:xxxxxxxxxxxxx:0:1:System PRIVILEGED Account:/:/bin/csh
+nobody:Nologin:-2:-2:anonymous NFS user:/:/bin/false
+daemon:Nologin:1:1:Mr Background:/:/bin/false
++:
+
+New /etc/passwd after using "npasswd root"
+------------------------------------------
+root:yyyyyyyyyyyyy:0:1:System PRIVILEGED Account:/:/bin/csh
+nobody:Nologin:-2:-2:anonymous NFS user:/:/bin/false
+daemon:Nologin:1:1:Mr Background:/:/bin/false
++::0:0:::
+
+Diffs to npasswd.c
+------------------
+603,609c603,612
+<       pwdata.pw_name = p;     skipc;
+<       pwdata.pw_passwd = p;   skipc;
+<       pwdata.pw_uid = atoi(p); skipc;
+<       pwdata.pw_gid = atoi(p); skipc;
+<       pwdata.pw_gecos = p;    skipc;
+<       pwdata.pw_dir = p;      skipc;
+<       pwdata.pw_shell = p;
+---
+>       pwdata.pw_name = p;
+>       if (*p != '+' && *p != '-') {
+>               skipc;
+>               pwdata.pw_passwd = p;   skipc;
+>               pwdata.pw_uid = atoi(p); skipc;
+>               pwdata.pw_gid = atoi(p); skipc;
+>               pwdata.pw_gecos = p;    skipc;
+>               pwdata.pw_dir = p;      skipc;
+>               pwdata.pw_shell = p;
+>       }
+
+Diffs to pw_yp.c
+----------------
+445c445,449
+<               (void) putpwent(px, tf);
+---
+>               if (*px->pw_name == '+' || *px->pw_name == '-') {
+>                       fprintf(tf, "%s\n", px->pw_name);
+>               }
+>               else
+>                       (void) putpwent(px, tf);
+
+
+Wayne Jennings
+Computer Centre
+James Cook University
+Queensalnd AUSTRALIA
+email: ccwj@jcu.edu.au

@@ -1,0 +1,167 @@
+Return-Path: owner-npasswd-beta@uts.cc.utexas.edu 
+Received: from curly.cc.utexas.edu (daemon@curly.cc.utexas.edu [128.83.42.1])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id OAA15262
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 14:02:59 -0600 (CST)
+Received: (from daemon@localhost)
+	by curly.cc.utexas.edu (8.8.5/8.8.5/cc-uts-1.19) id NAA09839
+	for npasswd-beta-outgoing; Wed, 10 Dec 1997 13:05:59 -0600 (CST)
+Received: from ipnosb.in2p3.fr (ipnosb.in2p3.fr [134.158.92.54])
+	by curly.cc.utexas.edu (8.8.5/8.8.5/cc-uts-1.19) with ESMTP id NAA09775
+	for <npasswd-beta@uts.cc.utexas.edu>; Wed, 10 Dec 1997 13:05:52 -0600 (CST)
+Received: from ipnsub.in2p3.fr (ipnsub [134.158.92.55]) by ipnosb.in2p3.fr (8.7.6/8.7.3) with ESMTP id UAA06624 for <npasswd-beta@uts.cc.utexas.edu>; Wed, 10 Dec 1997 20:05:49 +0100 (MET)
+Received: (from diarra@localhost) by ipnsub.in2p3.fr (8.7.6/8.7.3) id UAA10848; Wed, 10 Dec 1997 20:03:53 +0100 (MET)
+Date: Wed, 10 Dec 1997 20:03:51 +0100 (MET)
+From: Christophe DIARRA <diarra@ipno.in2p3.fr>
+To: npasswd-beta@uts.cc.utexas.edu
+Subject: SUMMARY: passwd-2.0b4-p4: random responses
+In-Reply-To: <Pine.SOL.3.91.971209121838.18986A-100000@ipnsub>
+Message-ID: <Pine.SOL.3.91.971210194534.10344A-100000@ipnsub>
+MIME-Version: 1.0
+Sender: npasswd-beta-relay@uts.cc.utexas.edu
+Precedence: bulk
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 3944
+
+Hello,
+
+npasswd is working very well now. There is just a small problem:
+passwd.MaxRepeat is not recognized by npasswd. I commented it out
+from passwd.conf.
+
+The original post is appended to this mail.
+
+I got 3 replies from:
+
+Martin J. Evans (MartinE@easysoft.com)
+Clyde Hoover <clyde@motown.cc.utexas.edu>
+MIKE STUTE <mstute@compucom.com> 
+
+Thanks to them.
+
+Following is the solution.
+
+1) If npasswd prints incorrect error messages:
+
+edit src/PasswordCheck/pwck_lexical.c
+   I did it as advised by MIKE STUTE:
+
+> From: MIKE STUTE <mstute@compucom.com>
+> Make the following changes to
+> src/PasswordCheck/pwck_lexical.c
+>
+> Find #include "pwck_defines.h"
+>
+> Right under it is a bunch of defines. Change them
+> to the following:
+> 
+> #define P_U     0       /* Upper case in password */
+> #define P_L     1       /* Lower case in password */
+> #define P_C     2       /* Control chars in password */
+> #define P_D     3       /* Digits in password */
+> #define P_P     4       /* Punctutation chars inpassword */
+> #define P_S     5       /* Whitespace chars in password */
+> #define P_MAX   P_S + 1
+
+May be just changing '#define P_MAX   P_S' to '#define P_MAX   P_S+1' 
+could solve the problem ? This is what Clyde Hoover asked me to do.
+He wrote:
+> Problem I is due to the behavior of some compilers.  The fix is in 
+> src/PasswordCheck/pwck_lexical.c - change
+> 
+> #define P_MAX   P_S
+> 
+> to
+> 
+> #define P_MAX   P_S+1
+> 
+> As to problem II,I suspect it's because Configure came to the wrong 
+> conclusion about how do case changes.
+
+2) Making the dictionnaries
+I solved the makedict script problem by changing 
+tr $trup $trlow
+to
+tr '[A-Z]'  '[a-z]'
+in the src/PasswordCheck/cracklib/tools/makedict before running make install.
+This works but I am not sure it is the best solution
+
+Christophe.
+
+***
+Christophe DIARRA
+Institut de Physique Nucleaire
+Bat 100 - S2I
+91406 ORSAY Cedex
+Tel: (33) 01 69 15 65 60
+Fax: (33) 01 69 15 64 70
+E-mail: diarra@ipno.in2p3.fr
+***
+
+On Tue, 9 Dec 1997, Christophe DIARRA wrote:
+
+> Hello,
+> 
+> I have installed passwd-2.0b4-p4 on Solaris 2.5 and DECUNIX 4.0B. It seems 
+> working but I have some problems.
+> 
+> I. On Solaris
+> -------------
+> some time, npasswd rejects goods passwords or prints an incorrect error 
+> message. For example, 'sd=45347' or '12345678' is considered by npasswd as
+> a whitespace only password. The rejecteed password may be accepted some 
+> minutes later by npasswd if I retry again an again and the printed message
+> can be different (in the case of a password as '12345678', the error message 
+> changes from whitespaces only to digits only).
+> 
+> Following is an output of npasswd: 
+> 
+> npasswd
+> Current password:<......>
+> Changing password for diarra on <myserver>
+> New password (? for help): 
+>  
+> pwck_lexical: "sd=45347"
+> That password cannot be used because whitespace only passwords not allowed.
+> Try a different password. ===============> WHY ?????
+> 
+> New password (? for help): <I give the same password>
+>  
+> pwck_lexical: "sd=45347"
+> pwck_passwd: "sd=45347"
+> pwck_lexical: "sd=45347"
+> pwck_passwd: "sd=45347"
+> New password (again): ===> NOW IT WORKS.
+> 
+> Is there any explanation ? UNIX/C/ENV problems ?
+> 
+> II. On DECUNIX
+> --------------
+> 
+> On DECUNIX 4.0B, all the installation work but not the installation of
+> dictionnaries. Is there some one who successfully installed npasswd on
+> DECUNIX 4.0B ? 
+> 
+> Following are some messages of make install:
+> 
+> Installing in dict...
+> Building /import/divers/npasswd/lib/passwd/dictionaries/Antworth
+> tr: Invalid combination of options and Strings.
+> Usage: tr [ -c | -cds | -cs | -ds | -s ] [-A] String1 String2
+>        tr [ -cd | -cs | -d | -s ] [-A] String1
+>  
+>         0 0
+> 
+> ...
+> Christophe.
+> 
+> ***
+> Christophe DIARRA
+> Institut de Physique Nucleaire
+> Bat 100 - S2I
+> 91406 ORSAY Cedex
+> Tel: (33) 01 69 15 65 60
+> Fax: (33) 01 69 15 64 70
+> E-mail: diarra@ipno.in2p3.fr
+> ***
+> 
+> 

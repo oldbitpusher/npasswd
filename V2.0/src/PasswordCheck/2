@@ -1,0 +1,54 @@
+Return-Path: <clyde@motown.cc.utexas.edu>
+Received: from ironmaiden.mail.utexas.edu (ironmaiden.mail.utexas.edu [128.83.32.53])
+	by grapevine.cc.utexas.edu (8.12.11/8.12.11/cc-mt.mc-1.17) with ESMTP id l2BC8GCO008422
+	for <clyde@motown.cc.utexas.edu>; Sun, 11 Mar 2007 06:08:16 -0600 (CST)
+Received: from larry.cc.utexas.edu ([146.6.72.5])
+  by ironmaiden.mail.utexas.edu with ESMTP; 11 Mar 2007 07:08:16 -0500
+Received: from lisa.cc.utexas.edu (lisa.cc.utexas.edu [128.83.40.6])
+	by larry.cc.utexas.edu (8.12.11/8.12.11/cc-uts-1.42) with ESMTP id l2BC8FUY021461
+	for <clyde@uts-smtp.cc.utexas.edu>; Sun, 11 Mar 2007 07:08:15 -0500 (CDT)
+Received: from ironwood.mail.utexas.edu (ironwood.mail.utexas.edu [128.83.32.56])
+	by lisa.cc.utexas.edu (8.12.11/8.12.11/cc-web-solaris.mc-1.28) with ESMTP id l2BC8FtZ010030
+	for <npasswd-support@www.utexas.edu>; Sun, 11 Mar 2007 07:08:15 -0500 (CDT)
+Received: from diana.cc.utexas.edu ([128.83.93.7])
+  by ironwood.mail.utexas.edu with ESMTP; 11 Mar 2007 07:08:15 -0500
+X-IronPort-MID: 156234650
+X-SBRS: None
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: Ao8CAP6N80WAU10H/2dsb2JhbAA
+X-IronPort-AV: i="4.14,271,1170655200"; 
+   d="scan'208"; a="156234650:sNHT15411102"
+Received: from localhost (localhost [127.0.0.1])
+	by diana.cc.utexas.edu (8.13.7+Sun/8.13.7) with ESMTP id l2BC84Vn017875;
+	Sun, 11 Mar 2007 07:08:07 -0500 (CDT)
+Date: Sun, 11 Mar 2007 07:08:03 -0500 (CDT)
+Message-Id: <20070311.070803.143328245.clyde@diana.cc.utexas.edu>
+To: James.Teasdale@mincom.com
+Cc: npasswd-support@www.utexas.edu
+Subject: Re: Change passwd problem
+From: Senior UNIX Wacker <clyde@motown.cc.utexas.edu>
+In-Reply-To: <OF31BEC970.B4F97E88-ON4A257299.001C66E5-4A257299.001C9677@mincom.com>
+References: <OF31BEC970.B4F97E88-ON4A257299.001C66E5-4A257299.001C9677@mincom.com>
+X-Mailer: Mew version 5.2 on Emacs 22.0.91 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, hits=-11.8 required=5.0
+	tests=AWL,BAYES_01,IN_REP_TO,RCVD_IN_OSIRUSOFT_COM,REFERENCES
+	autolearn=ham version=2.53
+X-Spam-Level: 
+X-Spam-Checker-Version: SpamAssassin 2.53 (1.174.2.15-2003-03-30-exp)
+
+That message tells the the password history database is malformed or
+the split functions attempt to malloc() memory failed.  The former is
+more likely. Please look in your configuration and see where the
+password history file is located and send it to me.  You may redact
+actual login names and encrypted passwords if you desire, but please
+do not alter the structure of the data (i.e. the number and placement
+of ':').
+
+Clyde Hoover                | "Sometimes I feel self-conscious
+(Shouter-To-Dead-Parrots)   |  because my brain is so tiny."
+UNIX Sys Admin Tiger Team   |   -Bob the dinosaur
+UT Austin ITS               | 
+c.hoover@its.utexas.edu     | 

@@ -1,0 +1,2700 @@
+*** /tmp/d0_b6nN	Mon Feb  1 14:14:37 1999
+--- doc/npasswd.1	Thu Dec 10 15:37:59 1998
+***************
+*** 41,47 ****
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)npasswd.1	1.6 10/14/98 (cc.utexas.edu)
+  '\"
+  .TH npasswd 1
+  .SH NAME
+--- 41,47 ----
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)npasswd.1	1.7 12/10/98 (cc.utexas.edu)
+  '\"
+  .TH npasswd 1
+  .SH NAME
+***************
+*** 218,226 ****
+  Change finger information.
+  .TP 10
+  .B \-\^XI
+! Read passwords from standard input versus using
+! .BR /dev/tty .
+  This option is restricted to root.
+  .TP 10
+  .B \-\^Xs
+  Change login shell.
+--- 218,234 ----
+  Change finger information.
+  .TP 10
+  .B \-\^XI
+! Allow standard input to be a file or pipe.
+! This option can be used thusly:
+! .RS
+! .nf
+! (echo old-password
+!  echo new-password
+!  echo new-password) | npasswd -XI ...
+! .fi
+! .sp
+  This option is restricted to root.
++ .RE
+  .TP 10
+  .B \-\^Xs
+  Change login shell.
+*** /tmp/di.Lis_	Mon Feb  1 14:14:37 1999
+--- src/Common/chop_nl.c	Tue Nov 17 16:48:39 1998
+***************
+*** 1,18 ****
+  /*
+!  * chop_nl
+!  *	Replace newline with null character
+!  * Usage
+!  *	(void) chop_nl(string);
+   */
+  
+  #include "compatibility.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)chop_nl.c	1.2 08/13/96 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.chop_nl.c";
+  #endif
+  
+  /*
+!  *	chop_nl - Chop off (first) newline in string
+   */
+  void
+  chop_nl(str)
+--- 1,58 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+!  *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
+  #include "compatibility.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)chop_nl.c	1.4 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.chop_nl.c";
+  #endif
+  
+  /*
+!  * chop_nl
+!  *	Zap first newline in string
+!  * Usage
+!  *	(void) chop_nl(string);
+   */
+  void
+  chop_nl(str)
+*** /tmp/dPOZdL_	Mon Feb  1 14:14:37 1999
+--- src/Common/common.h	Tue Nov 17 15:44:00 1998
+***************
+*** 1,6 ****
+  /*
+!  * @(#)common.h	1.11 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.common.h
+   *
+   * Function declarations for routines in the common module library
+   *
+   */
+--- 1,50 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+   *
++  * By using this software the USER indicates that he or she has read,
++  * understood and will comply with the following:
++  *
++  * U. T. Austin hereby grants USER permission to use, copy, modify, and
++  * distribute this software and its documentation for any purpose and
++  * without fee, provided that:
++  *
++  * 1. the above copyright notice appears in all copies of the software
++  *    and its documentation, or portions thereof, and 
++  * 2. a full copy of this notice is included with the software and its
++  *    documentation, or portions thereof, and 
++  * 3. neither the software nor its documentation, nor portions thereof,
++  *    is sold for profit. Any commercial sale or license of this software,
++  *    copies of the software, its associated documentation and/or
++  *    modifications of either is strictly prohibited without the prior
++  *    consent of U. T. Austin. 
++  * 
++  * Title to copyright to this software and its associated documentation
++  * shall at all times remain with U. T. Austin. No right is granted to
++  * use in advertising, publicity or otherwise any trademark, service
++  * mark, or the name of U. T. Austin.
++  * 
++  * This software and any associated documentation are provided "as is,"
++  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
++  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
++  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
++  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
++  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
++  * University of Texas System, its Regents, officers, and employees shall
++  * not be liable under any circumstances for any direct, indirect, special,
++  * incidental, or consequential damages with respect to any claim by USER
++  * or any third party on account of or arising from the use, or inability
++  * to use, this software or its associated documentation, even if U. T.
++  * Austin has been advised of the possibility of those damages.
++  * 
++  * Submit commercialization requests to: Office of the Executive Vice
++  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
++  * 78712, ATTN: Technology Licensing Specialist.
++  */
++ 
++ /*
++  * @(#)common.h	1.13 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.common.h
++  *
+   * Function declarations for routines in the common module library
+   *
+   */
+***************
+*** 87,94 ****
+--- 131,150 ----
+  void	FixPwFileMode _((char *, char *));
+  
+  /*
++  * Routines in term.c
++  */
++ int	term_get_fd();
++ void	term_set_fd _((int));
++ void	term_save();
++ void	term_restore();
++ void	term_echo _((int));
++ void	term_raw _((int));
++ int	term_read _((char *, size_t));
++ 
++ /*
+   * Routines in other modules
+   */
++ void	pager _((FILE *));
+  char	**split _((char *, char, char *, char));
+  int	xatoi _((char *, char **, int *));
+  int	decode_boolean _((char *));
+*** /tmp/d06onYq	Mon Feb  1 14:14:38 1999
+--- src/Common/compatibility.c	Tue Nov 17 16:46:41 1998
+***************
+*** 1,4 ****
+--- 1,48 ----
+  /*
++  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
++  * All rights reserved.
++  *
++  * By using this software the USER indicates that he or she has read,
++  * understood and will comply with the following:
++  *
++  * U. T. Austin hereby grants USER permission to use, copy, modify, and
++  * distribute this software and its documentation for any purpose and
++  * without fee, provided that:
++  *
++  * 1. the above copyright notice appears in all copies of the software
++  *    and its documentation, or portions thereof, and 
++  * 2. a full copy of this notice is included with the software and its
++  *    documentation, or portions thereof, and 
++  * 3. neither the software nor its documentation, nor portions thereof,
++  *    is sold for profit. Any commercial sale or license of this software,
++  *    copies of the software, its associated documentation and/or
++  *    modifications of either is strictly prohibited without the prior
++  *    consent of U. T. Austin. 
++  * 
++  * Title to copyright to this software and its associated documentation
++  * shall at all times remain with U. T. Austin. No right is granted to
++  * use in advertising, publicity or otherwise any trademark, service
++  * mark, or the name of U. T. Austin.
++  * 
++  * This software and any associated documentation are provided "as is,"
++  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
++  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
++  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
++  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
++  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
++  * University of Texas System, its Regents, officers, and employees shall
++  * not be liable under any circumstances for any direct, indirect, special,
++  * incidental, or consequential damages with respect to any claim by USER
++  * or any third party on account of or arising from the use, or inability
++  * to use, this software or its associated documentation, even if U. T.
++  * Austin has been advised of the possibility of those damages.
++  * 
++  * Submit commercialization requests to: Office of the Executive Vice
++  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
++  * 78712, ATTN: Technology Licensing Specialist.
++  */
++ 
++ /*
+   * BSD Compatiblity routines
+   *
+   * Compliation: cc -c compatibility.c
+***************
+*** 5,11 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)compatibility.c	1.2 08/13/96 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.compatibility.c";
+  #endif
+  
+  #include "compatibility.h"
+--- 49,55 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)compatibility.c	1.4 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.compatibility.c";
+  #endif
+  
+  #include "compatibility.h"
+***************
+*** 12,22 ****
+  
+  #ifndef	HAS_RENAME
+  /*
+!  *	rename - replacement for BSD rename(2)
+   */
+  rename(src, dst)
+! 	const char	*src,		/* Source path */
+! 			*dst;		/* Destination path */
+  {
+  	extern int	errno;
+  
+--- 56,67 ----
+  
+  #ifndef	HAS_RENAME
+  /*
+!  * rename
+!  *	Replacement for BSD rename(2)
+   */
+  rename(src, dst)
+! 	char	*src,		/* Source path */
+! 		*dst;		/* Destination path */
+  {
+  	extern int	errno;
+  
+***************
+*** 32,41 ****
+  
+  #ifndef	HAS_STRDUP
+  /*
+!  *	strdup - copy string into new storage
+   */
+  char *strdup(s)
+! 	const char	*s;		/* String to copy */
+  {
+  	char	*t;	/* Temp */
+  
+--- 77,87 ----
+  
+  #ifndef	HAS_STRDUP
+  /*
+!  * strdup
+!  *	Copy string into new storage
+   */
+  char *strdup(s)
+! 	char	*s;	/* String to copy */
+  {
+  	char	*t;	/* Temp */
+  
+***************
+*** 104,110 ****
+  };
+  
+  /*
+!  *	strcasecmp - case independant string compare
+   */
+  strcasecmp(s1, s2)
+  	char	*s1,
+--- 150,157 ----
+  };
+  
+  /*
+!  * strcasecmp
+!  *	Case independant string compare
+   */
+  strcasecmp(s1, s2)
+  	char	*s1,
+***************
+*** 117,123 ****
+  }
+  
+  /*
+!  *	strncasecmp - case independant string compare
+   */
+  strncasecmp(s1, s2, n)
+  	char	*s1,
+--- 164,171 ----
+  }
+  
+  /*
+!  * strncasecmp
+!  *	Case independant string compare
+   */
+  strncasecmp(s1, s2, n)
+  	char	*s1,
+*** /tmp/d0pB0UJ	Mon Feb  1 14:14:38 1999
+--- src/Common/file_util.c	Tue Nov 17 15:44:45 1998
+***************
+*** 1,4 ****
+--- 1,48 ----
+  /*
++  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
++  * All rights reserved.
++  *
++  * By using this software the USER indicates that he or she has read,
++  * understood and will comply with the following:
++  *
++  * U. T. Austin hereby grants USER permission to use, copy, modify, and
++  * distribute this software and its documentation for any purpose and
++  * without fee, provided that:
++  *
++  * 1. the above copyright notice appears in all copies of the software
++  *    and its documentation, or portions thereof, and 
++  * 2. a full copy of this notice is included with the software and its
++  *    documentation, or portions thereof, and 
++  * 3. neither the software nor its documentation, nor portions thereof,
++  *    is sold for profit. Any commercial sale or license of this software,
++  *    copies of the software, its associated documentation and/or
++  *    modifications of either is strictly prohibited without the prior
++  *    consent of U. T. Austin. 
++  * 
++  * Title to copyright to this software and its associated documentation
++  * shall at all times remain with U. T. Austin. No right is granted to
++  * use in advertising, publicity or otherwise any trademark, service
++  * mark, or the name of U. T. Austin.
++  * 
++  * This software and any associated documentation are provided "as is,"
++  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
++  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
++  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
++  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
++  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
++  * University of Texas System, its Regents, officers, and employees shall
++  * not be liable under any circumstances for any direct, indirect, special,
++  * incidental, or consequential damages with respect to any claim by USER
++  * or any third party on account of or arising from the use, or inability
++  * to use, this software or its associated documentation, even if U. T.
++  * Austin has been advised of the possibility of those damages.
++  * 
++  * Submit commercialization requests to: Office of the Executive Vice
++  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
++  * 78712, ATTN: Technology Licensing Specialist.
++  */
++ 
++ /*
+   *	A collection of file utility routines used by npasswd
+   */
+  
+***************
+*** 5,11 ****
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)file_util.c	1.2 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.file_util.c";
+  #endif
+  
+  /*
+--- 49,55 ----
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)file_util.c	1.3 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.file_util.c";
+  #endif
+  
+  /*
+*** /tmp/dWbEPo_	Mon Feb  1 14:14:39 1999
+--- src/Common/getpass.c	Thu Dec 10 09:52:52 1998
+***************
+*** 1,14 ****
+  /*
+!  *	This program duplicates the manual page behavior of the 4.XBSD
+!  *	passwd(1) command.  It can be configured for use with a variety
+!  *	of passwd systems (/etc/passwd, /etc/shadow, databases).
+   */
+  
+  #include "npasswd.h"
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)getpass.c	1.5 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.getpass.c";
+  #endif
+  
+  /*
+--- 1,56 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+!  *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
++ /*
++  * Routines to deal with passwords.
++  */
++ 
+  #include "npasswd.h"
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)getpass.c	1.7 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.getpass.c";
+  #endif
+  
+  /*
+***************
+*** 77,184 ****
+  }
+  
+  /*
+-  * Terminal handling code.
+-  *
+-  * The following methods are supported:
+-  *	termios via POSIX tc[gs]attr() routines
+-  *	termios via TCGETS/TCSETS
+-  *	termio via TCGETA/TCSETA
+-  *	V7 sgtty
+-  *
+-  * Configure will set only *one* of the symbols used,  so that
+-  * termios takes precedence over termio which suprecedes sgtty..
+-  *
+-  * This is a bloody damn mess - probably the next revision
+-  * will toss most of these options and only support termios
+-  */
+- #ifdef	I_TERMIOS
+- /*
+-  * Has TERMIOS
+-  */
+- # include <termios.h>
+- static struct termios saved_tty_mode;
+- # define	TTY_SAVE	termios
+- # define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+- # define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+- # ifdef	HAS_POSIX_TTY
+- #  define	GET_TTY(_fd_, _b_)	tcgetattr(_fd_, (_b_))
+- #  define	SET_TTY(_fd_, _b_)	tcsetattr(_fd_, TCSANOW, (_b_))
+- # else
+- #  define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETS, (_b_))
+- #  define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETS, (_b_))
+- # endif	/* HAS_POSIX_TTY */
+- #endif	/* I_TERMIOS */
+- 
+- #if	(defined(I_TERMIO) && !defined(GET_TTY))
+- /*
+-  * Has TERMIO
+-  */
+- #include <sys/termio.h>		/* SUN OS 4.0 termio */
+- static struct termio saved_tty_mode;
+- # define	TTY_SAVE	termio
+- # define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+- # define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+- # define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETA, (_b_))
+- # define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETA, (_b_))
+- #endif	/* I_TERMIO */
+- 
+- /*
+-  * Neither TERMIOS or TERMIO - use BSD sgtty
+-  */
+- #if	(defined(I_SGTTY) && !defined(GET_TTY))
+- # include <sgtty.h>		/* BSD tty */
+- # define	TTY_SAVE	sgttyb
+- # define	ECHO_OFF(_b_)		_b_.sg_flags =~ ECHO
+- # define	ECHO_ON(_b_)		_b_.sg_flags =| ECHO
+- # define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCGETP, (_b_))
+- # define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCSETP, (_b_))
+- #endif	/* I_SGTTY */
+- 
+- #ifndef	GET_TTY
+- /* # ifdef _STDC_ */
+- /* #	error Cannot figure out how to do tty stuff */
+- /* # endif */
+- 	ERROR Cannot figure out how to do tty stuff
+- #endif
+- 
+- static struct {
+- 	char		valid;
+- 	struct TTY_SAVE mode;
+- } tty_save = { 0 };
+- 
+- /*
+-  * savetty
+-  *	Save terminal settings
+-  * Usage:
+-  *	savetty();
+-  * Effects:
+-  *	Stores terminal mode in the "tty_save" structure for
+-  *	restoration by fixtty()
+-  */
+- public void
+- savetty()
+- {
+- 	(void) GET_TTY(0, &tty_save.mode);
+- 	tty_save.valid++;
+- }
+- 
+- /*
+-  * fixtty
+-  *	Restore saved terminal settings
+-  * Usage:
+-  *	fixtty()
+-  * Effects:
+-  *	Changes terminal settings from the "tty_save" structure
+-  *	if that data is valid
+-  */
+- public void
+- fixtty()
+- {
+- 	if (tty_save.valid)
+- 		(void) SET_TTY(0, &tty_save.mode);
+- }
+- 
+- /*
+   * np_getpass
+   *	Replacement for libc getpass(3)
+   * Usage:
+--- 119,124 ----
+***************
+*** 206,239 ****
+   *	verified upstream), so /dev/tty is NOT used.
+   *	Signals are caught and terminal modes reset upstream.
+   */
+  public char	*
+  np_getpass(prompt)
+  	char	*prompt;		/* Prompt string */
+  {
+- 	struct TTY_SAVE	saved,		/* Saved TTY modes */
+- 			noecho;		/* TTY mode for 'no echo' mode */
+  	struct sigblk	blocked;	/* Blocked signals */
+  	static char	ib[64];		/* Input buffer */
+  	int		nr;		/* Terminal read return */
+  
+- 	if (!XSwitches[Xsw_UseStdin]) {		/* Suppress tty echo ? */
+- 		(void) GET_TTY(0, &saved);
+- 		noecho = saved;
+- 		ECHO_OFF(noecho);
+- 		(void) write(2, prompt, strlen(prompt));
+- 		(void) SET_TTY(0, &noecho);
+- 		block_signals(&blocked, SIGTSTP, 0);
+- 	}
+  	ib[0] = 0;
+! 	nr = read(0, ib, sizeof(ib));
+! 	if (!XSwitches[Xsw_UseStdin]) {		/* Reinstate tty echo? */
+! 		SET_TTY(0, &saved);
+  		unblock_signals(&blocked);
+  	}
+- 	(void) write(2, "\n", 1);	/* Put newline to stderr */
+  	if (nr <= 0)			/* EOF or error */
+  		return(NULL);
+  	chop_nl(ib);			/* Pitch newline at end */
+  	return(ib);
+  }
+  /* End getpass.c */
+--- 146,178 ----
+   *	verified upstream), so /dev/tty is NOT used.
+   *	Signals are caught and terminal modes reset upstream.
+   */
++ #define	PROMPT_FD	2		/* File descriptor for prompts */
++ 
+  public char	*
+  np_getpass(prompt)
+  	char	*prompt;		/* Prompt string */
+  {
+  	struct sigblk	blocked;	/* Blocked signals */
+  	static char	ib[64];		/* Input buffer */
+  	int		nr;		/* Terminal read return */
+  
+  	ib[0] = 0;
+! 	if (XSwitches[Xsw_UseStdin] == 0) {	/* Stdin is a tty */
+! 		term_echo(0);
+! 		(void) write(PROMPT_FD, prompt, strlen(prompt));
+! 		block_signals(&blocked, SIGTSTP, 0);
+! 		nr = term_read(ib, sizeof(ib));
+! 		term_echo(1);
+! 		(void) write(PROMPT_FD, "\n", 1);
+  		unblock_signals(&blocked);
++ 	} else {
++ 		nr = term_read(ib, sizeof(ib));
+  	}
+  	if (nr <= 0)			/* EOF or error */
+  		return(NULL);
+  	chop_nl(ib);			/* Pitch newline at end */
+  	return(ib);
+  }
++ #undef	PROMPT_FD
++ 
+  /* End getpass.c */
+*** /tmp/dD_TKH_	Mon Feb  1 14:14:39 1999
+--- src/Common/instring.c	Tue Nov 17 15:49:27 1998
+***************
+*** 1,17 ****
+  /*
+   *
+!  *	instring - check one string for occurance of another
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)instring.c	1.1 08/07/96 (cc.utexas.edu)";
+  #endif
+  
+  instring(searchin, searchfor)
+  	char	*searchin,		/* String to search in */
+  		*searchfor;		/* String to search for */
+  {
+! 	int	l;
+  
+  	for (l = strlen(searchfor); *searchin; searchin++) {
+  		if (strncmp(searchin, searchfor, l) == 0)
+--- 1,66 ----
+  /*
++  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
++  * All rights reserved.
+   *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)instring.c	1.2 11/17/98 (cc.utexas.edu)";
+  #endif
+  
++ /*
++  * instring
++  *	Check one string for occurance of another
++  * Usage:
++  *	i = instring(in, for);
++  *	i = instringcase(in, for);
++  * Returns:
++  *	1 if string <for> located in string <in>
++  *	0 if not
++  */
+  instring(searchin, searchfor)
+  	char	*searchin,		/* String to search in */
+  		*searchfor;		/* String to search for */
+  {
+! 	int	l;		/* Temp */
+  
+  	for (l = strlen(searchfor); *searchin; searchin++) {
+  		if (strncmp(searchin, searchfor, l) == 0)
+***************
+*** 20,30 ****
+  	return(0);
+  }
+  
+  instringcase(searchin, searchfor)
+  	char	*searchin,		/* String to search in */
+  		*searchfor;		/* String to search for */
+  {
+! 	int	l;
+  
+  	for (l = strlen(searchfor); *searchin; searchin++) {
+  		if (strncasecmp(searchin, searchfor, l) == 0)
+--- 69,88 ----
+  	return(0);
+  }
+  
++ /*
++  * instringcase
++  *	Check one string for occurance of another (case insensitive)
++  * Usage:
++  *	i = instringcase(in, for);
++  * Returns:
++  *	1 if string <for> located in string <in>
++  *	0 if not
++  */
+  instringcase(searchin, searchfor)
+  	char	*searchin,		/* String to search in */
+  		*searchfor;		/* String to search for */
+  {
+! 	int	l;		/* Temp */
+  
+  	for (l = strlen(searchfor); *searchin; searchin++) {
+  		if (strncasecmp(searchin, searchfor, l) == 0)
+*** /tmp/d0wOhFm	Mon Feb  1 14:14:39 1999
+--- src/Common/messages.c	Tue Nov 17 16:48:24 1998
+***************
+*** 1,8 ****
+  /*
+!  * Message routines used by npasswd and checkpasswd
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)messages.c	1.8 07/09/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.messages.c";
+  #endif
+  
+  #define	_messages_c
+--- 1,65 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+!  *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
++ 
++ /*
++  * Message routines
++  *
++  * Exported routines:
++  *	get_debug
++  *	init_debug
++  *	set_debug
++  *	set_die_callback
++  *	set_debug_tag
++  *	debug
++  *	warn
++  *	die
++  *	logdie
++  *	logerr
++  */
++ 
+  #ifndef lint
+! static char sccsid[] = "@(#)messages.c	1.9 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.messages.c";
+  #endif
+  
+  #define	_messages_c
+***************
+*** 11,24 ****
+  #include "compatibility.h"
+  #include "common.h"
+  
+! private	int DebugLevel = DB_NONE;
+! private	char *DebugTag = "passwd";
+  
+  /*
+   * get_debug
+   *	Fetch the debug level
+   */
+! public
+  get_debug()
+  {
+  	return(DebugLevel);
+--- 68,84 ----
+  #include "compatibility.h"
+  #include "common.h"
+  
+! private	int DebugLevel = DB_NONE;	/* Debug level */
+! private	char *DebugTag = "passwd";	/* Message tag */
+! private void (*DieCallBack)() = 0;	/* Callback routine */
+  
+  /*
+   * get_debug
+   *	Fetch the debug level
++  * Usage:
++  *	level = get_debug();
+   */
+! public int
+  get_debug()
+  {
+  	return(DebugLevel);
+***************
+*** 27,36 ****
+  /*
+   * init_debug
+   *	Initialize debug level
+   */
+  public void
+  init_debug(level)
+! 	int level;		/* Binary value (DB_xxxx) */
+  {
+  	DebugLevel = level;
+  }
+--- 87,98 ----
+  /*
+   * init_debug
+   *	Initialize debug level
++  * Usage:
++  *	init_debug(number);
+   */
+  public void
+  init_debug(level)
+! 	int level;		/* Debug level (DB_XXX from ../defines.h) */
+  {
+  	DebugLevel = level;
+  }
+***************
+*** 37,43 ****
+  
+  /*
+   * set_debug
+!  *	Decode symbolic value and set debug level
+   */
+  public void
+  set_debug(arg, dtab)
+--- 99,110 ----
+  
+  /*
+   * set_debug
+!  *	Set debug level from symbolic name
+!  * Usage:
+!  *	set_debug(what, table);
+!  * Effects:
+!  *	Looks up <what> in debug table <table> and sets the debug level.
+!  *	The lookup is case-insensitive.
+   */
+  public void
+  set_debug(arg, dtab)
+***************
+*** 44,54 ****
+  	char		*arg;	/* Debug level string */
+  	debug_table	*dtab;	/* Debug table */
+  {
+! 	if (isdigit(*arg)) {
+  		DebugLevel = atoi(arg);
+  		return;
+  	}
+! 	if (dtab == 0)
+  		return;
+  	for (; dtab->name; dtab++) {
+  		if (strcasecmp(dtab->name, arg) == 0) {
+--- 111,121 ----
+  	char		*arg;	/* Debug level string */
+  	debug_table	*dtab;	/* Debug table */
+  {
+! 	if (isdigit(*arg)) {		/* Numeric argument */
+  		DebugLevel = atoi(arg);
+  		return;
+  	}
+! 	if (dtab == 0)			/* No table */
+  		return;
+  	for (; dtab->name; dtab++) {
+  		if (strcasecmp(dtab->name, arg) == 0) {
+***************
+*** 61,84 ****
+  /*
+   * set_debug_title
+   *	Set program name tag for debugging and error messages
+   */
+  public void
+! set_debug_tag(title)
+! 	char *title;
+  {
+! 	if (title)
+! 		DebugTag = title;
+  	else
+  		DebugTag = "";
+  }
+  
+  /*
+!  * debug - print debug message (contingent upon debugging level)
+   */
+  public void
+  #ifdef	__STDC__
+  debug (int level, char *fmt, ...)
+! {
+  	va_list	args;
+  
+  	if (DebugLevel < level)
+--- 128,156 ----
+  /*
+   * set_debug_title
+   *	Set program name tag for debugging and error messages
++  * Usage:
++  *	set_debug_title(string);
+   */
+  public void
+! set_debug_tag(tag)
+! 	char *tag;
+  {
+! 	if (tag)
+! 		DebugTag = tag;
+  	else
+  		DebugTag = "";
+  }
+  
+  /*
+!  * debug
+!  *	Print message to stdout contingent upon debug level
+!  * Usage:
+!  *	debug(level, message, args ...);
+   */
+  public void
+  #ifdef	__STDC__
+  debug (int level, char *fmt, ...)
+! {				 /* stdargs version */
+  	va_list	args;
+  
+  	if (DebugLevel < level)
+***************
+*** 91,97 ****
+  #else	/* __STDC__ */
+  debug (va_alist)
+  va_dcl
+! {
+  	va_list	args;
+  	int	level;
+  	char	*fmt;
+--- 163,169 ----
+  #else	/* __STDC__ */
+  debug (va_alist)
+  va_dcl
+! {				 /* varargs version */
+  	va_list	args;
+  	int	level;
+  	char	*fmt;
+***************
+*** 108,127 ****
+  #endif
+  
+  /*
+!  * die - spew error and die
+   */
+- private void (*DieCallBack)() = 0;
+- 
+  public void
+! set_die_callback(rtn)
+! 	void (*rtn)();
+  {
+- 	DieCallBack = rtn;
+- }
+  
+- public void
+- die VA_DCL(char *msgs)
+- {
+  	va_list	args;
+  #ifdef	__STDC__
+  	fprintf(stderr, "%s: ", DebugTag);
+--- 180,194 ----
+  #endif
+  
+  /*
+!  * warn
+!  *	Spew message to stderr
+!  * Usage:
+!  *	warn(message, args ... );
+   */
+  public void
+! warn VA_DCL(char *msgs)
+  {
+  
+  	va_list	args;
+  #ifdef	__STDC__
+  	fprintf(stderr, "%s: ", DebugTag);
+***************
+*** 137,154 ****
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	fflush(stderr);
+- 	if (DieCallBack)
+- 		(*DieCallBack)(-1);
+- 	exit(1);
+  }
+  
+  /*
+!  * warn - spew error
+   */
+  public void
+! warn VA_DCL(char *msgs)
+  {
+  
+  	va_list	args;
+  #ifdef	__STDC__
+  	fprintf(stderr, "%s: ", DebugTag);
+--- 204,234 ----
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	fflush(stderr);
+  }
+  
++ 
+  /*
+!  * set_die_callback
+!  *	Select die callback routine
+!  * Usage:
+!  *	set_die_callback(&routine)
+   */
+  public void
+! set_die_callback(rtn)
+! 	void (*rtn)();
+  {
++ 	DieCallBack = rtn;
++ }
+  
++ /*
++  * die
++  *	Spew error message and exit
++  * Usage:
++  *	die(message, args ... );
++  */
++ public void
++ die VA_DCL(char *msgs)
++ {
+  	va_list	args;
+  #ifdef	__STDC__
+  	fprintf(stderr, "%s: ", DebugTag);
+***************
+*** 164,191 ****
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	fflush(stderr);
+  }
+  
+  /*
+!  * logdie - spew error, log message and die
+   */
+  public void
+  logdie VA_DCL(char *msgs)
+  {
+! 	va_list	args;
+! 	char	*fmt;
+! 	char	msgbuf[TMPBUFSIZ];
+  
+  	VA_START(args, msgs);
+  #ifdef	__STDC__
+! 	vsprintf(msgbuf, msgs, args);
+  #else	/* __STDC__ */
+  	fmt = va_arg(args, char *);
+! 	vsprintf(msgbuf, fmt, args);
+  #endif	/* __STDC__ */
+  	va_end(args);
+! 	fprintf(stderr, "%s: %s\n", DebugTag, msgbuf);
+! 	fflush(stderr);
+  	syslog(LOG_ERR, msgbuf);
+  	if (DieCallBack)
+  		(*DieCallBack)(-1);
+--- 244,277 ----
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	fflush(stderr);
++ 	if (DieCallBack)
++ 		(*DieCallBack)(-1);
++ 	exit(1);
+  }
+  
+  /*
+!  * logdie
+!  *	Spew error message, syslog it and die.
+!  * Usage:
+!  *	logdie(message, args, ...);
+   */
+  public void
+  logdie VA_DCL(char *msgs)
+  {
+! 	va_list	args;			/* Argument list */
+! 	char	*fmt;			/* Format */
+! 	char	msgbuf[TMPBUFSIZ];	/* Message buffer */
+  
+  	VA_START(args, msgs);
+  #ifdef	__STDC__
+! 	(void) vsprintf(msgbuf, msgs, args);
+  #else	/* __STDC__ */
+  	fmt = va_arg(args, char *);
+! 	(void) vsprintf(msgbuf, fmt, args);
+  #endif	/* __STDC__ */
+  	va_end(args);
+! 	(void) fprintf(stderr, "%s: %s\n", DebugTag, msgbuf);
+! 	(void) fflush(stderr);
+  	syslog(LOG_ERR, msgbuf);
+  	if (DieCallBack)
+  		(*DieCallBack)(-1);
+***************
+*** 193,199 ****
+  }
+  
+  /*
+!  * log_error - spew error and log message
+   */
+  public void
+  logerr VA_DCL(char *msgs)
+--- 279,288 ----
+  }
+  
+  /*
+!  * logerr
+!  *	Spew error message and syslog it.
+!  * Usage:
+!  *	logerr(message, args, ...);
+   */
+  public void
+  logerr VA_DCL(char *msgs)
+***************
+*** 204,213 ****
+  
+  	VA_START(args, msgs);
+  #ifdef	__STDC__
+! 	vsprintf(msgbuf, msgs, args);
+  #else	/* __STDC__ */
+  	fmt = va_arg(args, char *);
+! 	vsprintf(msgbuf, fmt, args);
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	syslog(LOG_ERR, msgbuf);
+--- 293,302 ----
+  
+  	VA_START(args, msgs);
+  #ifdef	__STDC__
+! 	(void) vsprintf(msgbuf, msgs, args);
+  #else	/* __STDC__ */
+  	fmt = va_arg(args, char *);
+! 	(void) vsprintf(msgbuf, fmt, args);
+  #endif	/* __STDC__ */
+  	va_end(args);
+  	syslog(LOG_ERR, msgbuf);
+*** /tmp/d0dovAF	Mon Feb  1 14:14:40 1999
+--- src/Common/mpw_util.c	Tue Nov 17 16:06:04 1998
+***************
+*** 1,14 ****
+  /*
+!  * npasswd module mpw_util.c
+   *
+!  * Compliation: cc -c mpw_util.c
+!  * Includes: npasswd.h
+   */
+  
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)mpw_util.c	1.5 04/30/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.mpw_util.c";
+  #endif
+  
+  /*
+--- 1,55 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+   *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
++ /*
++  * Npasswd 'meta-passwd' routines
++  */
++ 
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)mpw_util.c	1.6 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.mpw_util.c";
+  #endif
+  
+  /*
+***************
+*** 18,23 ****
+--- 59,65 ----
+   *	new_mpw = copy_mpwent(struct mpassswd *original);
+   * Returns:
+   *	Pointer to a unique copy of <original> 
++  *	Will allocate memory for copy if <new> is NULL
+   */
+  struct mpasswd *
+  copympwent(donor, new)
+***************
+*** 37,43 ****
+  }
+  
+  /*
+!  * 	printmpwent - Dump contents of mpasswd structure
+   */
+  public void
+  printmpwent(theUser)
+--- 79,86 ----
+  }
+  
+  /*
+!  * printmpwent
+!  *	Dump contents of mpasswd structure to stdout
+   */
+  public void
+  printmpwent(theUser)
+*** /tmp/dKC86k_	Mon Feb  1 14:14:40 1999
+--- src/Common/pw_svc.c	Tue Nov 17 16:49:08 1998
+***************
+*** 1,15 ****
+  /*
+!  * pw_svc.c
+!  *	Routines to fetch the "service order" list for "passwd".
+!  *	There is a "init_pwsvc()" routine for each service
+!  *	variant (nsswitch, svc.conf, etc).
+   *
+!  * Exported routines
+   *	init_pwsvc()
+   *	get_pwsvc()
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)pw_svc.c	1.13 09/29/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.pw_svc.c";
+  #endif
+  
+  #include "npasswd.h"
+--- 1,59 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+   *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+!  */
+! 
+! /*
+!  * Routines to fetch the "service order" list for "passwd".
+!  * There is a "init_pwsvc()" routine for each service
+!  * variant (nsswitch, svc.conf, etc).
+!  *
+!  * Exported routines:
+   *	init_pwsvc()
+   *	get_pwsvc()
+   */
++ 
+  #ifndef lint
+! static char sccsid[] = "@(#)pw_svc.c	1.14 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.pw_svc.c";
+  #endif
+  
+  #include "npasswd.h"
+***************
+*** 323,329 ****
+   * get_pwsvc
+   *	Return the password service info block
+   * Usage:
+!  *	ptr = get_pwsvc()
+   */
+  struct pw_svc *
+  get_pwsvc()
+--- 367,373 ----
+   * get_pwsvc
+   *	Return the password service info block
+   * Usage:
+!  *	ptr = get_pwsvc();
+   */
+  struct pw_svc *
+  get_pwsvc()
+*** /tmp/d1cM1D_	Mon Feb  1 14:14:40 1999
+--- src/Common/pw_svc.h	Tue Nov 17 16:08:31 1998
+***************
+*** 1,8 ****
+  /*
+!  *	Defines for using get_svc_conf()
+   *
+!  *	@(#)pw_svc.h	1.7 09/29/98 (cc.utexas.edu)
+   */
+  #ifndef	pw_svc_h
+  #define	pw_svc_h 1
+  
+--- 1,52 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+   *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
++ 
++ /*
++  * Defines for using get_svc_conf()
++  *
++  * @(#)pw_svc.h	1.8 11/17/98 (cc.utexas.edu)
++  */
+  #ifndef	pw_svc_h
+  #define	pw_svc_h 1
+  
+*** /tmp/d0k_byh	Mon Feb  1 14:14:40 1999
+--- src/Common/signals.c	Tue Nov 17 16:47:57 1998
+***************
+*** 1,19 ****
+  /*
+!  * npasswd module signals.c
+   *
+!  * Compliation: cc -c signals.c
+!  * Includes: npasswd.h
+   */
+  
+  #define	_signals_c
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)signals.c	1.4 04/30/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.signals.c";
+  #endif
+  
+  /*
+!  * Signal block/unblock routines.
+   */
+  public void
+  block_signals VA_DCL(struct sigblk *args)
+--- 1,68 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+   *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
++ /*
++  * Signal mangement routines
++  *
++  * Exported routines:
++  *	block_signals
++  *	unblock_signals
++  */
++ 
+  #define	_signals_c
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)signals.c	1.5 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.signals.c";
+  #endif
+  
+  /*
+!  * block_signals
+!  *	Block a list of signals
+!  * Usage:
+!  *	block_signals(old_value_save, sig1, sig2, ... 0);
+!  *	Signal list ends with a 0
+   */
+  public void
+  block_signals VA_DCL(struct sigblk *args)
+***************
+*** 30,35 ****
+--- 79,87 ----
+  #endif
+  
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
++ 	/*
++ 	 * POSIX signals - use sigprocmask()
++ 	 */
+  	sigemptyset(&sigblk->savesigs);
+  	while (xsig = va_arg(fargs, int)) {
+  		sigaddset(&sigblk->savesigs, xsig);
+***************
+*** 38,43 ****
+--- 90,98 ----
+  #endif
+  
+  #if	(SIG_TYPE == SIG_TYPE_BSD)
++ 	/*
++ 	 * BSD type signals - use sigblock()
++ 	 */
+  	sigblk->savesigs = 0;
+  	while (xsig = va_arg(fargs, int)) {
+  		sigblk->savesigs |= sigmask(xsig);
+***************
+*** 46,51 ****
+--- 101,109 ----
+  #endif
+  
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
++ 	/*
++ 	 * Classic UNIX signals - use signal(2)
++ 	 */
+  	while (xsig = va_arg(fargs, int)) {
+  		sigblk->sigvalues[xsig] = signal(xsig, SIG_IGN);
+  	}
+***************
+*** 52,60 ****
+  #endif
+  }
+  
+  public void
+  unblock_signals(sigblk)
+! 	struct sigblk *sigblk;
+  {
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigprocmask(SIG_UNBLOCK, &sigblk->savesigs, (sigset_t *)0);
+--- 110,124 ----
+  #endif
+  }
+  
++ /*
++  * unblock_signals
++  *	Unblock a list of signals
++  * Usage:
++  *	unblock_signals(old_value_save);
++  */
+  public void
+  unblock_signals(sigblk)
+! 	struct sigblk *sigblk;		/* Saved signal status */
+  {
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigprocmask(SIG_UNBLOCK, &sigblk->savesigs, (sigset_t *)0);
+*** /tmp/d0RPptA	Mon Feb  1 14:14:41 1999
+--- src/Common/split.c	Tue Nov 17 16:46:24 1998
+***************
+*** 1,4 ****
+--- 1,48 ----
+  /*
++  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
++  * All rights reserved.
++  *
++  * By using this software the USER indicates that he or she has read,
++  * understood and will comply with the following:
++  *
++  * U. T. Austin hereby grants USER permission to use, copy, modify, and
++  * distribute this software and its documentation for any purpose and
++  * without fee, provided that:
++  *
++  * 1. the above copyright notice appears in all copies of the software
++  *    and its documentation, or portions thereof, and 
++  * 2. a full copy of this notice is included with the software and its
++  *    documentation, or portions thereof, and 
++  * 3. neither the software nor its documentation, nor portions thereof,
++  *    is sold for profit. Any commercial sale or license of this software,
++  *    copies of the software, its associated documentation and/or
++  *    modifications of either is strictly prohibited without the prior
++  *    consent of U. T. Austin. 
++  * 
++  * Title to copyright to this software and its associated documentation
++  * shall at all times remain with U. T. Austin. No right is granted to
++  * use in advertising, publicity or otherwise any trademark, service
++  * mark, or the name of U. T. Austin.
++  * 
++  * This software and any associated documentation are provided "as is,"
++  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
++  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
++  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
++  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
++  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
++  * University of Texas System, its Regents, officers, and employees shall
++  * not be liable under any circumstances for any direct, indirect, special,
++  * incidental, or consequential damages with respect to any claim by USER
++  * or any third party on account of or arising from the use, or inability
++  * to use, this software or its associated documentation, even if U. T.
++  * Austin has been advised of the possibility of those damages.
++  * 
++  * Submit commercialization requests to: Office of the Executive Vice
++  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
++  * 78712, ATTN: Technology Licensing Specialist.
++  */
++ 
++ /*
+   *	split - Handy dandy use-everywhere string splitter
+   */
+  #include <strings.h>
+***************
+*** 5,17 ****
+  #include <ctype.h>
+  #include <stdio.h>
+  
+- /* Uncomment if needed */
+- /* extern char	*malloc(); */
+- 
+  #ifndef	lint
+! static char sccsid[] = "@(#)split.c	1.2 08/06/96 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.split.c";
+  #endif
+  
+  /*
+   *	split - split string into tokens.
+   *
+--- 49,65 ----
+  #include <ctype.h>
+  #include <stdio.h>
+  
+  #ifndef	lint
+! static char sccsid[] = "@(#)split.c	1.3 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.split.c";
+  #endif
+  
++ struct _tk {				/* Token tree item */
++ 	char	*t_data;
++ 	struct _tk	*t_next;
++ };
++ typedef struct _tk token;		/* And item typedef */
++ #define	NULLT	(token *)0
++ 
+  /*
+   *	split - split string into tokens.
+   *
+***************
+*** 42,59 ****
+   *	+-----------------------+
+   *
+   */
+- 
+- struct _tk {
+- 	char	*t_data;
+- 	struct _tk	*t_next;
+- };
+- typedef struct _tk token;
+- #define	NULLT	(token *)0
+- 
+  char **
+  split(string, separator, quotes, comment)
+  	char	*string;	/* String to split */
+! 	char	separator;		/* Character to split on */
+  	char	*quotes;	/* String of quote characters */
+  	char	comment;	/* Character that starts comment */
+  {
+--- 90,99 ----
+   *	+-----------------------+
+   *
+   */
+  char **
+  split(string, separator, quotes, comment)
+  	char	*string;	/* String to split */
+! 	char	separator;	/* Character to split on */
+  	char	*quotes;	/* String of quote characters */
+  	char	comment;	/* Character that starts comment */
+  {
+*** /tmp/d8p1pf_	Mon Feb  1 14:14:41 1999
+--- src/Common/xatoi.c	Tue Nov 17 16:47:33 1998
+***************
+*** 1,9 ****
+  /*
+!  *	checkpasswd.c - Password checking library entry point
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)xatoi.c	1.1 08/07/96 (cc.utexas.edu)";
+  #endif
+  
+  #include "compatibility.h"
+--- 1,56 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+!  *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
++ /*
++  * String to number converter
++  *
++  * Exported routines:
++  *	xatoi
++  */
++ 
+  #ifndef lint
+! static char sccsid[] = "@(#)xatoi.c	1.2 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.xatoi.c";
+  #endif
+  
+  #include "compatibility.h"
+***************
+*** 15,21 ****
+  octdigit(c)
+  	char	c;
+  {
+! 	if (!isdigit(c)) return(0);
+  	switch (c) {
+  		case '8':
+  		case '9': return(0);
+--- 62,69 ----
+  octdigit(c)
+  	char	c;
+  {
+! 	if (!isdigit(c))
+! 		return(0);
+  	switch (c) {
+  		case '8':
+  		case '9': return(0);
+***************
+*** 44,60 ****
+  	return (isxdigit(c));
+  #else
+  	return (decdigit(c) |
+! 		(c >= 'a' &&  c <= 'f') |
+  		(c >= 'A' && c <= 'F'));
+  #endif
+  }
+  
+  /*
+!  *	xatoi - Smart 'atoi' recognizes decimal, octal and hex constants
+   */
+  xatoi(ip, ipp, iv)
+! 	char	*ip,	/* Pointer to number string */
+! 		**ipp;	/* Stash pointer to end of string */ /* RETURN VALUE */
+  	int	*iv;	/* RETURN VALUE */
+  {
+  	int	(*func)() = decdigit,	/* Function to check char */
+--- 92,127 ----
+  	return (isxdigit(c));
+  #else
+  	return (decdigit(c) |
+! 		(c >= 'a' && c <= 'f') |
+  		(c >= 'A' && c <= 'F'));
+  #endif
+  }
+  
+  /*
+!  * xatoi
+!  *	Smart 'atoi' which recognizes decimal, octal and hex constants.
+!  * Usage:
+!  *	status = xatoi(string, &end-ptr, &rval);
+!  *
+!  * <string> can be one of:
+!  *	[-]DD	= decimal number (with optional minus sign)
+!  *	[-]0ooo	= octal number (with optional minus sign)
+!  *	[-]0fxx	= hexidecimal number (with optional minus sign)
+!  *
+!  * <end-ptr>
+!  *	Pointer to place in <string> where first non-numeric found
+!  *	May be null
+!  *
+!  * <rval>
+!  *	Stash location for decoded value
+!  *
+!  * Returns:
+!  *	1 if conversion successful
+!  *	0 if conversion error or nothing found
+   */
+  xatoi(ip, ipp, iv)
+! 	char	*ip,	/* Number string */
+! 		**ipp;	/* Pointer to end of string */ /* RETURN VALUE */
+  	int	*iv;	/* RETURN VALUE */
+  {
+  	int	(*func)() = decdigit,	/* Function to check char */
+***************
+*** 67,73 ****
+  		ip++;
+  		mult = -1;
+  	}
+! 	if (*ip == '0') { 	/* Leading '0'? */
+  		ip++;
+  		if (*ip == 'x' || *ip == 'X') {	/* Hex */
+  			base = 16;
+--- 134,140 ----
+  		ip++;
+  		mult = -1;
+  	}
+! 	if (*ip == '0') { 		/* Leading '0' */
+  		ip++;
+  		if (*ip == 'x' || *ip == 'X') {	/* Hex */
+  			base = 16;
+***************
+*** 94,99 ****
+  	*iv = (t * mult);
+  	return(1);
+  }
+! /*
+!  * End xatoi.c
+!  */
+--- 161,164 ----
+  	*iv = (t * mult);
+  	return(1);
+  }
+! /* End xatoi.c */
+*** /tmp/drCGk8_	Mon Feb  1 14:14:41 1999
+--- src/Common/xdecode.c	Tue Nov 17 16:47:09 1998
+***************
+*** 1,9 ****
+  /*
+!  *	xdecode - Routines for interperting strings
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)xdecode.c	1.1 08/07/96 (cc.utexas.edu)";
+  #endif
+  
+  #include "compatibility.h"
+--- 1,58 ----
+  /*
+!  * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+!  * All rights reserved.
+!  *
+!  * By using this software the USER indicates that he or she has read,
+!  * understood and will comply with the following:
+!  *
+!  * U. T. Austin hereby grants USER permission to use, copy, modify, and
+!  * distribute this software and its documentation for any purpose and
+!  * without fee, provided that:
+!  *
+!  * 1. the above copyright notice appears in all copies of the software
+!  *    and its documentation, or portions thereof, and 
+!  * 2. a full copy of this notice is included with the software and its
+!  *    documentation, or portions thereof, and 
+!  * 3. neither the software nor its documentation, nor portions thereof,
+!  *    is sold for profit. Any commercial sale or license of this software,
+!  *    copies of the software, its associated documentation and/or
+!  *    modifications of either is strictly prohibited without the prior
+!  *    consent of U. T. Austin. 
+!  * 
+!  * Title to copyright to this software and its associated documentation
+!  * shall at all times remain with U. T. Austin. No right is granted to
+!  * use in advertising, publicity or otherwise any trademark, service
+!  * mark, or the name of U. T. Austin.
+!  * 
+!  * This software and any associated documentation are provided "as is,"
+!  * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+!  * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+!  * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+!  * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+!  * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+!  * University of Texas System, its Regents, officers, and employees shall
+!  * not be liable under any circumstances for any direct, indirect, special,
+!  * incidental, or consequential damages with respect to any claim by USER
+!  * or any third party on account of or arising from the use, or inability
+!  * to use, this software or its associated documentation, even if U. T.
+!  * Austin has been advised of the possibility of those damages.
+!  * 
+!  * Submit commercialization requests to: Office of the Executive Vice
+!  * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+!  * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
++ /*
++  * Routines for interperting strings
++  *
++  * Exported routines:
++  *	decode_boolean
++  *	decode_int
++  *	decode_string
++  */
++ 
+  #ifndef lint
+! static char sccsid[] = "@(#)xdecode.c	1.2 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.xdecode.c";
+  #endif
+  
+  #include "compatibility.h"
+***************
+*** 13,23 ****
+  void	decode_string _((char *, char *, int));
+  
+  /*
+!  *	decode_boolean - decode a boolean value
+   */
+  int
+  decode_boolean(s)
+! 	char	*s;
+  {
+  	return(*s == '1'
+  		| (strcasecmp(s, "true") == 0)
+--- 62,78 ----
+  void	decode_string _((char *, char *, int));
+  
+  /*
+!  * decode_boolean
+!  *	Decode a boolean value string (case insensitive)
+!  * Usage:
+!  *	value = decode_boolean(string);
+!  * Returns:
+!  *	1 if <string> is "true"
+!  *	0 otherwise
+   */
+  int
+  decode_boolean(s)
+! 	char	*s;		/* Boolean string */
+  {
+  	return(*s == '1'
+  		| (strcasecmp(s, "true") == 0)
+***************
+*** 26,32 ****
+  }
+  
+  /*
+!  *	decode_int - decode an integer value
+   */
+  int
+  decode_int(s)
+--- 81,94 ----
+  }
+  
+  /*
+!  * decode_int
+!  *	Decode an integer string
+!  * Usage:
+!  *	value = decode_int(string);
+!  * Returns:
+!  *	Converted value if proper
+!  *	-1 if conversion error (this means that negative numbers
+!  *	are not legal)
+   */
+  int
+  decode_int(s)
+***************
+*** 40,47 ****
+  }
+  
+  /*
+!  * decode_string - copy string, converting backslash escapes
+   *	Can handle most C backslash escape sequences
+   */
+  void
+  decode_string(dst, src, len)
+--- 102,112 ----
+  }
+  
+  /*
+!  * decode_string
+!  *	Copy string, converting backslash escapes
+   *	Can handle most C backslash escape sequences
++  * Usage:
++  * 	decode_string(dst, src, length(dst));
+   */
+  void
+  decode_string(dst, src, len)
+*** /tmp/d0YcUfd	Mon Feb  1 14:14:42 1999
+--- src/Methods/pwm_main.c	Mon Feb  1 13:50:38 1999
+***************
+*** 15,21 ****
+  #include "pwm_defs.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwm_main.c	1.12 08/17/98 (cc.utexas.edu)";
+  #endif
+  
+  int	get_local_user();
+--- 15,21 ----
+  #include "pwm_defs.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwm_main.c	1.13 02/01/99 (cc.utexas.edu)";
+  #endif
+  
+  int	get_local_user();
+***************
+*** 239,244 ****
+--- 239,245 ----
+  	*rc++ = CMAGIC;
+  	while (*str)
+  		*rc++ = (*str++ ^ CMAGIC);
++ 	*rc = 0;
+  	return(rv);
+  }
+  
+*** /tmp/d0F0ja6	Mon Feb  1 14:14:42 1999
+--- src/Methods/shm_hpux.c	Mon Feb  1 13:51:12 1999
+***************
+*** 17,23 ****
+   * 10/15/97 MStute	Created - based on OSF/1 version
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_hpux.c	1.3 07/20/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+--- 17,23 ----
+   * 10/15/97 MStute	Created - based on OSF/1 version
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_hpux.c	1.4 02/01/99 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+***************
+*** 118,127 ****
+  	 */
+  	if (putprpwnam(newUser->mpw_name, &px) == 0)
+  		logdie("Could not update auth database.");
+- 	/*
+- 	 * Insert plug value for password (in case it gets written)
+- 	 */
+- 	newUser->mpw_passwd = "*";
+  
+  	debug(DB_UPDATE, "update_shadow: updated auth for %s\n",
+  		newUser->mpw_name);
+--- 118,123 ----
+*** /tmp/dyPxVb_	Mon Feb  1 14:14:42 1999
+--- src/PasswordCheck/checkpassword.c	Fri Nov 13 16:26:38 1998
+***************
+*** 50,56 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)checkpassword.c	1.24 07/16/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.checkpassword.c";
+  #endif
+  
+  #include <stdio.h>
+--- 50,56 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)checkpassword.c	1.25 11/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.checkpassword.c";
+  #endif
+  
+  #include <stdio.h>
+***************
+*** 206,213 ****
+--- 206,217 ----
+  		}
+  		(void) fclose(pf);
+  	}
++ 	if (get_debug() >= DB_DETAIL)
++ 		checkpassword_probe("checkpassword.");
++ 
+  	if (rc = checkpassword_verify())
+  		die(rc);
++ 
+  	interactive = isatty(fileno(stdin));
+  	for (;;) {
+  		char	ibuf[BUFSIZ];		/* Input buffer */
+*** /tmp/dfp9R4_	Mon Feb  1 14:14:42 1999
+--- src/PasswordCheck/cracklib/fascist.c	Mon Feb  1 13:54:05 1999
+***************
+*** 52,58 ****
+   */
+  
+  #ifndef	lint
+! static char ut_id[] = "@(#)fascist.c	2.11 09/22/98 (cc.utexas.edu)";
+  static char vers_id[] = "fascist.c : v2.3p3 Alec Muffett 14 dec 1997";
+  #endif
+  
+--- 52,58 ----
+   */
+  
+  #ifndef	lint
+! static char ut_id[] = "@(#)fascist.c	2.13 02/01/99 (cc.utexas.edu)";
+  static char vers_id[] = "fascist.c : v2.3p3 Alec Muffett 14 dec 1997";
+  #endif
+  
+***************
+*** 76,86 ****
+      (char *) 0,
+  #endif
+  /*
+!  * I disabled these deconstructors because they cause rejection of
+!  * passwords which *include* dictionary words but have leading or trailing
+!  * junk.  I do not see how Crack could guess them.
+!  * 	-CWH 8/98
+   */
+  #ifdef	CRACKLIB_ANAL
+      "[",                        /* trimming leading/trailing junk */
+      "]",
+--- 76,85 ----
+      (char *) 0,
+  #endif
+  /*
+!  * Disable these deconstructors if you think too many passwords are
+!  * being rejected.
+   */
++ #define	CRACKLIB_ANAL
+  #ifdef	CRACKLIB_ANAL
+      "[",                        /* trimming leading/trailing junk */
+      "]",
+***************
+*** 779,785 ****
+  	return ("it is too simplistic/systematic");
+      }
+  
+!     if (PMatch("aadddddda", password))  /* smirk */
+      {
+  	return ("it looks like a National Insurance number");
+      }
+--- 778,784 ----
+  	return ("it is too simplistic/systematic");
+      }
+  
+!     if (PMatch("aadddddda", password, 0))  /* smirk */
+      {
+  	return ("it looks like a National Insurance number");
+      }
+*** /tmp/d0MDOMZ	Mon Feb  1 14:14:43 1999
+--- src/PasswordCheck/cracklib/rules.c	Fri Nov 13 14:44:58 1998
+***************
+*** 53,59 ****
+  
+  #ifndef	lint
+  static char vers_id[] = "rules.c : v5.0p3 Alec Muffett 20 May 1993";
+! static char ut_id[] = "@(#)rules.c	1.6 04/21/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "packer.h"
+--- 53,59 ----
+  
+  #ifndef	lint
+  static char vers_id[] = "rules.c : v5.0p3 Alec Muffett 20 May 1993";
+! static char ut_id[] = "@(#)rules.c	1.7 11/13/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "packer.h"
+***************
+*** 334,340 ****
+   */
+  #define	CONSONANTS	"bcdfghjklmnpqrstvwxyz"
+  #define	VOWELS		"aeiou"
+! #define	SYMBOLS		"$%%^&*()-_+=|\\[]{}#@/~"
+  #define	PUNCTUATION	".`,:;'!?\""
+  
+  /*
+--- 334,340 ----
+   */
+  #define	CONSONANTS	"bcdfghjklmnpqrstvwxyz"
+  #define	VOWELS		"aeiou"
+! #define	SYMBOLS		"$%^&*()-_+=|\\[]{}#@/~"
+  #define	PUNCTUATION	".`,:;'!?\""
+  
+  /*
+***************
+*** 1014,1022 ****
+   * PMatch - class-driven string compare
+   */
+  int
+! PMatch(control, string)
+      register char *control;
+      register char *string;
+  {
+      while (*string && *control)
+      {
+--- 1014,1023 ----
+   * PMatch - class-driven string compare
+   */
+  int
+! PMatch(control, string, initial)
+      register char *control;
+      register char *string;
++     int initial;
+  {
+      while (*string && *control)
+      {
+***************
+*** 1029,1035 ****
+      	control++;
+      }
+  
+!     if (*string || *control)
+      {
+      	return(0);
+      }
+--- 1030,1036 ----
+      	control++;
+      }
+  
+!     if ((*string || *control) && initial == 0)
+      {
+      	return(0);
+      }
+***************
+*** 1036,1039 ****
+--- 1037,1041 ----
+  
+      return(1);
+  }
++ 
+  /* End rules.c */
+*** /tmp/d03dcH2	Mon Feb  1 14:14:43 1999
+--- src/PasswordCheck/pwck_lexical.c	Fri Nov 13 16:35:03 1998
+***************
+*** 54,60 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwck_lexical.c	1.17 08/17/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "pwck_defines.h"
+--- 54,60 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwck_lexical.c	1.18 11/13/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "pwck_defines.h"
+***************
+*** 62,75 ****
+  #define	P_START	0 	/* Start of array */
+  #define	P_U	0 	/* Upper case in password */
+  #define	P_L	1 	/* Lower case in password */
+! #define	P_C	2 	/* Control chars in password */
+! #define	P_D	3 	/* Digits in password */
+! #define	P_P	4 	/* Punctutation chars in password */
+! #define	P_S	5 	/* Whitespace chars in password */
+  #define	P_END	P_S
+  #define	P_SIZE	(P_END + 1)
+  
+  /*
+   *	ctran - produce printable version of any ASCII character
+   */
+  public char *
+--- 62,106 ----
+  #define	P_START	0 	/* Start of array */
+  #define	P_U	0 	/* Upper case in password */
+  #define	P_L	1 	/* Lower case in password */
+! #define	P_D	2 	/* Digits in password */
+! #define	P_P	3 	/* Punctutation chars in password */
+! #define	P_S	4 	/* Whitespace chars in password */
+! #define	P_C	5 	/* Control chars in password */
+  #define	P_END	P_S
+  #define	P_SIZE	(P_END + 1)
+  
+  /*
++  * Messages describing each character class
++  */
++ private char *class_msg[] = {
++ 	"upper case letters",		/* P_U */
++ 	"lower case letters",		/* P_L */
++ 	"digits",			/* P_D */
++ 	"punctuation characters",	/* P_P */
++ 	"whitespace",			/* P_S */
++ 	"",				/* P_C */
++ 	0
++ };
++ 
++ /*
++  * PMatch patterns for phone numbers
++  */
++ private char *phone_patterns[] = {
++ 	"dddsdddd", 		/* NNN-NNNN */
++ 	"dddwdddd", 		/* NNN NNNN */
++ 	"dddpdddd", 		/* NNN.NNNN */
++ 
++ 	"dddsdddsdddd", 	/* NNN-NNN-NNNN */
++ 	"dddwdddwdddd", 	/* NNN NNN NNNN */
++ 	"dddpdddpdddd", 	/* NNN.NNN.NNNN */
++ 
++ 	"dsdddsdddsdddd", 	/* N-NNN-NNN-NNNN */
++ 	"dwdddwdddwdddd", 	/* N NNN NNN NNNN */
++ 	"dpdddpdddpdddd", 	/* N.NNN.NNN.NNNN */
++ 	0
++ };
++ 
++ /*
+   *	ctran - produce printable version of any ASCII character
+   */
+  public char *
+***************
+*** 106,111 ****
+--- 137,143 ----
+  	int	chr_run,	/* Duplicate character count */
+  		pwlen;		/* Length of password */
+  	char	*p;		/* Scratch */
++ 	char	**pat;		/* Match pattern */
+  	char	last = 0;	/* Last character seen (for run checks) */
+  	char	ws_cnt[P_SIZE];	/* Character classes */
+  	static char	mesg[STRINGLEN];	/* Error message temp */
+***************
+*** 171,183 ****
+  	 * Check for some common patterns
+  	 * Look at cracklib/rules.c for how to use PMatch
+  	 */
+! 	if (PMatch("dddsddsdddd", password)) {
+  		return("it looks like a Social Security number");
+  	}
+! 	if (PMatch("dddsdddd", password) ||
+! 	    PMatch("dddsdddsdddd", password) ||
+! 	    PMatch("dsdddsdddsdddd", password)) {
+! 		return("it looks like a telephone number");
+  	}
+  	/*
+  	 * Forbidden char class checks
+--- 203,214 ----
+  	 * Check for some common patterns
+  	 * Look at cracklib/rules.c for how to use PMatch
+  	 */
+! 	if (PMatch("dddsddsdddd", password, 1)) {
+  		return("it looks like a Social Security number");
+  	}
+! 	for (pat = phone_patterns; *pat; *pat++) {
+! 		if (PMatch(*pat, password, 1))
+! 			return("it looks like a telephone number");
+  	}
+  	/*
+  	 * Forbidden char class checks
+***************
+*** 226,236 ****
+  			warn("Min character class set too high (%d max)\n", P_END);
+  			Config.char_classes = P_END;
+  		}
+! 		for (ic = P_START; ic <= P_END; ic++)
+! 			cc += (ws_cnt[ic] != 0);
+! 		if (cc < Config.char_classes) {
+! 			return("password needs more character classes");
+  		}
+  	}
+  	/*
+  	 * All tests passed
+--- 257,277 ----
+  			warn("Min character class set too high (%d max)\n", P_END);
+  			Config.char_classes = P_END;
+  		}
+! 		for (ic = P_START; ic <= P_END; ic++) {
+! 			if (ws_cnt[ic] == 0) {
+! 				if (*class_msg[ic] == 0)
+! 					continue;
+! 				if (mesg[0])
+! 					(void) strcat(mesg, " or ");
+! 				else
+! 					(void) strcpy(mesg, "needs more ");
+! 				(void) strcat(mesg, class_msg[ic]);
+! 			} else {
+! 				cc++;
+! 			}
+  		}
++ 		if (cc < Config.char_classes)
++ 			return(mesg);
+  	}
+  	/*
+  	 * All tests passed
+*** /tmp/dm0rCX_	Mon Feb  1 14:14:43 1999
+--- src/constants.h	Tue Nov 17 14:57:10 1998
+***************
+*** 1,7 ****
+  /*
+   * 	Constants used throughout npasswd
+   *
+!  *	@(#)constants.h	1.7 07/09/98
+   */
+  
+  /*
+--- 1,7 ----
+  /*
+   * 	Constants used throughout npasswd
+   *
+!  *	@(#)constants.h	1.8 11/17/98
+   */
+  
+  /*
+***************
+*** 10,15 ****
+--- 10,16 ----
+  #define Xsw_Chsh		's'
+  #define Xsw_Chfn		'f'
+  #define Xsw_Help		'h'
++ #define Xsw_AskAll		'A'
+  #define Xsw_CheckConfig		'C'
+  #define Xsw_ShowConfig		'c'
+  #define Xsw_SetDebug		'D'
+*** /tmp/dTQ380_	Mon Feb  1 14:14:44 1999
+--- src/main.c	Tue Nov 17 15:35:27 1998
+***************
+*** 51,57 ****
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)main.c	1.44 09/29/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.main.c";
+  #endif
+  
+  /*
+--- 51,57 ----
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)main.c	1.46 11/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.main.c";
+  #endif
+  
+  /*
+***************
+*** 123,129 ****
+  
+  	init_pwsvc(argc, argv, Switches);
+  	checktty();
+! 	savetty();
+  	temp = getlogin();
+  	if (temp == 0 || *temp == '\0') {	/* Can't get login name */
+  		static char savedname[STRINGLEN];
+--- 123,129 ----
+  
+  	init_pwsvc(argc, argv, Switches);
+  	checktty();
+! 	term_save();
+  	temp = getlogin();
+  	if (temp == 0 || *temp == '\0') {	/* Can't get login name */
+  		static char savedname[STRINGLEN];
+***************
+*** 224,233 ****
+  			printf("%s\n", complaint);
+  		return;
+  	}
+! 	while (fgets(inbuf, sizeof(inbuf), in)) {
+! 		(void) fputs(inbuf, stdout);
+! 		(void) fflush(stdout);
+! 	}
+  	(void) fclose(in);
+  }
+  
+--- 224,230 ----
+  			printf("%s\n", complaint);
+  		return;
+  	}
+! 	pager(in);
+  	(void) fclose(in);
+  }
+  
+***************
+*** 276,282 ****
+  #endif
+  
+  #ifdef	OS_SUNOS_5
+! # define	OPTIONS_DEFER	"adhln:w:x:s:"	/* SunOS 5 options punted */
+  # define	OPTIONS_OS 	"egr:"		/* SunOS 5 options supported */
+  # define	OPTIONS_IGNORE 	"D:"		/* SunOS 5 options to ignore */
+  #endif
+--- 273,279 ----
+  #endif
+  
+  #ifdef	OS_SUNOS_5
+! # define	OPTIONS_DEFER	"adfhln:w:x:s:"	/* SunOS 5 options punted */
+  # define	OPTIONS_OS 	"egr:"		/* SunOS 5 options supported */
+  # define	OPTIONS_IGNORE 	"D:"		/* SunOS 5 options to ignore */
+  #endif
+***************
+*** 441,446 ****
+--- 438,447 ----
+  				what_to_do = CHSH;
+  				break;
+  
++ 			case Xsw_AskAll:		/* Alwayws ask for pw */
++ 				XSwitches[Xsw_AskAll] = "on";
++ 				break;
++ 
+  			case Xsw_ShowConfig:		/* Show config */
+  				XSwitches[Xsw_ShowConfig] = "on";
+  				break;
+***************
+*** 585,591 ****
+  catchit(signo)
+  	int	signo;
+  {
+! 	fixtty();
+  	pw_cleanup(signo);
+  	die("\nInterrupted; changes discarded.\n");
+  }
+--- 586,592 ----
+  catchit(signo)
+  	int	signo;
+  {
+! 	term_restore();
+  	pw_cleanup(signo);
+  	die("\nInterrupted; changes discarded.\n");
+  }
+*** /tmp/d0AqH3V	Mon Feb  1 14:14:44 1999
+--- src/passwd.c	Tue Nov 17 15:35:36 1998
+***************
+*** 67,73 ****
+  #endif
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)passwd.c	1.41 08/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.passwd.c";
+  #endif
+  
+  /* Local routines */
+--- 67,73 ----
+  #endif
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)passwd.c	1.42 11/12/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.passwd.c";
+  #endif
+  
+  /* Local routines */
+***************
+*** 218,224 ****
+  	if ((perm = can_change_pw(theUser, theCaller)) == deny)
+  		die("Permission denied.\n");
+  
+! 	if (perm == self) {
+  		if (theUser->mpw_passwd[0]) {
+  			char	cpw[STRINGLEN];
+  
+--- 218,224 ----
+  	if ((perm = can_change_pw(theUser, theCaller)) == deny)
+  		die("Permission denied.\n");
+  
+! 	if (perm == self || XSwitches[Xsw_AskAll]) {
+  		if (theUser->mpw_passwd[0]) {
+  			char	cpw[STRINGLEN];
+  
+***************
+*** 373,378 ****
+--- 373,379 ----
+  		ypwhich(PASSWD_BYNAME, &ypinfo);
+  		if (CallerUid == 0 &&
+  		    ypinfo.status == is_yp_client &&
++ 		    XSwitches[Xsw_AskAll] == 0 &&
+  		    theUser->pws_remote) {
+  			printf("Information can only be changed on NIS master %s.\n",
+  				ypinfo.master);

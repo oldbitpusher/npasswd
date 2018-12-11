@@ -1,0 +1,66 @@
+?RCS: $Id: End.U,v 3.0 1993/08/18 12:04:51 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: End.U,v $
+?RCS: Revision 3.0  1993/08/18  12:04:51  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?RCS: @(#)End.U	1.10 07/16/98 (cc.utexas.edu)
+?RCS:
+?X: 
+?X: This unit serves as the goal which forces make to choose all the units that
+?X: ask questions.  The $W on the ?MAKE: line is the list of all symbols wanted.
+?X: To force any unit to be included, copy this unit to your private U directory
+?X: and add the name of the unit desired to the ?MAKE: dependency line.
+?X: 
+?X: This unit is the very last one in the Configure script.  It runs all the
+?X: SH files, which among other things produce config.h and (usually) Makefile.
+?X: It offers to do a make depend if the Makefile contains that target.
+?X: 
+?X: 
+?MAKE:End: MyOptions $W
+?MAKE:	-pick add $@ %<
+?LINT:use $W
+
+case "${p_osName}_${p_osRev}" in
+	aix_4*)	
+		echo ' '
+		echo 'CONSULT README.AIX4 before installing' >&4
+		echo ' '
+		;;
+esac
+
+cat <<EOF
+
+---------------------------------------------------
+         Summary of program options
+---------------------------------------------------
+
+System passwd programs: $p_sysprogs
+System program save directory: $p_keepdir
+Dictionary directory: $p_dictionaries
+History database: $p_history
+History database gid: $p_histgid
+Shadow module: $p_shadow
+
+EOF
+$test "$p_nis" = $define && \
+	echo NIS support enabled
+$test "$p_nisplus" = $define && \
+	echo NIS+ support enabled
+$test "$p_osf1auth" = $define && \
+	echo Digital UNIX auth support enabled
+$test "$p_hpuxauth" = $define && \
+	echo HP-UX auth support enabled
+$test "$o_paranoid" = $define && \
+	echo Paranoid user check enabled
+$test "$p_replace" = $define &&\
+	 echo Will save system programs and replace with $package
+

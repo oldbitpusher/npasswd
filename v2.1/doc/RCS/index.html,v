@@ -1,0 +1,64 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.05.22.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Change document in Context frame
+@
+text
+@<!-- Main index for npasswd 2.0 manual -->
+<!-- Don't try to edit this with netscape 3 gold - it will barf on
+     the frames -->
+<!-- $Id$ (cc.utexas.edu) -->
+<html>
+<head>
+<title>Npasswd documentation</title>
+</head>
+<!-- Don't put body tags - will break frames -->
+
+<frameset cols="20%,*" border=5>
+	<frame name="TOC" src="TOC_frame.html" scrolling=auto>
+	<frame name="Content" src="Main.html" scolling=auto>
+	<noframes>
+		<P>
+		Your browser doesn't have frames.
+		<P>
+		<h3>Here is the non-frames
+			<A HREF="TOC_std.html">Table of Contents.</a></h3>
+		<P>
+	</noframes>
+</frameset>
+
+</html>
+<!-- End $RCSfile$ -->
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d13 1
+a13 1
+	<frame name="Content" src="Introduction.html" scolling=auto>
+@

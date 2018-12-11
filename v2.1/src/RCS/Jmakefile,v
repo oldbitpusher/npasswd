@@ -1,0 +1,1134 @@
+head	1.27;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.27
+date	98.11.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	98.08.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	98.07.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	98.07.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	98.07.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	98.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	97.06.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	97.05.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	97.05.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	97.05.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	97.04.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	97.04.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	96.12.04.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	96.12.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	96.09.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	96.09.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	96.08.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.27
+log
+@Symlink ../config.h
+@
+text
+@;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# $Id$ (cc.utexas.edu)
+;#
+/*
+ * Jmakefile for npasswd/src
+ *  $Id$ (cc.utexas.edu) %P%
+ */
+#include "../Jmake.local"
+>INSTALL
+
+Initialize(INCLUDE_PATH, -I.. -ICommon -IPasswordCheck -IMethods)
+Initialize(SYSTEM_PROGS, $p_sysprogs)	/* System programs to save */
+Initialize(NPASSWD_HOME, $p_installdir)	/* Where to put npasswd */
+Initialize(REPLACE_SYSTEM_PROGS, $p_replace)	/* Override sys progs */
+
+/*
+ * There are two types of subdirectories:
+ * 	Standard - "make all", "depend", "clean" ... will traverse
+ *	Special - traversal only when explicitly desired
+ */
+SetSubdirs(Scripts)				/* Standard subdirectories */
+X_SUBDIRS = Common PasswordCheck Methods	/* Special subdirectories */
+ALL_SUBDIRS = $(SUBDIRS) $(X_SUBDIRS)		/* All subdirectories */
+
+;#
+;# Sub directories & sub libraries
+;#
+LIB_METHOD = Methods/libmethod.a
+LIB_PWCK = PasswordCheck/libpwcheck.a
+LIB_COMOBJ = Common/libcomobj.a
+
+;# Mode and ownership for npasswd binary
+NPASSWD_MODE =	04111
+NPASSWD_OWNER =	root
+
+;# The main source components of npasswd
+NPASSWD_SRC = \
+	version.c \
+	main.c \
+	configure.c \
+	passwd.c \
+	chfn.c \
+	chsh.c
+
+;# The main object components of npasswd
+NPASSWD_OBJ = \
+|expand f!$(NPASSWD_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+Describe(all, Build everything here and in subdirectories)
+
+;#
+;# Link the master config file into this directory for convenience
+;#
+Describe(config.h, Link ../config.h to here)
+AllTarget(config.h)
+SymlinkSourceFile(config.h,..)
+
+Describe(npasswd, Build npasswd)
+NormalProgramTarget(npasswd, $(NPASSWD_SRC), $(NPASSWD_OBJ) $(LIB_METHOD) $(LIB_PWCK) $(LIB_COMOBJ))
+
+Describe(install,	Install npasswd and installs in subdirectories)
+Describe(deinstall,	Remove npasswd and deinstall in subdirectories)
+
+XdirMake(install,install,PasswordCheck)	/* Does recursive "make install" */
+XdirMake(deinstall,deinstall,PasswordCheck)	/* Does recursive "make deinstall" */
+
+;#
+;# Put the binary into the npasswd install directory,
+;#
+install:: install-npasswd install-links
+
+Describe(install-npasswd, Install npasswd binary only)
+install-npasswd:	npasswd
+	$(INSTALL) -c -o $(NPASSWD_OWNER) -m $(NPASSWD_MODE) \
+		npasswd $(NPASSWD_HOME)
+
+Describe(install-links, Make npasswd links if replacing system programs)
+;#
+;#	Link/symlink/copy to the other places it needes to live.
+;#	The original versions of the system passwd/chfn/chsh
+;#	programs are saved if the "replace" option is set in config.sh.
+;#
+install-links:	npasswd
+	@@if [ "$(REPLACE_SYSTEM_PROGS)" = define ]; then \
+		echo Replacing system programs;\
+		Scripts/savefiles $(SYSTEM_PROGS); \
+		Scripts/installmany $(NPASSWD_HOME)/npasswd $(SYSTEM_PROGS); \
+	 fi
+
+
+Describe(deinstall, Restore system passwd programs and remove npasswd)
+deinstall:: backdown
+	$(RM) $(NPASSWD_HOME)/npasswd
+
+Describe(backdown, Restore system passwd programs if saved by install)
+backdown::
+	@@if [ "$(REPLACE_SYSTEM_PROGS)" = define ]; then \
+		echo Restoring system programs;\
+		Scripts/restorefiles; \
+	fi;\
+	exit 0
+
+ThingFromSH(version.c)
+ThingFromSH(options.h)
+
+;#
+;# Dependancies on things in subdirectories
+;#
+XdirMake($(LIB_PWCK),all,PasswordCheck)	/* Make password check lib */
+XdirLibMake(method,Methods)		/* Make method lib */
+XdirLibMake(comobj,Common)		/* Make comobj lib */
+
+DebugTarget()				/* Enable debugging */
+DebugCustomSubdir($(ALL_SUBDIRS))	/* Recursive debugging */
+
+Describe(lint, Check C sources with lint)
+LintTarget()
+
+/*
+ * Make up for not having all the subdirectories included in SUBDIRS
+ */
+SpecialSubdirsRule(xsubdirs,$(X_SUBDIRS))	/* Make xsubdir target */
+
+DependTarget()					/* Depend here ... */
+DependDirs($(ALL_SUBDIRS))			/* ... and in children */
+TagsTarget()
+
+|expand d!clean realclean clobber!
+SpecialNamedTargetSubdirs(sub_!d,xsubdirs,!d,!d,$(FLAGS))
+-expand
+
+
+/* End $RCSfile$ */
+@
+
+
+1.26
+log
+@Add Methods to include path
+@
+text
+@d100 1
+a100 1
+LinkSourceFile(config.h,..)
+a101 1
+
+@
+
+
+1.25
+log
+@1. Add Describe() for deinstall 2. Make deinstall go down PasswordCheck subdir
+@
+text
+@d53 1
+a53 1
+Initialize(INCLUDE_PATH, -I.. -ICommon -IPasswordCheck)
+@
+
+
+1.24
+log
+@Change how make is done in PasswordCheck subdir
+@
+text
+@d51 1
+a54 1
+Initialize(INSTALL, $install)		/* Install program */
+d106 2
+a107 1
+Describe(install, Install npasswd and do installs in subdirectories)
+d110 2
+d138 1
+a138 2
+	$(RM) -f $(NPASSWD_HOME)/npasswd
+	@@echo Find config file and remove it and the dictionaries?
+d171 1
+@
+
+
+1.23
+log
+@1. Change config path vars 2. Extract version.c from .SH file
+@
+text
+@a101 1
+XdirMake(all,all,PasswordCheck)		/* Does recursive "make all" */
+d152 1
+@
+
+
+1.22
+log
+@Major rework
+@
+text
+@d55 1
+a55 1
+Initialize(NPASSWD_HOME, $privlibexp)	/* Where to put npasswd */
+d147 3
+@
+
+
+1.21
+log
+@Add more directories to include path
+@
+text
+@a56 1
+SetSubdirs(Scripts PasswordCheck)	/* Subdirectories included in "make all" */
+d58 9
+a72 1
+X_SUBDIRS = Common PasswordCheck Methods
+d98 2
+a99 2
+all::	config.h
+
+d102 2
+d108 2
+d111 1
+a111 2
+;#	Put the binary into the npasswd install directory, and
+;#	link/symlink/copy to the other places it needes to live.
+d113 1
+a113 4
+;#	The original versions of the system passwd/chfn/chsh
+;#	programs are saved if the "replace" option is set in config.sh.
+;#
+install:: install-npasswd
+d119 8
+a132 1
+LocalSubdirMake(install, install, PasswordCheck/cracklib/tools)
+d150 2
+a151 3
+LocalSubdirLibMake(libmethod.a, Methods)	/* Make method lib */
+LocalSubdirLibMake(libcomobj.a, Common)		/* Make comobj lib */
+LocalSubdirMake($(LIB_PWCK), all, PasswordCheck) /* Make all in PasswordCheck */
+d153 2
+a154 8
+;# ---------------------------------------------------------------
+;# Force clean in non-standard subdirectories
+;# ---------------------------------------------------------------
+|expand d!$(X_SUBDIRS)!
+LocalSubdirMake(sub_clean, clean, !d)
+LocalSubdirMake(sub_realclean, realclean, !d)
+LocalSubdirMake(sub_clobber, clobber, !d)
+-expand
+d156 2
+a157 1
+LocalDebug()			/* Enable debugging */
+d159 4
+a162 1
+SubdirDebug($(X_SUBDIRS))	/* Recursive debugging */
+d164 2
+a165 1
+DependDirs($(X_SUBDIRS))	/* Recursive depending */
+d167 3
+a169 1
+LocalEnd()
+d171 1
+@
+
+
+1.20
+log
+@Split npasswd binary install to install-npasswd
+@
+text
+@d52 1
+a52 1
+Initialize(INCLUDE_PATH, -I..)
+@
+
+
+1.19
+log
+@Add PasswordCheck to SUBDIRS
+@
+text
+@d86 1
+a86 1
+Describe(all, Build everything)
+d98 1
+a98 1
+Describe(install, Install npasswd (perhaps replacing system passwd programs))
+d106 4
+a109 1
+install:: npasswd
+@
+
+
+1.18
+log
+@Major rewrite: 1. Move macros to upper level include 2. Include new upper level definition file 3. Use new definition macros 4. Move stuff around, rename stuff, reformat stuff
+@
+text
+@d57 1
+a57 1
+SetSubdirs(Scripts)		/* Subdirectories included in "make all" */
+@
+
+
+1.17
+log
+@Change how PW_REPLACE is checked
+@
+text
+@a0 3
+/*
+ * Jmakefile for npasswd 2.0
+ */
+d2 2
+a3 2
+;# Makefile for building and installing npasswd executable
+;# and some of the ancillary files
+d5 2
+a6 2
+;# Original source is
+;# $Id$ (cc.utexas.edu) %P%
+d8 3
+a10 2
+Initialize(INCLUDE_PATH, -I..)
+SetSubdirs(Scripts)
+d12 31
+a42 1
+;# Paths to system programs
+d44 1
+a44 1
+Initialize(SYSTEM_PROGS, $p_sysprogs)
+d46 13
+a58 1
+;# Compliation flags
+a59 21
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+Initialize(CFLAGS, $ccflags $cc_osflags ${CC_TESTFLAGS} ${INCLUDE_PATH})
+;#
+;# Flags for "make depend"
+;#
+Initialize(DPFLAGS, ${INCLUDE_PATH})
+;#
+;# Where to save system programs
+;#
+Initialize(KEEPDIR, $p_keepdir)
+;#
+;# Other things
+;#
+Initialize(INSTALL, $install)
+Initialize(BIN, $prefix)
+Initialize(LIB, $privlibexp)
+Initialize(NPASSWD, $p_exec)
+Initialize(PW_REPLACE, $p_replace)
+Initialize(LNS, $lns)
+;#
+d62 4
+a65 4
+METHOD_LIB = Methods/libmethod.a
+PWCK_LIB = PasswordCheck/libpwcheck.a
+COMM_LIB = Common/libcomobj.a
+LIBDIRS = Common PasswordCheck Methods
+d67 5
+a71 3
+;# ---------------------------------------------------------------
+;# 	Pieces of the npasswd program proper
+;# ---------------------------------------------------------------
+d80 1
+d86 1
+d95 2
+a96 4
+/*
+ * Build npasswd program proper
+ */
+NormalProgramTarget(npasswd, ${NPASSWD_SRC}, ${NPASSWD_OBJ} ${METHOD_LIB} ${PWCK_LIB} ${COMM_LIB})
+d98 1
+a98 1
+
+d100 2
+a101 1
+;# Install npasswd
+a102 3
+;#	Put the binary into the npasswd library directory, and link/symlink
+;#	to all the other places it needes to live.
+;#
+d104 1
+a104 2
+;#	programs are saved in ${KEEPDIR} if the "replace" option
+;#	is set (config.sh via Configure).
+d107 3
+a109 2
+	${INSTALL} -c -o root -m 4111 npasswd ${LIB}
+	@@if [ "${PW_REPLACE}" = define ]; then \
+d111 2
+a112 2
+		Scripts/savefiles ${SYSTEM_PROGS}; \
+		Scripts/installmany $(LIB)/npasswd ${SYSTEM_PROGS}; \
+d115 1
+a115 5
+deinstall::
+	@@if [ "${PW_REPLACE}" = define ]; then \
+		echo Restoring system programs ;\
+		Scripts/restorefiles; \
+	fi
+d117 6
+d124 1
+a124 1
+	@@if [ "${PW_REPLACE}" = define ]; then \
+d127 2
+a128 1
+	fi
+d130 6
+a135 1
+/* InstallManPage(npasswd, ${MANSRC}) */
+d138 1
+a138 1
+;# Build things in subdirectories
+d140 5
+d146 1
+a146 1
+ForceTarget()
+d148 1
+a148 3
+#define SubdirLibMake(target,dir) 	@@!\
+dir/target:: 	.FORCE @@@@\
+	cd dir; $(MAKE) $(MFLAGS) target
+d150 1
+a150 3
+#define SubdirXMake(tag,target,dir) 	@@!\
+tag:: 	.FORCE @@@@\
+	cd dir; $(MAKE) $(MFLAGS) target
+d152 1
+a152 3
+SubdirLibMake(libmethod.a, Methods)
+SubdirLibMake(libcomobj.a, Common)
+SubdirXMake(${PWCK_LIB}, all, PasswordCheck)
+a153 24
+SubdirXMake(install, install, PasswordCheck/cracklib/tools)
+
+;# ---------------------------------------------------------------
+;# Make dependancies
+;# ---------------------------------------------------------------
+
+DependTarget()
+DependDirs(${LIBDIRS})
+
+;# ---------------------------------------------------------------
+;# Force clean in non-standard subdirectories
+;# ---------------------------------------------------------------
+|expand d!$(LIBDIRS)!
+sub_clean::
+	cd !d; $(MAKE) $(MFLAGS) clean
+
+sub_realclean::
+	cd !d; $(MAKE) $(MFLAGS) realclean
+
+sub_clobber::
+	cd !d; $(MAKE) $(MFLAGS) clobber
+
+-expand
+
+@
+
+
+1.16
+log
+@Force clean/realclean/clobber of non-standard subdirectories
+@
+text
+@d90 1
+a90 1
+	@@if [ -n "${PW_REPLACE}" ]; then \
+d97 1
+a97 1
+	@@if [ -n "${PW_REPLACE}" ]; then \
+d103 1
+a103 1
+	@@if [ -n "${PW_REPLACE}" ]; then \
+@
+
+
+1.15
+log
+@Use LinkSourceFile() macro to get config.h
+@
+text
+@a129 1
+
+d137 15
+@
+
+
+1.14
+log
+@1. Fix config.h symlink 2. Change usage of savefiles and restorefiles
+@
+text
+@d70 1
+a70 2
+config.h:
+	-@@[ ! -r config.h ] && ${LNS} ../config.h config.h
+@
+
+
+1.13
+log
+@Force make in Crack tools subdirectory
+@
+text
+@d71 1
+a71 1
+	-@@[ ! -r config.h ] && $LNS ../config.h config.h
+d93 1
+a93 1
+		Scripts/savefiles ${SYSTEM_PROGS} ${KEEPDIR}; \
+d100 1
+a100 1
+		Scripts/restorefiles ${KEEPDIR}; \
+a101 2
+	@@echo Removing ${LIB}
+	rm -rf ${LIB}
+d106 1
+a106 1
+		Scripts/restorefiles ${KEEPDIR}; \
+@
+
+
+1.12
+log
+@Add deinstall and backdown targets to de-install stuff
+@
+text
+@d39 1
+d71 1
+a71 1
+	-@@[ ! -r config.h ] && ln -s ../config.h config.h
+d78 1
+d92 1
+d120 1
+a120 1
+dir/target: 	.FORCE @@@@\
+d123 4
+d129 1
+a129 1
+SubdirLibMake(libpwcheck.a, PasswordCheck)
+d131 3
+@
+
+
+1.11
+log
+@Add subdir 'Scripts'
+@
+text
+@d94 14
+@
+
+
+1.10
+log
+@Major update
+@
+text
+@d12 1
+@
+
+
+1.9
+log
+@Remove use of $p_rpclib
+@
+text
+@d2 1
+a2 1
+ * Main Jmakefile for npasswd 2.0
+d5 2
+a6 1
+;# $Id$ (cc.utexas.edu)
+d8 3
+d12 7
+a18 4
+
+Initialize(PASSWD_PROG_LOC, $p_passwd)
+Initialize(CHFN_PROG_LOC, $p_chfn)
+
+d22 3
+a24 1
+
+d26 15
+a40 3
+
+Initialize(LIBDATA, $privlibexp)
+
+a43 1
+
+d62 12
+d76 10
+d87 5
+a91 3
+	${INSTALL} -c -o root -m 4111 npasswd ${BIN}/npasswd
+	sh ./installmany $(BIN)/npasswd ${PASSWD_PROG_LOC} \
+		${CHFN_PROG_LOC} ${CHSN_PROG_LOC}
+d93 1
+a93 12
+initial_install:: npasswd
+	-@@echo "Saving copies of vendor passwd/chfn/chsh programs"
+	-@@for p in $(PASSWD_PROG_LOC) $(CHFN_PROG_LOC) $(CHSN_PROG_LOC); do \
+		if test -f $${p}.DIST; then \
+			echo "Vendor version of $$p already saved";\
+		else
+			mv $$p $${p}.DIST;\
+			chmod o-x $${p}.DIST;\
+			echo "Saved vendor version of $$p as $${p}.DIST";\
+			ls -l $${p}.DIST;\
+		fi;\
+	done;
+a94 2
+InstallManPage(npasswd, ${MANSRC})
+
+d96 1
+a96 1
+;# Build libraries in subdirectories
+d99 1
+a99 1
+.FORCEIT:
+d102 1
+a102 1
+dir/target: 	.FORCEIT @@@@\
+d109 5
+@
+
+
+1.8
+log
+@Fix include path and library options
+@
+text
+@d14 1
+a14 1
+Initialize(CFLAGS, $ccflags $cc_osflags $(CC_TESTFLAGS) ${INCLUDE_PATH})
+d16 1
+a16 1
+Initialize(XLIBS, $p_rpclib)
+a17 2
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+
+a22 1
+LIBS = ${LIBS} ${XLIBS}
+@
+
+
+1.7
+log
+@Get rid of subdirector "Files"
+@
+text
+@d7 1
+a10 1
+Initialize(CHSN_PROG_LOC, $p_chsh)
+d14 1
+a14 1
+Initialize(CFLAGS, $ccflags $cc_osflags $(CC_TESTFLAGS))
+d16 1
+a16 1
+Initialize(LIBS, $p_rpclib)
+d18 2
+d25 1
+@
+
+
+1.6
+log
+@Add p_rpclib to LIBS
+@
+text
+@a7 5
+SetSubdirs(Files)
+
+;# AddedByConfigure(install)
+;# XXXDependDirs(cracklib tools)
+
+a79 10
+;# ---------------------------------------------------------------
+;#	Install help and configuration files
+;# ---------------------------------------------------------------
+;#InstallNonExec(passwd.help, $(LIBDATA))
+;#InstallNonExec(chfn.help, $(LIBDATA))
+;#InstallNonExec(chsh.help, $(LIBDATA))
+;#InstallNonExec(passwd.conf, $(LIBDATA))
+
+;# DependTarget()
+
+@
+
+
+1.5
+log
+@Force subdirectory makes to happen
+@
+text
+@d21 2
+@
+
+
+1.4
+log
+@Beta 3 development checkin 2
+@
+text
+@d71 2
+d74 1
+a74 1
+dir/target: 	@@@@\
+@
+
+
+1.3
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d8 2
+a9 1
+SetSubdirs(lib)
+a16 3
+Initialize(LD, $ld)
+Initialize(LD_MAKE_RELOC, $ldr)
+
+a20 1
+Initialize(LIBEXEC, $libexp)
+a21 1
+Initialize(SHADOW_M, $p_shadow)
+d23 3
+a25 3
+;# ---------------------------------------------------------------
+;# Build Cracklib (used by checkpassword)
+;# ---------------------------------------------------------------
+d27 1
+a27 1
+CRACK_LIB = cracklib/libcrack.a
+a28 8
+$(CRACK_LIB):
+	cd cracklib; make $(MFLAGS) "XENV=-DIN_CHECKPASSWORD"
+
+UTIL_LIB = lib/libutil.a
+
+$(UTIL_LIB):
+	cd lib; make $(MFLAGS) 
+
+a29 61
+;# Build the checkpassword library
+;#
+;# The routines in the "checkpassword" library may rely upon routines
+;# in other libraries included in the distribution.
+;#
+;# Random archives are good for a collection of things that you
+;# aren't always going to need everything from, i.e. libc.  In the
+;# case of the checkpassword lib, *everything* therein is used.
+;# On the other hand, object files cannot be linked in by merely
+;# using "-lobjectfile.o" on the command line - archives can be so
+;# simply accessed.
+;#
+;# For the sake of simplicity, I want to deal with only ONE
+;# library, so that must include everything needed.
+;#
+;# There are two basic approaches to this:
+;#	1) Archive everything together into one library
+;#	2) Link everything together into one .o file
+;# I have chosen to do the latter.  Hence libcheckpassword.a consists
+;# of only pwck_all.o, which contains everything needed to perform password
+;# checking (including Crack).
+;#
+;# ---------------------------------------------------------------
+PWCK_LIB = libpwcheck.a
+PWCK_APP = checkpassword
+PWCK_SRC = \
+	pwck_main.c \
+	pwck_crack.c \
+	pwck_history.c \
+	pwck_lexical.c \
+	pwck_local.c \
+	pwck_passwd.c
+
+PWCK_OBJ = \
+|expand f!$(PWCK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+;#
+;# Libraries that checkpassword depends upon
+;#
+PWCK_LIBDEP = $(CRACK_LIB)
+
+NormalLibraryTarget(pwcheck, $(PWCK_SRC), pwck_all.o)
+
+pwck_all.o:     $(PWCK_OBJ) $(PWCK_LIBDEP)
+	$(LD) $(LD_MAKE_RELOC) $(PWCK_OBJ) -o pwck_all.o $(PWCK_LIBDEP)
+
+InstallLibrary($(PWCK_LIB), $(LIBEXEC))
+
+;#
+;# Build the checkpassword standalone application
+;#
+$(PWCK_APP): checkpassword.o version.o $(PWCK_LIB)
+	$(CC) -o $(PWCK_APP) $(LFLAGS) checkpassword.o version.o $(PWCK_LIB)
+
+;# Install checkpasswd library
+
+InstallLibrary($(PWCK_LIB), $(LIB))
+
+;# ---------------------------------------------------------------
+d33 1
+d38 1
+a38 5
+	chsh.c \
+	pwm_main.c \
+	pwm_local.c \
+	pwm_nis.c \
+	version.c
+a39 8
+SHADOW_SRC = \
+	shm_adjunct.c \
+	shm_shadow.c \
+	shm_ultrix.c \
+	shm_osf1.c
+
+++SOURCES $(SHADOW_SRC) 
+
+d45 1
+a46 2
+NormalProgramTarget(npasswd, $(NPASSWD_SRC), $(NPASSWD_OBJ) $(SHADOW_M).o $(PWCK_LIB) $(UTIL_LIB))
+
+d48 3
+a50 3
+	$(INSTALL) -c -o root -m 4111 npasswd $(BIN)/npasswd
+	sh ./installmany $(BIN)/npasswd $(PASSWD_PROG_LOC) \
+		$(CHFN_PROG_LOC) $(CHSN_PROG_LOC)
+d65 1
+a65 1
+InstallManPage(npasswd, $(MANSRC))
+d67 3
+d71 10
+d84 4
+a87 4
+InstallNonExec(passwd.help, $(LIBDATA))
+InstallNonExec(chfn.help, $(LIBDATA))
+InstallNonExec(chsh.help, $(LIBDATA))
+InstallNonExec(passwd.conf, $(LIBDATA))
+d89 1
+a89 1
+DependTarget()
+@
+
+
+1.2
+log
+@1. Strip out stuff not being used  2. Add reference to lib/libutil
+@
+text
+@d5 1
+a5 1
+;# $Id$ (cc.utexas.edu) %P%
+d36 5
+a79 2
+UTIL_LIB = lib/libutil.a
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d4 5
+a8 1
+SetSubdirs(cracklib tools)
+a24 1
+
+d75 2
+d127 1
+a127 1
+NormalProgramTarget(npasswd, $(NPASSWD_SRC), $(NPASSWD_OBJ) $(SHADOW_M).o $(PWCK_LIB))
+d143 1
+d160 1
+a160 53
+;## ---------------------------------------------------------------
+;## Make password checking dictionaries (not really)
+;## ---------------------------------------------------------------
+;#dictionaries:	dicttools
+;#	-@@echo Read the administrators guide for directions
+;#	-@@echo about building dictionaries
+;#
+;# ---------------------------------------------------------------
+;# Make misc tools
+;# ---------------------------------------------------------------
+
+;#dicttools:
+;#	cd tools; make $(MFLAGS) "OS_FLAGS=$(OS_FLAGS)"
+;#
+;# ---------------------------------------------------------------
+;# ---------------------------------------------------------------
+;## Do the installation.
+;## This does consistency checking of the configuration file and
+;## the password check dictionaries.
+;## The configuration file install will fail if an inconsistency is found.
+;## ---------------------------------------------------------------
+;##
+;## Check the configuration file consistency
+;##
+;#checkcf:
+;#	./npasswd -XC $(config-file)
+;##
+;## Check the consistency of the password dictionaries
+;##
+;#checkdicts:
+;#	sh tools/checkdicts.sh $(LCF)
+;#
+;##
+;## Install the manual page (not really yet)
+;##
+;#install.man:
+;#	@@echo Customize a manual page
+;##	install -c -m 0444 npasswd.1 $(DEST)$(MANDIR)
+;#
+;## ---------------------------------------------------------------
+;## Make copy of password file for testing
+;## ---------------------------------------------------------------
+;#test-setup:
+;#	-rm -f passwd passwd.dir passwd.pag passwd.old
+;#	cp /etc/passwd passwd
+;#	-[ -f /etc/mkpasswd ] && /etc/mkpasswd passwd
+;#
+;## ---------------------------------------------------------------
+;## Build the distribution
+;## ---------------------------------------------------------------
+;#dist:
+;#	@@stuff/makedist $(DISTNAME)
+;# 
+@

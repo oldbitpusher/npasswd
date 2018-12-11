@@ -1,0 +1,426 @@
+<HTML>
+<HEADER>
+<link rel=stylesheet type="text/css" href="../../npasswd.css">
+
+<title>With Microscope and Tweezers: Strategies</title>
+<link rev="made" href="mailto:eichin@mit.edu">
+</HEADER>
+<BODY>
+<h1>With Microscope and Tweezers:</h1>
+<h2>An Analysis of the Internet Virus of November 1988</h2>
+<A NAME="strat">
+<H3>Strategies</H3>
+
+<UL>
+<LI> <A HREF="strategies.html#attacks">Attacks</A> <UL>
+   <LI> <A HREF="strategies.html#sendmail-debug">Sendmail Debug Mode</A>
+   <LI> <A HREF="strategies.html#finger-bug">Finger Daemon Bug</A>
+   <LI> <A HREF="strategies.html#rexec">Rexec and Passwords</A>
+   <LI> <A HREF="strategies.html#rsh">Rsh and Trust</A>
+   <LI> <A HREF="strategies.html#information">Information Flow</A>
+</UL>
+<LI> <A HREF="strategies.html#protection">Self Protection</A> <UL>
+   <LI> <A HREF="strategies.html#covering">Covering Tracks</A>
+   <LI> <A HREF="strategies.html#camouflage">Camouflage</A>
+</UL>
+<LI> <A HREF="strategies.html#flaws">Flaws</A> <UL>
+   <LI> <A HREF="strategies.html#reinfection">Reinfection prevention</A>
+   <LI> <A HREF="strategies.html#heuristics">Heuristics</A>
+   <LI> <A HREF="strategies.html#vulnerabilities">Vulnerabilities not used</A>
+</UL>
+<LI> <A HREF="strategies.html#defenses">Defenses</A>
+</UL>
+
+<A NAME="attacks">
+<H4>Attacks</H4>
+
+This virus attacked several things, directly and indirectly. It picked
+out some deliberate targets, such as specific network daemons through
+which to infect the remote host. There were also less direct targets,
+such as mail service and the flow of information about the virus.
+<p>
+<A NAME="sendmail-debug">
+<H5>Sendmail Debug Mode</H5>
+
+The virus exploited the ``debug'' function of <code>sendmail</code>, which enables
+debugging mode for the duration of the current connection. Debugging
+mode has many features, including the ability to send a mail message
+with a program as the recipient (i.e. the program would run, with all
+of its input coming from the body of the message). This is
+inappropriate
+and rumor<a href="bibliography.html#nyt">[nyt]</a> has it that the author included this
+feature to allow him to circumvent security on a machine he was using
+for testing. It certainly exceeds the intended design of the Simple Mail Transfer Protocol (SMTP) <a href="bibliography.html#smtp">[smtp]</a>.
+<p>
+Specification of a program to execute when mail is received
+is normally allowed in the <code>sendmail</code> aliases file or
+users' <code>.forward</code> files directly, for <A HREF="strategies.html#footnote-vacation"><code>vacation</code></A>, mail archive programs, and
+personal mail sorters. It is <I>not</I> normally allowed for incoming
+connections. In the virus, the ``recipient'' was a command to strip
+off the mail headers and pass the remainder of the message to a command interpreter.
+The body was a script that created a C program, the ``grappling
+hook,'' which transfered the rest of the modules from the originiating host,
+and the commands to link and execute them.  Both VAX and Sun binaries 
+were transfered and both would be tried in turn, no attempt to
+determine the machine type was made.  On other architectures the
+programs would not run, but would use resources in the linking
+process.  All other attacks used the same ``grappling hook''
+mechanism, but used other flaws to inject the ``grappling hook'' into
+the target machine.
+<p>
+The fact that debug was enabled by default was reported to Berkeley by
+several sources during the 4.2BSD release. The 4.3BSD release as well
+as Sun releases still had this option enabled by default <a href="bibliography.html#smb">[smb]</a>.
+The then current release of Ultrix
+did not have debug mode enabled, but
+the beta test version of the newest release did have debug enabled (it
+was disabled before finally being shipped).  MIT's Project Athena was
+among a number of sites which went out of its way to disable debug mode;
+however, it is unlikely that many binary-only sites were able to be as
+diligent.
+<p>
+<A NAME="finger-bug">
+<H5>Finger Daemon Bug</H5>
+
+The virus hit the finger daemon (<code>fingerd</code>)
+by overflowing a buffer which was
+allocated on the stack. The overflow was possible because <code>fingerd</code> used
+a library
+function which did not do range checking. Since the buffer
+was on the stack, the overflow allowed a fake stack frame to be
+created, which caused a small piece of code to be executed when the
+procedure <A HREF="strategies.html#footnote-writed">returned</A>. The library function in
+question turns out to be a backward-compatibility routine, which
+should not have been needed after 1979 <a href="bibliography.html#geoff">[geoff]</a>.
+<p>
+Only 4.3BSD VAX machines were attacked this way.  The virus did not
+attempt a Sun specific attack on finger and its VAX attack failed when
+invoked on a Sun target.  Ultrix was not vulnerable to this since
+production releases did not include a <code>fingerd</code>.
+<p>
+<A NAME="rexec">
+<H5>Rexec and Passwords</H5>
+
+The virus attacked using the Berkeley remote execution protocol, which
+required the user name and plaintext password to be passed over the
+net. The program only used pairs of user names and passwords which it
+had already tested and found to be correct on the local host. A
+common, world readable file (<code>/etc/passwd</code>)
+that contains the user names and encrypted
+passwords for every user on the system facilitated this search.
+Specifically:
+<ul>
+<li> this file was an easy-to-obtain list of user names to attack,
+<li> the dictionary attack was a method of verifying password guesses
+which would not be noted in security logs.
+</ul>
+The principle of ``least privilege'' <a href="bibliography.html#saltzer">[saltzer]</a> is violated by the
+existence of this password file. Typical programs have no need for a
+list of user names and password strings, so this privileged
+information should not be available to them.  For example, Project
+Athena's network authentication system, <I>Kerberos</I>
+<a href="bibliography.html#kerberos">[kerberos]</a>, keeps passwords on a central server which logs
+authentication requests, thus hiding the list of valid user names.
+However, once a name is found, the authentication ``ticket'' is still
+vulnerable to dictionary attack.
+<p>
+<A NAME="rsh">
+<H5>Rsh and Trust</H5>
+
+The virus attempted to use the Berkeley remote shell program (called
+<code>rsh</code>) to attack other machines without using passwords.  The
+remote shell utility is similar in function to the remote execution
+system, although it is ``friendlier'' since the remote end of the
+connection is a command interpreter, instead of the <code>exec</code>
+function. For convenience, a file <code>/etc/hosts.equiv</code> can
+contain a list of hosts trusted by this host.  The <code>.rhosts</code>
+file provides similar functionality on a per-user basis.
+The remote host can
+pass the user name from a trusted port (one which can only be opened
+by <code>root</code>) and the local host will trust that as proof that the
+connection is being made for the named user. 
+<p>
+This system has an important
+design flaw, which is that the local host only knows the remote host
+by its network address, which can often be forged. It also trusts the
+machine, rather than any property of the user, leaving the account
+open to attack at all times rather than when the user is present
+<a href="bibliography.html#kerberos">[kerberos]</a>. The virus took advantage of the latter flaw to
+propagate between accounts on trusted machines.
+Least privilege would also indicate that the lists of trusted
+machines be only accessible to the daemons who need to decide to
+whether or not to grant access.
+<p>
+<A NAME="information">
+<H5>Information Flow</H5>
+
+When it became clear that the virus was propagating via <code>sendmail</code>, the
+first reaction of many sites was to cut off mail service. This turned out
+to be a <I>serious</I> mistake, since it cut off the information needed
+to fix the problem.  Mailer programs on major forwarding nodes, such as 
+<code>relay.cs.net</code>, were shut down delaying some
+critical messages by as long as
+twenty hours. Since
+the virus had alternate infection channels (<code>rexec</code> and
+<code>finger</code>), this made the isolated machine a safe haven for the
+virus, as well as cutting off information from machines further
+``downstream'' (thus placing them in greater danger) since no
+information about the virus could reach them by <A HREF="strategies.html#footnote-usenet">mail</A>. Thus, by
+attacking <code>sendmail</code>, the virus indirectly attacked the flow of
+information that was the only real defense against its spread.
+<p>
+<Hr>Footnotes:
+<UL>
+<LI> <A NAME="footnote-vacation">A
+program which accepts incoming mail and sends back mail to the
+original sender, usually saying something like ``I am on vacation, and
+will not read your mail until I return.''
+<LI> <A NAME="footnote-writed">MIT's Project Athena has a ``write'' daemon which has a
+similar piece of code with the same flaw
+but it explicitly exits rather than returning, and thus never
+uses the (damaged) return stack. A comment in the code notes that it
+is mostly copied from the finger daemon.
+<LI> <A NAME="footnote-usenet">USENET
+news <a href="bibliography.html#netnews">[netnews]</a> was an effective side-channel of information
+spread, although a number of sites disabled that as well.
+</UL>
+<Hr>
+<A NAME="protection">
+<H4>Self Protection</H4>
+
+The virus used a number of techniques to evade detection.  It
+attempted both to cover it tracks and to blend into the normal UNIX
+environment using camouflage.  These techniques had had varying degrees
+of effectiveness.
+<p>
+<A NAME="covering">
+<H5>Covering Tracks</H5>
+
+The program did a number of things to cover its trail. It erased
+its argument list, once it had finished processing the arguments, so
+that the process status command would not show how it was invoked.
+<p>
+It also deleted the executing binary, which would leave the data
+intact but unnamed, and only referenced by the execution of the
+program. If the machine were rebooted while the virus was actually
+running, the file system salvager would recover the file after the
+reboot. Otherwise the program would vanish after exiting.
+<p>
+The program also used resource limit functions to prevent a core dump.
+Thus, it prevented any bugs in the program from leaving tell-tale traces
+behind.
+<p>
+<A NAME="camouflage">
+<H5>Camouflage</H5>
+
+It was compiled under the name <code>sh</code>, the same name used by the
+Bourne Shell, a command interpreter which is often used in shell
+scripts and automatic commands. Even a diligent system manager would
+probably not notice a large number of shells running for short periods
+of time. 
+<p>
+The virus forked, splitting into a parent and child,
+approximately every three minutes.  The parent would then exit,
+leaving the child to continue from the exact same place. This had the
+effect of ``refreshing'' the process, since the new fork started off
+with no resources used, such as CPU time or memory usage. It also kept
+each run of the virus short, making the virus a more difficult to
+seize, even when it had been noticed.  
+<p>
+All the constant strings used
+by the program were obscured by XOR'ing each character with the
+constant 81 (base 16).  This meant that one could not simply look at the binary
+to determine what constants the virus refered to (e.g. what files it
+opened). But it was a weak method of hiding the strings; it
+delayed efforts to understand the virus, but not for very long.  
+<p>
+<A NAME="flaws">
+<H4>Flaws</H4>
+
+The virus also had a number of flaws, ranging from the subtle to the
+clumsy.  One of the later messages from Berkeley posted fixes for
+some of the more obvious ones, as a humorous gesture.
+<p>
+<A NAME="reinfection">
+<H5>Reinfection prevention</H5>
+
+The code for preventing reinfection of an actively
+infected machine harbored some major flaws. These flaws turned out to be
+critical to the ultimate ``failure''
+of the virus, as reinfection drove up the
+load of many machines, causing it to be noticed and thus
+counterattacked.
+<p>
+The code had several timing flaws which made it unlikely to work.
+While written in a ``paranoid'' manner, using 
+weak authentication (exchanging ``magic'' numbers) to determine whether
+the other end of the connection is indeed a copy of the virus, these
+routines would
+often exit with errors (and thus <em> not</em> attempt to quit) if:
+<p>
+<ul>
+<li> several viruses infected a clean machine at once, in which case
+all of them would look for listeners; none of them would find any; 
+all of them would attempt to become listeners; one would succeed; the
+others would fail, give up, and thus be invulnerable to future
+checking attempts.
+<li> several viruses starting at once, in the presence of a running
+virus. If the first one ``wins the coin toss'' with the listening
+virus, other new-starting ones will have contacted the losing one and
+have the connection closed upon them, permitting them to continue.
+<li> a machine is slow or heavily loaded, which could cause the virus to
+exceed the timeouts imposed on the exchange of numbers, especially if
+the compiler was running (possibly multiple times) due to a new
+infection; note that this is exacerbated by a busy machine (which
+slows down further) on a moderately sized network.
+</ul>
+Note that ``at once'' means ``within a 5-20 second window'' in most
+cases, and is sometimes looser.
+<p>
+A critical weakness in the interlocking code is that even when it <em>
+does</em> decide to quit, all it does is set the variable
+<code>pleasequit</code>.
+This variable does not have an effect until the virus has
+gone through
+<ul>
+<li> collecting the entire list of host names to attack
+<li> collecting the entire list of user names to attack
+<li> trying to attack all of the ``obvious'' permutation passwords
+(see Section <a href="program.html#obviouspw">[obviouspw]</a>)
+<li> trying ten words selected at random from the internal dictionary (see
+Appendix <a href="dict.html#dict">[dict]</a>) against all of the user names
+</ul>
+<p>
+Since the virus was careful to clean up temporary files, its presence
+alone didn't interfere with reinfection.
+<p>
+Also, a multiply infected machine would spread the virus faster,
+perhaps proportionally to the number of infections it was harboring,
+since
+<ul>
+<li> the program scrambles the lists of hosts and users it attacks;
+since the random number generator is seeded with the current time, the
+separate instances are likely to hit separate targets.
+<li> the program tries to spend a large amount of time sleeping and
+listening for other infection attempts (which never report themselves)
+so that the processes would share the resources of the machine fairly
+well.
+</ul>
+<p>
+Thus, the virus spread much more quickly than the perpetrator
+expected, and was noticed for that very reason. The MIT Media Lab, for
+example, cut themselves completely off from the network because the
+computer resources absorbed by the virus were detracting from work in
+progress, while the lack of network service was a minor problem.
+<p>
+<A NAME="heuristics">
+<A NAME="telnetprobe">
+<H5>Heuristics</H5>
+
+One attempt to make the program not waste
+time on non-UNIX systems was to sometimes try to open a telnet or rsh
+connection to a host before trying to attack it and skipping that host
+if it refused the connection.  
+If the host refused telnet or rsh connections, it was likely to refuse
+other attacks as well. There were several problems with this heuristic:
+<ul>
+<li> A number of machines exist which provide mail service (for
+example) but that do not provide telnet or rsh service, and although
+vulnerable, would be ignored under this attack.  The MIT Project
+Athena mailhub, <code>athena.mit.edu</code>, is but one example.
+<li> The telnet ``probing'' code immediately closed the connection
+upon finding that it had opened it. By the time the ``inet daemon'',
+the ``switching station'' which handles most incoming network
+services, identified the connection and started a telnet daemon, the
+connection was already closed, causing the telnet daemon to indicate
+an error condition of high enough priority to be logged on most
+systems. Thus the times of the earliest attacks were noted, if not the
+machines they came from.
+</ul>
+<p>
+<A NAME="vulnerabilities">
+<H5>Vulnerabilities not used</H5>
+
+The virus did not exploit a number of obvious opportunities.
+<ul>
+<li> When looking for lists of hosts to attack, it could have done
+``zone transfers'' from the Internet domain name servers to find names of
+valid hosts <a href="bibliography.html#mockapetris">[mockapetris]</a>. Many of these records also include
+host type, so the search could have limited itself to the appropriate
+processor and operating system types.
+<li> It did not attack both machine types consistently. If the VAX
+finger attack failed, it could have tried a Sun attack, but that
+hadn't been implemented.
+<li> It did not try to find  privileged users on the local host
+(such as <code>root</code>).
+</ul>
+<p>
+<A NAME="defenses">
+<H4>Defenses</H4>
+
+<p>
+There were many attempts to stop the virus. They varied in
+inconvenience to the end users of the vulnerable systems, in the
+amount of skill required to implement them, and in their
+effectiveness.
+<p>
+<ul>
+<li> Full isolation from network was frequently inconvenient, but was very
+effective in stopping the virus, and was simple to implement.
+<li> Turning off mail service was inconvenient both to local users and to
+``downstream'' sites, was ineffective at stopping the virus, but was
+simple to implement.
+
+<li> Patching out the <samp>debug</samp> command in <code>sendmail</code> was only effective in
+conjunction with other fixes, did not interfere with normal users, and
+simple instructions for implementing the change were available.
+
+<li> Shutting down the finger daemon was also effective only if the other
+holes were plugged as well, was annoying to users if not actually
+inconvenient, and was simple to perform.
+
+<li> Fixing the finger daemon required source code, but was as
+effective as shutting it down, without annoying the users at all.
+
+<li> <samp>mkdir /usr/tmp/sh</samp> was convenient, simple, and
+effective in preventing the virus from <A HREF="strategies.html#footnote-mkdir">propagating</A> (See Section <a href="program.html#mkdir">[mkdir]</a>.)
+
+<li> Defining <code>pleasequit</code> in the system libraries was
+convenient, simple, and did almost nothing to stop the virus (See
+Section <a href="program.html#pleasequit">[pleasequit]</a>.)
+
+<li> Renaming the UNIX C compiler and linker (<code>cc</code> and <code>ld</code>)
+was drastic, and somewhat
+inconvenient to users (though much less so than cutting off the
+network, since different names were available) but effective in
+stopping the virus.
+
+<li> Requiring new passwords for all users (or at least all users who
+had passwords which the virus could guess) was difficult, but it only
+inconvenienced those users with weak passwords to begin with, and was
+effective in conjunction with the other fixes (See
+Section <a href="program.html#obviouspw">[obviouspw]</a> and Appendix <a href="dict.html#dict">[dict]</a>.)
+</ul>
+<p>
+After the virus was analyzed, a tool which duplicated the password
+attack (including the virus' internal dictionary) was posted to the
+network.  This tool allowed system administrators to analyze the
+passwords in use on their system. The spread of this virus should be
+effective in raising the awareness of users (and administrators) to
+the importance of choosing ``difficult'' passwords. Lawrence Livermore
+National Laboratories went as far as requiring all passwords be changed, and
+modifying the password changing program to test new passwords against
+the lists that include the passwords attacked by the virus
+<a href="bibliography.html#ncsc">[ncsc]</a>.
+<p>
+<Hr>
+<UL>
+<LI> <A NAME="footnote-mkdir">However,
+both sets of binaries were still compiled, consuming processor time on
+an attacked machine.
+</UL>
+
+<Hr>
+
+</body>
+</html>

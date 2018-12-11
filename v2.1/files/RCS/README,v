@@ -1,0 +1,68 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	98.08.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@More suggestions for passwd.conf
+@
+text
+@Files README				$Id$
+
+The following files are installed:
+
+passwd.conf	Prototype config file for npasswd and checkpassword.
+
+		If there is already an npasswd config file in place,
+		'make install' will leave it alone.
+
+		To force replacement, do "make install-config".
+
+		It is suggested that if you need a customized config,
+		adapt the prototype and maintain it under source control
+		(SCCS, RCS) in another directory.
+
+chfn.help	Help file for chfn (empty)
+chsh.help	Help file for chfn (empty)
+passwd.help	Help file for passwd (provided)
+
+chsh.motd	Message of the day for chsh (empty)
+chfn.motd	Message of the day for chfn (empty)
+passwd.motd	Message of the day for passwd (empty)
+
+	An example "message of the day" would be notice of update latency 
+	(e.g. how long until the next NIS map update is done).
+
+Customize these files then do "make install"
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a5 1
+passwd.conf	Prototype config file for npasswd and checkpassword
+d7 9
+@

@@ -1,0 +1,19 @@
+?RCS:
+?RCS: @(#)p_putpwent.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_putpwent' - see if putpwent exists
+?RCS:
+?MAKE:p_putpwent: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_putpwent
+?S:p_putpwent:
+?S:    This variable is set to 'true' if the putpwent routine exists in libc.
+?S:.
+?C:HAS_PUTPWENT:
+?C:	This symbol, if defined, indicates that the putpwent routine exists.
+?C:.
+?H:#$p_putpwent	HAS_PUTPWENT	/**/
+?H:.
+set putpwent p_putpwent
+eval "$inlibc"
+

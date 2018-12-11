@@ -1,0 +1,19 @@
+#!/bin/ksh
+
+OSTYPE=`uname -s`
+
+[ $OSTYPE = 'SunOS' ] && IDENT=`uname -p`
+[ $OSTYPE = 'HP-UX' ] && IDENT=`uname -m | sed 's=/==g'`
+
+print
+print " OSTYPE = $OSTYPE"
+print " IDENT  = $IDENT"
+print
+
+ for i in *.a *.s[ol]
+ do
+	print " INSTALLING: $i to ../../lib/${OSTYPE}-${IDENT}/$i"
+	tar cf - $i | ( cd ../../lib/${OSTYPE}-${IDENT}/; tar xf - )
+ done
+
+print

@@ -1,0 +1,336 @@
+Return-Path: minar@vishnu.reed.edu
+Received: from vishnu.reed.edu by sirius.cc.utexas.edu (5.61/1.1)
+	id AA11283; Mon, 28 Oct 91 16:10:33 -0600
+Posted-Date:  Mon, 28 Oct 91 14:09 PST
+Received-Date:  Mon, 28 Oct 91 16:10:33 -0600
+Received: by vishnu.reed.edu (/\==/\ Smail3.1.22.1 #22.20)
+	id <m0kbf8u-0000W1C@vishnu.reed.edu>; Mon, 28 Oct 91 14:09 PST
+Message-Id: <m0kbf8u-0000W1C@vishnu.reed.edu>
+Date: Mon, 28 Oct 91 14:09 PST
+From: minar@reed.edu (Nelson Minar)
+To: clyde
+Subject: npasswd - bug fix + features
+
+
+
+At the bottom of this message will be the patches I've made to your
+npasswd program. Conceptually, there are three things I've done:
+
+fixed a coding bug in pw_yp.c that made it think that callrpc() failed
+when NO_CLNT_SPERRNO was defined.  You missed a set of {}, so it fell
+out of the if(). Don't feel bad, it took me a long time to figure out
+what was going on. Lots of #ifdefs make the code hard to read.
+
+changed your use of _flipstring() some. Wrote a new function called
+reverse() that returns a pointer to a static buffer instead of
+flipping in place, and then put more checks in for the password,
+reversed. I didn't touch the UT specific stuff.
+
+changed the dictionary lookup with grep to use a file to store the
+password in, instead of putting it on the command line. Also using
+fgrep, as its generally faster and is all we need. You might want to
+investigate using "look" or some other binary search method as that's
+bound to be even faster. Unfortunately, our look won't accept a string
+from a file to search for, only on the commandline. DBM files might be
+the "right" solution, but the dbm file for /usr/dict/web2 is way too
+huge - 15 megs or so.
+
+you're welcome to do what you want with the patches. I'd recommend
+looking at them and rewriting the code your way. There are some
+problems - I have a bad feeling that specifics of stat() and its
+include files change from UNIX to UNIX. If there are any errors at all
+in the dictionary lookup (can't open file, someone's linked it, etc),
+then I just return PWCK_INDICT - some better error handling is needed.
+Some of the code assumes your password isn't extremely long (> 255
+characters)
+
+thanks again. Write if you have any troubles with the patches,
+thoughts, or whatever.
+
+patch with "patch -p0 < patches"
+
+--------------------------------cut here-----------------------------------
+*** pw_yp.c	Tue Oct 15 08:18:45 1991
+--- /vishnu/local/src/npasswd/pw_yp.c	Mon Oct 28 13:57:35 1991
+***************
+*** 321,328 ****
+  
+  			/* RPC call error */
+! 			if (rc)
+  #if	NO_CLNT_SPERRNO
+  				clnt_perrno(rc);
+! 				quit(1, "Password change failed (%s)\n",
+  					ypmaster);
+  #else
+--- 321,328 ----
+  
+  			/* RPC call error */
+! 			if (rc) {
+  #if	NO_CLNT_SPERRNO
+  				clnt_perrno(rc);
+! 				quit(1, "Password change failed (%s).\n",
+  					ypmaster);
+  #else
+***************
+*** 330,333 ****
+--- 330,334 ----
+  					ypmaster, clnt_sperrno(rc));
+  #endif
++ 			}
+  
+  			/* Error returned from yppasswdd */
+*** checkpasswd/checkpasswd.h	Tue Oct 15 08:18:51 1991
+--- /vishnu/local/src/npasswd/checkpasswd/checkpasswd.h	Fri Oct 25 19:37:44 1991
+***************
+*** 99,102 ****
+--- 99,103 ----
+  #define	streq(X,S)	(_cistrncmp((X),(S), strlen(X)) == 0)
+  
++ char * reverse(char *);		/* returns a pointer to a static buffer */
+  
+  /*	End checkpasswd.h	*/
+*** checkpasswd/pwck_dict.c	Tue Oct 15 08:18:55 1991
+--- /vishnu/local/src/npasswd/checkpasswd/pwck_dict.c	Mon Oct 28 13:07:01 1991
+***************
+*** 1,2 ****
+--- 1,5 ----
++ #include <stdio.h>
++ #include <sys/types.h>
++ #include <sys/stat.h>
+  
+  /* --------------------------------------------------------------------  */
+***************
+*** 26,30 ****
+  
+  dictionary	*dictionaries = 0;	/* List of dictionaries */
+! static char	*egrep = "PATH=/bin:/usr/bin:/usr/ucb; egrep -s"; /* egrep */
+  
+  pwck_dictionary(password, userid, mesgbuf)
+--- 29,33 ----
+  
+  dictionary	*dictionaries = 0;	/* List of dictionaries */
+! static char	*grep = "PATH=/bin:/usr/bin:/usr/ucb; fgrep -s"; /* fgrep */
+  
+  pwck_dictionary(password, userid, mesgbuf)
+***************
+*** 50,61 ****
+  	for (d = dictionaries; d; d = d->dict_next) {
+  #ifdef	DEBUG
+! 		printf("\tdictionary '%s'\n", d->dict_path);
+  #endif
+! 		if ((rcode = InDictionary(d->dict_path, password)) != PWCK_OK){
+! 			(void) sprintf(mesgbuf,
+! 				"Password found in dictionary '%s'",
+! 				d->dict_path);
+! 			return(rcode);
+! 		}
+  	}
+  	return(PWCK_OK);
+--- 53,65 ----
+  	for (d = dictionaries; d; d = d->dict_next) {
+  #ifdef	DEBUG
+! 	  printf("\tdictionary '%s'\n", d->dict_path);
+  #endif
+! 	  if ((rcode = InDictionary(d->dict_path, password)) != PWCK_OK)
+! {
+! 	    (void) sprintf(mesgbuf,
+! 			   "Password found in dictionary '%s'",
+! 			   d->dict_path);
+! 	    return(rcode);
+! 	  }
+  	}
+  	return(PWCK_OK);
+***************
+*** 85,89 ****
+   *
+   *	Look in a DBM version of the dictionary if present, 
+!  *	else use egrep to search the flat file.
+   *
+   *	Look for <password>, then if the first letter
+--- 89,93 ----
+   *
+   *	Look in a DBM version of the dictionary if present, 
+!  *	else use fgrep to search the flat file.
+   *
+   *	Look for <password>, then if the first letter
+***************
+*** 100,103 ****
+--- 104,115 ----
+   *		PWCK_OK if not
+   */
++ 
++ /* (minar@reed.edu) changed the grep to store things in a temporary file,
++  * so that you can't see it on the command line. Note if there are any
++  * errors (couldn't open the file, etc) we just return that the password
++  * is bad. Not good failure handling. I'm pretty careful about the security
++  * of the temp file, I think.
++  */
++ 
+  static
+  InDictionary(which_dictionary, password)
+***************
+*** 122,129 ****
+--- 134,166 ----
+  		char	command[BUFSIZ];	/* Command build buffer */
+  		int	rc;			/* Return code from sytem(3) */
++ 		char *  grepfile;               /* filename for pw */
++ 		FILE *  fp;                     /* FP for pw */
++ 		struct  stat statGrepfile;      /* stat of password file */
+  
++ 
+  		if ((rc = open(which_dictionary, 0)) < 0)
+  			return(PWCK_OK);
+  		(void) close(rc);
++ 
++ 		grepfile = tempnam("/tmp","pwck");
++ 		if (grepfile == NULL)
++ 		  return(PWCK_INDICT);   /* tempnam failed. bail */
++ 		fp = fopen(grepfile, "w");
++ 		if (fp == NULL)
++ 		  return(PWCK_INDICT);   /* couldn't open file. bail */
++ 		if (chmod(grepfile, 00400) == -1) {  /* no one else should read this */
++ 		  closePWFile(fp, grepfile);   /* chmod failed. bail */
++ 		  return(PWCK_INDICT);
++ 		}
++ 
++ 		if (stat(grepfile, &statGrepfile) == -1) {
++ 		  closePWFile(fp, grepfile);
++ 		  return(PWCK_INDICT);   /* couldn't stat file. bail */
++ 		}
++ 		if (statGrepfile.st_nlink > 1) {    
++ 		  closePWFile(fp, grepfile);  /* someone else has linked it! */
++ 		  return(PWCK_INDICT);        /* dont store anything in it */
++ 		}
++ 		
+  		/*
+  		 * If the first letter is capitalized, look for
+***************
+*** 130,142 ****
+  		 * "[wW]ord" else look for "word"
+  		 */
+  		if (uc) 
+! 			(void) sprintf(command,
+! 				"%s '^[%c%c]%s$' %s > /dev/null",
+! 				egrep, password[0], password[0] | 040,
+! 				&password[1], which_dictionary);
+! 		else
+! 			(void) sprintf(command, "%s '^%s$' %s > /dev/null",
+! 				egrep, password, which_dictionary);
+  		rc = system(command);
+  		if (rc == 0) 
+  			return(PWCK_INDICT);
+--- 167,182 ----
+  		 * "[wW]ord" else look for "word"
+  		 */
++ 
++ 	        fprintf(fp, "%s\n", password);
++ 		fprintf(fp, "%s\n", reverse(password));
+  		if (uc) 
+! 		  fprintf(fp, "%c%s\n", password[0] | 040, password + 1);
+! 		fflush(fp);
+! 
+! 		sprintf(command, "%s -f %s %s > /dev/null", grep, grepfile, which_dictionary);
+! 
+  		rc = system(command);
++ 		closePWFile(fp, grepfile);
++ 
+  		if (rc == 0) 
+  			return(PWCK_INDICT);
+***************
+*** 164,166 ****
+--- 204,224 ----
+  #endif	/* defined(NDBM) || defined(MDBM) */
+  }
++ 
++ /* carefully close the plaintext password file. We first scribble over
++  * the file, in case something weird has happened. This isn't perfect,
++  * but neither is UNIX. Remember to make the string long enough to
++  * overwrite whatever is in the file. Currently, its just 3 plaintexts.
++  */
++ closePWFile(fp, filename)
++ FILE * fp;
++ char * filename;
++ {
++   int i;
++   rewind(fp);
++   fprintf(fp, "This file used to contain a plaintext password, but we have now overwritten it. Too bad, you evil hacker that is reading this. Try something more interesting. Love and kisses, minar@reed.edu\n");
++   fclose(fp);
++   unlink(filename);
++   free(filename);
++ }
++   
+  /*	End pwck_dict.c */
+*** checkpasswd/pwck_local.c	Tue Oct 15 08:18:57 1991
+--- /vishnu/local/src/npasswd/checkpasswd/pwck_local.c	Fri Oct 25 19:42:36 1991
+***************
+*** 34,37 ****
+--- 34,38 ----
+  	(void) gethostname(myname, sizeof(myname));
+  	try(password, myname, PWCK_OBVIOUS);
++ 	try(reverse(password), myname, PWCK_OBVIOUS);
+  	/*
+  	 * Could try full canoncalized hostname here in case gethostname
+*** checkpasswd/pwck_passwd.c	Tue Oct 15 08:18:57 1991
+--- /vishnu/local/src/npasswd/checkpasswd/pwck_passwd.c	Fri Oct 25 19:45:17 1991
+***************
+*** 67,70 ****
+--- 67,71 ----
+  	strcpy(mesg, "Password is part of your passwd information");
+  	try(password, cname, PWCK_OBVIOUS);	/* Checks 'name' and 'Name' */
++ 	try(reverse(password), cname, PWCK_OBVIOUS);
+  
+  	(void) strcpy(temp, cname);
+***************
+*** 71,79 ****
+  	(void) strcat(temp, cname);
+  	try(password, temp, PWCK_OBVIOUS);	/* Check 'namename' */
+  
+- 	(void) strcpy(temp, cname);
+- 	_flipstring(temp);
+- 	try(password, temp, PWCK_OBVIOUS);	/* 'eman' */
+- 
+  #ifdef	UTEXAS_CC
+  	/*
+--- 72,77 ----
+  	(void) strcat(temp, cname);
+  	try(password, temp, PWCK_OBVIOUS);	/* Check 'namename' */
++ 	try(reverse(password), temp, PWCK_OBVIOUS);
+  
+  #ifdef	UTEXAS_CC
+  	/*
+***************
+*** 100,103 ****
+--- 98,102 ----
+  	mesg[0] = 0;
+  	mtry(password, pwp->pw_gecos, PWCK_FINGER);
++ 	mtry(reverse(password), pwp->pw_gecos, PWCK_FINGER);
+  #endif
+  	return(PWCK_OK);
+*** checkpasswd/util.c	Tue Oct 15 08:19:02 1991
+--- /vishnu/local/src/npasswd/checkpasswd/util.c	Mon Oct 28 13:51:21 1991
+***************
+*** 61,64 ****
+--- 61,83 ----
+  }
+  
++ /* added by minar@reed.edu */
++ /* reverse, return a point to a static buffer of the string reversed */
++ 
++ #define REVERSEINTERNALBUFFER 256
++ char *
++ reverse(char * s) {
++   static char r[REVERSEINTERNALBUFFER];		/* should be big enough */
++   int rp, sp;
++   int length;
++   
++   length = strlen(s) - 1;
++   if (length > REVERSEINTERNALBUFFER - 1)	/* lets not walk over memory */
++     length = REVERSEINTERNALBUFFER - 1;
++   for (sp = strlen(s)-1, rp = 0; sp >= 0; sp--, rp++)
++     r[rp] = s[sp];    /* reverse the password */
++   r[rp] = '\0';
++   return r;
++ }
++ 
+  /*
+   *	Case indepedant string comparasion routines swiped from

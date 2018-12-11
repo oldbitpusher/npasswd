@@ -1,0 +1,876 @@
+<HTML>
+<HEADER>
+<link rel=stylesheet type="text/css" href="../../npasswd.css">
+
+<title>With Microscope and Tweezers: The Program</title>
+<link rev="made" href="mailto:eichin@mit.edu">
+</HEADER>
+<BODY>
+<h1>With Microscope and Tweezers:</h1>
+<h2>An Analysis of the Internet Virus of November 1988</h2>
+<h3>The Program</h3>
+<A NAME="progappendix">
+
+
+<UL>
+<LI> Names
+<LI> main
+  <UL>
+  <li> Initialization
+  <li> Command line argument processing
+  </UL>
+<LI> doit routine
+  <UL>
+  <li> Initialization
+  <li> Main loop
+  </UL>
+<LI> Cracking routines
+  <UL>
+  <li> cracksome
+  <li> Phase 0
+  <li> Phase 1
+  <li> Phase 2
+  <li> Phase 3
+  </UL>
+<LI> H routines
+  <UL>
+  <li> hg
+  <li> ha
+  <li> hl
+  <li> hi
+  <li> hn
+  <li> Usage
+  </UL>
+<LI> Attack routines
+  <UL>
+  <li> hu1
+  <li> Hit SMTP
+  <li> Hit finger
+  <li> Hit rsh
+  <li> Hit rexec
+  <li> makemagic
+  </UL>
+<LI> Grappling Hook
+<LI> Install Routines
+  <UL>
+  <li> resynch
+  <li> waithit
+  </UL>
+<LI> Host modules
+  <UL>
+  <li> Name to host
+  <li> Address to host
+  <li> Add address/name
+  <li> Clean up table
+  <li> Get addresses
+  </UL>
+<LI> Object routines
+  <UL>
+  <li> Load object
+  <li> Get object by name
+  </UL>
+<LI> Other initialization routines
+  <UL>
+  <li> if init
+  <li> rt init
+  </UL>
+<LI> Interlock routines
+  <UL>
+  <li> Checkother
+  <li> Othersleep
+  </UL>
+</UL>
+
+
+This Appendix describes the virus program subroutine by subroutine.
+For reference, the flow of information among the subroutines is
+shown in Figure <a href="program.html#collectfig">[collectfig]</a>.
+<p>
+
+<hr>
+<A NAME="collectfig">
+<img alt="flow chart" src="collect.gif">
+<br>
+The structure of the attacking engine.
+<hr>
+
+<h4>Names</h4>
+The core of the virus is a pair of binary modules, one for the VAX
+architecture and the other for the Sun architecture. These are
+linkable modules, and thus have name lists for their internal
+procedures. Many of the original names are included here with the
+descriptions of the functions the routines performed.
+<p>
+
+It is surprising that the names are included, and astonishing that
+they are meaningful. Some simple techniques, such as randomizing the
+procedure names, would have removed a number of clues to the function
+of the virus.
+<p>
+
+<h4>main</h4>
+The main module, the starting point of any C language program, does
+some initialization, processes its command line, and then goes off
+into the loop which organizes all of the real work.
+<p>
+
+<h5>Initialization</h5>
+
+The program first takes some steps to hide itself. It changes the
+``zeroth'' argument, which is the process name, to <code>sh</code>. Thus, no
+matter how the program was invoked, it would show up in the process
+table with the same name as the Bourne Shell, a program which often
+runs legitimately.
+<p>
+
+The program also sets the maximum core dump size to zero blocks. If
+the program <A HREF="program.html#footnote-crashed">crashed</A> it would not leave a core dump
+behind to help investigators. It also turns off handling of write
+errors on pipes, which normally cause the program to exit.
+<p>
+
+The next step is to read the clock, store the current time in a local
+variable, and use that value to seed the random number generator.
+<p>
+
+<h5>Command line argument processing</h5>
+The virus program itself takes an optional argument <code>-p</code> which must
+be followed by a decimal number, which seems to be a process id of the
+parent which spawned it. It uses this number later to kill that
+process, probably to ``close the door'' behind it.
+<p>
+
+The rest of the command line arguments are ``object names''. These are
+names of files it tries to load into its address space. If it can't
+load one of them, it quits. If the <code>-p</code> argument is given, it
+also deletes the object files, and later tries to remove the disk
+image of running virus, as well as the file
+<code>/tmp/.dumb</code>. (This file is not referenced anywhere else in
+the virus, so it is unclear why it is deleted.)
+<p>
+
+The program then tried a few further steps, exiting (``bailing out'')
+if any of them failed:
+<ul>
+<li> It checked that it had been given at least one object on the
+command line.
+<li> It checked to see if it had successfully loaded in the object
+<code>l1.c</code>.
+</ul>
+<p>
+
+If the ``-p'' argument was given, the program closes all file
+descriptors, in case there are any connections open to the parent.
+<p>
+
+The program then erases the text of the argument array,
+to further obscure how it was started (perhaps to hide anything if one
+were to get a core image of the running virus.)
+<p>
+
+It scans all of the network interfaces on the machine, gets the flags
+and addresses of each interface. It tries to get the point-to-point
+address of the interface, skipping the loopback address. It also
+stores the netmask for that network <a href="bibliography.html#rfc950">[rfc950]</a>.
+<p>
+
+Finally, it kills off the process id given with the ``-p'' option. It
+also changes the current process group, so that it doesn't die when
+the parent exits. Once this is cleaned up, it falls into the
+<code>doit</code> routine which performs the rest of the work.
+<p>
+
+<Hr>Footnotes:
+<UL>
+<LI> <A NAME="footnote-crashed">For example, the virus was originally
+compiled using 4.3BSD declaration files. Under 4.2BSD, the alias name
+list did not exist, and code such as the virus which assumes aliases
+are there can crash and dump core.
+</UL>
+<Hr>
+
+<h4>doit routine</h4>
+This routine is where the program spends most of its time.
+<p>
+
+<h5>Initialization</h5>
+Like the main routine, it seeds the random number generator with the
+clock, and stores the clock value to later measure how long the virus
+has been running on this system.
+<p>
+
+It then tries <code>hg</code>. If that fails, it tries
+<code>hl</code>. If that fails, it tries <code>ha</code>.
+<p>
+
+It then tries to check if there is already a copy of the virus running
+on this machine. Errors in this code contributed to the large amounts
+of computer time taken up by the virus. Specifically:
+<ul>
+<li> On a one-in-seven chance, it won't even try to test for another
+virus.
+<li> The first copy of the virus to run is the only one which
+listens for others; if multiple infections occur ``simultaneously''
+they will not ``hear'' each other, and all but one will fail to listen
+(see section <a href="program.html#interlock">[interlock]</a>).
+</ul>
+<p>
+
+The remainder of the initialization routine seems designed to send a
+single byte to address 128.32.137.13, which is <code>ernie.berkeley.edu</code>,
+on port 11357. This never happens, since the author used the
+<code>sendto</code> function on a TCP stream connection, instead of a
+UDP datagram <A HREF="program.html#footnote-socket">socket.</A> We have no explanation for this; it only tries to send this
+packet with a one in fifteen random chance.
+<p>
+
+<h5>Main loop</h5>
+An infinite loop comprises the main active component of the virus. It
+calls the <A HREF="program.html#footnote-cracksome"><code>cracksome</code> routine</A> which tries to find some
+hosts that it can break in to. Then it waits 30 seconds,
+listening for other virus programs attempting to break in, and tries
+to break into another batch of machines.
+<p>
+
+After this round of attacks, it forks, creating two copies of the
+virus; the original (parent) dies, leaving the fresh copy. The child
+copy has all of the information the parent had, while not having the
+accumulated CPU usage of the parent. It also has a new process id,
+making it hard to find.
+<p>
+
+Next, the <code>hg</code>, <code>hl</code>, and <code>ha</code>
+routines search for machines to infect (see Appendix <a href="program.html#hroutines">[hroutines]</a>). The
+program sleeps for 2 minutes, and then checks to see if it has been
+running for more than 12 hours, cleaning up some of the entries in the
+host list if it has.
+<p>
+
+<a name="pleasequit">
+Finally, before repeating, it checks the global variable
+<code>pleasequit</code>. If it is set, <em> and</em> if it has tried more
+than 10 words from its own dictionary against existing passwords, it
+quits. Thus forcing <code>pleasequit</code> to be set in the system
+libraries will do very little to stem the progress of this
+<A HREF="program.html#footnote-spaf">virus</A>.
+<p>
+
+<Hr>Footnotes:
+<UL>
+<LI><A NAME="footnote-socket">If the author had been as careful with
+error checking here as he tried to be elsewhere, he would have noted
+the error ``socket not connected'' every time this routine is
+invoked.
+<LI> <A NAME="footnote-cracksome">This name was actually in
+the symbol table of the distributed binary!
+<LI> <A NAME="footnote-spaf">Although it was suggested very early <a href="bibliography.html#spaf1">[spaf1]</a>.
+</UL>
+<Hr>
+
+<h4>Cracking routines</h4>
+This collection of routines is the ``brain'' of the virus.
+<code>cracksome</code>, the main switch, chooses which of four
+strategies to execute. It is would be the central point for adding
+new strategies if the virus were to be further extended. The virus
+works each strategy through completely, then switches to the next
+one. Each pass through the cracking routines only performs a small
+amount of work, but enough state is remembered in each pass to
+continue the next time around.
+<p>
+
+<h5>cracksome</h5>
+The <code>cracksome</code> routine is the central switching routine of the
+cracking code. It decides which of the cracking strategies is actually
+exercised next. Again, note that this routine was named in the global
+symbol table. It could have been given a confusing or random name, but
+it was actually clearly labelled, which lends some credence to the
+idea that the virus was released prematurely.
+<p>
+
+<h5>Phase 0</h5>
+<a name="phase0">
+The first phase of the <code>cracksome</code> 
+routines reads through the <code>/etc/hosts.equiv</code> file
+to find machine names that would be likely targets. While this file
+indicates what hosts the current machine trusts, it is fairly common
+to find systems where all machines in a cluster trust each other, and
+at the very least it is likely that people with accounts on this machine will
+have accounts on the other machines mentioned in <code>/etc/hosts.equiv</code>.
+<p>
+
+It also reads the <code>/.rhosts</code> file, which lists the set of machines
+that this machine trusts root access from. Note that it does not take
+advantage of the trust itself <a href="bibliography.html#baldwin">[baldwin]</a> but merely
+uses the names as a list of additional machines to attack. Often,
+system managers will deny read access to this file to any user other
+than root itself, to avoid providing any easy list of secondary
+targets that could be used to subvert the machine; this practice would 
+have prevented the virus from discovering those names, although
+<code>/.rhosts</code> is very often a subset of <code>/etc/hosts.equiv</code>.
+<p>
+
+The program then reads the entire local password file,
+<code>/etc/passwd</code>. It uses this to find personal <code>.forward</code>
+files, and reads them in search of names of other machines it can
+attack. It also records the user name, encrypted password, and <em>
+GECOS</em>
+information string, all of which are
+stored in the <code>/etc/passwd</code> file. Once the program 
+scanned the entire file, it advanced to Phase 1.
+<p>
+
+<h5>Phase 1</h5>
+<a name="obviouspw">
+This phase of the cracking code attacked passwords on the local
+machine. It chose several likely passwords for each user, which were
+then encrypted and compared against the encryptions obtained in Phase
+0 from <code>/etc/passwd</code>:
+<ul>
+<li> No password at all.
+<li> The user name itself.
+<li> The user name appended to itself.
+<li> The second of the comma separated <em> GECOS</em> information fields,
+which is commonly a nickname.
+<li> The remainder of the full name after the first name in the
+<em> GECOS</em> fields, i.e. probably the last name, with the first letter
+converted to lower case.
+<li> This ``last name'' reversed.
+</ul>
+<p>
+
+All of these attacks are applied to fifty passwords at a time from
+those collected in Phase 0. Once it had tried to guess the
+passwords for all local accounts, it advanced to Phase 2.
+<p>
+
+<h5>Phase 2</h5>
+Phase 2 takes the internal word list distributed as part of the
+virus (see Appendix <a href="dict.html#dict">[dict]</a>) and shuffles it. Then it takes
+the words one at a time and decodes them (the high bit is set on all
+of the characters to obscure them) and tries them against all
+collected passwords. It maintains a global variable <code>nextw</code>
+as an index into this table. The main loop uses this to
+prevent <code>pleasequit</code> from causing the virus to exit until
+at least ten of the words have been checked against all of the
+encryptions in the collected list.
+<p>
+
+Again, when the word list is exhausted the virus advances to Phase 3.
+<p>
+
+<h5>Phase 3</h5>
+Phase 3 looks at the local <code>/usr/dict/words</code> file, a 24474
+word list distributed with 4.3BSD (and other UNIX systems) as a
+spelling dictionary. The words are stored in this file one word per
+line. One word at a time is tried against all encrypted passwords. If
+the word begins with an upper case letter, the letter is converted to
+lower case and the word is tried again.
+<p>
+
+When the dictionary runs out, the phase counter is again advanced to 4
+(thus no more password cracking is attempted).
+<p>
+
+<h4>H routines</h4>
+<a name="hroutines">
+The ``h routines'' are a collection of routines with short names,
+such as <code>hg</code>, <code>ha</code>, 
+<code>hi</code>, and <code>hl</code>, which search for other hosts to attack.
+<p>
+
+<h5>hg</h5>
+The <code>hg</code> routine calls <code>rt_init</code> (if it has not
+already been called) to scan the routing table, and records all
+gateways except the loopback address in a special list.  It then tries
+a generic attack routine to attack via <code>rsh</code>,
+<code>finger</code>, and SMTP.  It returns after the first successful attack.
+<p>
+
+<h5>ha</h5>
+<a name="ha">
+The <code>ha</code> routine goes through the gateway list and
+connects to TCP port 23, the telnet port, looking for gateways which are
+running telnet listeners.  It randomizes the order of such gateways
+and calls 
+<code>hn</code> (our name) with the network number of each gateway.
+The <code>ha</code> returns after <code>hn</code> reports that it has
+succeeded broken into a host.
+<p>
+
+<h5>hl</h5>
+The <code>hl</code> routine iterates through all the addresses for the
+local machine calling <code>hn</code> with the network number for
+each one.  It returns if <code>hn</code> indicates success in breaking
+into a host.
+<p>
+
+<h5>hi</h5>
+The <code>hi</code> routine goes through the internal host list (see
+section <a href="program.html#phase0">[phase0]</a>) and tries to attack each host via <code>rsh</code>,
+<code>finger</code>, and SMTP.  It returns if when one host is infected.
+<p>
+
+<h5>hn</h5>
+<a name="hn">
+The <code>hn</code> routine (our name) followed <code>hi</code> takes a
+network number as an argument.  Surprisingly it returns if the network
+number supplied is the same as the network number of any of the
+interfaces on the local machine.  For Class A addresses it uses the
+Arpanet IMP convention to create possible addresses to attack
+(net.[1-8].0.[1-255]).  For all other networks it guesses hosts number
+one through 255 on that network.  It randomizes the order of this list of possible
+hosts and tries to attack up to twenty of them using <code>rsh</code>,
+<code>finger</code>, and SMTP.  If a host does not accept connections on
+TCP port 514, the <code>rsh</code> port, <code>hn</code> will not try to
+attack it. If a host is successfully attacked <code>hn</code> returns.
+<p>
+
+<h5>Usage</h5>
+The ``h routines'' are called in groups in the main loop; if the first
+routine succeedes in finding a vulnerable host the remaining routines
+are not called in the current pass. 
+Each routine returns after it finds one vulnerable host.  The
+<code>hg</code> routine is always called first, which indicates the virus
+really wanted to infect gateway machines.  Next comes <code>hi</code>
+which tried to infect normal hosts found via <code>cracksome</code>.
+If <code>hi</code> fails, <code>ha</code> is called, which seemed to try
+breaking into hosts with randomly guessed addresses on the far side of
+gateways.  This assumes that all the addresses for gateways had been
+obtained (which is not trivial to verify from the convoluted code in
+<code>{rt init</code>}),
+and implies that the virus would prefer to infect a gateway and from
+there reach out to the gateway's connected networks, rather than
+trying to hop the gateway directly.  If <code>hg</code>,
+<code>hi</code>, and <code>ha</code> all failed to infect a host, then
+<code>hl</code> is called which is similar to <code>ha</code> but uses
+for local interfaces for a source of networks.
+<p>
+
+It is not clear that <code>ha</code> and <code>hl</code> worked.
+Because <code>hn</code> returns if the address is local,
+<code>hl</code> appears to have no chance of succeeding.  If alternate
+addresses for gateways are indeed obtained by other parts of the virus
+then <code>ha</code> could work.  But if only the addresses in the
+routing table were used it could not work, since by definition these
+addresses must be on a directly connected network.  Also, in our
+monitoring we never detected an attack on a randomly generated
+address.  These routines do not seem to have been functional.
+<p>
+
+<h4>Attack routines</h4>
+There are a collection of attack routines, all of which try to obtain a
+Bourne Shell running on the targeted machine. See Appendix <a href="program.html#hook">[hook]</a> for a
+description of the
+<code>l1.c</code> program, used by all the attack routines.
+<p>
+
+
+<h5>hu1</h5>
+The <code>hu1</code> routine is called by the Phase 1 and Phase 3
+<code>cracksome</code> subroutines. Once a password for user name
+guessed correctly, this routine is called with a host name read from
+either the user's
+<code>.forward</code> or <code>.rhosts</code> files.  In order to assume
+the user's id it then tries to
+connect to the local machine's <code>rexec</code> server using the guessed
+name and password.  If successful it runs an <code>rsh</code> to
+the target machine, trying to execute a Bourne Shell, which it uses to
+send over and compile the
+<code>l1.c</code> infection program. 
+<p>
+
+<h5>Hit SMTP</h5>
+This routine make a connection to TCP port 25, the SMTP port, of a remote
+machine and used it to take advantage of the sendmail bug. It
+attempts to use the debug option to make <code>sendmail</code> run a
+command (the ``recipient'' of the message), which transfers the
+<code>l1.c</code> program included in the body of the message.
+<p>
+
+<h5>Hit finger</h5>
+The ``hit finger'' routine tries to make a connection to TCP port 79, the finger
+port, of the remote machine. Then it creates a ``magic packet'' which
+consists of
+<ul>
+<li> A 400 byte ``runway'' of VAX ``nop'' instructions, which can be
+executed harmlessly.
+<li> A small piece of code which executes a Bourne Shell.
+<li> A stack frame, with a return address which would hopefully point
+into the code.
+</ul>
+<p>
+
+Note that the piece of code is VAX code, and the stack frame is a VAX
+frame, in the wrong order for the Sun. Thus, although the Sun finger
+daemon has the same bug as the VAX one, this piece of code cannot
+exploit it.
+<p>
+
+<hr>
+<a name="vaxcode">
+<pre>
+        pushl   $68732f         push '/sh<NUL>'
+        pushl   $6e69622f       push '/bin'
+        movl    sp,r10          save address of start of string
+        pushl   $0              push 0 (arg 3 to execve)
+        pushl   $0              push 0 (arg 2 to execve)
+        pushl   r10             push string addr (arg 1 to execve)
+        pushl   $3              push argument count
+        movl    sp,ap           set argument pointer
+        chmk    $3b             do "execve" kernel call.
+</pre>
+<br>
+VAX intructions for the <code>finger</code> attack.
+<hr>
+<p>
+
+The attack on the finger daemon is clearly a lysogenetic ``viral''
+attack (see Section <a href="intro.html#rose">[rose]</a>), since although a worm doesn't modify
+the host machine at all, the finger attack does modify the running
+finger daemon process.  The ``injected DNA'' component of the virus
+contained the VAX instructions shown in Figure <a href="program.html#vaxcode">[vaxcode]</a>.
+<p>
+
+The <code>execve</code> system call causes the current process to be
+replaced with an invocation of the named program; <code>/bin/sh</code>
+is the Bourne Shell, a UNIX command interpreter.  In this case, the
+shell winds up 
+running with its input coming from, and its output going to, the
+network connection.  The virus then sends over the <code>l1.c</code>
+bootstrap program.
+<p>
+
+<h5>Hit rsh</h5>
+This unlabeled routine
+tries <code>rsh</code> to the
+target host (assuming it can get in as the current user). It tries
+three different names for the <code>rsh</code> binary,
+<ul>
+<li> <code>/usr/ucb/rsh</code>
+<li> <code>/usr/bin/rsh</code>
+<li> <code>/bin/rsh</code>
+</ul>
+If one of them succeeds, it tries to resynchronize (see
+Appendix <a href="program.html#resynch">[resynch]</a>) the connection; if that doesn't succeed within
+thirty seconds it kills off the child process. If successful the
+connection can then be used to launch the <code>l1.c</code> ``grappling
+hook'' program at the victim.
+<p>
+
+Note that this infection method doesn't specify a user name to attack;
+if it gets into the remote account, it is because the user that the
+virus is running as also has an 
+account on the other machine which trusts the originating machine.
+<p>
+
+<h5>Hit rexec</h5>
+The <code>hit rexec</code> routine uses the remote
+execution system which is similar to <code>rsh</code>, but designed for use by
+programs. It connects and sends the user name, the password, and
+<code>/bin/sh</code> as the command to execute. 
+<p>
+
+<h5>makemagic</h5>
+This routine tries to make a telnet connection to each of
+the available addresses for the current victim. It broke the connections
+immediately, often producing error reports from the telnet
+daemon, which were recorded, and provide some of the earliest reports
+of attack <A HREF="program.html#footnote-vax">attempts.</A>
+<p>
+
+If it succeedes in reaching the host, it creates a TCP listener on a
+random port number which the infected machine would eventually connect
+back to.
+<p>
+
+<Hr>Footnotes: <UL>
+<LI> <A NAME="footnote-vax">On fast machines, such as the DEC VAX
+3200, there may be no record of these attacks, since the connection is
+handed off fast enough to satisfy the daemon.
+</UL>
+
+<Hr>
+
+<h4>Grappling Hook</h4>
+<a name="hook">
+A short program, named <code>l1.c</code>, is the common grappling
+hook 
+that all of
+the attack routines use to pull over the rest of the virus. It is robustly
+written, and fairly portable. It ran on a number of machines which
+were neither VAX or Sun, loading them down as well, but only making
+them peripheral victims of the virus.
+<p>
+
+The first thing it does is delete the binary it was running from. It
+checks that it has three arguments (exiting if there aren't three of
+them). It closes all file descriptors and then forks, exiting if the
+fork fails.  If it succeeds, the parent exits; this leaves no
+connection from the child to the infection route.
+<p>
+
+Next, it creates a TCP connection back to the address given as
+the first argument, and the port given as the second. Then it sends
+over the magic number given as the third. The text of each argument is
+erased immediately after it is used. The stream connection is then
+reused as the program's standard input and output.
+<p>
+
+A loop reads in a length (as a network byte order 32-bit integer) and
+then a filename.  The file is unlinked and opened for write, and then
+the file itself is read in (using the number of bytes read in
+earlier.) On any error, all of the files are unlinked. If the length
+read in is -1, the loop exits, and a Bourne Shell is executed
+(replacing the <code>l1</code> program, and getting its input from the
+same source.)
+<p>
+
+<h4>Install Routines</h4>
+There are a variety of routines used to actually move the virus from
+one machine to the other. They deal with the ``virus protocol''
+connection made by the <code>l1.c</code> injected program or with the shell
+that it spawns.
+<p>
+
+<h5>resynch</h5>
+<a name="resynch">
+The <code>resynch</code> routine sends commands to a remote shell,
+requesting that it echo back a specific randomly chosen number. It
+then waits a certain amount of time for a response. This routine is
+used to indicate when the various subprograms of the infection procedure
+have compiled or executed and a Bourne Shell prompt is available
+again.
+<p>
+
+<h5>waithit</h5>
+<a name="mkdir">
+This routine does much of the high level work. It waits (up to 2
+minutes) for a return connection from a victim (which has had
+<code>l1.c</code> injected into it.) It then tries to read a magic
+number (which had been previously sent to that victim as a command
+line argument to the <code>l1</code> program) and gives up after ten
+seconds.
+<p>
+
+After the connection is established, all of the current ``objects'' in
+storage in the virus are fed down the connection into the victim. Then
+it tries to resynchronize, and if it succeeds, sends down commands to
+<ul>
+<li> set the <samp>PATH</samp> of the victim shell
+<li> try to delete <code>sh</code> in the current directory (<code>/usr/tmp</code>)
+<li> if the delete fails, pick a random name to use
+<A HREF="program.html#footnote-directory">instead</A> 
+<li> scan the list of objects, looking for names ending in <code>.o</code>
+<li> link and run each of these, with the command line arguments
+<ul>
+<li> <samp>-p $$</samp>, where <samp>$$</samp> is the process id of the victim
+shell
+<li> each object name
+</ul>
+<li> resynchronize; if this fails, assume that the virus succeeded
+(since the <samp>-p</samp> option tells the virus to kill off the parent
+shell) and set flag bit 1 of the host list entry (the host list is
+detailed in section <a href="program.html#hosts">[hosts]</a>).
+<li> delete the compiled program, and go on to the next object.
+</ul>
+<p>
+
+Thus, to add another machine type, the virus merely needs to be
+started with a new object binary as a command line option, which will
+then be propagated to the next infected host and tried.
+<p>
+
+Note that the path used here was
+<code>PATH=</code> <code>bin: </code> <code>/usr/bin: </code> <code>/usr/ucb</code>
+which is certainly reasonable on most systems. This protects
+systems with ``unusual'' filesystem layouts, and suggests that complete
+consistency among systems makes them more vulnerable.
+<p>
+
+<Hr>Footnotes: <ul>
+<li> <A NAME="footnote-directory">Since the delete command used (<samp>rm -f</samp>) did not
+remove directories, creating a directory <code>/usr/tmp/sh</code>
+stoped the virus<a href="bibliography.html#spaf2">[spaf2]</a>.  However, the virus would still use CPU
+resources attempting to link the objects, even though it couldn't
+write to the output file (since it was a directory).
+</ul><Hr>
+
+<h4>Host modules</h4>
+<a name="hosts">
+These are a set of routines designed to collect names and addresses of
+target hosts in a master list.  Each entry contains up to six
+addresses, up to twelve names, and a flags field.
+<p>
+
+<h5>Name to host</h5>
+This routine searches the host list for a given named host, returns
+the list entry describing it, and optionally adds it to the list if it
+isn't there already.
+<p>
+
+<h5>Address to host</h5>
+This routine searches the host list for a given host address, returns
+the list entry describing it, and optionally adds it to the list if it
+isn't there already.
+<p>
+
+<h5>Add address/name</h5>
+These two routines added an address or a name to a host list entry,
+checking to make sure that the address or name was not already known.
+<p>
+
+<h5>Clean up table</h5>
+This routine cycles through the host list, and removes any hosts which
+only have flag bits 1 and 2 set (and clears those bits.) Bit 1 is set
+when a resynchronize (in <code>waithit</code>) fails, probably indicating
+that this host ``got lost''. Bit 2 is set when a named host has no
+addresses, or when several different attack attempts fail. Bit 3 is
+set when Phase 0 of the crack routines successfully retrieves an
+address for the host.
+<p>
+
+<h5>Get addresses</h5>
+This routine takes an entry in the host table and tries to fill in the the
+gaps. It looks up an address for a name it has, or looks up a name for the
+addresses it has. It also includes any aliases it can find.
+<p>
+
+<h4>Object routines</h4>
+These routines are what the system uses to pull all of its pieces into
+memory when it starts (after the host has been infected) and then to
+retrieve them to transmit to any host it infects.
+<p>
+
+<h5>Load object</h5>
+This routine opens a file, determines its length, allocating the
+appropriate amount of memory, reads it in as one block, decodes the
+block of memory (with XOR). If the object name contains a comma, it
+moves past it and starts the name there.
+<p>
+
+<h5>Get object by name</h5>
+This routine returns a pointer to the requested object. This is used
+to find the pieces to download when infecting another host.
+<p>
+
+<h4>Other initialization routines</h4>
+<p>
+
+<h5>if init</h5>
+This routine scans the array of network interfaces. It gets the flags
+for each interface, and makes sure the interface is UP and RUNNING
+(specific fields of the flag structure). If the entry is a point
+to point type interface, the remote address is saved and added to the
+host table. It then tries to enter the router into the list of hosts
+to attack.
+<p>
+
+<h5>rt init</h5>
+This routine runs <code>netstat -r -n</code> as a subprocess. This shows the
+routing table, with the addresses listed numerically. It gives up
+after finding 500 gateways. It skips the default route, as well as the
+loopback entry. It checks for redundant entries, and checks to see if
+this address is already an interface address. If not, it adds it
+to the list of gateways.
+<p>
+
+After the gateway list is collected, it shuffles it and enters the
+addresses in the host table.
+<p>
+
+<h4>Interlock routines</h4>
+<a name="interlock">
+The two routines <code>checkother</code> and <code>othersleep</code>
+are at the heart of
+the excessive propagation of the virus. It is clear that the author
+intended for the virus to detect that a machine was already infected, and
+if so to skip it. The code is actually fraught with timing flaws and
+design errors which lead it to permit multiple infections, probably more
+often than the designer <A HREF="program.html#footnote-testbed">intended</A>.
+<p>
+
+An active infection uses the <code>othersleep</code> routine for two
+purposes, first to sleep so that it doesn't use much processor
+time, and second to listen for requests from ``incoming'' viruses. The
+virus which is running <code>othersleep</code> is referred to as the
+``listener'' and the virus which is running <code>checkother</code> is
+referred to as the ``tester''.
+<p>
+
+<h5>Checkother</h5>
+The tester tries to connect to port 23357 on the local machine (using
+the loopback address, 127.0.0.1) to see if it can connect to a
+listener. If any errors occur during this check, the virus assumes
+that no listener is present, and tries to become a listener itself.
+<p>
+
+If the connection is successful, the checker sends a <A HREF="program.html#footnote-magic">magic
+number</A>, and listens
+(for up to 300 seconds) for a magic number from the
+<A HREF="program.html#footnote-magic2">listener</A>.  If the
+magic number is wrong, the checker assumes it is being spoofed and
+continues to run.
+<p>
+
+The checker then picks a random number, shifts it right by three
+(throwing away the lower three bits) and sends it to the listener. It
+expects a number back within ten seconds, which it adds to the one
+sent. If this sum is even, the sender increments <code>pleasequit</code>,
+which (as noted in section <a href="program.html#pleasequit">[pleasequit]</a>) does very little.
+<p>
+
+Once it has finished communicating (or failing to communicate) with
+the listener, the checker sleeps for five seconds and tries to become
+a listener. It creates a TCP stream socket, sets the socket
+options to indicate that it should allow multiple binds to that
+address (in case the listener <em> still</em> hasn't exited, perhaps?) and
+then binds the socket to port 23357, and listens on it (permitting a
+backlog of up to ten pending connections.) 
+<p>
+
+<h5>Othersleep</h5>
+The <code>othersleep</code> routine is run when the main body of the virus
+wants to idle for a period of time. This was apparently intended to help the
+virus ``hide'' so that it wouldn't use enough processor time to be
+noticed. While the main program sleeps, the listener code waits to see
+if any checkers have appeared and queried for the existence of a
+listener, as a simple ``background task'' of the main virus.
+<p>
+
+The routine first checks to see if it has been set up as a listener;
+if not, it calls the normal <code>sleep</code> function to sleep for the
+requested number of seconds, and returns.
+<p>
+
+If it is set up as a listener, it listens on the checking port with a
+timeout. If it times out, it returns, otherwise it deals with the
+connection and subtracts the elapsed real time from the time out
+value.
+<p>
+
+The body of the listener ``accepts'' the connection, and sends a magic
+number to the checker. It then listens (for up to 10 seconds) for the
+checker's magic number, and picks a random number. It shifts the
+random number right by three, discarding the lower bits, and sends it
+up to the checker; it then listens (for up to 10 seconds) for a random
+number from the checker. If any of these steps fail, the connection is
+closed and the checker is ignored.
+<p>
+
+Once the exchanges have occurred, the address of the incoming
+connection is compared with the loopback address.
+If it is not from the loopback address, the attempt is ignored. If it
+is, then if the sum of the exchanged random numbers is odd, the
+listener increments <code>pleasequit</code> (with little effect, as
+noted in section <a href="program.html#pleasequit">[pleasequit]</a>) and closes the listener connection.
+
+<Hr>Footnotes: <ul>
+<li><A NAME="footnote-testbed">This behavior was noted by both
+looking at the code and by creating a testbed setup, manually running a
+program that performs the checking and listening functions.
+<LI> <A NAME="footnote-magic">874697 (base 16), 8865431 (base 10), 041643227 (base 8)
+<LI> <A NAME="footnote-magic2">148898 (base 16), 1345688 (base 10), 05104230 (base 8)
+</ul><Hr>
+
+</body>
+</html>

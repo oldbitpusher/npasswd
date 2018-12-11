@@ -1,0 +1,14 @@
+Npasswd dictionary README @(#)0-README	1.1 7/21/98 
+
+The word list distribution is available at:
+
+	ftp://ftp.cc.utexas.edu/people/clyde/npasswd/words
+
+The installation procedure (invoked via make) will build hash
+databases from the word lists and install them in the default npasswd
+dictionary directory.
+
+The lists are compressed with GNU compress (gzip).
+
+See the file "WORDS-TO-USE" in the distribution for help.
+

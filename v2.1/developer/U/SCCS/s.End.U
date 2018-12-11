@@ -1,0 +1,181 @@
+h29459
+s 00001/00000/00065
+d D 1.10 98/07/16 13:49:31 clyde 10 9
+c Print history database gid
+e
+s 00004/00004/00061
+d D 1.9 98/07/15 16:07:12 clyde 9 8
+c Use right vars in echoing config
+e
+s 00011/00006/00054
+d D 1.8 98/07/02 07:51:37 clyde 8 7
+c Spew more config variables
+e
+s 00010/00014/00050
+d D 1.7 98/07/01 17:04:09 clyde 7 6
+c Change option summary
+e
+s 00008/00000/00056
+d D 1.6 97/09/23 16:01:04 clyde 6 5
+c Point to README.AIX4 on AIX 4.X
+e
+s 00001/00001/00055
+d D 1.5 97/09/19 10:40:32 clyde 5 4
+c Remove load of "df" and "fsfree"
+e
+s 00001/00001/00055
+d D 1.4 96/12/04 15:14:41 clyde 4 3
+c Fix message
+e
+s 00025/00000/00031
+d D 1.3 96/12/03 17:20:06 clyde 3 2
+c echo some install options
+e
+s 00001/00001/00030
+d D 1.2 96/08/15 15:04:16 clyde 2 1
+c Pull in "df" unit
+e
+s 00031/00000/00000
+d D 1.1 95/04/05 16:09:40 clyde 1 0
+c date and time created 95/04/05 16:09:40 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS: $Id: End.U,v 3.0 1993/08/18 12:04:51 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: $Log: End.U,v $
+?RCS: Revision 3.0  1993/08/18  12:04:51  ram
+?RCS: Baseline for dist 3.0 netwide release.
+?RCS:
+?RCS: %W% %G% (cc.utexas.edu)
+?RCS:
+?X: 
+?X: This unit serves as the goal which forces make to choose all the units that
+?X: ask questions.  The $W on the ?MAKE: line is the list of all symbols wanted.
+?X: To force any unit to be included, copy this unit to your private U directory
+?X: and add the name of the unit desired to the ?MAKE: dependency line.
+?X: 
+?X: This unit is the very last one in the Configure script.  It runs all the
+?X: SH files, which among other things produce config.h and (usually) Makefile.
+?X: It offers to do a make depend if the Makefile contains that target.
+?X: 
+?X: 
+D 2
+?MAKE:End: MyOptions $W
+E 2
+I 2
+D 5
+?MAKE:End: MyOptions df fsfree $W
+E 5
+I 5
+?MAKE:End: MyOptions $W
+E 5
+E 2
+?MAKE:	-pick add $@ %<
+?LINT:use $W
+
+I 6
+case "${p_osName}_${p_osRev}" in
+	aix_4*)	
+		echo ' '
+		echo 'CONSULT README.AIX4 before installing' >&4
+		echo ' '
+		;;
+esac
+
+E 6
+I 3
+cat <<EOF
+
+---------------------------------------------------
+         Summary of program options
+---------------------------------------------------
+
+I 7
+D 9
+System programs found: $p_sysprogs
+Program save directory: $p_keepdir
+Default dictionary directory: $p_dictlib
+Default history database: $o_pwhDB
+E 9
+I 9
+System passwd programs: $p_sysprogs
+System program save directory: $p_keepdir
+Dictionary directory: $p_dictionaries
+History database: $p_history
+I 10
+History database gid: $p_histgid
+E 10
+E 9
+Shadow module: $p_shadow
+
+E 7
+EOF
+D 8
+
+I 7
+if $test "$o_paranoid" = $define; then
+E 8
+I 8
+$test "$p_nis" = $define && \
+	echo NIS support enabled
+$test "$p_nisplus" = $define && \
+	echo NIS+ support enabled
+$test "$p_osf1auth" = $define && \
+	echo Digital UNIX auth support enabled
+$test "$p_hpuxauth" = $define && \
+	echo HP-UX auth support enabled
+$test "$o_paranoid" = $define && \
+E 8
+	echo Paranoid user check enabled
+D 8
+fi
+E 7
+if $test "$p_replace" = $define; then
+D 7
+	cat <<EOF
+
+The following system programs will be saved
+D 4
+in \"$p_keepdir\" and replaced by npasswd:
+E 4
+I 4
+in "$p_keepdir" and replaced by npasswd:
+E 4
+
+	$p_sysprogs
+
+EOF
+E 7
+I 7
+	echo Will save system programs and replace with $package
+E 7
+fi
+E 8
+I 8
+$test "$p_replace" = $define &&\
+	 echo Will save system programs and replace with $package
+E 8
+
+D 7
+if $test "$p_libinstall" = "$define"; then
+	echo ' '
+	echo libpwcheck.a in will be installed in \"$libexp\"
+	echo ' '
+fi
+
+E 7
+E 3
+E 1

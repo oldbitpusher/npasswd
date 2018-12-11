@@ -1,0 +1,20 @@
+?RCS:
+?RCS: @(#)p_lckpwdf.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_lckpwdf' - see if the lckpwdf routine exists
+?RCS:
+?MAKE:p_lckpwdf: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_lckpwdf
+?S:p_lckpwdf:
+?S:	This variable is set to 'true' if the lckpwdf and unlckpwdf 
+?S:	routines exist in libc.
+?S:.
+?C:HAS_LCKPWDF:
+?C:	This symbol, if defined, indicates that lckpwdf and ulckpwdf exist.
+?C:.
+?H:#$p_lckpwdf	HAS_LCKPWDF	/**/
+?H:.
+set lckpwdf p_lckpwdf
+eval "$inlibc"
+

@@ -1,0 +1,19 @@
+if [ ! -d PATCH-05/ ]; then
+	echo Cannot find patch directory PATCH-05/
+	exit 1
+fi
+echo Applying patch 05
+
+mv -f Configure Configure.pre
+mv -f Makefile.SH Makefile.SH.pre
+mv -f doc/npasswd.cat1 doc/npasswd.cat1.pre
+mv -f doc/npasswd_1.html doc/npasswd_1.html.pre
+mv -f src/Common/Makefile.SH src/Common/Makefile.SH.pre
+mv -f src/Makefile.SH src/Makefile.SH.pre
+echo Extracting replacement sources ...
+tar xpfv PATCH-05/SOURCES.tar
+mv -f NEWS NEWS.pre
+mv -f PATCH-05/NEWS .
+echo Patching sources ...
+patch -p0 < PATCH-05/DIFFS
+

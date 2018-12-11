@@ -1,0 +1,25 @@
+
+@(#)README	1.1 03/31/98 (cc.utexas.edu)
+
+This is the verification suite for the pasword database method modules.
+
+Test C programs:
+	getuser - Calls pw_getuserbyname().
+		* Tests method autoselect (e.g. nsswitch.conf) & configuration
+		* Tests multi-level user lookup
+		* Allows method selection override on command line to force
+		  testing of specific lookup method without having to
+		  call it directly.
+
+
+Test sh scripts:
+	TestGetUser.sh - Wrapper for tests of getuser
+	InitTestFiles.sh - Sets up dummy passwd & shadow files
+
+
+Procedure:
+	make depend
+	make
+	sh InitTestFiles.sh
+	sh TestGetUser.sh
+

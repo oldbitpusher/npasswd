@@ -1,0 +1,1 @@
+../../../../../src/PasswordCheck/SCCS/s.pwck_passwd.c

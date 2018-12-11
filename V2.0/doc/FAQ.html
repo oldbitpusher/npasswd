@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="GENERATOR"
+ content="Mozilla/4.04 [en] (X11; I; SunOS 5.6 sun4m) [Netscape]">
+  <meta name="Author"
+ content="Clyde Hoover, ACITS, University of Texas, Austin[">
+  <title>Frequently Asked Questions</title>
+<link rel=stylesheet type="text/css" href="npasswd.css">
+</head>
+<body style="background-color: white;" alink="#000099" link="#000099" vlink="#990099">
+<a name="top">
+<hr>
+<h1 align="center">Frequently Asked Questions</h1>
+<hr>
+<a name="_shadow"></a>
+<h4>My system has shadow passwords. Why would I want <i>npasswd</i>?</h4>
+<div class=para>
+Shadow passwords makes it <b>harder</b> for a bad guy
+to obtain encrypted passwords. But that protection is a function of
+the UNIX file system, and there are a number of "root kits" available
+for intruders to gain super-user privileges on your system so
+they can get a copy of your password and shadow files. Those cracked accounts
+then may become jumping off points for more attacks or used as a source 
+for spammers.
+<p>
+Combining intelligent password checking with a shadow database provides
+the best protection short of one-time use passwords or challenge/response
+smart card systems.
+</div>
+<p>
+<h4>Is npasswd compatible with the passwd program supplied by my
+system vendor?</h4>
+<div class=para>
+The basic functionality of the passwd program (changing passwords)
+is the same. However, many vendor passwd programs
+have specialty options that npasswd does not. This is usually because the
+option is ill-documented or very esoteric and a hard
+to replicate. The <i>npasswd</i> installation procedure will
+preserve the vendor programs in the npasswd installation directory.
+These programs will be invoked to do what <i>npasswd</i> cannot.
+</div>
+<h4>Are there npasswd binaries that I can drop in?</h4>
+<div class=para>
+<i>Npasswd</i> is distributed in
+source for the following reasons: </div>
+<ul>
+<li>There are customizations which must be chosen at
+compilation time.
+I consider these options important for you the system administrator
+to be aware of even though you may safely accept the defaults.</li>
+<li>I did not want to arbitrarily decide where you might
+want to install <i>npasswd</i>.
+For example, location of the password
+history database may be dependent upon system configuration. </li>
+</ul>
+</div>
+<h4>How much do I need to know to build and install npasswd?</h4>
+<div class=para>A lot of work has gone into
+making npasswd easier to build,
+install and maintain. However, this is not a "turn the crank and go"
+process.
+You should be familiar with your C compiler and <i>make</i>.
+</div>
+<h4>What support is available?</h4>
+<div class=para>Bug reports will be investigated
+on a time-available basis.
+See the <a href="Support.html"><b>Npasswd Support Guide</b></a>.
+</div>
+<h4>Is any maintenance required?</h4>
+<div class=para>
+The password history database
+may require periodic cleaning of expired passwords and removed users.
+Use the <i>history_admin</i> program for this purpose.
+See <a href="history_admin_1.html"><i>history_admin</i>(1)</a></div>
+<p>
+<h4>I am already using 'Crack' to check passwords and have a collection
+of dictionaries. I use those dictionaries with npasswd?</h4>
+<div class=para>
+The dictionary hash format used
+by Crack is optimized to conserve disk space.<br>
+The <i>npasswd</i> dictionary hash format is optimized for lookup speed.<br>
+Dictionaries can be converted for use by <i>npasswd</i>. See
+the <a href="AdminGuide.html"><b>Npasswd Administration Guide</b></a>
+for the conversion procedure.
+</div>
+<h4>
+How many dictionaries do I need or want?
+</h4>
+<div class=para>
+As many as you can stand. You can have multiple
+dictionaries, each generated from a distinct word list or one
+combined dictionary. The former approach allows easier
+customization.
+</div>
+<h4>
+What does the 'already in use' message mean?
+</h4>
+<div class=para>
+This is a warning mesage  usually caused because the default dictionary list is
+also explicitly listed in the configuration file. Dictionaries can either
+be specified by the path to a file (e.g <tt>@NPASSWD-DICT@/local/my-words</tt>)
+or by a path to a directory of dictionary files (e.g. <tt>@NPASSWD-DICT@/local</tt>).
+<p>
+<I>Npasswd</i> does an implicit "<tt>Dictionary @NPASSWD-DICT@</tt>"
+directive to
+pick upt the standard dictionary set.  The dictionaries in that directory should
+not be listed in the configuration file, and the entries seen in the example 
+configuration file are just that - examples not to be used for production.
+<p>
+This message can be safely ignored.
+</div>
+<p>
+<h4> How does the size of my dictionaries affect password security? </h4>
+<div class=para>
+<p>
+More dictionary words equals greater password security.
+It may also mean greater frustration in your user community because
+<i>npasswd</i> will reject more passwords.
+</div>
+<p>
+<h4> Why are there words in the dictionary which are shorter
+than the minimum password length? Wouldn't it save disk space to remove these
+short words from the dictionaries?</h4>
+<div class=para>
+<p>
+Multiple permutations are made on each
+dictionary word.
+For example, "quick" is too short to be a password, (minimum length is 6),
+but "quickly" is long enough and would be found
+by the test of the plural form of the word "quick" from the dictionary.
+<P>
+The standard used by <i>npasswd</i> is: If this password's ciphertext ended up 
+in the hands of a bad guy equipped with <i>Crack</I>, could it be guessed?  If the
+answer is yes the password will be rejected as insufficently insecure.
+<P>
+</div>
+<h4>Why is npasswd so picky about accepting passwords? </h4>
+<div class=para>
+Because the bad guys who are trying to get your
+passwords are using powerful tools like <i>Crack</i>. The dictionary check code in
+<i>npasswd</i> was written by the author of Crack, and performs the same
+checks. Given sufficient dictionaries, if <i>npasswd</i> accepts a
+password there is a good chance that Crack will not guess it.
+</div>
+<h4>What kind of passwords will npasswd accept? </h4>
+<div class=para>
+<ul>
+  <li>A mixture of upper and lower case alphas,
+with a sprinkling of punctuation
+characters and digits will usually pass muster.</li>
+  <li>Control and
+whitespace characters can also be included, but should be used with
+caution
+- some applications which read passwords may not deal with these
+correctly. </li>
+</ul>
+</div>
+<a name="_aging"></a>
+<h4>Does npasswd support password aging?</h4>
+<div class=para>
+Refer to <A href="Password.html#_aging">password aging</a> section of
+the <a href="Password.html">Password management Guide</a>.
+</div>
+<h4> Does npasswd support NIS?</h4>
+<div class=para>
+See the NIS explanation in <a href="Passwords.html#_NIS">Password guide</a>.
+Summary of NIS support in npasswd:<br>
+<ul>
+  <li>If running on NIS master will update local files and NIS maps.</li>
+  <li>If running on NIS client will use the RPC interface for updates.  </li>
+  <li>Can not support password aging unless NIS is running in 'secure'
+or 'C2' mode.</li>
+  <li>Can detect if user is in local passwd file on NIS client and can
+change that entry instead of using the RPC interface.<br>
+  </li>
+</ul>
+</div>
+<h4>
+My NIS master passwd file isn't /etc/passwd.  What do I do?</h4>
+<div class=para>
+<i>Npasswd</i> has the capability to search multiple local passwd files, but
+for security reasons their paths are hard-wired into the executable.
+The primary way do this is in reply to the
+<tt><b>"Change passwd file list?"</tt></b>
+question displayed while running Configure.  Alternately, edit the files
+<tt>"src/Methods/passwdtab.h"</tt> and <tt>"src/Methods/shadowtab.h"</tt>
+and add entries pointing to your NIS master files.
+<B>Warning:</b> these files will be ovewritten the next time <tt>Configure</tt>
+is run.
+<p>
+The <i>npasswd</i> binary must be rebuilt for the new file paths
+to take effect.
+<p>
+</ul>
+</div>
+
+<a name="_NISplus"></a>
+<h4>
+I believed Sun when they said NIS+ was the greatest thing ever.
+Does npasswd support NIS+?</h4>
+<div class=para>
+<p>
+<i>Npasswd</i> does not have NIS+ support due to lack of
+documentation from Sun for the low-level APIs.  NIS+ is based
+upon Sun Secure RPC and relies heavily upon management of cipher keys.
+When a user logs in their password is also used to decrypt their
+personal key pair which then is used for NIS+ operations.
+When the password is changed it is necessary to reencrypt
+the personal key pair using the new login password.
+<p>
+As of Solaris 2.5 the low-level routines required to reencrypt the personal
+key pair were removed from the public libraries.  Sun did provide
+a new service daemon, <i>rpc.nispasswd</i> for passwd changes from
+NIS+ clients but did not document the protocol.
+<p>
+Despite repeated inquiries and support calls, Sun refused to provide any
+documentation for these APIs.  Other techniques for updating NIS+ personal
+keys were considered and rejected, so all support for NIS+ was deprecated.
+</div>
+
+<h4>
+Will npasswd support user indentification services like
+LDAP and Kerberos?
+</h4>
+<div class=para>
+<p>
+It requires considerable effort to support each 'name service'.  In some
+cases (e.g. NIS+) it cannot be done without access to vendor source code or reverse
+engineering from vendor binaries. Either approach leads to intellectual
+property rights issues.
+<p>
+The author of <i>npasswd</i> is willing to work with developers who
+wish to add support for new name services.
+</div>
+<h4>What platforms does npasswd support?</h4>
+
+<div class=para>
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2>
+
+<TR>
+<TH>UNIX platform</TH>
+<TH>Supported features</TH>
+<TH>Notes</TH>
+</TR>
+
+<TR>
+<TD align=center> SunOS 5<br> (Solaris 2) </TD>
+<TD align=center> Shadow passwords<p><hr><p>NIS passwords </TD>
+<td valign=top >
+<li>Secure NIS support may work but has not been tested.<br>
+<li>NIS+ is not supported (see <a href="#_NISplus">above</a>).
+</td>
+
+</TR>
+
+<TR>
+<TD align=center>
+SunOS 4<br>
+(Solaris 1)
+</TD>
+<TD align=center> Adjunct passwords<p><hr><p> Secure RPC<p><hr><p> NIS passwords </TD>
+<td valign=top>
+<li>Support for SunOS 4 is still included but development has ceased.<br>
+<li>Secure RPC and adjunct passwords are supported, though not thoroughly tested.<br>
+<li>An ANSI compliant compiler is needed to build <I>Npasswd</I>. 
+Use either the Sun (<tt>/usr/lang/acc</tt>) or the GNU C compiler.
+</td>
+</TR>
+
+<TR>
+<TD align=center>
+Digital UNIX<br>
+(OSF/1 aka Tru64 UNIX) 3.X and 4.X
+</TD>
+<TD align=center>
+Enhanced security<p><hr><p>
+NIS passwords
+</TD>
+<td valign=top>
+<li>Support for enhanced security is included.<br>
+<li>Do <b>not</b> interchange binaries between Digital UNIX versions
+3 and 4 - the shadow password structure is different.
+</td>
+</TR>
+
+<TR>
+<TD align=center>
+Digital Ultrix 4.X
+</TD>
+<TD align=center>
+Enhanced security<p><hr><p>
+NIS passwords
+</TD>
+<td valign=top>
+<li>Support for Ultrix 4 is still included but development has ceased.
+</td>
+</TR>
+
+<TR>
+<TD align=center> HP-UX 10<br>HP-UX 11</TD>
+<TD align=center> Enhanced security<p><hr><p>NIS passwords</TD>
+<td valign=top>
+<li>HP-UX uses the same enhanced security subsystem
+as Digital UNIX.
+<li>The security subsystem must be installed for <i>npasswd</i> to configure
+and build.
+</td>
+</TR>
+
+<TR>
+<TD align=center> AIX 4 </TD>
+<TD align=center> Shadow passwords<p><hr><p>NIS passwords </TD>
+<td>
+<li>Support for shadow passwords is included but was only lightly tested.
+<li>AIX 4.1 has many password restrictions which can be set per-user or
+system wide.  These include lexical requirements, dictionary searches
+(though not nearly as vigorous that done by <I>npasswd</I>) and a
+hook for external password check modules.  Judicious use  of
+these restrictions should result in passwords which are harder to crack.
+<li>
+You may desire to tune these password restrictions first <B>before</B>
+converting to <I>npasswd</I>.
+<li>The words lists from this distribution could be used as password check 
+dictionaries.
+<li>There are a number of other password restrictions available on AIX 4,
+and a password history mechanism, none of which are supported by
+<I>npasswd</I>.
+</td>
+</TR>
+
+<TR>
+<TD align=center> IRIX 6 </TD>
+<TD align=center> Shadow passwords<p><hr><p>NIS passwords </TD>
+<td valign=top>
+<li>Works under IRIX 6.3.  The <B>-Wl,-w</B> compiler option 
+is needed to suppress superfluous loader warning messages.
+</td>
+</tr>
+
+<TR>
+<TD align=center> Linux </TD>
+<TD align=center>&nbsp;</td>
+<td valign=top>
+<li>Building on Linux platforms can be problematic due to the
+differences of passwd database schemes. <li>Some Linux versions have
+a <i>name service switch</i> capability that looks enough like Solaris (on
+which <i>npasswd</i> was developed) but is not fully compatible.
+</td>
+</tr>
+</TABLE>
+
+</div>
+<p>
+<hr>
+<p><a href="#top"><img src="top.gif" align="middle">Top</a>
+
+<a href="TOC_std.html"><img src="home.gif" align="middle">Home</a>
+</p>
+<hr width="100%">
+<p>Document id %Z% %M% %I%<br>
+Version %I%<br>
+Last modified %G%</p>
+<address>
+Clyde Hoover<br>
+<a href="http://www.utexas.edu/its">Information Technology Services</a><br>
+<a href="http://www.utexas.edu/">The University of Texas at Austin</a><br>
+<font size="-1">
+<a href="Copyright.html">Copyright 2004,</a> The University of Texas
+at Austin. All rights reserved.</font>
+</address>
+</body>
+</html>

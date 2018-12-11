@@ -1,0 +1,434 @@
+
+   ______________________________________________________________________
+   
+                          Npasswd Reference Manual
+   ______________________________________________________________________
+   
+Introduction to the configuration file
+
+   The configuration file is /passwd.conf. This location
+   can changed only by running Configure and rebuilding.
+   
+   Npasswd will abort if the configuration file has syntax errors, or or
+   fails any of the following security requirements:
+     * It must be owned by the uid that npasswd runs with (usually root).
+     * It must be a regular file (symlinks are not acceptable).
+     * It cannot be world writeable.
+       
+   The syntax of a configuration file can be checked with the -XC option,
+   which disables the security checks.
+     _________________________________________________________________
+   
+Syntax of the configuration file
+
+   Blank lines and lines starting with "#" are ignored.
+   
+   Npasswd performs the functions of three standard UNIX utilities:
+   passwd, chfn and chsh. Each of these sub-programs have their
+   configuration directives.
+   
+   Configuration directive syntax
+   sub-program option value
+   One of passwd, chfn, chsh, or empty. A non-empty sub-program must be
+   followed by a period (".") Sub-program option (see below) One or more
+   whitespace characters Value for option (see below)
+   Value types
+   number May be decimal (with an optional leading minus sign), octal
+   (format 0NNN) or hex (format 0xNNNN)
+   path UNIX pathname
+   boolean One of the strings "1", "true" "yes" or "on". Any other value
+   is interpreted as false
+   string Strings can optionally be enclosed in single (') or double (")
+   quotes
+   Non-printable ASCII characters can be specified thusly:
+     * ^<caret>char" e.g. ^X for control-x
+     * "\<backslash>char" for C special characters (\b \f \h \n \r \t \\)
+     * "\0NNN" where NNN is the character value in octal
+     * "\0xNN" where NN is the character value in hex
+     _________________________________________________________________
+   
+Summary of configuration directives
+
+   Npasswd configuration directives
+   Directive and options are case-insensitive
+   Directive Value
+   Type Description
+   Directives applicable to all sub-programs
+   [1]MatchTries number Chances to give user to correctly enter a
+   password.
+   [2]MatchWait number Delay after the user enters an incorrect password.
+   [3]PasswdTolerance number Tolerance between old and new passwd files.
+   [4]ShadowTolerance number Tolerance between old and new shadow files.
+   Directives for sub-program "passwd"
+   [5]passwd.AlphaOnly boolean Allow alpha-only passwords
+   [6]passwd.CharClasses number Set number of required character classes.
+   [7]passwd.Dictionaries path Add to dictionary lookup path.
+   [8]passwd.DisallowedChars string Set which characters are not allowed
+   in passwords.
+   [9]passwd.Help path Help file for passwd.
+   [10]passwd.History See below Configure history mechanism.
+   [11]passwd.LengthWarn boolean Warn about passwords over maximum
+   length.
+   [12]passwd.MaxPassword number Maximum effective password length.
+   [13]passwd.MaxRepeat number How many adjacent repeat characters
+   allowed.
+   [14]passwd.Message path Message of the day.
+   [15]passwd.MinPassword number Minimum password length.
+   [16]passwd.PasswordChecks string Select password checks.
+   [17]passwd.PrintableOnly boolean Deny non-printable characters.
+   [18]passwd.SingleCase boolean Allow single-case passwords.
+   [19]passwd.WhiteSpace boolean Allow whitespace characters in
+   passwords.
+   Directives for sub-program "chfn"
+   [20]chfn.Help path Help file for chfn.
+   [21]chfn.Message path Message of the day.
+   Directives for sub-program "chsh"
+   [22]chsh.Help path Help file for chsh.
+   [23]chsh.Message path Message of the day.
+   [24]chsh.Shells path List of blessed shells.
+   
+   [25][LINK]Top
+   ___________________________________
+   
+Directives applicable to all sub-programs
+   ___________________________________
+   
+  MatchTries
+  
+   Directive Type Default value
+   MatchTries number 3
+       How many chances to give the user to correctly enter a password
+       (old or new).
+       
+  MatchWait
+  
+   Directive Type Default value
+   MatchWait number 2
+       How many seconds to wait after the user enters an incorrect
+       password.
+       
+  PasswdTolerance
+  
+   Usage Type Default value
+   PasswdTolerance number 128
+       After the passwd file changes are done, the size of the new file
+       is compared to the size of the old file, to guard against data
+       loss due to disk or file system error. PasswdTolerance sets how
+       many bytes the new password file can be shorter than the original.
+       In order to accommodate changes to the finger information, the
+       default for this tolerance is generous.
+       
+  ShadowTolerance
+  
+   Usage Type Default value
+   ShadowTolerance number 32
+       After shadow changes are made, the size of the new shadow file is
+       compared to the size of the old shadow file, to guard against data
+       loss due to disk or file system error. ShadowTolerance sets how
+       many bytes the new shadow file can be shorter than the original.
+       This setting is much smaller than PasswdTolerance.
+       
+   [26][LINK]Top
+   ___________________________________
+   
+Directives for sub-program "passwd"
+
+   See the [27]Npasswd Administration Guide.
+   ___________________________________
+   
+  passwd.AlphaOnly
+  
+   Directive Type Default value
+   passwd.AlphaOnly boolean true
+       Controls whether alpha-only passwords will be accepted. If this
+       option is set, the requirement for non-alpha characters in a
+       passwords is dismissed. Other character diversity requirements
+       remain in effect.
+       
+  passwd.CharClasses
+  
+   Directive Type Default value
+   passwd.CharClasses number 1
+       Sets how many classes of characters are required.
+       The character classes are:
+          + Upper case alpha.
+          + Lower case alpha.
+          + Digits.
+          + Whitespace.
+          + Punctuation.
+          + Control characters.
+       The higher the class setting, the more diverse mixture of
+       characters required.
+       
+  passwd.Dictionaries
+  
+   Usage Type Default value
+   passwd.Dictionaries path ... path 
+       Passwd.Dictionaries specifies directories containing password
+       check dictionaries. Each directory is scanned for hashed
+       dictionary files. Multiple directories can be specified either in
+       one directive, or by multiple directives.
+       It is a fatal error if any of the following are encountered:
+          + A directory which cannot be scanned.
+          + Missing dictionary hash files.
+          + A dictionary hash file which is not a regular file (symlinks
+            are acceptable), or is world-writable.
+       
+  passwd.DisallowedChars
+  
+   Directive Type Default value
+   passwd.DisallowedChars string ctrl-c ctrl-s ctrl-q ctrl-d ctrl-h
+   ctrl-j ctrl-m ctrl-o ctrl-r ctrl-y ctrl-z ctrl-] ESC ctrl-\ DEL
+       Sets the list of characters (usually non-printable) not allowed in
+       passwords. The default list includes the typical terminal special
+       characters. To supplement the list, put a plus sign as the first
+       character of the string.
+       If you allow non-printable characters in passwords (the default),
+       it would be wise to check your system and add any terminal special
+       characters not in the standard list.
+       
+  passwd.Help
+  
+   Directive Type Default value
+   passwd.Help path /passwd.help
+       This file is presented if the user enters "?" in response to the
+       new password prompt.
+       
+  passwd.History
+  
+   Npasswd can maintain a history of passwords to discourage frequent
+       reuse.
+       See the [28]history section of [29]Npasswd Administration Guide.
+       
+   Directive Type Default value Description
+   Age number 180 (days) Use only passwords younger than N days.
+   Depth number 2 Use only the most recent N old passwords.
+   Database See below dbm  Select password history database
+   method and location
+   none Password history is disabled
+   file /path/to/file Store history in file /path/to/file.
+   dbm /path/to/file Store history in DBM database in /path/to/file.
+       
+  passwd.LengthWarn
+  
+   Directive Type Default value
+   passwd.LengthWarn boolean false
+       Controls whether a warning message is issued for new passwords
+       longer than MaxPassword. This warning is to inform the user that
+       the excess characters are not effective. The default is to
+       suppress this message.
+       
+  passwd.MaxPassword
+  
+   Usage Type Default value
+   passwd.MaxPassword number 8*
+       Sets the maximum effective length for passwords. This reflects a
+       limitation of the standard crypt(3), which encrypts only the
+       initial 8 characters of the plaintext. On Ultrix and Digital UNIX
+       (aka OSF/1) with enhanced security, this limit is 16.
+       It is not an error for a password to be longer than the maximum,
+       but the password checker can be configured to issue a warning. See
+       [30]passwd.LengthWarn.
+       
+  passwd.MaxRepeat
+  
+   Directive Type Default value
+   passwd.MaxRepeat number 3
+       Controls how many adjacent repeated characters are allowed in
+       passwords.
+       
+  passwd.Message
+  
+   Directive Type Default value
+   passwd.Message path /passwd.motd
+       This file contains the "message of the day" for passwd.
+       
+  passwd.MinPassword
+  
+   Usage Type Default value
+   passwd.MinPassword number 6
+       Sets the minimum acceptable password length. Passwords shorter
+       than six characters (the default) are very vulnerable to guessing
+       attacks.
+       
+  passwd.PasswordChecks
+  
+   Directive Type Default value
+   passwd.PasswordChecks string [31]lexical [32]passwd [33]local
+   [34]history [35]dictionary
+       Specifies the order of password checks. See [36]Npasswd
+       Administration Guide.
+       
+  passwd.PrintableOnly
+  
+   Directive Type Default value
+   passwd.PrintableOnly boolean false
+       Controls whether non-printable ASCII characters are allowed in
+       passwords. Character printability is determined by using
+       isprint(3). If this is set, passwords which contain non-printable
+       characters will be rejected. Other character diversity
+       requirements remain in effect.
+       
+  passwd.SingleCase
+  
+   Directive Type Default value
+   passwd.SingleCase boolean true
+       Controls whether single-case passwords are accepted. Character
+       case is determined by using isupper(3) and islower(3). If this
+       option is set the mixed-case requirement is dismissed. Other
+       character diversity requirements remain in effect.
+       
+  passwd.WhiteSpace
+  
+   Directive Type Default value
+   passwd.WhiteSpace boolean true
+       Controls whether whitespace characters are allowed in passwords.
+       Isspace(3) is used to determine if a character is whitespace.
+       
+   [37][LINK]Top
+   ___________________________________
+   
+Directives for sub-program "chfn"
+   ___________________________________
+   
+  chfn.Help
+  
+   Directive Type Default value
+   chfn.Help path /chfn.help
+       The help file is presented to the user in response to "?" input.
+       
+  chfn.Message
+  
+   Directive Type Default value
+   chfn.Message path /chfn.motd
+       The message of the day file for chfn.
+       
+   [38][LINK]Top
+   ___________________________________
+   
+Directives for sub-program "chsh"
+   ___________________________________
+   
+  chsh.Help
+  
+   Directive Type Default value
+   chsh.Help path /chsh.help
+       Help file for chsh. The help file is presented to the user in
+       response to "?" input.
+       
+  chsh.Message
+  
+   Directive Type Default value
+   chsh.Message path /chsh.motd
+       The message of the day file for chsh.
+       
+  chsh.Shells
+  
+   Directive Type Default value
+   chsh.Shells path /etc/shells
+       The list of blessed shells that users can select. If
+       getusershell(3) is available, this directive is ignored.
+       
+   [39][LINK]Top
+   ______________________________________________________________________
+   
+Command line options
+
+   The main command line options of npasswd control the
+   platform-independent features.
+   
+   Some operating-system specific options may also be supported (e.g.
+   SunOS 4, SunOS 5 and HP-UX). Others may be deferred to the vendor
+   passwd program (usually preserved during the initial installation).
+   
+   Refer to the [40]manual page for the full list of supported options.
+   
+   Command line options
+   Multiple -X options may be given
+   -Xc Read the configuration file, output settings and exit with 0
+   status.
+   -XCconfig-file Check syntax of config-file and terminate.
+   Exit status is 0 if file was ok, 1 if not.
+   This option disables configuration file security checks.
+   -XDdebug-level Set debug output level.
+   Debug levels
+   none None.
+   verbose Mild verbosity.
+   lookup Trace user lookup.
+   update Trace user updating.
+   config Trace configuration processing.
+   pwcheck Trace password checking.
+   detail More detailed tracing.
+   all All debugging.
+   -XF Suppress new password checking.
+   This option is restricted to root and should be used very sparingly.
+   -XI Read passwords from standard input instead of /dev/tty
+   This option is restricted to root.
+   -XV Print version and patch level identification.
+   -Xf Perform the "chfn" (change finger name) function.
+   -Xs Perform the "chsh" (change login shell) function.
+     _________________________________________________________________
+   
+   [41][LINK]Top    [42][LINK]Home
+   ______________________________________________________________________
+   
+   Document id @(#) Reference.html 1.12
+   Version 1.12
+   Last modified 10/14/98
+   
+   
+    [43]Clyde Hoover
+    [44]Academic Computing Services and Instructional Technology
+    Services
+    [45]The University of Texas at Austin
+    [46]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./Reference.html#MatchTries
+   2. file://localhost/./Reference.html#MatchWait
+   3. file://localhost/./Reference.html#PasswdTolerance
+   4. file://localhost/./Reference.html#ShadowTolerance
+   5. file://localhost/./Reference.html#passwd.AlphaOnly
+   6. file://localhost/./Reference.html#passwd.CharClasses
+   7. file://localhost/./Reference.html#passwd.Dictionaries
+   8. file://localhost/./Reference.html#passwd.DisallowedChars
+   9. file://localhost/./Reference.html#passwd.Help
+  10. file://localhost/./Reference.html#passwd.History
+  11. file://localhost/./Reference.html#passwd.LengthWarn
+  12. file://localhost/./Reference.html#passwd.MaxPassword
+  13. file://localhost/./Reference.html#passwd.MaxRepeat
+  14. file://localhost/./Reference.html#passwd.Message
+  15. file://localhost/./Reference.html#passwd.MinPassword
+  16. file://localhost/./Reference.html#passwd.PasswordChecks
+  17. file://localhost/./Reference.html#passwd.PrintableOnly
+  18. file://localhost/./Reference.html#passwd.SingleCase
+  19. file://localhost/./Reference.html#passwd.WhiteSpace
+  20. file://localhost/./Reference.html#chfn.Help
+  21. file://localhost/./Reference.html#passwd.Message
+  22. file://localhost/./Reference.html#chsh.Help
+  23. file://localhost/./Reference.html#chsh.Message
+  24. file://localhost/./Reference.html#chsh.Shells
+  25. file://localhost/./Reference.html#top
+  26. file://localhost/./Reference.html#top
+  27. file://localhost/./AdminGuide.html
+  28. file://localhost/./AdminGuide.html#admin_history
+  29. file://localhost/./AdminGuide.html
+  30. file://localhost/./Reference.html#passwd.LengthWarn
+  31. file://localhost/./PasswordChecks.html#check_lexical
+  32. file://localhost/./PasswordChecks.html#check_passwd
+  33. file://localhost/./PasswordChecks.html#check_local
+  34. file://localhost/./PasswordChecks.html#check_history
+  35. file://localhost/./PasswordChecks.html#check_dictionary
+  36. file://localhost/./AdminGuide.html
+  37. file://localhost/./Reference.html#top
+  38. file://localhost/./Reference.html#top
+  39. file://localhost/./Reference.html#top
+  40. file://localhost/./npasswd_man.html
+  41. file://localhost/./Reference.html#top
+  42. file://localhost/./TOC_std.html
+  43. mailto:c.hoover@cc.utexas.edu
+  44. http://www.utexas.edu/cc
+  45. http://www.utexas.edu/
+  46. file://localhost/./Copyright.html

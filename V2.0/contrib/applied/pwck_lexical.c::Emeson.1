@@ -1,0 +1,249 @@
+Replied: Wed, 10 Dec 1997 13:40:32 CST
+Replied: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id KAA05686
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 10:58:12 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id KAA00896
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 10:58:07 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id KAA13315
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 10:58:01 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08666; Wed, 10 Dec 1997 10:00:04 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101700.KAA08666@zlin.Colorado.EDU>
+Subject: Changes I made to npasswd
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:00:04 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+X-Status: Equivilant changes made
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 6202
+
+In all I modified 7 files: 
+pwck_lexical.c
+pwck_main.c
+pwck_defines.h
+
+configure.c
+passwd.c
+
+passwd_conf.SH
+References.html
+
+Below is pwck_lexical.c in its entirety.  Changes are significant so this
+ends up about the same length as the diff -c file.
+
+I plan to send diff -c files, each in its own message, for the rest.
+
+(While re-reading this message I noticed I left my initials, DRE, in the
+code.  I only did this so I could remember what I changed.  I certainly
+don't expect you to leave them should you decide to use any of this.  But
+I thought it would make it easier for you to find my changes as well.)
+
+@@@@@@@@@@@@@@@@@@@@@@@@@ start of pwck_lexical.c @@@@@@@@@@@@@@@@@@@@
+/*
+ *	pwck_lexical - Perform lexical analysis of password candidate.
+ *
+ *	Things which are ok:
+ *		Mixed case
+ *		Digits
+ *		Punctutation
+ *		Control characters (except for those in the forbidden table)
+ *
+ *	Things which are NOT ok:
+ *		Passwords less than 'min_length' characters
+ *		Runs of more than <run_length> of the same character
+ *			(e.g. 'zzz')
+ *		Single-case strings (selectable via the config file)
+ *
+ *	Things NOT checked for:
+ *		Cycles of character groups (e.g. 'aabbcc' or 'ababab')
+ *		Sequential characters 'abcdef' or '123456'
+ *
+ *	Returns:
+ *		PWCK_SHORT if password is too short
+ *		PWCK_OBVIOUS if password has too many repeated characters
+ *		PWCK_ILLCHAR if password has an illegal character
+ *		PWCK_OK if passwd is ok
+ */
+
+#ifndef lint
+static char sccsid[] = "@(#)pwck_lexical.c	1.11 10/29/97 (cc.utexas.edu)";
+#endif
+
+#include "pwck_defines.h"
+
+/*    patch for - beta 4 patch level 4    */
+#define	P_U	0	/* Upper case in password */
+#define	P_L	1	/* Lower case in password */
+#define	P_C	2	/* Control chars in password*/
+#define	P_D	3	/* Digits in password */
+#define	P_P	4	/* Punctuation chars in password*/
+#define	P_S	5	/* Whitespace chars in password */
+#define	P_MAX   P_S + 1
+
+
+/*
+ *	_ctran - produce printable version of any ASCII character
+ */
+private char *
+_ctran (c)
+	char	c;		/* Character to represent */
+{
+	static char	cbuf[8];	/* Return value buffer */
+	char	*p = cbuf;		/* Pointer to cbuf */
+	char	chr;			/* Scratch */
+
+	if (c & 0x80) {		/* Meta char - weird but what the hey */
+		*p++ = 'M';
+		*p++ = '-';
+	}
+	chr = (c & 0x7f);
+	if (chr == 0x7f)
+		return("DEL");
+	if (isprint(chr)) {	 /* Printing character */
+		*p++ = chr;
+		*p++ = 0;
+		return (cbuf);
+	}
+	*p++ = '^';
+	*p++ = chr + '@';
+	*p++ = 0;
+	return (cbuf);
+}
+
+public int
+pwck_lexical(password, user, mesg)
+	char	*password;		/* Password to check */
+	struct passwd *user;		/* Passwd info for user */ /* NOTUSED */
+	char	*mesg;			/* Message buffer */
+{
+	int	chr_run,	/* Duplicate character run count */
+		pwlen,		/* Length of password */
+		charclass = 0;	/* DRE 11/20/1997 - # of character classes */
+	char	*p = password;	/* Scratch */
+	char	what = 0,	/* Lexical analysis result flags */
+		last = 0;	/* Last character seen (for run checks) */
+	char	ws_cnt[P_MAX];
+
+	mesg[0] = 0;
+	zeromem(&ws_cnt, sizeof ws_cnt);
+
+	debug(DB_PWCHECK, "pwck_lexical: \"%s\"\n", password);
+	pwlen = strlen(password);
+	if (Config.min_length && pwlen < Config.min_length) {
+		(void) sprintf(mesg,
+			"it is too short (minimum length is %d characters)",
+			Config.min_length);
+		return(PWCK_SHORT);
+	}
+	/*
+	 * Only the first <max_length> characters of a password are actually
+	 * used due to the limitations of crypt(3).  If the given
+	 * password is longer than this, issue warning message.
+	 */
+#if	0
+	if (Config.max_length && rc > Config.max_length) {
+		printf("WARNING: Only the first %d characters of this password will be used \n",
+			Config.max_length);
+	}
+#endif
+
+	for (p = password; *p; p++) {
+		if (*p != last) {
+			last = *p;
+			chr_run = 1;
+		}
+		else {		/* Run of same characters */
+			if (Config.run_length && ++chr_run >= Config.run_length) {
+				(void) sprintf(mesg,
+					"it has %d or more repeated characters",
+					Config.run_length);
+				return(PWCK_OBVIOUS);
+			}
+		}
+		if (!isprint(*p)) {	 /* Non-printing character */
+			if (Config.print_only) {
+				(void) strcpy(mesg,
+					"it has non-printing characters");
+				return(PWCK_ILLCHAR);
+			}
+		}
+		if (isupper(*p)) ws_cnt[P_U]++;
+		if (islower(*p)) ws_cnt[P_L]++;
+		if (ispunct(*p)) ws_cnt[P_P]++;
+		if (isdigit(*p)) ws_cnt[P_D]++;
+		if (isspace(*p)) ws_cnt[P_S]++;
+/* DRE 11/24/1997  - the next 7 lines moved out of from the !isprint if above */
+		if (strchr(Config.badchars, *p)) {
+			(void) sprintf(mesg,
+				"it has an illegal character '%s'",
+				_ctran(*p));
+			return(PWCK_ILLCHAR);
+		}
+		if (iscntrl(*p)) ws_cnt[P_C]++;
+	}
+	/*
+	 * Check for whitespace-only and digits-only passwords
+	 */
+	if (ws_cnt[P_S] >= pwlen) {
+		(void) strcpy(mesg, "whitespace only passwords not allowed");
+		return(PWCK_ILLCHAR);
+	}
+	if (ws_cnt[P_D] >= pwlen) {
+		(void) strcpy(mesg, "digits only passwords not allowed");
+		return(PWCK_ILLCHAR);
+	}
+	/*
+	 * DRE - Check for  minimum # of char classes in password
+	 */
+	if (ws_cnt[P_U]) charclass++;
+	if (ws_cnt[P_L]) charclass++;
+	if (ws_cnt[P_P]) charclass++;
+	if (ws_cnt[P_D]) charclass++;
+	if (ws_cnt[P_C]) charclass++;
+/*	if (ws_cnt[P_S]) charclass++; I don't think space/tab is a char class*/
+	if (charclass < Config.min_char_class) {
+		(void) strcpy(mesg,
+			"the password needs more character classes");
+		return(PWCK_ILLCHAR);
+	}
+	/*
+	 * Check for mono-case passwords 
+	 */
+	if (ws_cnt[P_U] == 0) {		/* No upper case */
+		if (Config.single_case == 0) {
+			(void) strcpy(mesg,
+				"lower-case only passwords not allowed");
+			return(PWCK_ILLCHAR);
+		}
+	}
+	if (ws_cnt[P_L] == 0) {		/* No lower case */
+		if (Config.single_case == 0) {
+			(void) strcpy(mesg,
+				"upper-case only passwords not allowed");
+			return(PWCK_ILLCHAR);
+		}
+	}
+	if (ws_cnt[P_U] + ws_cnt[P_L] == pwlen) {
+		if (Config.alpha_only == 0) {
+			(void) strcpy(mesg, "alpha only passwords not allowed");
+			return(PWCK_ILLCHAR);
+		}
+	}
+	return(PWCK_OK);
+}
+/* End pwck_lexical.c */
+@@@@@@@@@@@@@@@@@@@@@@@@ end  @@@@@@@@@@@@@@@@@@@
+
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

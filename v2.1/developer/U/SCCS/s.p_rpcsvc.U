@@ -1,0 +1,255 @@
+h48442
+s 00015/00001/00135
+d D 1.5 98/07/01 16:56:23 clyde 5 4
+c Look for shared rpcsvc library
+e
+s 00034/00009/00102
+d D 1.4 97/09/23 12:32:11 clyde 4 3
+c 1. Rewrite xdr_passwd() test.
+c 2. Add test for xdr_uid_t()
+e
+s 00003/00003/00108
+d D 1.3 97/05/05 17:05:59 clyde 3 2
+c Put evaled strings in ""
+e
+s 00029/00004/00082
+d D 1.2 96/09/03 15:22:08 clyde 2 1
+c 1. Complain more about missing SunOS 4 encryption kit
+c 2. Bail if xencrypt() missing and NIS+ support enabled
+e
+s 00086/00000/00000
+d D 1.1 95/04/05 16:09:54 clyde 1 0
+c date and time created 95/04/05 16:09:54 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_rpcsvc' - find RPC services library
+?RCS:
+D 4
+?MAKE:p_xdr_passwd p_xencrypt p_rpclib: Loc test libpth Csym cc rm libs p_secure_rpc
+E 4
+I 4
+?MAKE:p_xdr_passwd p_xdr_uid_t p_xencrypt p_rpclib: \
+	Loc test libpth Csym cc rm libs p_secure_rpc
+E 4
+?MAKE:	-pick add $@ %<
+D 4
+?LINT:set p_xdr_passwd p_xencrypt p_rpclib
+E 4
+I 4
+?LINT:set p_xdr_passwd p_xdr_uid_t p_xencrypt p_rpclib
+E 4
+?S:p_xdr_passwd:
+?S:    This variable is set if the xdr_passwd routine is found
+?S:.
+I 4
+?S:p_xdr_uid_t:
+?S:    This variable is set if the xdr_uid_t routine is found
+?S:.
+E 4
+?S:p_xencrypt:
+?S:    This variable is set if the xencrypt routine is found
+?S:.
+?S:p_rpclib:
+?S:	This variable holds -lrpcsvc or the path to a rpcsvc.a archive if
+?S:	the xdr_passwd() function is not defined in the standard C library.
+?S:.
+?C:HAS_XDR_PASSWD:
+?C:	This symbol, if defined, indicates that the xdr_passwd routine exists
+?C:.
+I 4
+?C:HAS_XDR_UID:
+?C:	This symbol, if defined, indicates that the xdr_uid_t routine exists
+?C:.
+E 4
+?C:HAS_XENCRYPT:
+?C:	This symbol, if defined, indicates that the xencrypt routine exists
+?C:.
+?H:#$p_xdr_passwd HAS_XDR_PASSWD		/**/
+I 4
+?H:#$p_xdr_uid_t HAS_XDR_UID_T			/**/
+E 4
+?H:#$p_xencrypt HAS_XENCRYPT			/**/
+?H:.
+?F:pwxdr pwxdr.c
+?T:val
+D 4
+?LINT:set p_xdr_passwd p_xencrypt p_rpclib
+E 4
+I 4
+?LINT:set p_xdr_passwd p_xdr_uid_t p_xencrypt p_rpclib
+E 4
+: 
+echo " "
+D 5
+p_rpclib=`./loc librpcsvc.a "" $libpth`
+E 5
+I 5
+p_rpclib=`./loc librpcsvc$_a "" $libpth`
+E 5
+if $test -n "$p_rpclib"; then
+	echo 'Found -lrpcsvc.' >&4
+	p_rpclib="-lrpcsvc"
+fi
+I 5
+if $test -z "$p_rpclib"; then
+	p_rpclib=`./loc librpcsvc.$so "" $libpth`
+	if $test -n "$p_rpclib"; then
+		echo 'Found -lrpcsvc (shared).' >&4
+		p_rpclib="-lrpcsvc"
+	fi
+fi
+if $test -z "$p_rpclib"; then
+	p_rpclib=`./loc librpcsvc.$so.[0-9]'*' "" $libpth`
+	if $test -n "$p_rpclib"; then
+		echo 'Found -lrpcsvc (shared).' >&4
+		p_rpclib="-lrpcsvc"
+	fi
+fi
+E 5
+
+D 4
+: See if xdr_passwd is in libc
+E 4
+I 4
+p_xdr_passwd=''
+:
+: Look for xdr_passwd in libc
+:
+E 4
+D 3
+if set xdr_passwd val -f p_xdr_passwd; eval $csym; $val; then
+E 3
+I 3
+if set xdr_passwd val -f p_xdr_passwd; eval "$csym"; $val; then
+E 3
+	echo 'xdr_passwd() found.' >&4
+	p_xdr_passwd="$define"
+	p_rpclib=''
+D 4
+else
+	: Not in libc - check in librpcsvc
+E 4
+I 4
+fi
+if $test -z "$p_xdr_passwd"; then
+	:
+	: Look in librpcsvc
+	:
+E 4
+	echo 'extern int xdr_passwd(); main(){int (*f)()=xdr_passwd;exit(0);}' > pwxdr.c
+	if $cc pwxdr.c -o pwxdr $p_rpclib $libs >/dev/null 2>&1; then
+		p_xdr_passwd="$define"
+		echo 'xdr_passwd() found.' >&4
+D 4
+	else
+		echo 'xdr_passwd() not found - will use internal version.' >&4
+		p_xdr_passwd="$undef"
+E 4
+	fi
+fi
+I 4
+
+if $test -z "$p_xdr_passwd"; then
+	echo 'xdr_passwd() not found - will use internal version.' >&4
+	p_xdr_passwd="$undef"
+	:
+	: Look for xdr_uid_t in librpcsvc
+	:
+	p_xdr_uid="$undef"
+	echo 'extern int xdr_uid_t(); main(){int (*f)()=xdr_uid_t;exit(0);}' > pwxdr.c
+	if $cc pwxdr.c -o pwxdr $p_rpclib $libs >/dev/null 2>&1; then
+		p_xdr_uid="$define"
+		echo 'xdr_uid_t() found.' >&4
+	fi
+fi
+E 4
+: Add the RPC library to 'libs' if needed
+$test -n "$p_rpclib" && libs="$libs $p_rpclib"
+
+:
+: Now look for the xencrypt routine
+:
+p_xencrypt="$undef"
+if $test "$p_secure_rpc" = "$define"; then
+	echo 'This system supports Secure RPC - looking for xencrypt()' >&4
+D 3
+	if set xencrypt val -f p_xencrypt; eval $csym; $val; then
+E 3
+I 3
+	if set xencrypt val -f p_xencrypt; eval "$csym"; $val; then
+E 3
+		echo 'xencrypt() found.' >&4
+		p_xencrypt="$define"
+	else
+		echo 'extern int xencrypt(); main(){printf("%d",xencrypt);exit(0);}' > pwxdr.c
+		if $cc pwxdr.c -o pwxdr $p_rpclib $libs >/dev/null 2>&1; then
+			echo 'xencrypt() found.' >&4
+			p_xencrypt="$define"
+		else
+			cat <<EOF >&4
+xencrypt() not found.
+
+D 2
+*****	On SunOS systems, this usually means the encryption kit
+*****	has not been properly installed.
+E 2
+*****
+D 2
+*****	Unless the xencrypt() routine is available,
+*****	npasswd will not be able to update Secure RPC keys.
+E 2
+I 2
+*****	The SunOS encryption kit is not installed.
+*****	Secure RPC support is being disabled.
+*****
+*****	Re-run Configure after installing the encryption kit to
+*****	enable Secure RPC support.
+*****
+E 2
+EOF
+I 2
+			p_secure_rpc="$undef"
+E 2
+		fi
+	fi
+fi
+I 2
+if $test "$p_nisplus" = "$define"; then
+	echo '' >&4
+	echo 'This system supports NIS+ - looking for xencrypt()' >&4
+D 3
+	if set xencrypt val -f p_xencrypt; eval $csym; $val; then
+E 3
+I 3
+	if set xencrypt val -f p_xencrypt; eval "$csym"; $val; then
+E 3
+		p_xencrypt="$define"
+	else
+		cat <<EOF >&4
+*****
+*****	xencrypt() not found in libnsl
+*****
+*****	It is not possible to update NIS+ credentials without
+*****	this routine.  Complain to Sun about taking this routine
+*****	out of libnsl in Solaris 2.5 and not providing a replacement API.
+*****
+*****	Re-run Configure and disable NIS+ support.
+*****	Aborting.
+*****
+EOF
+		exit 1
+	fi
+fi
+
+E 2
+$rm -f pwxdr pwxdr.c
+
+E 1

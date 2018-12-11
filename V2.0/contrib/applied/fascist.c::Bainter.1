@@ -1,0 +1,77 @@
+Return-Path: pug@GlobeSet.com 
+Received: from firewall.globeset.com (firewall.globeset.com [207.239.133.67])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id HAA19732
+	for <clyde@diana.cc.utexas.edu>; Fri, 12 Sep 1997 07:39:50 -0500 (CDT)
+Received: (from mail@localhost)
+	by firewall.globeset.com (8.8.5/8.8.5) id HAA32341;
+	Fri, 12 Sep 1997 07:39:35 -0500
+Received: from vortex.globeset.com(10.1.1.1) by firewall.globeset.com via smap (V2.0)
+	id xma032339; Fri, 12 Sep 97 07:39:32 -0500
+Received: (from pug@localhost)
+	by vortex.globeset.com (8.8.5/8.8.5) id HAA15767;
+	Fri, 12 Sep 1997 07:39:06 -0500 (CDT)
+Message-Id: <199709121239.HAA15767@vortex.globeset.com>
+Subject: Re: Segmentation fault on Solaris 2
+To: dan@maccs.dcss.mcmaster.ca (Dan Trottier)
+Date: Fri, 12 Sep 1997 07:39:06 -0500 (CDT)
+Cc: clyde@motown.cc.utexas.edu, richardb@gv-nmc.unisource.nl,
+        campoe@spock.acomp.usf.edu, mark@rockvax.rockefeller.edu,
+        dawn@rl.af.mil, dan@maccs.dcss.mcmaster.ca, muthu@wipsys.soft.net,
+        miker@crystal.cirrus.com, pug@pug.net
+In-Reply-To: <m0x8Xt8-0006FJC@maccs.dcss.mcmaster.ca> from "Dan Trottier" at Sep 9, 97 05:31:57 pm
+From: "Pug Bainter" <pug@pug.net>
+X-Mailer: ELM [version 2.4 PL25]
+X-Status: Applied 10/21/03
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Length: 1856
+
+Good Morning,
+
+  Last night I finally sat down with it. I found the line crashing, I
+  backtracked to find where pwp was not being properly set.
+
+> Perhaps I can help a little. I've found a code change that gets rid of the
+> problem and seems to this point to have had no side effects. Here is what I
+> did:
+
+  Oddly enough I ended up right back at this spot in the code. You were
+  so damn close. You just didn't do it "optimally".
+
+> I changed facist.c like this:
+> 
+> 466  /*  if (pwp && strncmp(lastpath, path, STRINGSIZE)) */
+> 467      if (pwp)
+> 468      {
+> 469          PWClose(pwp);
+> 470          pwp = (PWDICT *)0;
+> 471      }
+
+  The only change that needs to be made is the addition of ! infront of
+  the strncmp. (Although I am not sure if using STRINGSIZE is right or
+  if strlen should be used on path.)
+
+  Ie line 466 should be:
+
+    if (pwp && !strncmp(lastpath, path, STRINGSIZE))
+
+  What was happening was the pwp was being closed after reading it, but
+  it was never getting reopened since pwp was not nulled out. Your solution
+  simply nullified it everytime and then reopened it. I honestly didn't
+  look to see if it can somehow happen such that pwp exists and is not
+  the previous dictionary file.
+
+  Btw, I *should* be in this weekend working on npasswd some more. I'm
+  gonna work on things such as Configure doing the "right" thing with
+  debug options, p_keepdir, the Makefiles not being dependant on Jmakefile
+  if jmake doesn't exist, installation paths for binaries, installing
+  checkpasswd, makedict fix, etc.
+
+Ciao,
+
+-- 
+Richard Bainter          Mundanely     |    Network and System Administrator
+Pug                      Generally     |        GlobeSet     Austin, TX
+    pug@GlobeSet.com   |     pug@eden.com     |     {any user}@pug.net
+Note: The views may not reflect my employers, or even my own for that matter.

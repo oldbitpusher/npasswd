@@ -1,0 +1,129 @@
+--- src/passwd.c	Tue May 20 17:17:44 1997
+*** src/passwd.c_NEW	Tue May 20 15:37:10 1997
+***************
+*** 213,222 ****
+  		syslog(LOG_INFO,
+  			"Password changed on %s for %s by %s\n",
+  			theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+! #ifdef	PASSWORD_HISTORY
+! 		if (update_password_history(&theUser->pw, newUser->mpw_passwd))
+! 			warn("Could not update password history database\n");
+! #endif
+  	}
+  	if (changes & CHG_PWAGE) {
+  		printf("%s Password aging changed for %s on %s\n",
+--- 213,219 ----
+  		syslog(LOG_INFO,
+  			"Password changed on %s for %s by %s\n",
+  			theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+! 		password_history_update(&theUser->pw, newUser->mpw_passwd);
+  	}
+  	if (changes & CHG_PWAGE) {
+  		printf("%s Password aging changed for %s on %s\n",
+--- src/configure.c	Tue May 20 17:18:08 1997
+*** src/configure.c_NEW	Tue May 20 15:13:57 1997
+***************
+*** 62,68 ****
+  	{ "passwd.DisallowedChars",	PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.PasswordChecks",	PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.HistoryDatabase",	PWCHECK_PASSTHRU,	NONE },
+! 	{ "passwd.HistoryParams",	PWCHECK_PASSTHRU,	NONE },
+  
+  	/* Configuration for 'passwd' module */
+  	{ "passwd.MatchTries",	0, INT,		(void *)&PasswdMatchTries },
+--- 62,69 ----
+  	{ "passwd.DisallowedChars",	PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.PasswordChecks",	PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.HistoryDatabase",	PWCHECK_PASSTHRU,	NONE },
+! 	{ "passwd.HistoryAge",		PWCHECK_PASSTHRU,	NONE },
+! 	{ "passwd.HistoryDepth",	PWCHECK_PASSTHRU,	NONE },
+  
+  	/* Configuration for 'passwd' module */
+  	{ "passwd.MatchTries",	0, INT,		(void *)&PasswdMatchTries },
+--- src/PasswordCheck/pwck_history.c	Tue May 20 17:18:41 1997
+*** src/PasswordCheck/pwck_history.c_NEW	Tue May 20 17:19:21 1997
+***************
+*** 62,68 ****
+   * Default vaules are defined in ../options.h
+   */
+  private char	*PasswordHistoryDB = PASSWORD_HISTORY_DB;
+! private time_t	PasswordHistoryAge = PASSWORD_HISTORY_AGE;
+  private int	PasswordHistoryDepth = PASSWORD_HISTORY_DEPTH;
+  
+  #define	MSG_REUSE	"it is not old enough (last used %s)"
+--- 62,68 ----
+   * Default vaules are defined in ../options.h
+   */
+  private char	*PasswordHistoryDB = PASSWORD_HISTORY_DB;
+! private time_t	PasswordHistoryAge = (PASSWORD_HISTORY_AGE * 86400);
+  private int	PasswordHistoryDepth = PASSWORD_HISTORY_DEPTH;
+  
+  #define	MSG_REUSE	"it is not old enough (last used %s)"
+***************
+*** 153,159 ****
+  	}
+  
+  	if (instringcase(cfitem, "age")) {	/* Active history age */
+! 		int	t = decode_int(*++cfargs);
+  
+  		if (t < 0)
+  			cf_error("Bad history age specification");
+--- 153,159 ----
+  	}
+  
+  	if (instringcase(cfitem, "age")) {	/* Active history age */
+! 		int	t = decode_int(*cfargs);
+  
+  		if (t < 0)
+  			cf_error("Bad history age specification");
+***************
+*** 166,172 ****
+  	}
+  
+  	if (instringcase(cfitem, "depth")) {	/* Active history depth */
+! 		int	t = decode_int(*++cfargs);
+  
+  		if (t < 0)
+  			cf_error("Bad history depth specification");
+--- 166,172 ----
+  	}
+  
+  	if (instringcase(cfitem, "depth")) {	/* Active history depth */
+! 		int	t = decode_int(*cfargs);
+  
+  		if (t < 0)
+  			cf_error("Bad history depth specification");
+***************
+*** 201,207 ****
+  	int	rc;
+  	time_t	now = time((time_t *)0);
+  
+! 	debug(DB_NONE, "pwck_history: %s \"%s\"\n", user->pw_name, password);
+  
+  #ifdef	OSF1_AUTH
+  	if ((rc = osf_history_check(password, user, mesg)) != PWCK_OK)
+--- 201,207 ----
+  	int	rc;
+  	time_t	now = time((time_t *)0);
+  
+! 	debug(DB_VERBOSE, "pwck_history: %s \"%s\"\n", user->pw_name, password);
+  
+  #ifdef	OSF1_AUTH
+  	if ((rc = osf_history_check(password, user, mesg)) != PWCK_OK)
+***************
+*** 239,245 ****
+  			continue;
+  		}
+  		t = (*svc.PasswdCrypt)(password, pwtext);
+! 		if (strcmp(t, user->pw_passwd) == 0) {
+  			char	*ct;
+  
+  			debug(DB_LOOKUP, "pwck_history: found\n");
+--- 239,245 ----
+  			continue;
+  		}
+  		t = (*svc.PasswdCrypt)(password, pwtext);
+! 		if (strcmp(t, pwtext) == 0) {
+  			char	*ct;
+  
+  			debug(DB_LOOKUP, "pwck_history: found\n");

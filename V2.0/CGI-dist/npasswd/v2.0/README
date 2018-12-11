@@ -1,0 +1,22 @@
+README for npasswd 2.0 beta 4 download
+
+The distribution archives are compressed tar files.
+
+The manual is a set of HTML documents in the doc directory.
+
+I really need the folks who tinker with npasswd to be fairly experienced
+system administrator types.
+
+Though I have gone to a lot of trouble to make the configuration and build
+procedure easy, this is a "some assembly required" package. 
+
+I will answer all reasonable questions, but queries about programming
+tasks (using make, or C programming) will be answered slowly.
+
+Read all of the documentation in the distribution before trying to configure
+and build npasswd.
+
+	-Clyde Hoover
+	UNIX Services Group,
+	Academic Computing & Instructional Technologies,
+	The University of Texas at Austin

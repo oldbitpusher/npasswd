@@ -1,0 +1,11 @@
+#! /bin/sh
+#
+for fn in `grep '.SH' MANIFEST | awk '{ print $1 }'`; do
+	(
+	fx=`basename $fn`
+	dir=`dirname $fn`
+	cd $dir || exit 1
+	echo Extracting $dir/$fx `pwd`
+	sh $fx
+	)
+done

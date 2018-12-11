@@ -1,0 +1,570 @@
+?RCS:
+?RCS: %W% %G% (cc.utexas.edu)
+?RCS:
+?X:
+?X: %M%
+?X: 	The big enchilada of units - poke and sets lots of switches
+?X: 	for use by Makefiles and define/undef for config.h
+?X:
+?MAKE:MyOptions p_installdir p_sysprogs p_keepdir p_dictionaries p_utildir \
+	p_docdir p_replace p_passwdfile p_shadowfile p_dbmpw p_history \
+	p_nis p_secure_rpc p_nisplus p_nispasswd p_hesiod p_kerberos \
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth p_aixauth p_hpuxauth \
+	p_paranoid p_utsname top_level: \
+		cc_dbflags libexp more Getfile privlibexp myhostname \
+		Myread cat test Setvar package Inlibc Loc Findhdr orderlib \
+		p_osName p_osRev groupcat
+?MAKE:	-pick add $@ %<
+?LINT:use
+?S:p_installdir:
+?S:     Where to install npasswd.
+?S:.
+?S:p_sysprogs:
+?S:     Paths to the vendor passwd/chfn/chsh programs.
+?S:.
+?S:p_keepdir:
+?S:     Where to save the vendor passwd/chfn/chsh programs.
+?S:.
+?S:p_dictionaries:
+?S:	The default dictionary collection.
+?S:.
+?S:p_utildir:
+?S:	Path of the npasswd utility program directory.
+?S:.
+?S:p_docdir:
+?S:	Path of the npasswd documentation directory.
+?S:.
+?S:p_history:
+?S:	Path of the default password history database.
+?S:.
+?S:p_replace:
+?S:     Defined if the vendor passwd programs will be replaced.
+?S:.
+?S:p_passwdfile:
+?S:     List of password files found.
+?S:.
+?S:p_shadowfile:
+?S:     List of shadow files found.
+?S:.
+?S:p_dbmpw:
+?S:	Defined if the system supports DBM passwd files.
+?S:.
+?S:p_nis:
+?S:	Defined if NIS support is enabled.
+?S:.
+?S:p_secure_rpc:
+?S:	Defined if SunOS 4 Secure RPC is present.
+?S:.
+?S:p_nisplus:
+?S:	Defined if NIS+ is available.
+?S:.
+?S:p_nispasswd:
+?S:	Defined if nispasswd RPC is available.
+?S:.
+?S:p_hesiod:
+?S:	Defined if Hesiod support should be enabled.
+?S:.
+?S:p_kerberos:
+?S:	Defined if Kerberos support should be enabled.
+?S:.
+?S:p_svcconf:
+?S:	Defined if /etc/svc.conf exists.
+?S:.
+?S:p_nsswitch:
+?S:	Defined if /etc/nsswitch.conf exists.
+?S:.
+?S:p_shadow:
+?S:	Name of the shadow password method module.
+?S:.
+?S:p_osf1auth:
+?S:	Defined if DEC OSF/1 authority support should be enabled.
+?S:.
+?S:p_u4auth:
+?S:	Defined if Ultrix 4 authority support should be enabled.
+?S:.
+?S:p_aixauth:
+?S:	Defined if AIX authority support should be enabled.
+?S:.
+?S:p_hpuxauth:
+?S:	Defined if HP/UX authority support should be enabled.
+?S:.
+?S:p_paranoid:
+?S:	Defined if the "paranoid user check" should be enabled.
+?S:.
+?S:p_utsname:
+?S:	Defined if <sys/utsname.h> is available
+?S:.
+?S:top_level:
+?S:	Top level directory of the build area.
+?S:.
+?X: -------------------------------------------------------------------
+?X: C symbols
+?X: -------------------------------------------------------------------
+?C:DBM_PASSWD:
+?C:	Enable support for DBM passwd files.
+?C:.
+?C:USE_NIS:
+?C:	Enable NIS (YP) support.
+?C:.
+?C:SECURE_RPC:
+?C:	Enable secure RPC support.
+?C:.
+?C:USE_NISPLUS:
+?C:	Enable NIS+ support.
+?C:.
+?C:HAS_NISPASSWD:
+?C:	Use nispasswd interface for changes (Solaris 2.5 *Not Yet Implimented*)
+?C:.
+?C:USE_HESIOD:
+?C:	Enable Hesiod support.
+?C:.
+?C:USE_KERBEROS:
+?C:	Enable Kerebos support.
+?C:.
+?C:HAS_SVCCONF:
+?C:	This symbol indicates the presence of /etc/svc.conf
+?C:.
+?C:HAS_NSSWITCH:
+?C:	This symbol indicates the presence of /etc/nsswitch.conf
+?C:.
+?C:PARANOID_UIDCHECK:
+?C:	Enables "paranoid user checking" option.
+?C:.
+?C:OSF1_AUTH:
+?C:	Enables OSF/1 (Digital UNIX) auth support.
+?C:.
+?C:ULTRIX_AUTH:
+?C:	Enables Ultrix 4 auth support.
+?C:.
+?C:AIX_AUTH:
+?C:	Enables AIX auth support.
+?C:.
+?C:HPUX_AUTH:
+?C:	Enables HP/UX auth support.
+?C:.
+?C:PASSWD_DICTIONARIES:
+?C:	Path to default dictionary collection.
+?C:.
+?C:PASSWD_HISTORY_DB:
+?C:	Path to the history database.
+?C:.
+?C:PASSWD_HISTORY_GID:
+?C:	GID of the history database.
+?C:.
+?C:HAS_UTSNAME_H:
+?C:	Defined if <sys/utsname.h> is available
+?C:.
+?H:#$p_utsname	HAS_UTSNAME_H	/**/
+?H:#$p_nis	USE_NIS		/**/
+?H:#$p_nisplus	USE_NISPLUS	/**/
+?H:#$p_nispasswd	HAS_NISPASSWD	/**/
+?H:#$p_hesiod	USE_HESIOD	/**/
+?H:#$p_kerberos	USE_KERBEROS	/**/
+?H:#$p_svcconf	HAS_SVCCONF	/**/
+?H:#$p_nsswitch	HAS_NSSWITCH	/**/
+?H:#$p_dbmpw 	DBM_PASSWD	/**/
+?H:#$p_osf1auth OSF1_AUTH	/**/
+?H:#$p_u4auth 	ULTRIX_AUTH	/**/
+?H:#$p_aixauth 	AIX_AUTH	/**/
+?H:#$p_hpuxauth	HPUX_AUTH	/**/
+?H:#$p_secure_rpc SECURE_RPC	/**/
+?H:#$p_paranoid	PARANOID_UIDCHECK 	/**/
+?H:#define	PASSWD_DICTIONARIES "$p_dictionaries"	/**/
+?H:#define	PASSWORD_HISTORY_DB "$p_history"	/**/
+?H:.
+?T:lookfor d l t
+
+: Set install dir to full library directory path
+p_installdir="$privlibexp"
+
+: Set default dictionary path
+p_dictionaries="$p_installdir/dictionaries"
+
+: Set utilty directory path
+p_utildir="$p_installdir/bin"
+
+: Set saved program directory path
+p_keepdir="$p_installdir/system"
+
+: Set saved doc directory path
+p_docdir="$p_installdir/doc"
+
+: Remember where this is taking place
+top_level=`cd ..;pwd`
+
+echo ' '
+t=`./findhdr sys/utsname.h`
+if $test -n "$t"; then
+	p_utsname="$define"
+	echo '### System has <sys/utsname.h>'
+fi
+?X:
+?X: Does this system use System 5 shadow files?
+?X:
+p_shadow=''
+t=`./findhdr shadow.h`
+if $test -n "$t"; then
+	echo '### Including support for System 5 shadow passwords' >& 4
+	p_shadow='shm_shadow'
+fi
+?X:
+?X: Do some OS-specific checks
+?X:
+p_osf1auth=$undef
+p_u4auth=$undef
+p_hpuxauth=$undef
+p_aixauth=$undef
+
+case "${p_osName}_${p_osRev}" in
+	sunos_4*)
+		if $test -n "`./findhdr pwdadj.h`"; then
+			echo '### Including support for SunOS 4 adjunct passwords' >& 4
+			p_shadow='shm_adjunct'
+		fi
+		;;
+	dec_osf*)
+		if $test -n "`./findhdr sia.h`" ; then
+			echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+			p_shadow='shm_osf1';
+			p_osf1auth=$define
+		fi
+		;;
+	ultrix_4*)
+		if $test -n "`./findhdr auth.h`"; then
+			echo '### Including support for Ultrix 4 auth' >& 4
+			p_shadow='shm_ultrix';
+			p_u4auth=$define
+		fi
+		;;
+	hp*ux*)
+		if $test -n "`./findhdr prot.h`" ; then
+			echo '### Including support for HP-UX trusted host' >& 4
+			p_shadow='shm_hpux'
+			p_hpuxauth=$define
+		fi
+		;;
+	aix*)
+		if $test -n "`./findhdr userpw.h`"; then
+			echo '### Including support for AIX auth' >& 4
+			p_shadow='shm_aix';
+			p_aixauth=$define
+		fi
+		;;
+esac
+
+p_passwdfile=''
+for d in /etc /var/yp/src ; do
+	$test ! -d $d && continue
+	$test -f $d/passwd && p_passwdfile="$p_passwdfile $d/passwd"
+done
+echo ' '
+echo '### Found passwd files '
+for t in $p_passwdfile; do
+	echo "   \"$t\""
+done
+echo ' '
+rp='Change passwd file list?'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	ans=y ;;
+esac
+if $test "$ans" = y; then
+	echo 'Enter passwd file names, end with a line with only "."'
+	d=''
+	while true; do
+		rp='Passwd file: '
+		dflt=''
+		. ./myread
+		case $ans in
+		/*)	;;
+                -)      continue ;;
+		.)	break
+			;;
+		*)	echo 'File name must start with /'
+			continue
+			;;
+		esac
+		if $test ! -f $ans ; then
+			echo "No such file \"$ans\""
+			continue
+		fi
+		d="$d $ans"
+	done
+	$test -n "$d" && p_passwdfile=$d
+	echo ' '
+	echo "### Passwd file list now: $p_passwdfile"
+fi
+?X:
+?X: See if this system uses DBM lookaside files
+?X:
+p_dbmpw=`./loc mkpasswd "" $pth`
+if $test -n "$p_dbmpw"; then
+	echo ' '
+	echo '### Including support for DBM lookaside files'
+	echo ' '
+	p_dbmpw="$define"
+else
+	p_dbmpw="$undef"
+fi
+?X:
+?X: Look for shadow files
+?X:
+p_shadowfile=''
+for d in /etc /etc/security ; do
+	$test ! -d $d && continue
+	t=`(cd $d) >/dev/null 2>&1`
+	if $test -n "$t"; then
+		echo ' '
+		echo $t
+		ls -ld $d
+		echo "I strongly suggest you re-run $0 as root"
+		echo "so that the directory \"$d\" can be examined"
+		echo ' '
+	fi
+	for t in shadow passwd passwd.adjunct; do
+		$test -f $d/$t && p_shadowfile="$p_shadowfile $d/$t"
+	done
+done
+p_shadowfile=`echo $p_shadowfile | sed 's@/etc/passwd@@'`
+echo '### Found shadow files '
+for t in $p_shadowfile; do
+	echo "    \"$t\""
+done
+rp='Change shadow file list?'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	ans=y ;;
+esac
+if $test "$ans" = y; then
+	rp='Enter shadow file names, end with a line with only "."'
+	d=''
+        while true; do
+		rp='Shadow file: '
+		dflt=''
+		. ./myread
+		case $ans in
+		/*)	;;
+                -)      continue ;;
+		.)	break
+			;;
+		*)	echo 'File name must start with /'
+                        continue
+                        ;;
+                esac
+		if $test ! -f $ans ; then
+			echo "Shadow file \"$ans\" does not exist"
+			continue;
+		fi
+		d="$d $ans"
+	done
+	$test -n "$d" && p_shadowfile=$d
+	echo ' '
+	echo "Shadow file list now: $p_shadowfile"
+fi
+
+?X:
+?X: Check to see if there is a service selection configuration
+?X:	(nsswitch.conf and svc.conf are recognized)
+?X: 
+if $test -z "$p_svcconf"; then
+	p_svcconf="$undef"
+	if $test -f /etc/svc.conf ; then
+		echo '### This system uses /etc/svc.conf'
+	fi
+fi
+
+if $test -z "$p_nsswitch"; then
+	p_nsswitch="$undef"
+	if $test -f /etc/nsswitch.conf ; then
+		echo '### This system uses /etc/nsswitch.conf'
+		p_nsswitch="$define"
+		if $test -z "`./findhdr nsswitch.h`"; then
+			echo '### But does not have the nsswitch.h include'
+			echo '### so nsswitch support is disabled'
+			p_nsswitch="$undef"
+		fi
+	fi
+fi
+
+?X: Sanity check
+if $test "$p_svcconf" = $define -a "$p_nsswitch" = $define; then
+	echo ' '
+	echo 'Hmm. This system thinks it has both /etc/svc.conf' >&4
+	echo "and /etc/nsswitch.conf.  Something is broken!" >&4
+	echo ' '
+	exit 1
+fi
+echo ' '
+
+set yp_get_default_domain t
+eval "$inlibc"
+if $test "$t" = "$define"; then
+	echo ' '
+	echo '### This system has NIS (YP).'
+	echo ' '
+	rp='Do you want to include NIS support?'
+	dflt='y'
+	. ./myread
+	case "$ans" in
+	y*|Y*)	p_nis="$define"
+		: See if secure RPC is available
+		set issecure p_secure_rpc
+		eval "$inlibc"
+		if $test "$p_secure_rpc" = "$define"; then
+			echo '### This system has Secure RPC'
+		else
+			p_secure_rpc="$undef"
+		fi
+		;;
+	n*|N*)	p_nis="$undef"
+		p_secure_rpc="$undef"
+		 ;;
+	esac
+else
+	p_nis="$undef"
+	p_secure_rpc="$undef"
+fi
+
+p_nispasswd="$undef"
+if $test -n "`./findhdr rpcsvc/nis.h`"; then
+	echo ' '
+	echo '### It looks like this system has NIS+.'
+	echo ' '
+	rp='Do you want to include NIS+ support?'
+	dflt='n'
+	. ./myread
+	case "$ans" in
+	y*|Y*)	p_nisplus="$define"
+		if $test -n "`./findhdr rpcsvc/nispasswd.h`"; then
+			p_nispasswd="$define"
+			echo '### Will use nispasswd RPC.'
+		fi
+	;;
+	n*|N*)	p_nisplus="$undef" ;;
+	esac
+else
+	p_nisplus="$undef"
+fi
+
+p_hesiod="$undef"		# Not yet
+p_kerberos="$undef"		# Not yet
+
+cat <<EOF
+
+There are some functions that $package cannot perform, or
+are best done by the vendor passwd/chfn/chsh programs.
+
+These will be moved to a restricted access area if
+you choose the "replace system programs" option.
+
+EOF
+
+p_replace=$undef
+rp='Replace system programs?'
+dflt='y'
+. ./myread
+case "$ans" in
+	y*|Y*)	p_replace=$define
+		;;
+esac
+
+?X:
+?X: Find password modification programs.
+?X:
+?X: Cannot use "loc" here because I need a list of ALL occurances of these
+?X: programs, not just the first.  The "ls" tricks below are used because
+?X: we're not assured of having a version of "test" that can detect
+?X: executables files and symbolic links.  But I trust that "ls" will provide
+?X: that information.
+?X:
+lookfor='passwd chfn chsh yppasswd ypchfn ypchsh nispasswd'
+
+for d in $pth; do
+	if $test ! -d $d; then
+		continue
+	fi
+        case "`ls -ld $d`" in
+                l*)     continue ;;	# Ignore directories which are symlinks
+        esac
+	for l in $lookfor; do
+		$test ! -f $d/$l && continue
+		if $test -z "`ls -l $d/$l | awk '{print $1}' | tr -cd 'x\012'`"; then
+			continue	# Not an executable (no 'x' in mode)
+		fi
+		p_sysprogs="$p_sysprogs $d/$l"
+	done
+done
+echo ' '
+p_sysprogs=`echo $p_sysprogs | tr ' ' '\012' | sort | uniq | tr '\012' ' '`
+
+echo '---------------------------------------------------'
+echo ' '
+echo Found passwd/chfn/chsh programs: $p_sysprogs >&4
+echo ' '
+echo '---------------------------------------------------'
+
+cat <<EOF
+
+The 'paranoid' option will cause $package to abort if
+the uid obtained via getpwnam(getlogin) does not equal the
+uid obtained via getuid().
+
+If you allow multiple login names to have the same uid,
+then DO NOT enable this option.
+
+EOF
+
+rp='Activate the "paranoid" option'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	p_paranoid="$define" ;;
+	*)	p_paranoid="$undef" ;;
+esac
+
+?X: ---------------------------------------------------
+?X:	Configure the password history mechanism
+?X: ---------------------------------------------------
+p_history="$p_installdir/passwd.history"
+
+cat <<EOF
+
+$package keeps a password history database.  This database is kept
+in a DBM database or file (default "$p_history").
+
+EOF
+
+t=`(rpcinfo -p localhost | grep nfs | grep -v rpcnfs) 2>/dev/null`
+if $test -n "$t"; then
+	cat <<EOF
+
+It appears that $myhostname is an NFS server.
+
+If it is part of a cluster, or serves diskless or dataless clients,
+then files in $p_installdir must be writable by the members.
+
+If this is the case, then the history file MUST be placed
+to a filesystem that clients mount read/write with "root"
+access permission.
+
+See the Npasswd Reference Manual (doc/Reference.html) for details.
+
+EOF
+fi
+
+rp='Password history file'
+dflt="$p_installdir/history"
+fn='f/+'
+. ./getfile
+p_history="$ansexp"
+
+cat <<EOF
+
+---------------------------------------------------
+Done with $package configuration
+---------------------------------------------------
+
+EOF
+?:X End %M%

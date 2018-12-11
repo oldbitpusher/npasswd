@@ -1,0 +1,12 @@
+#!/bin/ksh
+
+cat /usr/lib/passwd/etc/passwd.conf | grep '^authorize.Client' | sed s/authorize.Client// | \
+while read ma mb line
+do
+	[ $ma = 'halo' ] && continue
+	[ $ma = 'daln4k' ] && continue
+	ping $ma > /dev/null 2>&1
+	[ $? -ne 0 ] && continue
+	print " Working - $ma"
+	/usr/bin/rsh $ma /admin/pam_strong/install/install-client > /dev/null 2>&1 &
+done

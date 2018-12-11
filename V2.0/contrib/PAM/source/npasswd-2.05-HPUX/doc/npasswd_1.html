@@ -1,0 +1,266 @@
+<BODY><PRE>
+
+
+
+User Commands                                          npasswd(1)
+
+
+
+<B>NAME</B>
+     npasswd - change login password, shell or finger information
+
+<B>SYNOPSIS</B>
+     <B>npasswd </B>[ <I>platform options </I>] [ -<B>X </B><I>options </I>] [ username ]
+     <B>chfn </B>[ <I>platform options </I>] [ -<B>X </B><I>options </I>] [ username ]
+     <B>chsh </B>[ <I>platform options </I>] [ -<B>X </B><I>options </I>] [ username ]
+
+<B>DESCRIPTION</B>
+     <B>Npasswd </B>changes the login password, login  shell  or  finger
+     information  for  a  user.   It is designed to supplement or
+     replace the standard password change programs  <B>passwd</B>,  <B>chfn</B>
+     and <B>chsh</B>.
+
+     <B>Npasswd </B>addresses some common deficiencies of standard pass-
+     word change programs.  It supports local passwd (and shadow)
+     files, NIS maps, and enhanced security shadow databases  for
+     HP-UX and Digital Unix (aka OSF/1).
+
+     New passwords are subjected to a series of stringent guessa-
+     bility  checks  to  decrease  the  chance  of users choosing
+     vulnerable passwords.
+
+     When called as "<B>chfn</B>", <B>npasswd </B>changes the  finger  informa-
+     tion  associated  with  your user name or the specified user
+     name.
+
+     When called as "<B>chsh</B>", <B>npasswd </B>changes the  login  shell  of
+     your user name or the specified user name.
+
+     Only the super-user can change the password, finger informa-
+     tion or shell of another user.
+
+<B>OPTIONS</B>
+     Every version of <B>passwd </B>supports a different set of  command
+     line  options.  <B>Npasswd </B>supports a subset of these for a few
+     platforms.  It  attempts  to  recognize  the  other  vendor-
+     specific options and defer to the vendor-supplied program to
+     handle them.  This list may be incomplete.
+
+<B>PLATFORM OPTIONS - SunOS 4</B>
+     The following options are implemented:
+           <B>-d -e -n -x</B>
+
+     The following options are deferred to the vendor programs:
+           <B>-a</B>
+
+     The following options are ignored:
+           <B>-F -l -y</B>
+
+<B>PLATFORM OPTIONS - Solaris 2</B>
+
+
+
+
+SunOS 5.6                 Last change:                          1
+
+
+
+
+
+
+User Commands                                          npasswd(1)
+
+
+
+     The following options are implemented:
+           <B>-e -g -r</B>
+
+     The following options are deferred to the vendor programs:
+           <B>-a -d -h -l -n -w -s -x</B>
+
+     The following options are ignored:
+           <B>-D</B>
+
+<B>PLATFORM OPTIONS - HPUX</B>
+     The following options are implemented:
+           <B>-d -e -n -x</B>
+
+<B>PLATFORM OPTIONS - Digital UNIX</B>
+     The following options are implemented:
+           <B>-f -s</B>
+
+<B>PLATFORM OPTIONS - AIX</B>
+     The following options are implemented:
+           <B>-f -s</B>
+
+<B>OPTIONS FOR ALL PLATFORMS</B>
+     -<B>Xc       </B>Process the configuration file,  output  the  set-
+               tings and exit.
+
+     -<B>XC</B><I>cf     </I>Verify the correctness of the  configuration  file
+               <I>cf</I>.  Exit status is 0 if file was ok, 1 if not.
+
+     -<B>XD</B><I>N      </I>Set internal debugging level to  N.   This  option
+               may be restricted to root.
+
+               Debug levels are:
+
+               none None.
+
+               verbose
+                    Mild verbosity.
+
+               lookup
+                    Trace user lookup.
+
+               update
+                    Trace user updating.
+
+               config
+                    Trace configuration file processing.
+
+               misc1
+                    Reserved.
+
+               misc2
+                    Reserved.
+
+
+
+SunOS 5.6                 Last change:                          2
+
+
+
+
+
+
+User Commands                                          npasswd(1)
+
+
+
+               pwcheck
+                    Trace password checking.
+
+               detail
+                    More detailed tracing.
+
+               all  Turn on all debugging.
+
+     -<B>XF       </B>Suppress new password checking.   This  option  is
+               restricted  to  root and should be used very spar-
+               ingly.
+
+     -<B>Xf       </B>Change finger information.
+
+     -<B>XI       </B>Allow standard input to be a file or  pipe.   This
+               option can be used thusly:
+               (echo old-password
+                echo new-password
+                echo new-password) | npasswd -XI ...
+
+               This option is restricted to root.
+
+     -<B>Xs       </B>Change login shell.
+
+     -<B>XV       </B>Print version and patch level information.
+
+<B>FILES</B>
+     /usr/lib/passwd/npasswd - The executable
+     /usr/lib/passwd/passwd.conf - Configuration file
+     /usr/lib/passwd/dictionaries - Default dictionary collection
+     /usr/lib/passwd/history - Default password history database
+
+<B>SEE ALSO</B>
+     /usr/lib/passwd/bin/history_admin - password history  administra-
+     tion utility
+     /usr/lib/passwd/doc/index.html - Npasswd Reference  Manual  (HTML
+     format)
+
+<B>DIAGNOSTICS</B>
+     Many and hopefully fairly self-explanatory.
+
+<B>BUGS</B>
+     A substantial section of the password  check  code  is  very
+     specific to English.
+
+     No attempt has been made to internationalize the program.
+
+     Some platforms (e.g. Sun, Digital Unix) have elaborate secu-
+     rity  facilities.   Few of these are used by <B>npasswd</B>, mostly
+     because the APIs are not documented.
+
+
+
+
+
+SunOS 5.6                 Last change:                          3
+
+
+
+
+
+
+User Commands                                          npasswd(1)
+
+
+
+     For historical reasons, there is support  for  two  obsolete
+     operating  systems  -  SunOS 4 and Ultrix 4.  This code will
+     removed from any future revisions.
+
+<B>AUTHOR</B>
+     Clyde Hoover
+     Academic Computing  Services  and  Instructional  Technology
+     Services
+     The University of Texas at Austin
+     c.hoover@cc.utexas.edu
+     8c9 1998, The  University  of  Texas  at  Austin.  All  rights
+     reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SunOS 5.6                 Last change:                          4
+
+
+
+</PRE></BODY>

@@ -1,0 +1,231 @@
+h08504
+s 00001/00001/00090
+d D 1.9 98/07/16 09:18:49 clyde 9 8
+c Change ShellScriptTarget to ThingFromSH
+e
+s 00008/00003/00083
+d D 1.8 98/07/14 16:24:26 clyde 8 7
+c Major reworkl
+e
+s 00056/00021/00030
+d D 1.7 98/05/05 16:57:16 clyde 7 6
+c Major renovation:
+c 1. Add copyright message
+c 2. Use new infrastructure
+e
+s 00002/00000/00049
+d D 1.6 98/03/31 14:34:46 clyde 6 5
+c Build in TestSuite
+e
+s 00002/00001/00047
+d D 1.5 98/03/24 15:25:14 clyde 5 4
+c Add shm_hpux
+e
+s 00001/00000/00047
+d D 1.4 97/09/19 14:28:57 clyde 4 3
+c Add shm_aix.c
+e
+s 00001/00001/00046
+d D 1.3 96/09/12 16:19:21 clyde 3 2
+c Add ../.. to INCLUDE_PATH
+e
+s 00004/00001/00043
+d D 1.2 96/08/15 10:43:33 clyde 2 1
+c Set INCLUDE_PATH for CC and mkdep
+e
+s 00044/00000/00000
+d D 1.1 96/08/07 09:58:18 clyde 1 0
+c date and time created 96/08/07 09:58:18 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+D 7
+/*
+ * Jmakefile npasswd method library
+ */
+I 2
+D 3
+Initialize(INCLUDE_PATH, -I..)
+E 3
+I 3
+Initialize(INCLUDE_PATH, -I.. -I../..)
+E 7
+I 7
+;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# %W% %G% (cc.utexas.edu)
+;#
+E 7
+E 3
+E 2
+
+D 7
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+D 2
+Initialize(CFLAGS, -I.. $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 2
+I 2
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 2
+
+I 2
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+
+E 2
+Initialize(SHADOW_M, $p_shadow)
+
+;# ------------------------------------------------------
+;# npasswd method library Makefile
+E 7
+;#
+D 7
+;# Builds libmethod.a which is linked by npasswd
+E 7
+I 7
+;# Makefile for npasswd passwd method library
+E 7
+;# This library contains all the password database access method
+;# modules and the ONE selected shadow database access method module
+;#
+D 7
+;# %W% %G% (cc.utexas.edu)
+;# Permanent changes to %P%
+;#
+;# ------------------------------------------------------
+E 7
+I 7
+#include "../../Jmake.local"
+
+D 8
+Initialize(INCLUDE_PATH, -I.. -I../..)
+E 8
+I 8
+Initialize(INCLUDE_PATH, -I.. -I../.. -I../Common)
+E 8
+
+;# Shadow module (from Configure via config.sh)
+Initialize(SHADOW_M, $p_shadow)
+
+E 7
+PASSWDM_SRC = \
+	pwm_main.c \
+	pwm_local.c \
+	pwm_nis.c
+
+SHADOWM_SRC = \
+	shm_adjunct.c \
+I 4
+	shm_aix.c \
+E 4
+	shm_shadow.c \
+	shm_ultrix.c \
+D 5
+	shm_osf1.c
+E 5
+I 5
+	shm_osf1.c \
+	shm_hpux.c
+E 5
+
+++SOURCES $(SHADOWM_SRC) 
+
+METHOD_OBJ = \
+|expand f!$(PASSWDM_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+I 8
+Describe(all, 	Build passwd database access method library)
+E 8
+I 7
+Describe(libmethod.a, Build passwd database access method library)
+I 8
+D 9
+ShellScriptTarget(passwdtab.h shadowtab.h)
+E 9
+E 8
+E 7
+NormalLibraryTarget(method, $(PASSWDM_SRC), $(METHOD_OBJ) $(SHADOW_M).o)
+I 9
+ThingFromSH(passwdtab.h shadowtab.h)
+E 9
+
+I 6
+D 7
+NamedTargetSubdirsRule(TestSuite,all,making,^^)
+E 7
+I 7
+D 8
+LocalDebug()
+E 8
+I 8
+DebugTarget()
+E 8
+E 7
+
+E 6
+D 7
+DependTarget()
+E 7
+I 7
+D 8
+LocalEnd()
+E 8
+I 8
+DependTarget()
+E 8
+E 7
+
+I 8
+Describe(lint, Check C sources with lint)
+LintTarget()
+
+E 8
+/* End %M% */
+E 1

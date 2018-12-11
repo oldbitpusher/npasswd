@@ -1,0 +1,114 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Update path tokens
+@
+text
+@case $CONFIG in
+'')
+	if test -f config.sh; then TOP=.;
+	elif test -f ../config.sh; then TOP=..;
+	elif test -f ../../config.sh; then TOP=../..;
+	elif test -f ../../../config.sh; then TOP=../../..;
+	elif test -f ../../../../config.sh; then TOP=../../../..;
+	else
+		echo "Can't find config.sh."; exit 1
+	fi
+	. $TOP/config.sh
+	;;
+esac
+: This forces SH files to create target in same directory as SH file.
+: This is so that make depend always knows where to find SH derivatives.
+case "$0" in
+*/*) cd `expr X$0 : 'X\(.*\)/'` ;;
+esac
+echo "Extracting docfilter (with variable substitutions)"
+$spitshell >docfilter <<!GROK!THIS!
+$startsh
+#
+# docfilter - replace pathname tokens in documentation files
+#
+# $Id$ (cc.utexas.edu)
+#
+sed 	-e "s!@@NPASSWD-HOME@@!$p_installdir!g" \\
+	-e "s!@@NPASSWD-DOCS@@!$p_docdir!g" \\
+	-e "s!@@NPASSWD-DICT@@!$p_dictionaries!g" \\
+	-e "s!@@NPASSWD-HIST@@!$p_history!g" \\
+	-e "s!@@NPASSWD-XBIN@@!$p_keepdir!g" \\
+	-e "s!@@NPASSWD-UTIL@@!$p_utildir!g" \\
+	-e "s!@@NPASSWD-SRC@@!$top_level!g" \$*
+exit 0
+#
+# End $RCSfile$
+!GROK!THIS!
+chmod 755 docfilter
+$eunicefix docfilter
+@
+
+
+1.3
+log
+@Change DICTS to DICT
+@
+text
+@d27 4
+a30 3
+sed 	-e "s!@@NPASSWD-LIB@@!$privlibexp!g" \\
+	-e "s!@@NPASSWD-DICT@@!$p_dictlib!g" \\
+	-e "s!@@NPASSWD-HIST@@!$o_pwhDB!g" \\
+d32 1
+@
+
+
+1.2
+log
+@Working version 2
+@
+text
+@d28 1
+a28 1
+	-e "s!@@NPASSWD-DICTS@@!$p_dictlib!g" \\
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d29 1
+d31 1
+a31 1
+	-e "s!@@NPASSWD-SRC@@!$top_level!g" $*
+@

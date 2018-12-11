@@ -1,0 +1,661 @@
+%%%%% Richard.North@agric.nsw.gov.au
+%%%%% HP-UX 10.20 changes
+%%%%% 17 Sep 97
+
+diff -rcN npasswd-2.0b4/Configure npasswd-2.0b4.new/Configure
+*** npasswd-2.0b4/Configure	Wed Jun  4 00:05:12 1997
+--- npasswd-2.0b4.new/Configure	Wed Jul  2 10:07:44 1997
+***************
+*** 1,4 ****
+! #! /bin/sh
+  #
+  # If these # comments don't work, trim them. Don't worry about any other
+  # shell scripts, Configure will trim # comments from them for you.
+--- 1,4 ----
+! #!/usr/local/bin/bash
+  #
+  # If these # comments don't work, trim them. Don't worry about any other
+  # shell scripts, Configure will trim # comments from them for you.
+***************
+*** 85,95 ****
+  PATH=.$p_$PATH
+  export PATH
+  
+! : Sanity checks
+! if test ! -t 0; then
+! 	echo "Say 'sh $me', not 'sh <$me'"
+! 	exit 1
+! fi
+  
+  : On HP-UX, large Configure scripts may exercise a bug in /bin/sh
+  if test -f /hp-ux -a -f /bin/ksh; then
+--- 85,95 ----
+  PATH=.$p_$PATH
+  export PATH
+  
+! #: Sanity checks
+! #if test ! -t 0; then
+! #	echo "Say 'sh $me', not 'sh <$me'"
+! #	exit 1
+! #fi
+  
+  : On HP-UX, large Configure scripts may exercise a bug in /bin/sh
+  if test -f /hp-ux -a -f /bin/ksh; then
+***************
+*** 4126,4132 ****
+  EOF
+  
+  
+! df=`./loc df '' $pth`
+  if $test -z "$df"; then
+  	echo 'Cannot find the "df" program' >& 4
+  	dflt=''
+--- 4126,4135 ----
+  EOF
+  
+  
+! case `uname` in
+! 	HP-UX)	df=/usr/bin/bdf;;
+! 	*)		df=/soft/local/gnu/bin/df;;
+! esac
+  if $test -z "$df"; then
+  	echo 'Cannot find the "df" program' >& 4
+  	dflt=''
+
+
+%%%%% Remove 'df' unit from configure.  Don't understand why redirection
+%%%%% check removed
+
+diff -rcN npasswd-2.0b4/dict/Makefile.SH npasswd-2.0b4.new/dict/Makefile.SH
+*** npasswd-2.0b4/dict/Makefile.SH	Wed Jun  4 00:02:30 1997
+--- npasswd-2.0b4.new/dict/Makefile.SH	Wed Jul  2 10:07:44 1997
+***************
+*** 57,66 ****
+  ########################################################################
+  # Start of Jmakefile
+  
+- :#
+- :# @(#)Jmakefile	1.4 05/16/97 (cc.utexas.edu)
+- :#
+- 
+  all:
+  	@echo Do make install to install dictionaries
+  
+--- 57,62 ----
+***************
+*** 116,123 ****
+  	-@echo Building ${DICTLIB}/${DFILE}
+  	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/${DFILE} ${DFILE}
+  	@touch ${DFILE}.time
+- 
+- ${DFILE}:
+  
+  # End Jmakefile
+  
+--- 112,117 ----
+
+%%%%% Don't understand this change
+
+diff -rcN npasswd-2.0b4/src/Common/pw_svc.c npasswd-2.0b4.new/src/Common/pw_svc.c
+*** npasswd-2.0b4/src/Common/pw_svc.c	Fri May 23 19:56:33 1997
+--- npasswd-2.0b4.new/src/Common/pw_svc.c	Wed Jul  2 10:07:44 1997
+***************
+*** 237,242 ****
+--- 237,247 ----
+  				_svcinfo.ServiceOrder[svo++] = sv_compat;
+  				debug(DB_LOOKUP, "compat/%s ", what);
+  			}
++ 			else {
++ 				_svcinfo.ServiceOrder[svo++] = srv_local;
++ 				_svcinfo.ServiceOrder[svo++] = sv_compat;
++ 				debug(DB_LOOKUP, "compat/%s ", what);
++ 			}
+  		}
+  #endif
+  #ifdef	USE_NISPLUS
+
+
+%%%%% Applied - deal with missing 'passwd_compat:' line in nsswitch.conf
+
+diff -rcN npasswd-2.0b4/src/Common/signals.c npasswd-2.0b4.new/src/Common/signals.c
+*** npasswd-2.0b4/src/Common/signals.c	Thu Aug 29 20:02:46 1996
+--- npasswd-2.0b4.new/src/Common/signals.c	Wed Jul  2 10:07:44 1997
+***************
+*** 22,28 ****
+--- 22,32 ----
+  	int	xsig;
+  
+  	VA_START(fargs, args);
++ #ifdef __STDC__
++ 	sigblk = args;
++ #else
+  	sigblk = va_arg(fargs, struct sigblk *);
++ #endif
+  
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigemptyset(&sigblk->savesigs);
+
+%%%%% Finally understood and applied.
+
+***************
+*** 40,46 ****
+--- 44,52 ----
+  
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
+  	while (xsig = va_arg(fargs, int))
++ 	{
+  		sigblk->sigvalues[xsig] = signal(xsig, SIG_IGN);
++ 	}
+  #endif
+  }
+
+%%%%% Applied - perhaps 'signal' is a macro on HP-UX
+  
+diff -rcN npasswd-2.0b4/src/Methods/pwm_local.c npasswd-2.0b4.new/src/Methods/pwm_local.c
+*** npasswd-2.0b4/src/Methods/pwm_local.c	Fri May 23 18:13:28 1997
+--- npasswd-2.0b4.new/src/Methods/pwm_local.c	Wed Jul  2 10:07:44 1997
+***************
+*** 86,94 ****
+--- 86,96 ----
+  # ifdef	OS_SUNOS_4
+  	if (ypinfo.status == is_yp_client && !Switches['l'])
+  		return(0);
++ /*
+  #else	/* OS_SUNOS_4 */
+  	if (ypinfo.status == is_yp_client)
+  		return(0);
++ */
+  # endif	/* OS_SUNOS_4 */
+  #endif	/* USE_NIS */
+  	(void) gethostname(localhost, sizeof(localhost));
+
+%%%%% This breaks SunOS 4 - need a better way to select this
+
+***************
+*** 156,162 ****
+--- 158,166 ----
+  #ifdef	PWQUOTA
+  	ICOPY(newUser->mpw_quota);
+  #endif
++ #ifdef	PWCOMMENT
+  	SCOPY(newUser->mpw_comment);
++ #endif
+  	SCOPY(newUser->mpw_gecos);
+  	SCOPY(newUser->mpw_dir);
+  	SCOPY(newUser->mpw_shell);
+
+%%%%% Applied.
+
+***************
+*** 304,310 ****
+  #ifndef	DEBUG
+  	block_signals(&blocked, SIGHUP, SIGINT, SIGQUIT, SIGTSTP, 0);
+  #endif
+! 	while ((px = fgetpwent(pf)) != NULL) {
+  		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
+  			continue;
+  		if (!repdone && strcmp(px->pw_name, theUser->mpw_name) == 0) {
+--- 308,337 ----
+  #ifndef	DEBUG
+  	block_signals(&blocked, SIGHUP, SIGINT, SIGQUIT, SIGTSTP, 0);
+  #endif
+! #ifdef OS_DEC_OSF1
+! 	for (;;)
+! 	{
+! 		int		c;
+! 
+! 			/* handle NIS entries */
+! 		if ((c = getc(pf)) == '+')
+! 		{
+! 				/* copy line */
+! 			for (; c != '\n' && c !=  EOF; c = getc(pf))
+! 				putc(c, tf);
+! 			if (c == '\n')
+! 				putc(c, tf);
+! 			continue;
+! 		}
+! 		if (c == EOF)
+! 			break;
+! 		ungetc(c, pf);
+! 		if ((px = fgetpwent(pf)) == NULL)
+! 			break;
+! #else
+! 	while ((px = fgetpwent(pf)) != NULL) 
+! 	{
+! #endif
+  		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
+  			continue;
+  		if (!repdone && strcmp(px->pw_name, theUser->mpw_name) == 0) {
+
+%%%%% fgetpwent() is FUcKED on OSF/1.
+%%%%% fix p_fgetpwent.U to use internal fgetpwent() if needed
+
+diff -rcN npasswd-2.0b4/src/Methods/shm_aix3.c npasswd-2.0b4.new/src/Methods/shm_aix3.c
+*** npasswd-2.0b4/src/Methods/shm_aix3.c	Thu Jan  1 01:00:00 1970
+--- npasswd-2.0b4.new/src/Methods/shm_aix3.c	Wed Jul  2 10:09:19 1997
+***************
+*** 0 ****
+--- 1,77 ----
++ /*
++  *	shm_aix3.c - Support for AIX3 auth databases
++  *
++  *	Two routines need to advertised from this module:
++  *
++  *	void get_shadow(struct mpasswd *theUser)
++  *		This routine checks if the password is in a shadow database
++  *		and fetches it if so.  Information is stashed in the 
++  *		"method" data about where the shadow password was found.
++  *
++  *	void update_shadow(struct mpasswd *theUser, struct mpasswd *newUser)
++  *		Updates the shadow password for "newUser".
++  *		
++  *	Neither routine returns a value, but changes the meta-passwd record
++  *	passed in, and aborts on serious error.
++  */
++ 
++ #include "npasswd.h"
++ #include "pwm_defs.h"
++ 
++ #include <userpw.h>
++ #include <usersec.h>
++ 
++ int  ShadowTolerance = 0;
++ 
++ public void
++ get_shadow(userm)
++ 	struct mpasswd *userm;
++ {
++ 	struct pw_opaque *po = userm->opaque;
++ 	/*
++ 	 * Check if the password is in the auth datbase (AIX 3)
++ 	 */
++ 	if (!strcmp(userm->mpw_passwd, "!")) {
++ 		struct userpw	*upw;
++ 
++ 		if (setpwdb(S_READ))
++ 			logdie("Permission for auth DB access denied.");
++ 			
++ 		upw = getuserpw(userm->mpw_name);
++ 		endpwdb();
++ 		if (!upw)
++ 			logdie("Cannot get password for user %s from auth DB.",
++ 				userm->mpw_name);
++ 		if ((userm->mpw_passwd = strdup(upw->upw_passwd)) == NULL)
++ 			logdie("out of memory.");
++ 		po->sourceSH = srv_local;
++ 		userm->pwage.last_change = upw->upw_lastupdate;
++ 		debug(DB_LOOKUP, "get_shadow: found auth pw for %s\n",
++ 			userm->mpw_name);
++ 	}
++ }
++ 
++ public void
++ update_shadow(theUser, newUser)
++ 	struct mpasswd	*theUser;
++ 	struct mpasswd	*newUser;
++ {
++ 	struct userpw	*upw;
++ 
++ 	if (setpwdb(S_READ | S_WRITE))
++ 		logdie("Write permission for auth DB access denied");
++ 
++ 	if ((upw = getuserpw(theUser->mpw_name)) == NULL)
++ 	{
++ 		endpwdb();
++ 		logdie("Cannot read auth DB for update.");
++ 	}
++ 
++ 	(void) strcpy(upw->upw_passwd, newUser->mpw_passwd);
++ 	upw->upw_lastupdate = time((time_t *)0);
++ 	if (putuserpw(upw))
++ 		logdie("Could not update auth database.");
++ 	newUser->mpw_passwd = "*";
++ }
++ 
++ /* End shm_aix3.c */
+
+%%%%% Added to distibution
+
+diff -rcN npasswd-2.0b4/src/Methods/shm_null.c npasswd-2.0b4.new/src/Methods/shm_null.c
+*** npasswd-2.0b4/src/Methods/shm_null.c	Wed Aug  7 22:23:07 1996
+--- npasswd-2.0b4.new/src/Methods/shm_null.c	Wed Jul  2 10:07:44 1997
+***************
+*** 22,27 ****
+--- 22,29 ----
+  #include "npasswd.h"
+  #include "pwm_defs.h"
+  
++ Config_Value int   ShadowTolerance = 0;
++ 
+  public void
+  get_shadow(userm)
+  	struct mpasswd *userm;
+
+%%%%% Applied
+
+diff -rcN npasswd-2.0b4/src/PasswordCheck/pwck_history.c npasswd-2.0b4.new/src/PasswordCheck/pwck_history.c
+*** npasswd-2.0b4/src/PasswordCheck/pwck_history.c	Fri May 23 20:20:53 1997
+--- npasswd-2.0b4.new/src/PasswordCheck/pwck_history.c	Wed Jul  2 10:07:44 1997
+***************
+*** 446,456 ****
+--- 446,464 ----
+  
+  		debug(DB_UPDATE,
+  			"pwh_put_file: first open failure %d\n", errno);
++ #if (OS_NAME==hpux) && (OS_MAJOR_VERSION==10)
++ 		setreuid(-1, statbuf.st_uid);
++ #else
+  		(void) seteuid(statbuf.st_uid);
++ #endif
+  		if ((f = open(PasswordHistoryDB, O_WRONLY|O_APPEND)) < 0)
+  			debug(DB_UPDATE,
+  				"pwh_put_file: second open failure %d\n", errno);
++ #if (OS_NAME==hpux) && (OS_MAJOR_VERSION==10)
++ 		setreuid(-1,oldeuid);
++ #else
+  		(void) seteuid(oldeuid);
++ #endif
+  	}
+  	/*
+  	 * File exists but cannot be opened - this is bad
+
+%%%%% Use setreuid() always 
+
+diff -rcN npasswd-2.0b4/src/PasswordCheck/pwck_local.c npasswd-2.0b4.new/src/PasswordCheck/pwck_local.c
+*** npasswd-2.0b4/src/PasswordCheck/pwck_local.c	Thu Aug 29 19:59:41 1996
+--- npasswd-2.0b4.new/src/PasswordCheck/pwck_local.c	Wed Jul  2 10:07:44 1997
+***************
+*** 12,17 ****
+--- 12,19 ----
+  #include <sys/param.h>
+  #include <netdb.h>
+  
++ #define	MAXSTEP	4
++ 
+  public int
+  pwck_local(password, user, mesg)
+  	char	*password;	/* Password to check */
+***************
+*** 22,27 ****
+--- 24,35 ----
+  	char	myname[MAXHOSTNAMLEN],		/* Scratch */
+  		temp[MAXPATHLEN];	/* Scratch */
+  	struct hostent	*h;
++ 	char	*ptr;
++ 	int		count, p1, p2;
++ 
++ #ifdef  DEBUG
++ 	printf("pwck_local: \"%s\"\n", password);
++ #endif
+  
+  	(void) gethostname(myname, sizeof(myname));
+  	try(password, myname, PWCK_OBVIOUS);
+***************
+*** 49,54 ****
+--- 57,106 ----
+  		}
+  		(void) fclose(rh);
+  	}
++ 
++ 	/*
++ 	 * check against 'digits only'
++ 	 */
++ 	for (ptr = password; *ptr; ptr++)
++ 		if (!isdigit(*ptr))
++ 			break;
++ 	if (!*ptr)
++ 	{
++ 		(void) sprintf(mesg, "it is 'digits only'");
++ 		return(PWCK_OBVIOUS);
++ 	}
++ 
++ 	/*
++ 	 * check agains 'whitespace only'
++ 	 */
++ 	for (ptr = password; *ptr; ptr++)
++ 		if (!isspace(*ptr))
++ 			break;
++ 	if (!*ptr)
++ 	{
++ 		(void) sprintf(mesg, "it is 'whitespace only'");
++ 		return(PWCK_OBVIOUS);
++ 	}
++ 
++ 	/*
++ 	 * check agains 'abcdef stuff'
++ 	 */
++ 	ptr = password;
++ 	count = 0;
++ 	while (*ptr && *(ptr+1))
++ 	{
++ 		p1 = tolower(*ptr);
++ 		p2 = tolower(*(ptr+1));
++ 		if (p1 == p2+1 || p1 == p2-1)
++ 			count++;
++ 		ptr++;
++ 	}
++ 	if (count > MAXSTEP)
++ 	{
++ 		(void) sprintf(mesg, "it is too easy (abcd...)");
++ 		return(PWCK_OBVIOUS);
++ 	}
++ 
+  	return(PWCK_OK);
+  }
+  /* End pwck_local.c */
+
+
+%%%% Good idea, but impliment in pwck_lexical
+
+diff -rcN npasswd-2.0b4/src/compatibility.h npasswd-2.0b4.new/src/compatibility.h
+*** npasswd-2.0b4/src/compatibility.h	Fri Sep 13 23:26:43 1996
+--- npasswd-2.0b4.new/src/compatibility.h	Wed Jul  2 10:07:44 1997
+***************
+*** 92,104 ****
+--- 92,108 ----
+  #define	SIG_TYPE_UNIX	'u'	/* Use traditional UNIX signals */
+  
+  #define	SIG_TYPE		SIG_TYPE_UNIX
++ 
++ #if !(defined(__sun) && defined(__SVR4))
+  #ifdef	HAS_SIGBLOCK
+  # undef	SIG_TYPE
+  # define	SIG_TYPE	SIG_TYPE_BSD
+  #endif
++ 
+  #ifdef	HAS_POSIX_SIGNALS
+  # undef	SIG_TYPE
+  # define	SIG_TYPE	SIG_TYPE_POSIX
++ #endif
+  #endif
+  
+  /*
+
+%%%% Why is this forcing BSD signals?
+
+diff -rcN npasswd-2.0b4/src/main.c npasswd-2.0b4.new/src/main.c
+*** npasswd-2.0b4/src/main.c	Mon May  5 18:22:51 1997
+--- npasswd-2.0b4.new/src/main.c	Wed Jul  2 10:07:44 1997
+***************
+*** 135,144 ****
+--- 135,150 ----
+  		passwd(TargetPW, CallerPW);
+  		break;
+  	case CHSH:
++ 			logdie("Sorry, changing the shell is unsupported at this site.\n");
++ 		/*
+  		chsh(TargetPW, CallerPW);
++ 		*/
+  		break;
+  	case CHFN:
++ 			logdie("Sorry, changing names is unsupported at this site.\n");
++ 		/*
+  		chfn(TargetPW, CallerPW);
++ 		*/
+  		break;
+  	}
+  	pw_cleanup(0);
+
+
+%%%%% Compile-time option.
+
+diff -rcN npasswd-2.0b4/src/npasswd.h npasswd-2.0b4.new/src/npasswd.h
+*** npasswd-2.0b4/src/npasswd.h	Fri May 23 18:14:02 1997
+--- npasswd-2.0b4.new/src/npasswd.h	Wed Jul  2 10:07:44 1997
+***************
+*** 88,94 ****
+   */
+  struct sigblk {
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
+! 	Signal_t	sigvalues[NSIG];
+  #endif
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigset_t	sigvalues,
+--- 88,94 ----
+   */
+  struct sigblk {
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
+! 	Signal_t	(*sigvalues[NSIG])();
+  #endif
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigset_t	sigvalues,
+
+%%%% Applied.
+
+diff -rcN npasswd-2.0b4/src/options_h.SH npasswd-2.0b4.new/src/options_h.SH
+*** npasswd-2.0b4/src/options_h.SH	Thu Dec  5 18:01:28 1996
+--- npasswd-2.0b4.new/src/options_h.SH	Wed Jul  2 10:07:44 1997
+***************
+*** 31,37 ****
+  /*
+   * Items for npasswd
+   */
+! #define CONFIG_FILE "$privlibexp/passwd.conf"	/* Configuration file */
+  
+  #define CHFN_HELP "$privlibexp/chfn.help"	/* chfn help messsage */
+  #define CHFN_MOTD "$privlibexp/chfn.motd"	/* chfn intro message */
+--- 31,37 ----
+  /*
+   * Items for npasswd
+   */
+! #define CONFIG_FILE "/etc/passwd.conf"	/* Configuration file */
+  
+  #define CHFN_HELP "$privlibexp/chfn.help"	/* chfn help messsage */
+  #define CHFN_MOTD "$privlibexp/chfn.motd"	/* chfn intro message */
+
+%%%%% Nope.
+
+diff -rcN npasswd-2.0b4/src/passwd.c npasswd-2.0b4.new/src/passwd.c
+*** npasswd-2.0b4/src/passwd.c	Fri May 23 20:18:04 1997
+--- npasswd-2.0b4.new/src/passwd.c	Wed Jul  2 10:07:44 1997
+***************
+*** 248,253 ****
+--- 248,254 ----
+  			printf("Password incorrect.\n");
+  			if (ntries++ == PasswdMatchTries)
+  				die("Password not matched.\n");
++ 			sleep(1 << ntries);
+  			continue;
+  		}
+  		doit = 0;
+
+%%%% Nope.
+
+*** npasswd-2.0b4/src/PasswordCheck/cracklib/fascist.c	Wed May 28 22:26:54 1997
+--- npasswd-2.0b4.new/src/PasswordCheck/cracklib/fascist.c	Wed Jul 16 12:12:12 1997
+***************
+*** 27,34 ****
+      "]",
+      "[[",
+      "]]",
+-     "[[[",
+-     "]]]",
+  
+      "/?p@?p",			/* purging out punctuation/symbols/junk */
+      "/?s@?s",
+--- 27,32 ----
+***************
+*** 138,146 ****
+  
+  #define	EM_NAME		"it is based upon your user name"
+  #define	EM_PASSWD	"it is based upon your user information"
+! #define	EM_DICT		"it is based upon a dictionary word"
+  #define	EM_SSN		"it looks like a Social Security Number"
+! #define	EM_RDICT	EM_DICT
+  #define	EM_SIMPLE	"it is too simple"
+  /* #define	EM_NIN		"it looks like a National Insurance number" */
+  #define	EM_WHITESPC	"it is made up of all whitespace"
+--- 136,144 ----
+  
+  #define	EM_NAME		"it is based upon your user name"
+  #define	EM_PASSWD	"it is based upon your user information"
+! #define	EM_DICT		"it is based upon the dictionary word"
+  #define	EM_SSN		"it looks like a Social Security Number"
+! #define	EM_RDICT	"it is based upon the reversed dictionary word"
+  #define	EM_SIMPLE	"it is too simple"
+  /* #define	EM_NIN		"it looks like a National Insurance number" */
+  #define	EM_WHITESPC	"it is made up of all whitespace"
+***************
+*** 335,340 ****
+--- 333,339 ----
+      char rpassword[STRINGSIZE];
+      register char *password;
+      int32 notfound;
++ 	static char *message = NULL;
+  
+      notfound = PW_WORDS(pwp);
+      password = rpassword;
+***************
+*** 430,436 ****
+  	}
+  	if (FindPW(pwp, a) != notfound)
+  	{
+! 	    return (EM_DICT);
+  	}
+      }
+  
+--- 429,440 ----
+  	}
+  	if (FindPW(pwp, a) != notfound)
+  	{
+! 		if (message)
+! 			free(message);
+! 		if ((message = malloc(strlen(EM_DICT)+strlen(a)+10)) == NULL)
+! 			return (EM_DICT);
+! 		sprintf(message , "%s '%s'", EM_DICT, a);
+! 		return(message);
+  	}
+      }
+  
+***************
+*** 447,453 ****
+  
+  	if (FindPW(pwp, a) != notfound)
+  	{
+! 	    return (EM_RDICT);
+  	}
+      }
+  
+--- 451,462 ----
+  
+  	if (FindPW(pwp, a) != notfound)
+  	{
+! 		if (message)
+! 			free(message);
+! 		if ((message = malloc(strlen(EM_RDICT)+strlen(a)+10)) == NULL)
+! 			return (EM_RDICT);
+! 		sprintf(message , "%s '%s'", EM_RDICT, a);
+! 		return(message);
+  	}
+      }
+  
+***************
+*** 486,491 ****
+--- 495,501 ----
+  
+      rc = FascistLook(pwp, password);
+      (void) PWClose(pwp);
++ 	pwp = NULL;
+      return(rc);
+  }
+  /* End fascist.c */

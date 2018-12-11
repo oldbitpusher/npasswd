@@ -1,0 +1,21 @@
+?RCS:
+?RCS: @(#)p_sysinfo.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_sysinfo' - see if sysinfo routines exist
+?RCS:
+?MAKE:p_sysinfo: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_sysinfo
+?S:p_sysinfo:
+?S:    This variable is set to 'true' if the sysinfo and ungetrlimit 
+?S:	routines exist in libc.
+?S:.
+?C:HAS_SYSINFO:
+?C:	This symbol, if defined, indicates that the
+?C:	sysinfo and ugetrlimit routines can be used.
+?C:.
+?H:#$p_sysinfo	HAS_SYSINFO	/**/
+?H:.
+set sysinfo p_sysinfo
+eval "$inlibc"
+

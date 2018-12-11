@@ -1,0 +1,2718 @@
+h61320
+s 00021/00017/00545
+d D 1.24 99/11/03 16:24:10 clyde 24 23
+c Fix passwd and shadow file request loop
+e
+s 00014/00001/00548
+d D 1.23 99/07/26 10:39:28 clyde 23 22
+c Probe for sys/utsname.h
+e
+s 00002/00002/00547
+d D 1.22 98/12/10 11:14:22 clyde 22 21
+c Fix alternate passwd file read loop
+e
+s 00005/00000/00544
+d D 1.21 98/11/13 13:13:42 clyde 21 20
+c Look for /etc/nsswitch.conf and include file <nsswitch.h> before
+c enabling nsswitch support
+e
+s 00003/00001/00541
+d D 1.20 98/09/16 14:46:29 clyde 20 19
+c Set p_secure_rpc to undef if NIS not enabled
+e
+s 00001/00025/00541
+d D 1.19 98/07/20 15:24:48 clyde 19 18
+c Remove history db gid fetch
+e
+s 00009/00007/00557
+d D 1.18 98/07/16 14:50:17 clyde 18 17
+c Version 2 of history db gid fetch
+e
+s 00068/00023/00496
+d D 1.17 98/07/16 13:49:16 clyde 17 16
+c 1. Rename path variables
+c 2. Add history database gid variable
+e
+s 00001/00008/00518
+d D 1.16 98/07/15 11:20:36 clyde 16 15
+c Remove dictionary comment
+e
+s 00003/00018/00523
+d D 1.15 98/07/10 13:12:54 clyde 15 14
+c 1. Remove NIS history stub
+c 2. Remove choice of primary dictionary directory
+e
+s 00003/00000/00538
+d D 1.14 98/07/02 08:28:07 clyde 14 13
+c Fix buglet in system program find code
+e
+s 00068/00178/00470
+d D 1.13 98/06/25 10:29:53 clyde 13 12
+c Rip a lot of stuff out
+e
+s 00053/00138/00595
+d D 1.12 98/03/26 11:24:55 clyde 12 11
+c 1. Rewrite OS version detection block
+c 2. Remove some vars (shells file, passwd/shadow owner/mode) - moved to options.h 
+e
+s 00004/00004/00729
+d D 1.11 97/09/23 12:33:36 clyde 11 10
+c Change shadow method lookup
+e
+s 00022/00009/00711
+d D 1.10 97/09/22 15:23:19 clyde 10 9
+c 1. Get rid of PAGER_CMD (not used)
+c 2. Add AIX_AUTH for AIX shadow file support
+c 3. Fix some comments
+e
+s 00003/00001/00717
+d D 1.9 97/08/26 11:34:02 clyde 9 8
+c Fix setting of HAS_SECURE_RPC
+e
+s 00002/00001/00716
+d D 1.8 97/05/06 12:35:01 clyde 8 7
+c Fix setting of p_dbmpw and p_nispasswd
+e
+s 00002/00002/00715
+d D 1.7 97/05/05 17:05:52 clyde 7 6
+c Put evaled strings in ""
+e
+s 00049/00086/00668
+d D 1.6 97/04/14 10:46:41 clyde 6 5
+c 1. Reorder some declarations 
+c 2. Remove HTML document comments
+c 3. Change password age from weeks to days
+e
+s 00233/00192/00521
+d D 1.5 96/12/03 17:20:52 clyde 5 4
+c Major reword
+e
+s 00035/00023/00678
+d D 1.4 96/09/13 15:50:22 clyde 4 3
+c Rework password history options
+e
+s 00087/00054/00614
+d D 1.3 96/08/15 16:41:08 clyde 3 2
+c Much more munging
+e
+s 00168/00060/00500
+d D 1.2 96/08/15 15:03:57 clyde 2 1
+c Considerable changes
+e
+s 00560/00000/00000
+d D 1.1 95/04/05 16:09:41 clyde 1 0
+c date and time created 95/04/05 16:09:41 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G% (cc.utexas.edu)
+?RCS:
+D 12
+?X: 
+E 12
+I 12
+?X:
+E 12
+?X: %M%
+?X: 	The big enchilada of units - poke and sets lots of switches
+D 3
+?X: 	for use by the Makefile and define/undef for config.h
+E 3
+I 3
+?X: 	for use by Makefiles and define/undef for config.h
+E 3
+D 12
+?X: 
+E 12
+I 12
+?X:
+E 12
+D 3
+?MAKE:MyOptions p_passwd p_chfn p_chsh p_passwdfile p_shadowfile p_dbmpw \
+I 2
+	p_shells p_pwmode p_pwuid p_pwgid p_shmode p_shuid p_shgid \
+E 3
+I 3
+D 5
+?MAKE:MyOptions p_passwd p_chfn p_chsh p_keepdir \
+E 5
+I 5
+D 6
+?MAKE:MyOptions p_sysprogs p_keepdir p_libinstall p_ckpwinstall \
+E 5
+	p_passwdfile p_shadowfile p_dbmpw p_shells \
+E 6
+I 6
+D 13
+?MAKE:MyOptions p_sysprogs p_keepdir p_libinstall p_ckpwinstall p_dictlib \
+E 13
+I 13
+D 17
+?MAKE:MyOptions p_sysprogs p_keepdir p_dictlib \
+E 13
+D 12
+	p_replace p_passwdfile p_shadowfile p_dbmpw p_shells \
+E 6
+	p_pwmode p_pwuid p_pwgid p_shmode p_shuid p_shgid \
+E 12
+I 12
+	p_replace p_passwdfile p_shadowfile p_dbmpw \
+E 17
+I 17
+?MAKE:MyOptions p_installdir p_sysprogs p_keepdir p_dictionaries p_utildir \
+	p_docdir p_replace p_passwdfile p_shadowfile p_dbmpw p_history \
+E 17
+E 12
+E 3
+E 2
+D 6
+	p_nis p_secure_rpc p_nisplus p_netinfo p_hesiod p_kerberos \
+D 3
+	p_svcconf p_nsswitch p_shadow \
+	p_u4auth p_osf1auth \
+E 3
+I 3
+D 4
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth \
+E 3
+D 2
+	o_paranoid o_pager o_pwhSize o_pwhTime \
+	o_libinstall cc_tstflags o_histfile:\
+E 2
+I 2
+	o_paranoid o_pwhSize o_pwhTime \
+D 3
+	o_dictlib o_libinstall cc_tstflags o_histfile:\
+E 3
+I 3
+	o_dictlib o_libinstall cc_tstflags o_pwhFile:\
+E 4
+I 4
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth o_paranoid \
+	o_pwhDepth o_pwhAge o_pwhDB \
+D 5
+	o_dictlib o_libinstall cc_tstflags top_level:\
+E 4
+E 3
+E 2
+		cc_dbflags libexp more Getfile privlibexp \
+E 5
+I 5
+	p_dictlib cc_tstflags top_level:\
+E 6
+I 6
+D 13
+	p_nis p_secure_rpc p_nisplus p_nispasswd p_netinfo p_hesiod p_kerberos \
+E 13
+I 13
+	p_nis p_secure_rpc p_nisplus p_nispasswd p_hesiod p_kerberos \
+E 13
+D 10
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth \
+E 10
+I 10
+D 12
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth p_aixauth \
+E 10
+	o_paranoid o_pwhDepth o_pwhAge o_pwhDB cc_tstflags top_level:\
+E 12
+I 12
+	p_svcconf p_nsswitch p_shadow p_u4auth p_osf1auth p_aixauth p_hpuxauth \
+D 13
+	o_paranoid o_pwhDepth o_pwhAge o_pwhDB cc_tstflags top_level: \
+E 13
+I 13
+D 17
+	o_paranoid o_pwhDB top_level: \
+E 17
+I 17
+D 19
+	p_histgid p_paranoid top_level: \
+E 19
+I 19
+D 23
+	p_paranoid top_level: \
+E 23
+I 23
+	p_paranoid p_utsname top_level: \
+E 23
+E 19
+E 17
+E 13
+E 12
+E 6
+		cc_dbflags libexp more Getfile privlibexp myhostname \
+E 5
+D 2
+		Myread cat test Setvar package Inlibc Loc Findhdr
+E 2
+I 2
+D 12
+		Myread cat test Setvar package Inlibc Loc Findhdr orderlib
+E 12
+I 12
+		Myread cat test Setvar package Inlibc Loc Findhdr orderlib \
+D 17
+		p_osName p_osRev
+E 17
+I 17
+		p_osName p_osRev groupcat
+E 17
+E 12
+E 2
+?MAKE:	-pick add $@ %<
+?LINT:use
+I 17
+?S:p_installdir:
+?S:     Where to install npasswd.
+?S:.
+E 17
+D 5
+?S:p_passwd:
+?S:     This variable is set to a list of paths to the passwd command
+E 5
+I 5
+?S:p_sysprogs:
+D 13
+?S:     This variable is set to a list of paths to the system
+?S:	passwd/chfn/chsh commands
+E 13
+I 13
+?S:     Paths to the vendor passwd/chfn/chsh programs.
+E 13
+E 5
+?S:.
+D 5
+?S:p_chfn:
+?S:     This variable is set to a list of paths to the chfn command
+?S:.
+?S:p_chsh:
+?S:     This variable is set to a list of paths to the chsh command
+?S:.
+E 5
+I 3
+?S:p_keepdir:
+D 13
+?S:     This variable is set to the directory to keep the vendor
+?S:	passwd programs
+E 13
+I 13
+?S:     Where to save the vendor passwd/chfn/chsh programs.
+E 13
+?S:.
+I 6
+D 13
+?S:p_libinstall:
+?S:	This variable is set to the directory where checkpasswd lib
+?S:	should be installed.
+?S:.
+?S:p_ckpwinstall:
+?S:	This variable is set to the directory where the checkpasswd
+?S:	program should be installed.
+?S:.
+E 13
+D 17
+?S:p_dictlib:
+E 17
+I 17
+?S:p_dictionaries:
+E 17
+D 13
+?S:	This variable is set to the directory where the word lists should live.
+E 13
+I 13
+?S:	The default dictionary collection.
+E 13
+?S:.
+I 13
+D 17
+?S:o_pwhDB:
+E 17
+I 17
+?S:p_utildir:
+?S:	Path of the npasswd utility program directory.
+?S:.
+?S:p_docdir:
+?S:	Path of the npasswd documentation directory.
+?S:.
+?S:p_history:
+E 17
+?S:	Path of the default password history database.
+?S:.
+E 13
+E 6
+I 5
+?S:p_replace:
+D 13
+?S:     This variable is defined if system programs should be replaced
+E 13
+I 13
+?S:     Defined if the vendor passwd programs will be replaced.
+E 13
+?S:.
+E 5
+E 3
+?S:p_passwdfile:
+D 13
+?S:     This variable is set to the list of password files found
+E 13
+I 13
+?S:     List of password files found.
+E 13
+?S:.
+?S:p_shadowfile:
+D 13
+?S:     This variable is set to the list of shadow files found
+E 13
+I 13
+?S:     List of shadow files found.
+E 13
+?S:.
+?S:p_dbmpw:
+D 13
+?S:	This variable is true if the system uses hashed passwd DBM files
+E 13
+I 13
+?S:	Defined if the system supports DBM passwd files.
+E 13
+?S:.
+I 2
+D 12
+?S:p_shells:
+?S:	This variable is set to the name of the system list of blessed shells
+?S:.
+?S:p_pwmode:
+?S:	This variable is set to the mode of the password file
+?S:.
+?S:p_pwuid:
+?S:	This variable is set to the owner of the password file
+?S:.
+?S:p_pwgid:
+?S:	This variable is set to the group of the password file
+?S:.
+?S:p_shmode:
+?S:	This variable is set to the mode of the shadow file
+?S:.
+?S:p_shuid:
+?S:	This variable is set to the owner of the shadow file
+?S:.
+?S:p_shgid:
+?S:	This variable is set to the group of the shadow file
+?S:.
+E 12
+E 2
+D 6
+?S:p_shadow:
+?S:	This variable is set to the name of the module to include
+?S:	to support shadow passwords
+?S:.
+?S:p_osf1auth:
+?S:	This variable is true if DEC OSF/1 authority support is enabled
+?S:.
+?S:p_u4auth:
+?S:	This variable is true if Ultrix 4 authority support is enabled
+?S:.
+E 6
+?S:p_nis:
+D 13
+?S:	This variable is true if NIS support is enabled
+E 13
+I 13
+?S:	Defined if NIS support is enabled.
+E 13
+?S:.
+?S:p_secure_rpc:
+D 13
+?S:	This variable is true if SunOS 4 Secure RPC is present
+E 13
+I 13
+?S:	Defined if SunOS 4 Secure RPC is present.
+E 13
+?S:.
+?S:p_nisplus:
+D 13
+?S:	This variable is true if NIS+ support is enabled
+E 13
+I 13
+?S:	Defined if NIS+ is available.
+E 13
+?S:.
+I 6
+?S:p_nispasswd:
+D 13
+?S:	This variable is true if nispasswd RPC is available
+E 13
+I 13
+?S:	Defined if nispasswd RPC is available.
+E 13
+?S:.
+E 6
+D 13
+?S:p_netinfo:
+?S:	This variable is true if NetInfo support is enabled
+?S:.
+E 13
+?S:p_hesiod:
+D 13
+?S:	This variable is true if Hesiod support is enabled
+E 13
+I 13
+?S:	Defined if Hesiod support should be enabled.
+E 13
+?S:.
+?S:p_kerberos:
+D 13
+?S:	This variable is true if Kerebos support is enabled
+E 13
+I 13
+?S:	Defined if Kerberos support should be enabled.
+E 13
+?S:.
+?S:p_svcconf:
+D 13
+?S:	This variable is true if /etc/svc.conf exists
+E 13
+I 13
+?S:	Defined if /etc/svc.conf exists.
+E 13
+?S:.
+?S:p_nsswitch:
+D 13
+?S:	This variable is true if /etc/nsswitch.conf exists
+E 13
+I 13
+?S:	Defined if /etc/nsswitch.conf exists.
+E 13
+?S:.
+D 6
+?S:cc_tstflags:
+?S:	This variable is set to compilation options to build test version
+E 6
+I 6
+?S:p_shadow:
+D 13
+?S:	This variable is set to the name of the module to include
+?S:	to support shadow passwords
+E 13
+I 13
+?S:	Name of the shadow password method module.
+E 13
+E 6
+?S:.
+I 6
+?S:p_osf1auth:
+D 13
+?S:	This variable is true if DEC OSF/1 authority support is enabled
+E 13
+I 13
+?S:	Defined if DEC OSF/1 authority support should be enabled.
+E 13
+?S:.
+?S:p_u4auth:
+D 13
+?S:	This variable is true if Ultrix 4 authority support is enabled
+E 13
+I 13
+?S:	Defined if Ultrix 4 authority support should be enabled.
+E 13
+?S:.
+I 10
+?S:p_aixauth:
+D 13
+?S:	This variable is true if AIX authority support is enabled
+E 13
+I 13
+?S:	Defined if AIX authority support should be enabled.
+E 13
+?S:.
+I 12
+?S:p_hpuxauth:
+D 13
+?S:	This variable is true if HP/UX authority support is enabled
+E 13
+I 13
+?S:	Defined if HP/UX authority support should be enabled.
+E 13
+?S:.
+E 12
+E 10
+E 6
+D 17
+?S:o_paranoid:
+E 17
+I 17
+D 19
+?S:p_histgid:
+?S:	GID for the history database.
+?S:.
+E 19
+?S:p_paranoid:
+E 17
+D 13
+?S:	This variable is set if the "paranoid" user check is enabled
+E 13
+I 13
+?S:	Defined if the "paranoid user check" should be enabled.
+E 13
+?S:.
+I 23
+?S:p_utsname:
+?S:	Defined if <sys/utsname.h> is available
+?S:.
+E 23
+D 2
+?S:o_pager:
+?S:	This variable is set to the command to page help files
+?S:.
+E 2
+D 4
+?S:o_pwhSize:
+?S:	This variable is set the 'size' of a users' password history
+E 4
+I 4
+D 13
+?S:o_pwhDepth:
+?S:	This variable is the number of passwords kept in the history
+E 4
+?S:.
+D 4
+?S:o_pwhTime:
+E 4
+I 4
+?S:o_pwhAge:
+E 4
+?S:	This variable is set to how old passwords can be in the history
+?S:.
+D 4
+?S:o_libinstall:
+?S:	This variable is true if the checkpasswd library should be installed.
+?S:.
+D 3
+?S:o_histfile:
+E 3
+I 3
+?S:o_pwhFile:
+E 4
+I 4
+?S:o_pwhDB:
+E 4
+E 3
+?S:	This variable is set to the path of the password history file.
+?S:.
+I 2
+D 5
+?S:o_dictlib:
+E 5
+I 5
+D 6
+?S:p_dictlib:
+E 5
+?S:	This variable is set to the directory where the word lists should live.
+E 6
+I 6
+?S:cc_tstflags:
+?S:	This variable is set to compilation options to build test version
+E 6
+?S:.
+E 13
+I 4
+D 5
+?S:o_libinstall:
+?S:	This variable is true if the checkpasswd library should be installed.
+E 5
+I 5
+D 6
+?S:p_libinstall:
+?S:	This variable is set to the directory where checkpasswd lib
+?S:	should be installed.
+E 5
+?S:.
+I 5
+?S:p_ckpwinstall:
+?S:	This variable is set to the directory where the checkpasswd
+?S:	program should be installed.
+?S:.
+E 6
+E 5
+?S:top_level:
+D 13
+?S:	This variable is set to the top level directory of the build area.
+E 13
+I 13
+?S:	Top level directory of the build area.
+E 13
+?S:.
+I 13
+?X: -------------------------------------------------------------------
+?X: C symbols
+?X: -------------------------------------------------------------------
+E 13
+E 4
+E 2
+?C:DBM_PASSWD:
+D 13
+?C:	This variable is defined if the system uses hashed passwd DBM files.
+E 13
+I 13
+?C:	Enable support for DBM passwd files.
+E 13
+?C:.
+I 2
+D 12
+?C:SHELLS_FILE:
+?C:	This variable is set to the system shells file.
+?C:.
+?C:PASSWD_UID:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+?C:PASSWD_GID:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+?C:PASSWD_MODE:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+?C:SHADOW_UID:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+?C:SHADOW_GID:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+?C:SHADOW_MODE:
+?C:	This variable is set to the uid that owns the passwd file.
+?C:.
+E 12
+E 2
+?C:USE_NIS:
+D 13
+?C:	This symbol turns on NIS (YP) support.
+E 13
+I 13
+?C:	Enable NIS (YP) support.
+E 13
+?C:.
+?C:SECURE_RPC:
+D 13
+?C:	This symbol turns on secure RPC support.
+E 13
+I 13
+?C:	Enable secure RPC support.
+E 13
+?C:.
+?C:USE_NISPLUS:
+D 13
+?C:	This symbol turns on NIS+ (NIS version 3) support.
+E 13
+I 13
+?C:	Enable NIS+ support.
+E 13
+?C:.
+I 6
+?C:HAS_NISPASSWD:
+D 13
+?C:	Use nispasswd interface for changes (Solaris 2.5)
+E 13
+I 13
+?C:	Use nispasswd interface for changes (Solaris 2.5 *Not Yet Implimented*)
+E 13
+?C:.
+E 6
+D 13
+?C:USE_NETINFO:
+?C:	This symbol turns on NetInfo support.
+?C:.
+E 13
+?C:USE_HESIOD:
+D 13
+?C:	This symbol turns on Hesiod support.
+E 13
+I 13
+?C:	Enable Hesiod support.
+E 13
+?C:.
+?C:USE_KERBEROS:
+D 13
+?C:	This symbol turns on Kerebos support.
+E 13
+I 13
+?C:	Enable Kerebos support.
+E 13
+?C:.
+D 2
+?C:HAS_SVC_CONF:
+E 2
+I 2
+?C:HAS_SVCCONF:
+E 2
+D 13
+?C:	This symbol indicates the presense of /etc/svc.conf
+E 13
+I 13
+?C:	This symbol indicates the presence of /etc/svc.conf
+E 13
+?C:.
+?C:HAS_NSSWITCH:
+D 13
+?C:	This symbol indicates the presense of /etc/nsswitch.conf
+E 13
+I 13
+?C:	This symbol indicates the presence of /etc/nsswitch.conf
+E 13
+?C:.
+D 13
+?C:PARANOID:
+?C:	This symbol, if defined activates the "paranoid" checking option.
+E 13
+I 13
+?C:PARANOID_UIDCHECK:
+?C:	Enables "paranoid user checking" option.
+E 13
+?C:.
+D 10
+?C:PAGER_CMD:
+D 2
+?C:	This symbol containst the command to use for paging help files
+E 2
+I 2
+?C:	This symbol contains the command to use for paging help files
+E 2
+?C:.
+E 10
+?C:OSF1_AUTH:
+D 2
+?C:	This symbol containst the command to use for paging help files
+E 2
+I 2
+D 10
+?C:	This symbol contains the command to use for paging help files
+E 10
+I 10
+D 13
+?C:	Enable OSF/1 (Digital UNIX) auth support.
+E 13
+I 13
+?C:	Enables OSF/1 (Digital UNIX) auth support.
+E 13
+E 10
+E 2
+?C:.
+?C:ULTRIX_AUTH:
+D 2
+?C:	This symbol containst the command to use for paging help files
+E 2
+I 2
+D 10
+?C:	This symbol contains the command to use for paging help files
+E 10
+I 10
+D 13
+?C:	Enable Ultrix 4 auth support.
+E 13
+I 13
+?C:	Enables Ultrix 4 auth support.
+E 13
+E 10
+E 2
+?C:.
+I 10
+?C:AIX_AUTH:
+D 13
+?C:	Enable AIX auth support.
+E 13
+I 13
+?C:	Enables AIX auth support.
+E 13
+?C:.
+I 12
+?C:HPUX_AUTH:
+D 13
+?C:	Enable HP/UX auth support.
+E 13
+I 13
+?C:	Enables HP/UX auth support.
+E 13
+?C:.
+E 12
+E 10
+I 2
+?C:PASSWD_DICTIONARIES:
+D 10
+?C:	This symbol contains the path to the dictionaries
+E 10
+I 10
+D 13
+?C:	This symbol contains the path to the dictionaries.
+E 13
+I 13
+?C:	Path to default dictionary collection.
+E 13
+E 10
+?C:.
+D 4
+?C:PASSWD_HISTORY_FILE:
+?C:	This symbol contains name of the history file
+E 4
+I 4
+?C:PASSWD_HISTORY_DB:
+D 10
+?C:	This symbol contains the name of the history database
+E 10
+I 10
+D 13
+?C:	This symbol contains the name of the history database.
+E 13
+I 13
+D 17
+?C:	Path to the default history database.
+E 17
+I 17
+?C:	Path to the history database.
+E 17
+E 13
+E 10
+E 4
+?C:.
+I 17
+?C:PASSWD_HISTORY_GID:
+?C:	GID of the history database.
+?C:.
+I 23
+?C:HAS_UTSNAME_H:
+?C:	Defined if <sys/utsname.h> is available
+?C:.
+?H:#$p_utsname	HAS_UTSNAME_H	/**/
+E 23
+E 17
+I 4
+D 13
+?C:PASSWORD_HISTORY_AGE:
+D 10
+?C:	This symbol contains the default password history age
+E 10
+I 10
+?C:	This symbol contains the default password history age.
+E 10
+?C:.
+?C:PASSWORD_HISTORY_DEPTH:
+?C:	This symbol contains the default password history depth
+?C:.
+E 13
+E 4
+E 2
+?H:#$p_nis	USE_NIS		/**/
+?H:#$p_nisplus	USE_NISPLUS	/**/
+I 6
+?H:#$p_nispasswd	HAS_NISPASSWD	/**/
+E 6
+D 13
+?H:#$p_netinfo	USE_NETINFO	/**/
+E 13
+?H:#$p_hesiod	USE_HESIOD	/**/
+?H:#$p_kerberos	USE_KERBEROS	/**/
+D 2
+?H:#$p_svcconf	HAS_SVC_CONF	/**/
+E 2
+I 2
+?H:#$p_svcconf	HAS_SVCCONF	/**/
+E 2
+?H:#$p_nsswitch	HAS_NSSWITCH	/**/
+?H:#$p_dbmpw 	DBM_PASSWD	/**/
+?H:#$p_osf1auth OSF1_AUTH	/**/
+?H:#$p_u4auth 	ULTRIX_AUTH	/**/
+I 10
+?H:#$p_aixauth 	AIX_AUTH	/**/
+I 12
+?H:#$p_hpuxauth	HPUX_AUTH	/**/
+E 12
+E 10
+D 13
+?H:#$o_paranoid	PARANOID 	/**/
+E 13
+?H:#$p_secure_rpc SECURE_RPC	/**/
+I 13
+D 17
+?H:#$o_paranoid	PARANOID_UIDCHECK 	/**/
+E 13
+D 2
+?H:#define	PAGER_CMD "$o_pager"	/**/
+E 2
+I 2
+D 4
+?H:#define	PASSWD_DICTIONARIES "$o_dictlib"	/**/
+D 3
+?H:#define	PASSWD_HISTORY_FILE "$o_histfile"	/**/
+E 3
+I 3
+?H:#define	PASSWD_HISTORY_FILE "$o_pwhFile"	/**/
+E 4
+E 3
+D 12
+?H:#define	PASSWD_UID $p_pwuid	/**/
+?H:#define	PASSWD_GID $p_pwgid	/**/
+?H:#define	PASSWD_MODE $p_pwmode	/**/
+?H:#define	SHADOW_UID $p_shuid	/**/
+?H:#define	SHADOW_GID $p_shgid	/**/
+?H:#define	SHADOW_MODE $p_shmode	/**/
+?H:#define	SHELLS_FILE "$p_shells"	/**/
+E 12
+I 4
+D 5
+?H:#define	PASSWD_DICTIONARIES "$o_dictlib"	/**/
+E 5
+I 5
+?H:#define	PASSWD_DICTIONARIES "$p_dictlib"	/**/
+E 5
+D 13
+?H:#define	PASSWORD_HISTORY_DEPTH $o_pwhDepth	/**/
+?H:#define	PASSWORD_HISTORY_AGE $o_pwhAge	/**/
+E 13
+?H:#define	PASSWORD_HISTORY_DB "$o_pwhDB"	/**/
+E 17
+I 17
+?H:#$p_paranoid	PARANOID_UIDCHECK 	/**/
+?H:#define	PASSWD_DICTIONARIES "$p_dictionaries"	/**/
+?H:#define	PASSWORD_HISTORY_DB "$p_history"	/**/
+D 19
+?H:#define	PASSWORD_HISTORY_GID $p_histgid		/**/
+E 19
+E 17
+E 4
+E 2
+?H:.
+?T:lookfor d l t
+
+I 17
+: Set install dir to full library directory path
+p_installdir="$privlibexp"
+
+: Set default dictionary path
+p_dictionaries="$p_installdir/dictionaries"
+
+: Set utilty directory path
+p_utildir="$p_installdir/bin"
+
+: Set saved program directory path
+p_keepdir="$p_installdir/system"
+
+: Set saved doc directory path
+p_docdir="$p_installdir/doc"
+
+: Remember where this is taking place
+top_level=`cd ..;pwd`
+
+I 23
+echo ' '
+t=`./findhdr sys/utsname.h`
+if $test -n "$t"; then
+	p_utsname="$define"
+	echo '### System has <sys/utsname.h>'
+fi
+E 23
+E 17
+D 5
+echo ' '
+echo '***** Looking at system administration configuration *****'
+echo ' '
+E 5
+I 5
+D 6
+cat <<EOF
+E 5
+
+I 2
+D 3
+p_shells=/etc/shells
+E 3
+D 5
+
+E 5
+I 5
+---------------------------------------------------
+Reference:   ../doc/Configuration.html#shadow
+---------------------------------------------------
+EOF
+E 6
+E 5
+E 2
+?X:
+?X: Does this system use System 5 shadow files?
+?X:
+p_shadow=''
+t=`./findhdr shadow.h`
+if $test -n "$t"; then
+D 5
+	echo 'Including support for System 5 shadow passwords' >& 4
+E 5
+I 5
+	echo '### Including support for System 5 shadow passwords' >& 4
+E 5
+	p_shadow='shm_shadow'
+fi
+?X:
+D 12
+?X: Does this system use SunOS 4 adjunct files?
+E 12
+I 12
+?X: Do some OS-specific checks
+E 12
+?X:
+D 12
+t=`./findhdr pwdadj.h`
+D 11
+if $test -n "$t"; then
+E 11
+I 11
+if $test -z "$p_shadow" -a -n "$t"; then
+E 11
+D 5
+	echo 'Including support for SunOS 4 adjunct passwords' >& 4
+E 5
+I 5
+	echo '### Including support for SunOS 4 adjunct passwords' >& 4
+E 5
+	p_shadow='shm_adjunct'
+fi
+?X:
+D 5
+?X: Does this system use an auxillary authentication database?
+E 5
+I 5
+?X: OSF/1 flavor auth database
+E 5
+?X:
+E 12
+p_osf1auth=$undef
+D 11
+if $test -n "`./findhdr sia.h`" ; then
+E 11
+I 11
+D 12
+if $test -z "$p_shadow" -a -n "`./findhdr sia.h`" ; then
+E 11
+D 5
+	echo 'Including support for OSF/1 Security Integration Architecture' >& 4
+E 5
+I 5
+	echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+E 5
+	p_shadow='shm_osf1';
+	p_osf1auth=$define
+fi
+D 5
+
+E 5
+I 5
+?X:
+?X: Ultrix flavor auth database
+?X:
+E 12
+E 5
+p_u4auth=$undef
+D 11
+if $test -n "`./findhdr auth.h`"; then
+E 11
+I 11
+D 12
+if $test -z "$p_shadow" -a -n "`./findhdr auth.h`"; then
+E 11
+D 5
+	echo 'Including support for Ultrix 4 auth' >& 4
+E 5
+I 5
+	echo '### Including support for Ultrix 4 auth' >& 4
+E 5
+	p_shadow='shm_ultrix';
+	p_u4auth=$define
+fi
+I 10
+?X:
+?X: AIX flavor auth database
+?X:
+E 12
+I 12
+p_hpuxauth=$undef
+E 12
+p_aixauth=$undef
+D 11
+if $test -n "`./findhdr userpw.h`"; then
+E 11
+I 11
+D 12
+if $test -z "$p_shadow" -a -n "`./findhdr userpw.h`"; then
+E 11
+	echo '### Including support for AIX auth' >& 4
+	p_shadow='shm_aix';
+	p_aixauth=$define
+fi
+E 12
+E 10
+
+I 12
+case "${p_osName}_${p_osRev}" in
+	sunos_4*)
+		if $test -n "`./findhdr pwdadj.h`"; then
+			echo '### Including support for SunOS 4 adjunct passwords' >& 4
+			p_shadow='shm_adjunct'
+		fi
+		;;
+	dec_osf*)
+		if $test -n "`./findhdr sia.h`" ; then
+			echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+			p_shadow='shm_osf1';
+			p_osf1auth=$define
+		fi
+		;;
+	ultrix_4*)
+		if $test -n "`./findhdr auth.h`"; then
+			echo '### Including support for Ultrix 4 auth' >& 4
+			p_shadow='shm_ultrix';
+			p_u4auth=$define
+		fi
+		;;
+	hp*ux*)
+		if $test -n "`./findhdr prot.h`" ; then
+			echo '### Including support for HP-UX trusted host' >& 4
+			p_shadow='shm_hpux'
+			p_hpuxauth=$define
+		fi
+		;;
+	aix*)
+		if $test -n "`./findhdr userpw.h`"; then
+			echo '### Including support for AIX auth' >& 4
+			p_shadow='shm_aix';
+			p_aixauth=$define
+		fi
+		;;
+esac
+
+E 12
+D 5
+echo ' '
+echo '***** Looking for password and shadow files ***** '
+echo ' '
+E 5
+I 5
+D 6
+cat <<EOF
+E 5
+
+I 5
+---------------------------------------------------
+Reference:   ../doc/Configuration.html#files
+---------------------------------------------------
+EOF
+
+E 6
+E 5
+p_passwdfile=''
+for d in /etc /var/yp/src ; do
+	$test ! -d $d && continue
+	$test -f $d/passwd && p_passwdfile="$p_passwdfile $d/passwd"
+done
+echo ' '
+D 5
+echo "Found passwd files [$p_passwdfile]"
+E 5
+I 5
+echo '### Found passwd files '
+for t in $p_passwdfile; do
+	echo "   \"$t\""
+done
+echo ' '
+E 5
+rp='Change passwd file list?'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	ans=y ;;
+esac
+if $test "$ans" = y; then
+D 5
+	rp='Enter password file names seperated by spaces'
+	dflt="$p_passwdfile"
+	. ./myread
+E 5
+I 5
+D 24
+	echo 'Enter passwd file names, end with blank line'
+E 24
+I 24
+	echo 'Enter passwd file names, end with a line with only "."'
+E 24
+E 5
+	d=''
+D 5
+	for l in $ans; do
+		if $test ! -f $l ; then
+			echo "Passwd file \"$l\" does not exist"
+			continue
+		fi
+		case $l in
+E 5
+I 5
+	while true; do
+		rp='Passwd file: '
+D 22
+		dflt=''
+E 22
+I 22
+D 24
+		dflt='-'
+E 24
+I 24
+		dflt=''
+E 24
+E 22
+		. ./myread
+		case $ans in
+E 5
+		/*)	;;
+D 5
+		*)	echo 'Filename must start with /'
+E 5
+I 5
+D 22
+		"")	break
+E 22
+I 22
+D 24
+		'-')	break
+E 24
+I 24
+                -)      continue ;;
+		.)	break
+E 24
+E 22
+			;;
+		*)	echo 'File name must start with /'
+E 5
+			continue
+			;;
+		esac
+D 5
+		d="$d $l"
+E 5
+I 5
+		if $test ! -f $ans ; then
+			echo "No such file \"$ans\""
+			continue
+		fi
+		d="$d $ans"
+E 5
+	done
+	$test -n "$d" && p_passwdfile=$d
+	echo ' '
+D 5
+	echo "Passwd file list now: $p_passwdfile"
+E 5
+I 5
+	echo "### Passwd file list now: $p_passwdfile"
+E 5
+fi
+?X:
+I 2
+D 12
+?X: Check for the uid, gid and owner of the password file
+?X:
+D 5
+echo ' '
+D 3
+?X: # ASK if an non-standard UID/GID is used
+rp='Does this system have non-standard ownership or mode for the password file'
+ls -l $p_passwdfile
+dflt='n'
+# Set default values for these vars first
+E 3
+I 3
+
+?X:
+?X: Check if passwd file has strange ownership or mode
+?X:
+E 5
+E 3
+p_pwuid=0
+p_pwgid=0
+p_pwmode=0444
+
+p_shuid=0
+p_shgid=0
+p_shmode=0400
+
+I 3
+D 5
+rp='Do these password files have non-standard ownership or mode?'
+ls -l $p_passwdfile
+dflt='n'
+E 3
+. ./myread
+case "$ans" in
+	Y*|y*)	rp='What is the uid for the password file'
+		dflt='0'
+		. ./myread
+		case "$ans" in
+			[0-9]*) p_pwuid=$ans ;;
+			*) 	p_pwuid=0 ;;
+		esac
+		rp='What is the gid for the password file'
+		dflt='0'
+		. ./myread
+		case "$ans" in
+			[0-9]*) p_pwgid=$ans ;;
+			*) 	p_pwgid=0 ;;
+		esac
+		while true; do
+			rp='What is the mode for the password file'
+			dflt='0444'
+			. ./myread
+			case "$ans" in
+				0[0-6][0-6][0-6]) p_pwmode=$ans ;;
+				"") 	p_pwmode='0444' ;;
+				*) 	echo File mode wrong 
+					continue ;;
+			esac
+			break
+		done
+		;;
+esac
+E 5
+I 5
+?X:echo ' '
+?X:rp='Do these passwd files have non-standard ownership or mode?'
+?X:ls -l $p_passwdfile
+?X:dflt='n'
+?X:. ./myread
+?X:case "$ans" in
+?X:	Y*|y*)	rp='What is the uid for the password file'
+?X:		dflt='0'
+?X:		. ./myread
+?X:		case "$ans" in
+?X:			[0-9]*) p_pwuid=$ans ;;
+?X:			*) 	p_pwuid=0 ;;
+?X:		esac
+?X:		rp='What is the gid for the password file'
+?X:		dflt='0'
+?X:		. ./myread
+?X:		case "$ans" in
+?X:			[0-9]*) p_pwgid=$ans ;;
+?X:			*) 	p_pwgid=0 ;;
+?X:		esac
+?X:		while true; do
+?X:			rp='What is the mode for the password file'
+?X:			dflt='0444'
+?X:			. ./myread
+?X:			case "$ans" in
+?X:				0[0-6][0-6][0-6]) p_pwmode=$ans ;;
+?X:				"") 	p_pwmode='0444' ;;
+?X:				*) 	echo File mode wrong 
+?X:					continue ;;
+?X:			esac
+?X:			break
+?X:		done
+?X:		;;
+?X:esac
+E 5
+
+?X:
+E 12
+E 2
+?X: See if this system uses DBM lookaside files
+?X:
+D 5
+p_dbmpw="$undef"
+for t in $p_passwdfile; do
+	$test -f ${t}.dir -a -f ${t}.pag && p_dbmpw="$define"
+done
+if $test "$p_dbmpw" = "$define"; then
+	echo 'It looks like this system has DBM lookaside files' >&4
+E 5
+I 5
+p_dbmpw=`./loc mkpasswd "" $pth`
+if $test -n "$p_dbmpw"; then
+	echo ' '
+	echo '### Including support for DBM lookaside files'
+	echo ' '
+I 8
+	p_dbmpw="$define"
+E 8
+else
+	p_dbmpw="$undef"
+E 5
+fi
+D 5
+
+E 5
+?X:
+?X: Look for shadow files
+?X:
+p_shadowfile=''
+for d in /etc /etc/security ; do
+	$test ! -d $d && continue
+	t=`(cd $d) >/dev/null 2>&1`
+	if $test -n "$t"; then
+		echo ' '
+		echo $t
+		ls -ld $d
+D 5
+		echo 'I strongly suggest you re-run $0 as root'
+E 5
+I 5
+		echo "I strongly suggest you re-run $0 as root"
+E 5
+		echo "so that the directory \"$d\" can be examined"
+		echo ' '
+	fi
+	for t in shadow passwd passwd.adjunct; do
+		$test -f $d/$t && p_shadowfile="$p_shadowfile $d/$t"
+	done
+done
+p_shadowfile=`echo $p_shadowfile | sed 's@/etc/passwd@@'`
+D 2
+echo "Found shadow files [$p_shadowfile]"	>&4
+E 2
+I 2
+D 5
+if [ -z "$p_shadowfile" ]; then
+	echo ""				>&4
+	echo "No shadow files found"	>&4
+else
+	echo ""				>&4
+	echo "Found shadow files [$p_shadowfile]"	>&4
+fi
+E 5
+I 5
+echo '### Found shadow files '
+for t in $p_shadowfile; do
+	echo "    \"$t\""
+done
+E 5
+E 2
+rp='Change shadow file list?'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	ans=y ;;
+esac
+if $test "$ans" = y; then
+D 24
+	rp='Enter shadow file names seperated by spaces'
+	dflt=$p_shadowfile
+	. ./myread
+E 24
+I 24
+	rp='Enter shadow file names, end with a line with only "."'
+E 24
+	d=''
+D 24
+	for l in $ans; do
+		if $test ! -f $l ; then
+			echo "Shadow file \"$l\" does not exist"
+			continue;
+		fi
+		case $l in
+E 24
+I 24
+        while true; do
+		rp='Shadow file: '
+		dflt=''
+		. ./myread
+		case $ans in
+E 24
+		/*)	;;
+D 24
+		*)	echo 'Filename must start with /'
+			continue
+E 24
+I 24
+                -)      continue ;;
+		.)	break
+E 24
+			;;
+D 24
+		esac
+		d="$d $l"
+E 24
+I 24
+		*)	echo 'File name must start with /'
+                        continue
+                        ;;
+                esac
+		if $test ! -f $ans ; then
+			echo "Shadow file \"$ans\" does not exist"
+			continue;
+		fi
+		d="$d $ans"
+E 24
+	done
+	$test -n "$d" && p_shadowfile=$d
+	echo ' '
+	echo "Shadow file list now: $p_shadowfile"
+fi
+
+I 2
+D 24
+
+E 24
+D 3
+### Find /etc/shells XXX
+E 3
+I 3
+?X:
+D 12
+?X: Look for system shells file
+?X: Hard code this for now
+?X:
+p_shells=/etc/shells
+E 3
+
+E 2
+D 5
+echo ' '
+echo '***** Looking for information services *****'
+echo ' '
+E 5
+I 5
+D 6
+cat <<EOF
+
+---------------------------------------------------
+Reference:   ../doc/Install.html#info_services
+---------------------------------------------------
+EOF
+
+E 6
+E 5
+?X:
+E 12
+?X: Check to see if there is a service selection configuration
+?X:	(nsswitch.conf and svc.conf are recognized)
+?X: 
+p_svcconf="$undef"
+if $test -f /etc/svc.conf ; then
+D 5
+	echo ' '
+	echo 'It looks like this system uses /etc/svc.conf'
+	echo ' '
+E 5
+I 5
+	echo '### This system uses /etc/svc.conf'
+E 5
+fi
+
+p_nsswitch="$undef"
+if $test -f /etc/nsswitch.conf ; then
+D 5
+	echo ' '
+	echo 'It looks like this system uses /etc/nsswitch.conf'
+	echo ' '
+E 5
+I 5
+	echo '### This system uses /etc/nsswitch.conf'
+E 5
+	p_nsswitch="$define"
+I 21
+	if $test -z "`./findhdr nsswitch.h`"; then
+		echo '### But does not have the nsswitch.h include'
+		echo '### so nsswitch support is disabled'
+		p_nsswitch="$undef"
+	fi
+E 21
+fi
+
+?X: Sanity check
+if $test "$p_svcconf" = $define -a "$p_nsswitch" = $define; then
+	echo ' '
+	echo 'Hmm. This system thinks it has both /etc/svc.conf' >&4
+	echo "and /etc/nsswitch.conf.  That can\'t be right!" >&4
+	echo ' '
+	exit 1
+fi
+echo ' '
+
+set yp_get_default_domain t
+D 7
+eval $inlibc
+E 7
+I 7
+eval "$inlibc"
+E 7
+D 6
+if $test -n "$t"; then
+E 6
+I 6
+if $test "$t" = "$define"; then
+E 6
+	echo ' '
+D 5
+	echo 'It looks like this system has NIS (YP).'
+E 5
+I 5
+	echo '### This system has NIS (YP).'
+E 5
+	echo ' '
+	rp='Do you want to include NIS support?'
+	dflt='y'
+	. ./myread
+	case "$ans" in
+	y*|Y*)	p_nis="$define"
+		: See if secure RPC is available
+		set issecure p_secure_rpc
+D 7
+		eval $inlibc
+E 7
+I 7
+		eval "$inlibc"
+E 7
+		if $test "$p_secure_rpc" = "$define"; then
+D 5
+			echo 'It looks like this system has Secure RPC'
+E 5
+I 5
+			echo '### This system has Secure RPC'
+I 9
+		else
+			p_secure_rpc="$undef"
+E 9
+E 5
+		fi
+		;;
+D 20
+	n*|N*)	p_nis="$undef" ;;
+E 20
+I 20
+	n*|N*)	p_nis="$undef"
+		p_secure_rpc="$undef"
+		 ;;
+E 20
+	esac
+else
+	p_nis="$undef"
+	p_secure_rpc="$undef"
+fi
+
+I 8
+p_nispasswd="$undef"
+E 8
+if $test -n "`./findhdr rpcsvc/nis.h`"; then
+I 6
+D 8
+	p_nispasswd="$undef"
+E 8
+E 6
+	echo ' '
+D 5
+	echo 'It looks like this system has NIS+.'
+E 5
+I 5
+	echo '### It looks like this system has NIS+.'
+E 5
+	echo ' '
+	rp='Do you want to include NIS+ support?'
+	dflt='n'
+	. ./myread
+	case "$ans" in
+D 6
+	y*|Y*)	p_nisplus="$define" ;;
+E 6
+I 6
+	y*|Y*)	p_nisplus="$define"
+		if $test -n "`./findhdr rpcsvc/nispasswd.h`"; then
+			p_nispasswd="$define"
+			echo '### Will use nispasswd RPC.'
+		fi
+	;;
+E 6
+	n*|N*)	p_nisplus="$undef" ;;
+	esac
+else
+	p_nisplus="$undef"
+fi
+
+D 13
+p_netinfo="$undef"
+if $test -f /usr/etc/nibindd; then
+	echo ' '
+D 5
+	echo 'It looks like this system has NetInfo.'
+E 5
+I 5
+	echo '### It looks like this system has NetInfo.'
+E 5
+	echo ' '
+	rp='Do you want to include NetInfo support?'
+	dflt=y
+	. ./myread
+	case "$ans" in
+	y*|Y*) p_netinfo="$define" ;;
+	n*|N*) p_netinfo="$undef" ;;
+	esac
+fi
+
+E 13
+D 2
+set p_hesiod="$undef"		# Not yet
+set p_kerberos="$undef"		# Not yet
+E 2
+I 2
+p_hesiod="$undef"		# Not yet
+p_kerberos="$undef"		# Not yet
+E 2
+
+I 3
+cat <<EOF
+
+D 5
+***** Select $package install options *****
+E 5
+I 5
+D 6
+---------------------------------------------------
+Reference:   ../doc/Install.html#replace
+---------------------------------------------------
+E 5
+
+E 6
+There are some functions that $package cannot perform, or
+D 5
+are best done by the vendor supplied "passwd" program.
+E 5
+I 5
+are best done by the vendor passwd/chfn/chsh programs.
+E 5
+
+D 5
+The standard passwd/chfn/chsh programs may retained for these
+purposes and moved to a restricted access area.
+E 5
+I 5
+These will be moved to a restricted access area if
+you choose the "replace system programs" option.
+E 5
+
+D 5
+Reference: ../doc/Install.html
+
+E 5
+EOF
+
+D 5
+rp='Do you want to replace the system passwd programs?'
+E 5
+I 5
+p_replace=$undef
+D 17
+p_keepdir=''
+E 17
+rp='Replace system programs?'
+E 5
+dflt='y'
+. ./myread
+D 5
+if $test "$ans" = "y"; then
+	rp='Where do you want to put the vendor passwd programs'
+	dflt="$privlibexp/bin"
+	fn='f/'
+	. ./getfile
+	o_keepdir="$ansexp"
+fi
+E 5
+I 5
+case "$ans" in
+	y*|Y*)	p_replace=$define
+D 17
+		p_keepdir="$privlibexp/xbin"
+E 17
+		;;
+esac
+E 5
+
+E 3
+D 5
+echo ' '
+D 3
+echo '***** Looking for passwd programs ****'
+E 3
+I 3
+echo 'Looking for passwd programs' 
+E 3
+echo ' '
+E 5
+?X:
+D 3
+?X: Find password data modification programs.
+E 3
+I 3
+?X: Find password modification programs.
+E 3
+?X:
+?X: Cannot use "loc" here because I need a list of ALL occurances of these
+?X: programs, not just the first.  The "ls" tricks below are used because
+?X: we're not assured of having a version of "test" that can detect
+?X: executables files and symbolic links.  But I trust that "ls" will provide
+?X: that information.
+?X:
+D 2
+lookfor='passwd chfn chsh yppasswd ypchfn ypchsh'
+$test $p_nisplus = $define && lookfor="$lookfor nispasswd"
+E 2
+I 2
+D 5
+lookfor='passwd chfn chsh yppasswd ypchfn ypchsh nispasswd'
+?X: $test $p_nisplus = $define && lookfor="$lookfor nispasswd"
+E 5
+I 5
+D 6
+lookfor='passwd chfn chsh yppasswd ypchfn ypchsh'
+$test $p_nisplus = $define && lookfor="$lookfor nispasswd"
+E 6
+I 6
+lookfor='passwd chfn chsh yppasswd ypchfn ypchsh nispasswd'
+E 6
+E 5
+E 2
+
+for d in $pth; do
+I 14
+	if $test ! -d $d; then
+		continue
+	fi
+E 14
+        case "`ls -ld $d`" in
+                l*)     continue ;;	# Ignore directories which are symlinks
+        esac
+	for l in $lookfor; do
+		$test ! -f $d/$l && continue
+D 5
+		case "`ls -l $d/$l`" in
+		*rw-* | *r--*) continue;;	# Not an executable
+		esac
+		case "$l" in
+		*chsh*)		p_chsh="$p_chsh $d/$l" ;;
+		*chfn*)		p_chfn="$p_chfn $d/$l" ;;
+		*passwd*)	p_passwd="$p_passwd $d/$l" ;;
+		esac
+E 5
+I 5
+		if $test -z "`ls -l $d/$l | awk '{print $1}' | tr -cd 'x\012'`"; then
+			continue	# Not an executable (no 'x' in mode)
+		fi
+		p_sysprogs="$p_sysprogs $d/$l"
+E 5
+	done
+done
+echo ' '
+D 5
+p_passwd=`echo $p_passwd | tr ' ' '\012' | sort | uniq | tr '\012' ' '`
+echo Found passwd as: $p_passwd >&4
+E 5
+I 5
+p_sysprogs=`echo $p_sysprogs | tr ' ' '\012' | sort | uniq | tr '\012' ' '`
+E 5
+
+D 5
+p_chfn=`echo $p_chfn | tr ' ' '\012' | sort | uniq | tr '\012' ' '`
+echo Found chfn as: $p_chfn	>&4
+E 5
+I 5
+echo '---------------------------------------------------'
+echo ' '
+echo Found passwd/chfn/chsh programs: $p_sysprogs >&4
+echo ' '
+echo '---------------------------------------------------'
+E 5
+
+D 5
+p_chsh=`echo $p_chsh | tr ' ' '\012' | sort | uniq | tr '\012' ' '`
+echo Found chsh as: $p_chsh	>&4
+E 5
+D 13
+echo ' '
+I 5
+echo ' Choose where to install the "checkpasswd" library.'
+echo " By default, it will be put in the $package library directory."
+echo ' '
+E 5
+
+I 3
+D 5
+rp="Do you want to install libcheckpasswd.a in $libexp"
+dflt='n'
+. ./myread
+case "$ans" in
+y*|Y*)	o_libinstall=true;;
+*)	o_libinstall=false;;
+esac
+E 5
+I 5
+rp='Where to install libpwcheck.a'
+dflt=$privlibexp
+fn='d/+'
+. ./getfile
+p_libinstall="$ansexp"
+E 5
+
+D 5
+
+E 5
+E 3
+echo ' '
+D 2
+echo '***** Set program options *****'
+E 2
+I 2
+D 3
+echo "***** $package option selection *****"
+E 3
+I 3
+D 5
+echo "***** Select $package options *****"
+E 5
+I 5
+echo ' Choose where to install the "checkpasswd" program.'
+echo " By default, it will be put in the $package library directory."
+E 5
+E 3
+E 2
+echo ' '
+
+I 5
+rp='Where to install checkpasswd'
+dflt="$privlibexp"
+fn='d/+'
+. ./getfile
+p_ckpwinstall="$ansexp"
+
+E 13
+E 5
+cat <<EOF
+
+I 5
+D 6
+---------------------------------------------------
+Reference:   ../doc/Options.html#Test
+---------------------------------------------------
+
+E 6
+E 5
+D 13
+If you are doing debugging or development of $package, 
+D 5
+you should build the test version.  The test version
+D 2
+modifies local databases (rather than system databases)
+E 2
+I 2
+modifies local files (rather than system databases)
+E 2
+and does not require root privleges to run.
+E 5
+I 5
+build the test version.  The test version will NOT modify system
+files and does not require root privleges.
+E 5
+
+I 3
+D 5
+Reference: ../doc/Options.html#option_debug
+
+E 5
+E 3
+EOF
+D 5
+rp='Do you wish to build the test version?'
+E 5
+I 5
+D 6
+rp='Do you wish to build the debugging version?'
+E 6
+I 6
+rp='Do you wish to build the test version?'
+E 6
+E 5
+D 9
+dflt='y'
+E 9
+I 9
+dflt='n'
+E 9
+. ./myread
+case "$ans" in
+D 2
+y*|Y*)	cc_tstflags="-DDEBUG_FILES -DDEBUG $cc_dbflags" ;;
+E 2
+I 2
+y*|Y*)	cc_tstflags="-DLOCAL_FILES -DDEBUG $cc_dbflags" ;;
+E 2
+*)	cc_tstflags="" ;;
+esac
+
+cat <<EOF
+
+E 13
+D 3
+-------------------------------------------------------------
+E 3
+I 3
+D 5
+Option: Paranoid invocation check
+Reference: ../doc/Options.html#option_paranoid
+E 5
+I 5
+D 6
+---------------------------------------------------
+Reference:   ../doc/Options.html#Paranoid
+---------------------------------------------------
+E 5
+
+E 6
+E 3
+The 'paranoid' option will cause $package to abort if
+the uid obtained via getpwnam(getlogin) does not equal the
+uid obtained via getuid().
+
+D 5
+If you allows multiple login names to have the same uid,
+D 3
+then you DON'T want this option.
+E 3
+I 3
+then you DO NOT want this option.
+E 5
+I 5
+If you allow multiple login names to have the same uid,
+then DO NOT enable this option.
+E 5
+E 3
+
+I 3
+D 5
+Reference: ../doc/Options.html#option_paranoid
+
+E 5
+E 3
+EOF
+I 3
+
+E 3
+rp='Activate the "paranoid" option'
+dflt='n'
+. ./myread
+case "$ans" in
+D 17
+	y*|Y*)	o_paranoid="$define" ;;
+	*)	o_paranoid="$undef" ;;
+E 17
+I 17
+	y*|Y*)	p_paranoid="$define" ;;
+	*)	p_paranoid="$undef" ;;
+E 17
+esac
+
+?X: ---------------------------------------------------
+?X:	Configure the password history mechanism
+?X: ---------------------------------------------------
+I 2
+D 3
+o_histfile="$privlibexp/passwd.history"
+E 3
+I 3
+D 4
+o_pwhFile="$privlibexp/passwd.history"
+E 4
+I 4
+D 17
+o_pwhDB="$privlibexp/passwd.history"
+E 17
+I 17
+p_history="$p_installdir/passwd.history"
+E 17
+I 5
+
+D 13
+
+E 13
+E 5
+E 4
+E 3
+E 2
+cat <<EOF
+
+D 3
+-------------------------------------------------------------
+E 3
+I 3
+D 5
+Option: Password history database
+Reference: ../doc/Options.html#option_history
+E 5
+I 5
+D 6
+---------------------------------------------------
+Reference:   ../doc/Configuration.html#History
+---------------------------------------------------
+E 5
+
+E 6
+E 3
+D 2
+$package keeps a history of passwords used.  This data
+is examined to control the frequency of password reuse.
+E 2
+I 2
+D 5
+$package keeps a history of passwords selected by each user in order
+to control the frequency of password reuse.
+E 5
+I 5
+D 13
+$package keeps a database of old user passwords to control reuse.
+E 13
+I 13
+$package keeps a password history database.  This database is kept
+D 17
+in a DBM database or file (default "$o_pwhDB").
+E 17
+I 17
+in a DBM database or file (default "$p_history").
+E 17
+E 13
+E 5
+E 2
+
+D 2
+By default, the history file will be "$privlibexp/passwd.history".
+E 2
+I 2
+D 3
+By default, this history will be stored in $o_histfile
+E 3
+I 3
+D 4
+By default, this history will be stored in $o_pwhFile
+E 4
+I 4
+D 5
+By default, this history will be stored in $o_pwhDB
+E 5
+I 5
+D 6
+The history database can be a disk file (default "$o_pwhDB")
+E 6
+I 6
+D 13
+The history database can be a disk file (default "$o_pwhDB"), which
+must be on a root-writeable file system.
+E 6
+E 5
+E 4
+E 3
+E 2
+
+E 13
+D 2
+If this system NFS serves client workstations, then /usr is usually
+exported read-only to the clients (and/or mounted read-only by clients).
+In this case, the history file MUST be moved to a filesystem that the
+E 2
+I 2
+D 5
+If this system is an NFS server for workstations, then /usr is usually
+exported read-only to the clients (and/or mounted read-only by clients),
+so the history file MUST be moved to a filesystem that
+E 2
+clients mount read/write with "root" access permission.
+E 5
+I 5
+D 6
+The database location can be set in the configuration file.
+E 5
+
+E 6
+D 5
+You can also change the location of the history file by editing
+D 3
+the $package configuration file ($privlibexp/passwd.config).
+E 3
+I 3
+the $package configuration file $privlibexp/passwd.config
+E 5
+I 5
+EOF
+E 5
+E 3
+
+I 5
+D 13
+if $test $p_nis = "$define" -a "$p_secure_rpc" = $define; then
+	cat <<EOF
+The history database can also be a NIS map (if Secure RPC is active).
+E 13
+I 13
+D 15
+?X:if $test $p_nis = "$define" -a "$p_secure_rpc" = $define; then
+?X:	cat <<EOF
+?X:The history database can also be a NIS map (if Secure RPC is active).
+?X:
+?X:The NIS option can only be selected in the $package configuration file.
+?X:
+?X:EOF
+?X:fi
+E 13
+
+E 15
+D 13
+The NIS option can only be selected in the $package configuration file.
+
+E 5
+EOF
+D 2
+o_histfile="$privlibexp/passwd.history"
+E 2
+D 3
+rp='Do you want to change the location of the history file'
+dflt='n'
+. ./myread
+case "$ans" in
+	y*|Y*)	echo ' '
+		rp='Where do you want to put the history file'
+		dflt=''
+		fn='f/'
+		. ./getfile
+		o_histfile="$ansexp"
+		;;
+esac
+E 3
+I 3
+D 5
+rp='Where do you want to put the history file'
+E 5
+I 5
+fi
+
+E 13
+t=`(rpcinfo -p localhost | grep nfs | grep -v rpcnfs) 2>/dev/null`
+if $test -n "$t"; then
+	cat <<EOF
+
+It appears that $myhostname is an NFS server.
+
+D 13
+If it serves diskless or dataless workstations, then the filesystem
+containing $privlibexp may be available to clients read-only
+E 13
+I 13
+D 15
+If it serves diskless or dataless clients, then the filesystem
+containing $privlibexp may not be writable by them
+E 13
+(due either to export and/or mount options).
+E 15
+I 15
+If it is part of a cluster, or serves diskless or dataless clients,
+D 17
+then files in $privlibexp must be writable by the members.
+E 17
+I 17
+then files in $p_installdir must be writable by the members.
+E 17
+E 15
+
+D 13
+If this is the case, then the history file MUST be moved
+E 13
+I 13
+If this is the case, then the history file MUST be placed
+E 13
+to a filesystem that clients mount read/write with "root"
+access permission.
+
+D 13
+See the reference for details.
+E 13
+I 13
+See the Npasswd Reference Manual (doc/Reference.html) for details.
+E 13
+
+EOF
+fi
+
+rp='Password history file'
+E 5
+D 17
+dflt="$privlibexp/history"
+E 17
+I 17
+dflt="$p_installdir/history"
+E 17
+D 5
+fn='f/'
+E 5
+I 5
+fn='f/+'
+E 5
+. ./getfile
+D 4
+o_pwhFile="$ansexp"
+E 4
+I 4
+D 17
+o_pwhDB="$ansexp"
+E 17
+I 17
+p_history="$ansexp"
+E 17
+E 4
+E 3
+
+D 6
+cat <<EOF
+
+D 2
+Choose the criteria for expiring entries from the
+password history database.
+E 2
+I 2
+D 3
+Choose criteria for expunging the password history database.
+E 3
+I 3
+D 5
+Option: Password history expiration criteria
+Reference: ../doc/Options.html#option_historyparams
+E 5
+I 5
+---------------------------------------------------
+Reference:   ../doc/Configuration.html#History
+---------------------------------------------------
+E 5
+E 3
+E 2
+
+EOF
+dflt='26'
+D 2
+rp='Remove passwords from history after N weeks'
+E 2
+I 2
+D 3
+rp='Remove old passwords from history after N weeks'
+E 3
+I 3
+D 5
+rp='Expire passwords in history after N weeks'
+E 5
+I 5
+rp='Keep old passwords for how many weeks'
+E 6
+I 6
+D 13
+dflt='180'
+rp='Keep old passwords for how many days'
+E 6
+E 5
+E 3
+E 2
+. ./myread
+case "$ans" in
+D 4
+	0)	o_pwhTime='';;
+	[0-9]*)	o_pwhTime=`expr $ans \* 7`;;
+	*)	o_pwhTime='';;
+E 4
+I 4
+	0)	o_pwhAge='';;
+D 6
+	[0-9]*)	o_pwhAge=`expr $ans \* 7`;;
+E 6
+I 6
+	[0-9]*)	o_pwhAge=$ans;;
+E 6
+	*)	o_pwhAge='';;
+E 4
+esac
+
+echo ' '
+dflt='5'
+D 2
+rp='Number of old passwords to keep per user'
+E 2
+I 2
+rp='How many old passwords to keep per user'
+E 2
+. ./myread
+case "$ans" in
+D 4
+	0)	o_pwhSize='' ;;
+	[0-9]*)	o_pwhSize=$ans ;;
+	*)	o_pwhSize='' ;;
+E 4
+I 4
+	0)	o_pwhDepth='' ;;
+	[0-9]*)	o_pwhDepth=$ans ;;
+	*)	o_pwhDepth='' ;;
+E 4
+esac
+
+E 13
+D 5
+: Sanity check the password expire settings
+
+D 2
+?X: ---------------------------------------------------
+?X: Select the help file pager
+?X: ---------------------------------------------------
+echo ' '
+t="$privlibexp/pager"
+rp="Use the help file pager provided ($t)"
+dflt='y'
+. ./myread
+case "$ans" in
+	y*|Y*)	o_pager="$t"
+		;;
+	*)	cat <<EOF
+E 2
+I 2
+D 3
+o_dictlib=$privlibexp
+E 3
+I 3
+dflt="$privlibexp/dictionaries"
+E 5
+E 3
+D 16
+cat <<EOF
+E 2
+
+D 2
+Enter the command which will be used to present help files.
+This pager will be run with the real uid of the user
+running $package, or the uid of 'nobody' when $package is run
+by root.
+E 2
+I 2
+D 3
+-------------------------------------------------------------
+E 3
+I 3
+D 5
+Option: Password check dictionaries
+E 5
+I 5
+D 6
+---------------------------------------------------
+Reference:   ../doc/Configuration.html#dictionaries
+---------------------------------------------------
+E 5
+E 3
+E 2
+
+E 6
+D 2
+Even though $package goes to some trouble to run the pager 
+without root privleges, I don't recommend using a pager that allows
+shell escapes.
+E 2
+I 2
+D 5
+To protect against dictionary lookup guess attacks, $package checks
+candidate passwords against various dictionaries.
+E 5
+I 5
+D 13
+To protect against guess attacks, $package checks
+passwords against dictionaries of words.
+E 13
+I 13
+To protect against guess attacks, $package checks passwords against
+word collections (dictionaries).
+E 13
+E 5
+E 2
+
+D 2
+If you don't want a pager to be used, enter the word 'none'.
+E 2
+I 2
+D 5
+The dictionaries provided in this distribution and their hashed databases
+can consume from 10 to 15MB of disk space.
+E 5
+I 5
+D 13
+The dictionaries provided require 10 to 15MB of disk space.
+E 13
+I 13
+See the System Administrators Guide (doc/SysAdmin.html) for details.
+E 13
+E 5
+E 2
+
+I 2
+D 5
+Dictionaries are used read-only, but *cannot* be shared between
+CPU architectures.
+E 5
+I 5
+D 13
+Dictionaries may reside on a read-only filesystem, but *cannot*
+be shared between CPU architectures.
+E 5
+
+D 5
+The dictionaries are specified in the configuration file
+"$privlibexp/passwd.config".
+E 5
+I 5
+Additional dictionary directories may specified in the configuration file.
+E 5
+
+E 13
+D 3
+The default location is "$o_dictlib"
+
+E 3
+E 2
+EOF
+E 16
+I 16
+D 17
+: Hardwire the default dictionary path
+E 16
+I 15
+p_dictlib="$privlibexp/dictionaries"
+E 17
+I 17
+cat <<EOF
+E 17
+E 15
+D 2
+		rp='Command for presentation of help files'
+		dflt="$more -d"
+		. ./myread
+		case "$ans" in
+			none)	o_pager="$cat" ;;
+			*)	o_pager=$ans;;
+		esac
+		;;
+esac
+E 2
+D 19
+
+I 2
+D 3
+dflt=$o_dictlib
+rp='Where do you want to put the password check dictionaries?'
+E 3
+I 3
+D 5
+rp='Where do you want to put the dictionaries?'
+E 3
+fn='d/'
+E 5
+I 5
+D 15
+dflt="$privlibexp/dictionaries"
+D 13
+rp='Primary dictionary directory'
+E 13
+I 13
+rp='Primary dictionary collection'
+E 13
+fn='d/+'
+E 5
+. ./getfile
+D 5
+o_dictlib=$ansexp
+E 5
+I 5
+p_dictlib="$ansexp"
+E 5
+
+E 15
+I 4
+D 17
+top_level=`cd ..;pwd`
+E 17
+I 17
+D 18
+Now select the group id for the history database.
+E 17
+I 5
+
+E 18
+I 17
+The history database is protected from prying eyes by allowing read-write
+D 18
+access only by owner and read-only access by group.
+E 18
+I 18
+access only for the owner and read-only access only for the group.
+E 18
+
+I 18
+Enter the group for the history database.
+
+This may be a group name or numeric group id.
+
+E 18
+EOF
+D 18
+rp='Group id/name for password history database'
+dflt="0"
+E 18
+I 18
+rp='Group for history database'
+dflt="nobody"
+E 18
+. ./myread
+case "$ans" in
+	[0-9]*)	p_histgid="$ans" ;;
+D 18
+	[a-z]*)	p_histgid=`$groupcat|grep "^${ans}:"| tr ':' ' ' | awk '{ print $2 }'`
+		$test -z "$p_histgid" && p_histgid="0"
+E 18
+I 18
+	[a-z]*)	p_histgid=`$groupcat|grep "^${ans}:"| tr ':' ' ' | awk '{ print $3 }'`
+		$test -z "$p_histgid" && p_histgid="-1"
+E 18
+		;;
+esac
+
+E 17
+cat <<EOF
+E 19
+
+---------------------------------------------------
+Done with $package configuration
+---------------------------------------------------
+
+EOF
+E 5
+E 4
+E 2
+D 3
+?X: ---------------------------------------------------
+echo ' '
+rp="Do you want to install libcheckpasswd.a in $libexp"
+dflt='n'
+. ./myread
+case "$ans" in
+y*|Y*)	o_libinstall=true;;
+*)	o_libinstall=false;;
+esac
+E 3
+I 2
+D 13
+
+E 13
+I 13
+?:X End %M%
+E 13
+E 2
+D 3
+
+E 3
+E 1

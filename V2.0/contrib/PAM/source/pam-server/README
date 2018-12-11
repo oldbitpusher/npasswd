@@ -1,0 +1,14 @@
+
+ USAGE:
+
+  Compile software
+
+  $ make clean
+  $ make config
+  $ make
+
+  Install the compiled daemon into the password/bin
+  directory.
+
+  $ make install
+

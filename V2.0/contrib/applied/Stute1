@@ -1,0 +1,33 @@
+Return-Path: mstute@compucom.com 
+Received: from mailgate.compucom.com (mailgate.compucom.com [204.214.144.31])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with SMTP id OAA01471
+	for <clyde@motown.cc.utexas.edu>; Mon, 5 Jan 1998 14:29:19 -0600 (CST)
+Received: from GWGate-Message_Server by mailgate.compucom.com
+	with Novell_GroupWise; Mon, 05 Jan 1998 14:28:21 -0600
+Message-Id: <s4b0ee05.078@mailgate.compucom.com>
+X-Mailer: Novell GroupWise 4.1
+Date: Mon, 05 Jan 1998 14:27:44 -0600
+From: MIKE STUTE <mstute@compucom.com>
+To: clyde@motown.cc.utexas.edu
+Subject: Patching my patch
+Content-Type: text
+Content-Length: 420
+
+
+Two more changes, one to the original code, and
+one to fix an error I introduced.
+
+1) In passwd.c, function get_password, line 6:
+old: int   ntries=0;
+newL int   ntries=1;
+
+2) In PasswordCheck/pwck_main.c, function
+clear_dict:
+
+Add a line right before the function closing brace
+as follows:
+Config.dictionaries=0;     /*Force a realloc*/
+
+Hope the new year is a good one for you.
+Mike Stute
+http://users.why.net/mstute

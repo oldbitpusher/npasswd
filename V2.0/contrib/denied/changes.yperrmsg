@@ -1,0 +1,509 @@
+Return-Path: mills@cc.umanitoba.ca
+Received: from canopus.cc.umanitoba.ca by sirius.cc.utexas.edu with SMTP id AA02925
+  (5.65c/IDA-1.4.4 for <clyde@sirius.cc.utexas.edu>); Sun, 26 Sep 1993 13:57:02 -0500
+Received: from antares.cc.umanitoba.ca by canopus.CC.UManitoba.CA
+	(4.1/25-eef) id AA22388; Sun, 26 Sep 93 13:56:50 CDT
+Received:  by antares.cc.umanitoba.ca
+	(4.1/25-eef) id AA07315; Sun, 26 Sep 93 13:56:49 CDT
+Date: Sun, 26 Sep 93 13:56:49 CDT
+From: mills@cc.umanitoba.ca
+Message-Id: <9309261856.AA07315@antares.cc.umanitoba.ca>
+To: clyde@sirius.cc.utexas.edu
+Subject: Re: npasswd for Solaris 2.2?
+
+>From clyde@sirius.cc.utexas.edu Tue Sep 21 08:45:09 1993
+>
+>Sounds pretty much like what npasswd 2.0 does (of course I took code from
+>the JPL version and use Cracklib too :-)
+>
+>Sure, I'd like to see what you've got.  I really want to get 2.0 out the
+>door soon, so this is the time to get changes.
+
+I'm enclosing below a shar of some of my mods.  I'm not including changes
+to Makefile or pw_passwd.c, as they are just the JPL mods.  My changes
+use the symbol VANILLA, except for my password adjunct stuff, which uses
+the symbol ADJUNCT, the same as the JPL stuff.  In npasswd.c, the change
+was only so I could issue different messages, depending on whether the
+local passwd file or the NIS passwd map was changed.  We had a problem with
+users changing their NIS password, and then expecting it to work immediately.
+
+pw_yp.c.diff includes my changes and the JPL changes.  My password adjunct
+changes were to handle the case of a local passwd.adjunct file in a NIS
+environment.  I found I could not use the fgetpwaent function because it
+didn't handle Sun's audit flags, so I used fgets() and fprintf() instead.
+The yppasswdd error messages I added came from running strings on /bin/passwd.
+I haven't seen them documented anywhere else, but I verified that they are
+accurate.
+
+I'm also enclosing my pwhelp script, which we recommend to users so they
+can try out passwords before selecting one.
+
+#! /bin/sh
+# This is a shell archive, meaning:
+# 1. Remove everything above the #! /bin/sh line.
+# 2. Save the resulting text in a file.
+# 3. Execute the file with /bin/sh (not csh) to create:
+#	npasswd.c.diff
+#	pw_yp.c.diff
+#	pwhelp
+# This archive created: Sun Sep 26 13:34:01 CDT 1993
+# By:	mills (Gary Mills)
+export PATH; PATH=/bin:/usr/bin:$PATH
+echo shar: "extracting 'npasswd.c.diff'" '(     388 characters)'
+if test -f 'npasswd.c.diff'
+then
+	echo shar: "will not over-write existing file 'npasswd.c.diff'"
+else
+	sed 's/^X//' << \SHAR_EOF > 'npasswd.c.diff'
+X*** npasswd.Oc	Fri Jan 25 10:34:59 1991
+X--- npasswd.c	Sun Jun  6 22:22:40 1993
+X***************
+X*** 252,262 ****
+X--- 252,264 ----
+X  			break;
+X  	}
+X  	pw_replace(pbuf, ppbuf);
+X+ #ifdef VANILLA
+X  #ifdef	SYSLOG
+X  	syslog(LOG_INFO, "Password changed for %s by %s\n",
+X  		username, mylogin);
+X  #endif
+X  	printf("Password changed for %s\n", username);
+X+ #endif
+X  	pw_cleanup(0);
+X  	exit(0);
+X  }
+SHAR_EOF
+if test      388 -ne "`wc -c < 'npasswd.c.diff'`"
+then
+	echo shar: "error transmitting 'npasswd.c.diff'" '(should have been      388 characters)'
+fi
+fi
+echo shar: "extracting 'pw_yp.c.diff'" '(   10337 characters)'
+if test -f 'pw_yp.c.diff'
+then
+	echo shar: "will not over-write existing file 'pw_yp.c.diff'"
+else
+	sed 's/^X//' << \SHAR_EOF > 'pw_yp.c.diff'
+X*** pw_yp.c.orig	Fri Jan 25 10:35:01 1991
+X--- pw_yp.c	Tue Aug 10 23:43:11 1993
+X***************
+X*** 31,36 ****
+X--- 31,44 ----
+X  #include <rpcsvc/yppasswd.h>
+X  #include <sys/socket.h>
+X  
+X+ #ifdef ADJUNCT
+X+ #include <string.h>
+X+ #include <sys/label.h>
+X+ #include <sys/audit.h>
+X+ #include <pwdadj.h>
+X+ extern struct passwd_adjunct *fgetpwaent();
+X+ #endif
+X+ 
+X  #ifdef	SECURE_RPC
+X  #include <rpc/key_prot.h>
+X  #endif
+X***************
+X*** 68,73 ****
+X--- 76,99 ----
+X  /*
+X   *	File names
+X   */
+X+ #ifdef ADJUNCT
+X+ 
+X+ #ifndef	ADJUNCT_FILE
+X+ #define	ADJUNCT_FILE	"/etc/security/passwd.adjunct"
+X+ #endif
+X+ 
+X+ #ifndef	ADJUNCT_SAVE
+X+ #define	ADJUNCT_SAVE	"/etc/security/opasswd"
+X+ #endif
+X+ 
+X+ #ifndef	ADJUNCT_TEMP
+X+ #define	ADJUNCT_TEMP	"/etc/security/ptmp"
+X+ #endif
+X+ 
+X+ #define	ADJUNCT_MODE	0600
+X+ 
+X+ #endif /*ADJUNCT*/
+X+ 
+X  #ifndef	PASSWD_FILE
+X  #define	PASSWD_FILE	"/etc/passwd"
+X  #endif
+X***************
+X*** 136,141 ****
+X--- 162,180 ----
+X  
+X  	if ((p = getpwnam(name)) == NULL)
+X  		return(0);
+X+ 	if (strncmp(p->pw_passwd, "##", 2)==0) {
+X+ #ifdef ADJUNCT
+X+ 	    /* We are running as root, so we can get the encrypted
+X+ 	     * password from the adjunct file.
+X+ 	     */
+X+ 	    struct passwd_adjunct *getpwaent(), *ap;
+X+ 	    if ((ap = getpwanam(name)) == NULL)
+X+ 		return(0);
+X+ 	    strcpy(p->pw_passwd, ap->pwa_passwd);
+X+ #else
+X+ 	    quit(0, "Changing of adjunct passwords not supported.\n");
+X+ #endif
+X+ 	}
+X  	_cppasswd(p, &theUser);
+X  	(void) strcpy(passwdb, p->pw_passwd);
+X  	return(1);
+X***************
+X*** 235,240 ****
+X--- 274,280 ----
+X  	return(rc);
+X  }
+X  
+X+ #ifdef VANILLA
+X  /*	Error message for when yppasswdd fails with error code 1.  */
+X  static char *yperrmsg =
+X  "Password change failed: Problem with yppasswdd.\n\n\
+X***************
+X*** 241,246 ****
+X--- 281,313 ----
+X  This is probably because the YP maps are out of sync\n\
+X  with the YP passwd file for %s on %s.\n\n\
+X  Please try again later.\n";
+X+ #else
+X+ /*	Error messages for all possible yppasswdd error codes	*/
+X+ #define LASTYPERR 20
+X+ char *ypdd_err[] = {
+X+ 	"No error\n",
+X+ 	"Error from pre 4.1 version\n",
+X+ 	"Password incorrect\n",
+X+ 	"No changeable fields were changed\n",
+X+ 	"No password in adjunct\n",
+X+ 	"Bad password in adjunct\n",
+X+ 	"Inconsistency in adjunct\n",
+X+ 	"Password incorrect\n",
+X+ 	"Password file busy -- try again later\n",
+X+ 	"Password temp file open error -- contact system administrator\n",
+X+ 	"Password temp file fdopen error -- contact system administrator\n",
+X+ 	"Password adjunct file fopen error -- contact system administrator\n",
+X+ 	"Password file fopen error -- contact system administrator\n",
+X+ 	"Password temp file fputs failed; disk partition may be full on NIS master! -- contact system administrator\n",
+X+ 	"Password temp file ferror is set; disk partition may be full on NIS master! -- contact system administrator\n",
+X+ 	"Password temp file fflush failed; disk partition may be full on NIS master! -- contact system administrator\n",
+X+ 	"Password adjunct file rename failed; disk partition may be full on NIS master! -- contact system administrator\n",
+X+ 	"Password file rename failed; disk partition may be full on NIS master! -- contact system administrator\n",
+X+ 	"Remote  error \n",
+X+ 	"Error from :  \n",
+X+ 	"Ran out of memory.\n",
+X+ };
+X+ #endif
+X  
+X  /*
+X   *      pw_replace - replace password in passwd file 
+X***************
+X*** 257,264 ****
+X--- 324,335 ----
+X  			    sigmask(SIGTSTP);
+X  	FILE	*tf,		/* New password file output */
+X  		*pf;		/* Current password file input */
+X+ 	int	passwdmode = PASSWD_MODE;
+X  	int	fd,		/* Temp file create fd */
+X  		islocal = 0;	/* Is user in local password file */
+X+ #ifdef ADJUNCT
+X+ 	int	isadj = 0;	/* Is user in local adjunct file */
+X+ #endif
+X  	struct stat	oldstat,	/* Old password file stat */
+X  			newstat;	/* New password file stat */
+X  
+X***************
+X*** 274,281 ****
+X--- 345,356 ----
+X  			continue;
+X  		if (strcmp(px->pw_name, theUser.pw_name) == 0) {
+X  			if (strncmp(px->pw_passwd, "##", 2) == 0)
+X+ #ifdef ADJUNCT
+X+ 			  isadj++;
+X+ #else
+X  			    quit(0,
+X  				"Changing of adjunct passwords not supported.\n");
+X+ #endif
+X  			islocal++;
+X  			break;
+X  		}
+X***************
+X*** 287,293 ****
+X  	 * to update the Yellow Pages (NIS) password file.
+X  	 */
+X  	if (islocal == 0) {
+X! 		if (is_yp_master() == NOT) {
+X  			int	rc;		/* Return code from ypasswdd */
+X  			int	why;		/* RPC call return code */
+X  			int	ypport;		/* Port for RPC call */
+X--- 362,368 ----
+X  	 * to update the Yellow Pages (NIS) password file.
+X  	 */
+X  	if (islocal == 0) {
+X! 		if (is_yp_master() == NOT || TRUE) {
+X  			int	rc;		/* Return code from ypasswdd */
+X  			int	why;		/* RPC call return code */
+X  			int	ypport;		/* Port for RPC call */
+X***************
+X*** 294,300 ****
+X  			struct yppasswd yppasswd; /* YP passwd change block */
+X  			char	salt[4];	/* Password encryption salt */
+X  
+X! 			if (curpwd[0] == 0)
+X  				quit(0, "Cannot change YP password without old password.\n");
+X  			randomstring(salt, sizeof(salt));
+X  			theUser.pw_passwd = crypt(newpwd, salt);
+X--- 369,375 ----
+X  			struct yppasswd yppasswd; /* YP passwd change block */
+X  			char	salt[4];	/* Password encryption salt */
+X  
+X! 			if (FALSE && (curpwd[0] == 0))
+X  				quit(0, "Cannot change YP password without old password.\n");
+X  			randomstring(salt, sizeof(salt));
+X  			theUser.pw_passwd = crypt(newpwd, salt);
+X***************
+X*** 333,340 ****
+X--- 408,422 ----
+X  					"yppasswdd error %d on %s for %s",
+X  					why, ypmaster, theUser.pw_name);
+X  #endif
+X+ #ifdef VANILLA
+X  				if (why == 1)
+X  				   quit(0, yperrmsg,  ypdomain, ypmaster);
+X+ #else
+X+ 				if ( why <= LASTYPERR ) {
+X+ 				    printf("Password change failed.\n");
+X+ 				    quit(1, ypdd_err[why]);
+X+ 				}
+X+ #endif
+X  				else
+X  				   quit(1, "Password change failed.\n");
+X  			}
+X***************
+X*** 342,347 ****
+X--- 424,438 ----
+X  			reset_secret_key(curpwd);
+X  # endif /* SECURE_RPC */
+X  #endif	/* DEBUG */
+X+ #ifndef VANILLA
+X+ #ifdef	SYSLOG
+X+ 			syslog(LOG_NOTICE, "Password changed for %s\n",
+X+ 			       theUser.pw_name);
+X+ #endif
+X+ 			printf("Password change for %s initiated on %s\n",
+X+ 			       theUser.pw_name, ypmaster);
+X+ 			printf("It will take a few minutes to complete\n");
+X+ #endif
+X  			return;
+X  		}
+X  		else	/* User not in local passwd, and not in YP passwd */
+X***************
+X*** 352,357 ****
+X--- 443,459 ----
+X  	/*
+X  	 * There is a local password file to change
+X  	 */
+X+ #ifdef ADJUNCT
+X+ if ( isadj ) {
+X+ 	(void) fclose(pf);
+X+ 	passwdtemp = ADJUNCT_TEMP;
+X+ 	passwdfile = ADJUNCT_FILE;
+X+ 	savefile = ADJUNCT_SAVE;
+X+ 	passwdmode = ADJUNCT_MODE;
+X+ 	if ((pf = fopen(passwdfile, "r")) == NULL)
+X+ 		quit(1, "Cannot open password file \"%s\".\n", passwdfile);
+X+     }
+X+ #endif
+X  	(void) umask(0);
+X  	(void) fstat(fileno(pf), &oldstat);
+X  	/*
+X***************
+X*** 365,378 ****
+X  	auxlockfile[0] = 0;
+X  	if (is_yp_master() == IS) {
+X  		(void) sprintf(auxlockfile, "%s.ptmp", passwdfile);
+X! 		close(mklocktemp(auxlockfile));
+X  	}
+X  	mytempfile = 1;
+X! 	fd = mklocktemp(passwdtemp);
+X  	if ((tf = fdopen(fd, "w")) == NULL)
+X  		quit(1, "Cannot fdopen temp file.\n");
+X  
+X  	oldsigs = sigblock(blocksigs);
+X  	while ((px = fgetpwent(pf)) != NULL) {
+X  		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
+X  			continue;
+X--- 467,504 ----
+X  	auxlockfile[0] = 0;
+X  	if (is_yp_master() == IS) {
+X  		(void) sprintf(auxlockfile, "%s.ptmp", passwdfile);
+X! 		close(mklocktemp(auxlockfile, passwdmode));
+X  	}
+X  	mytempfile = 1;
+X! 	fd = mklocktemp(passwdtemp, passwdmode);
+X  	if ((tf = fdopen(fd, "w")) == NULL)
+X  		quit(1, "Cannot fdopen temp file.\n");
+X  
+X  	oldsigs = sigblock(blocksigs);
+X+ #ifdef ADJUNCT
+X+ 	if ( isadj ) {
+X+ 	    char aent[256];
+X+ 	    char *pt1, *pt2;
+X+ 	    char	salt[4];	/* Password encryption salt */
+X+ 
+X+ 	    randomstring(salt, sizeof(salt));
+X+ 	    theUser.pw_passwd = crypt(newpwd, salt);
+X+ 
+X+ 	    while ( fgets(aent, 256, pf) != NULL ) {
+X+ 		if ( pt1 = strchr(aent, '\n') ) *pt1 = '\0';
+X+ 		if ( ( pt1 = strchr(aent, ':') ) == NULL ) continue;
+X+ 		*pt1++ = '\0';
+X+ 		if ( ( pt2 = strchr(pt1, ':') ) == NULL ) continue;
+X+ 		*pt2++ = '\0';
+X+ 		if ( strlen(aent) == 0 ) continue;
+X+ 		if (strcmp(aent, theUser.pw_name) == 0) {
+X+ 			pt1 = theUser.pw_passwd;
+X+ 		    }
+X+ 		(void) fprintf(tf, "%s:%s:%s\n", aent, pt1, pt2);
+X+ 	    }
+X+ 	}
+X+ 	else {
+X+ #endif /*ADJUNCT*/
+X  	while ((px = fgetpwent(pf)) != NULL) {
+X  		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
+X  			continue;
+X***************
+X*** 385,390 ****
+X--- 511,519 ----
+X  		}
+X  		(void) putpwent(px, tf);
+X  	}
+X+ #ifdef ADJUNCT
+X+     }
+X+ #endif
+X  	(void) fflush(tf);			/* Force buffers empty */
+X  	(void) fstat(fileno(tf), &newstat);	/* Get size */
+X  	(void) fclose(tf);
+X***************
+X*** 413,421 ****
+X--- 542,564 ----
+X  		(void) link(savefile, passwdfile);
+X  		quit(1, "Can't replace password file.\n");
+X  	}
+X+ #ifdef UPDATE_YP
+X  	if (is_yp_master() == IS)
+X  		updateyp();
+X+ #endif
+X  	(void) sigsetmask(oldsigs);
+X+ #ifndef VANILLA
+X+ #ifdef	SYSLOG
+X+ 			syslog(LOG_NOTICE, "Password changed for %s\n",
+X+ 			       theUser.pw_name);
+X+ #endif
+X+ if (islocal == 0) {
+X+ 			printf("Password change for %s initiated on %s\n",
+X+ 			       theUser.pw_name, ypmaster);
+X+ 			printf("It will take a few minutes to complete\n");
+X+ 		    }
+X+ #endif
+X+ 			return;
+X  }
+X  
+X  /*
+X***************
+X*** 439,445 ****
+X--- 582,590 ----
+X  char	*s;		/* String to copy */
+X  {
+X  	register char	*t;	/* Temp */
+X+ #ifndef SUNOS4
+X  	char	*malloc();
+X+ #endif
+X  
+X  	if (s == NULL)
+X  		return(0);
+X***************
+X*** 456,467 ****
+X   *	Returns file descriptor of created file, else exits with error
+X   */
+X  static int
+X! mklocktemp(name)
+X! char	*name;
+X  {
+X  	int	fd;
+X  
+X! 	fd = open(name, O_WRONLY|O_CREAT|O_EXCL, PASSWD_MODE);
+X  	if (fd < 0) {
+X  		if (errno == EEXIST)
+X  			quit(0, "Password file busy - try again.\n");
+X--- 601,612 ----
+X   *	Returns file descriptor of created file, else exits with error
+X   */
+X  static int
+X! mklocktemp(name, mode)
+X! char	*name; int mode;
+X  {
+X  	int	fd;
+X  
+X! 	fd = open(name, O_WRONLY|O_CREAT|O_EXCL, mode);
+X  	if (fd < 0) {
+X  		if (errno == EEXIST)
+X  			quit(0, "Password file busy - try again.\n");
+X***************
+X*** 560,565 ****
+X--- 705,711 ----
+X  	return(answer);
+X  }
+X  
+X+ #ifdef UPDATE_YP
+X  /*
+X   *	An example sh(1) script to update YP password map
+X   */
+X***************
+X*** 608,613 ****
+X--- 754,760 ----
+X  #endif
+X  	(void) system(ypcmd);
+X  }
+X+ #endif
+X  
+X  #ifdef	SECURE_RPC
+X  /*
+SHAR_EOF
+if test    10337 -ne "`wc -c < 'pw_yp.c.diff'`"
+then
+	echo shar: "error transmitting 'pw_yp.c.diff'" '(should have been    10337 characters)'
+fi
+fi
+echo shar: "extracting 'pwhelp'" '(     260 characters)'
+if test -f 'pwhelp'
+then
+	echo shar: "will not over-write existing file 'pwhelp'"
+else
+	sed 's/^X//' << \SHAR_EOF > 'pwhelp'
+X#!/bin/sh
+X# pwhelp: assist a person in selecting a secure password
+X
+XPATH=/usr/5bin:/usr/bin/:/bin:/usr/ucb/bin;export PATH
+X
+Xcat /usr/local/etc/passwd.help
+X
+Xecho '\nEnter trial passwords now.  Exit with EOF or Interrupt.\n'
+X
+X/usr/local/abin/checkpasswd
+X
+X#!/end
+SHAR_EOF
+if test      260 -ne "`wc -c < 'pwhelp'`"
+then
+	echo shar: "error transmitting 'pwhelp'" '(should have been      260 characters)'
+fi
+fi
+exit 0
+#	End of shell archive
+
+
+-- 
+-Gary Mills-         -Networking Group-          -U of M Computer Services-

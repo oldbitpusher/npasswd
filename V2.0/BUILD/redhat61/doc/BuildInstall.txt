@@ -1,0 +1,291 @@
+
+   ______________________________________________________________________
+
+                         Npasswd Build and Install
+   ______________________________________________________________________
+
+System Requirements
+
+   To build and install npasswd, the following are needed:
+     * GNU gunzip to unpack the distribution and compressed word lists.
+     * An ANSI compliant C compliation system. The GNU C compiler (gcc)
+       is fine.
+     * The make utility. GNU make is fine.
+     * A modern Bourne shell which understands functions. The Korn shell
+       may not work with the support and maintenance scripts.
+   ___________________________________
+
+About the package
+
+   The npasswd package produces the following components which share
+   infrastructure and code:
+     * The npasswd program which changes passwords, login shells and
+       finger information.
+     * The checkpassword program which does password checking.
+     * The checkpassword library which can be linked into other
+       applications.
+   ___________________________________
+
+About the distribution
+
+   The full list and description of files in the distribution is in
+   /home/motown/cc/ccbt/clyde/src/npasswd/V2.0/BUILD/redhat61/MANIFEST.
+
+Files in the distribution
+
+   Configure Script which probes system facilities and performs package
+   setup.
+   Produces config.sh and expands all .SH files in the distribution. See
+   [1]About Configure.
+   config.sh Shell script which contains settings from Configure.
+   config.h C include which contains settings from config.sh.
+   config_h.SH Shell script which creates config.h.
+   Makefile.SH Shell script which creates Makefile with settings from
+   config.sh
+   *.SH Shell script which produces a file with settings from config.sh
+
+Directories in the distribution
+
+   developer Developer support files.
+   These are in the [2]developers kit.
+   dict Dictionary sources (which are a separate distribution).
+   doc
+   Documentation (text, manual pages, HTML)
+   hints Platform-specific hints for Configure.
+   files Configuration, help and message files.
+   src Main sources.
+     src/Common Common object library sources.
+     src/Methods Password database method module source.
+     src/Methods/TestSuite Test suite for passwd database method modules.
+     src/Scripts Utility script sources.
+     src/PasswordCheck Password check library source.
+     src/PasswordCheck/cracklib Crack library.
+     src/PasswordCheck/cracklib/tools Crack library testing and
+   dictionary tools.
+   ___________________________________
+
+About Configure
+
+   Configure is a shell script which probes the system environment to
+   determine how to build npasswd.
+
+   It will determine what kind of system it is running on, features
+   available and idiosyncrasies of the C compiliation environment.
+
+   The result of running Configure is config.sh, which contains shell
+   variable settings which will be incorporated into other files. Every
+   file ending with ".SH" is a script which, when run, produce a source
+   file with settings from config.sh.
+
+   Configure itself is built using the metaconfig software configuration
+   package. If you do porting or development work on npasswd, fetch the
+   [3]developer kit and modify the metaconfig units from which Configure
+   is built. It is a lot easier to integrate changes to metaconfig units
+   rather than determine which unit a particular Configure change
+   affects.
+
+       Useful options to Configure:
+       -d Use defaults for all answers.
+       -e Go without questioning to building config.sh.
+       -h Print help message and exit.
+       -S Expand all .SH files.
+   ___________________________________
+
+  Interacting with Configure
+
+   For most of the questions you are asked by Configure, taking the
+   default is sufficient. Some of the questions require your attention,
+   especially the first time Configure is run.
+
+   Use which C compiler? [cc]
+
+        Any ANSI C compiler can be used - gcc is fine. Npasswd should
+                also build with non-ANSI compilers, but this is
+                discouraged.
+
+          Do you expect to run these scripts and binaries on multiple
+          machines? [n]
+
+        Always answer n
+
+          Pathname where the private library files will reside?
+
+        This is the install directory where npasswd and its ancillary
+                files will be placed. The default is /usr/lib/npasswd.
+
+          ### Found passwd files "/etc/passwd"
+          Change passwd file list? [n]
+
+        Npasswd can search multiple local password files to find a user.
+                If you want to manipulate non-standard password files,
+                specify them here.
+
+          ### Found shadow files "/etc/shadow"
+          Change shadow file list? [n]
+
+        Npasswd can search multiple local shadow files to find a user. If
+                you want to manipulate non-standard shadow files, specify
+                them here.
+
+          Replace system programs? [y]
+
+        If this option is selected, then Configure creates a list of the
+                programs in system bin directories which have "passwd",
+                "chfn" or "chsh" in their names. You will be able to edit
+                this list. The initial installation will move these
+                programs will be moved to the npasswd install directory.
+
+          Activate the "paranoid" option [n]
+
+        Activating the paranoid option will cause npasswd to abort if the
+                uid obtained via getpwnam(getlogin()) is not the same as
+                that returned by getuid(2). If you allow multiple login
+                names to have the same uid, DO NOT enable this option.
+
+          Password history file [/usr/lib/passwd/history]
+
+        If this system is a member of a cluster which shares a password
+                file, the history should be put on a file system that all
+                cluster members mount read/write, preferably with root
+                access.
+                Refer to the [4]password history section of the
+                [5]Npasswd Administration Guide.
+          _______________________________
+
+Building
+
+          If your system has symbolic links, it is a good idea to use a
+          "build tree" to keep the source area clean. The BuildTree
+          script will do this.
+
+        build-area is where you want to build npasswd
+            source-area is the directory where you unpacked the
+            distribution.
+            mkdir build-area
+            cd build-area
+            sh source-area/bin/BuildTree source-area
+
+  Note about the build process
+
+          During build process some directories will be visited multiple
+          times. This is because of the dependencies between various
+          parts of the package.
+
+Common make targets
+
+   help See what package targets are available.
+   all Build the default stuff, whatever that may be. Most all targets do
+   make all in subdirectories.
+   depend Update the C source dependencies. A modified Makefile is
+   created which has the dependency information at the end. Most depend
+   targets do make depend in subdirectories.
+   install Install what is built in this directory. Most install targets
+   do make install in subdirectories.
+   deinstall Remove what is built in this directory. Most deinstall
+   targets do make deinstall in subdirectories.
+   clean Light debris removal.
+   realclean Total cleanup of debris, object files and executables.
+
+Special make targets
+
+   These targets alter the compile and load flags in Makefile.local,
+   which is included by the Makefile. They also do recursive makes in
+   subdirectories.
+   (See the [6]Support Guide for details)
+   debug-none Build production executables. The -XD command line option
+   is available for run-time debugging.
+   debug-dbx Build production executables with source debugger support.
+   debug-files Build debug-dbx executables which change files in the
+   current directory.
+   debug-system Build debug-system executables with many security and
+   update checks disabled.
+   These executables are insecure, partly non-functional and are NOT
+   suitable for production.
+          _______________________________
+
+Customizing
+
+          Major customizations can be done by running Configure. Some
+          changes require modification of options.h. The file to edit is
+          options_h.SH.
+
+          Follow this procedure:
+
+edit options_h.SH       # Change the source
+sh options_h.SH         # Reconstruct the file
+make realclean          # Remove objects and executables
+make                    # Rebuild with new options
+          _______________________________
+
+Installing
+
+          Invoke make install in the top-level build directory.
+
+          + The install will create any needed directories.
+          + Dictionary hash files will be built. The word list
+            distribution must have been unpacked into the dict directory
+            first.
+          + Executables and ancillary files are placed in the install
+            directory.
+          + If replace system programs was selected, the system password
+            change utilities found by Configure will be saved and
+            replaced with copies or links to the npasswd binary.
+          _______________________________
+
+Removing
+
+          To reinstall the vendor password programs, run
+          /usr/lib/passwd/bin/restorefiles.
+
+          To reinstall the vendor programs and delete npasswd, do
+
+make deinstall
+
+          in the top build directory. If the replace vendor programs
+          option was not enabled, the system utilities are not affected
+          by the removal process.
+          _______________________________
+
+Build and install summary
+
+          The procedure to build, install and setup npasswd:
+
+gunzip --stdout npasswd-2.XX.tar.gz | tar xpfv -        # Unpack npasswd
+cd dict
+gunzip --stdout npasswd-words.gz | tar xpfv -   # Unpack word lists
+cd ..
+Configure               # Answer the questions
+make                    # Build everything
+make install            # Install everything
+/usr/lib/passwd/bin/history_admin load < /dev/null  # Make history database
+          _______________________________________________________________
+
+          [7][top.gif] Top    [8][home.gif] Home
+          _______________________________________________________________
+
+          Document id @(#) BuildInstall.html 1.17
+          Version 1.17
+          Last modified 6/10/00
+
+
+    [9]Clyde Hoover
+    [10]Academic Computing Services and Instructional Technology
+    Services
+    [11]The University of Texas at Austin
+    [12]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/BuildInstall.html#Configure_About
+   2. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/Support.html#DeveloperKit
+   3. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/Support.html#DeveloperKit
+   4. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/AdminGuide.html#admin_history
+   5. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/AdminGuide.html
+   6. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/Support.html
+   7. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/BuildInstall.html#top
+   8. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/TOC_std.html
+   9. mailto:c.hoover@cc.utexas.edu
+  10. http://www.utexas.edu/cc
+  11. http://www.utexas.edu/
+  12. file://localhost/usr/share/src/private/ut/share/packages/npasswd/V2.0/BUILD/redhat61/doc/Copyright.html

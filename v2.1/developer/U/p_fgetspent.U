@@ -1,0 +1,19 @@
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_fgetspent' - see if fgetspent exists
+?RCS:
+?MAKE:p_fgetspent: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_fgetspent
+?S:p_fgetspent:
+?S:    This variable is set to 'true' if the fgetspent routine exists in libc.
+?S:.
+?C:HAS_FGETSPENT :
+?C:	This symbol, if defined, indicates that the fgetspent routine exists.
+?C:.
+?H:#$p_fgetspent	HAS_FGETSPENT	/**/
+?H:.
+set fgetspent p_fgetspent
+eval "$inlibc"
+

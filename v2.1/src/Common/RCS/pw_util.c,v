@@ -1,0 +1,394 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.7
+date	97.09.19.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	97.05.27.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Fix possible string overflow problem
+@
+text
+@/*
+ * npasswd module $RCSfile$
+ *
+ * Passwd file utility routines.  Some of these are replacements
+ * for possibily missing libc routines, 
+ *
+ * Compilation: cc -c $RCSfile$
+ * Includes: npasswd.h
+ *
+ */
+
+#include "npasswd.h"
+
+#ifndef lint
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+#endif
+
+#ifndef	HAS_PUTPWENT
+/*
+ *	putpwent - Write a passwd entry to a file pointer
+ *		The entry is written in "classic" passwd form
+ */
+public void
+putpwent(p, f)
+	struct passwd	*p;	/* Passwd entry to put */
+	FILE		*f;		/* File pointer */
+{
+	char	pwline[PW_LINELEN];
+
+	sputpwent(p, pwline);
+	(void) fprintf(f, "%s\n", pwline);
+}
+#endif	/* HAS_PUTPWENT */
+
+#ifndef	HAS_FGETPWENT
+/*
+ *	fgetpwent - read passwd entry from a file pointer
+ *		This expects the "classic" passwd format
+ */
+public struct passwd *
+fgetpwent(f)
+	FILE	*f;			/* Pointer to open passwd format file */
+{
+	static char	ibuf[PW_LINELEN];	/* Input and return data buffer */
+	char	*p;
+
+	if (fgets(ibuf, sizeof(ibuf), f) == NULL)
+		return(0);
+	if ((p = strchr(ibuf, '\n')) == 0)		/* Zap newline */
+		logdie("Ill-formed passwd entry \"%s\".\n", ibuf);
+	else
+		*p = 0;
+	return(sgetpwent(ibuf));
+}
+#endif	/* HAS_FGETPWENT */
+
+#ifndef	HAS_SPUTPWENT
+/*
+ *	sputpwent - create a passwd entry in a buffer
+ *		This creates a "classic" passwd format
+ */
+public char *
+sputpwent(p, b)
+	struct passwd	*p;	/* Passwd entry to put */
+	char			*b;	/* Buffer to build it in */
+{
+	char	pwb[PW_LINELEN];
+
+	(void) strcpy(pwb, p->pw_passwd);
+#ifdef	PWAGE		/* Does the pw_age field exist? */
+	if (p->pw_age && *p->pw_age) {
+		(void) strcat(pwb, ",");
+		(void) strcat(pwb, p->pw_age);
+	}
+#endif	/* PWAGE */
+#ifdef	UIDS_ARE_SIGNED		/* Are uids signed? */
+	(void) sprintf(b, "%s:%s:%d:%d:%s:%s:%s",
+#else	/* UIDS_ARE_SIGNED */
+	(void) sprintf(b, "%s:%s:%u:%u:%s:%s:%s",
+#endif	/* UIDS_ARE_SIGNED */
+		p->pw_name, pwb, (Uid_t )p->pw_uid, (Gid_t )p->pw_gid,
+		p->pw_gecos, p->pw_dir, p->pw_shell);
+	return(b);
+}
+#endif	/* HAS_SPUTPWENT */
+
+/*
+ *	sgetpwent() - crack a passwd line
+ *		This reads the "classic" passwd file format.
+ */
+public struct passwd *
+sgetpwent(s)
+	char	*s;		/* Passwd format string to crack */
+{
+	static struct passwd	pwdata;	/* Return data */
+	static char	pwb[PW_LINELEN];
+	char		*p;	/* ACME Pointer Works, Inc */
+	char		*pp;	/* ACME Pointer Works, Inc */
+
+#ifdef	HAS_MEMSET
+	memset((char *)&pwdata, 0, sizeof(pwdata));
+#else
+	bzero((char *)&pwdata, sizeof(pwdata));
+#endif
+	(void) strncpy(pwb, s, sizeof(pwb));
+#define	skipc while (*p && *p != ':' && *p != '\n') ++p; if (*p) *p++ = 0
+	p = pwb;
+	pwdata.pw_name = p;	skipc;
+	pwdata.pw_passwd = p;	skipc;
+#ifdef	PWAGE
+	if (pp = strchr(pwdata.pw_passwd, ',')) {
+		*pp++ = 0;
+		pwdata.pw_age = pp;
+	}	
+#endif
+	pwdata.pw_uid = atoi(p); skipc;
+	pwdata.pw_gid = atoi(p); skipc;
+	pwdata.pw_gecos = p;	skipc; 
+	pwdata.pw_dir = p;	skipc;
+	pwdata.pw_shell = p;
+	return(&pwdata);
+#undef	skipc
+}
+
+/*
+ *	copypwent - copy a passwd structure
+ */
+public struct passwd *
+copypwent(pw_from, pw_to)
+	struct passwd	*pw_from;	/* From */
+	struct passwd	*pw_to;		/* To */
+{
+	if (pw_to == 0) {
+		if ((pw_to = (struct passwd *)malloc(sizeof(struct passwd))) == 0)
+			logdie("Cannot alloc pwent copy\n");
+
+	}
+	*pw_to = *pw_from;	
+#define	CopyString(f,t) if (f) t = strdup(f)
+
+	CopyString(pw_from->pw_name, pw_to->pw_name);
+#ifdef	PWAGE
+	CopyString(pw_from->pw_age, pw_to->pw_age);
+#endif
+#ifdef	PWCOMMENT
+	CopyString(pw_from->pw_comment, pw_to->pw_comment);
+#endif
+	CopyString(pw_from->pw_passwd, pw_to->pw_passwd);
+	CopyString(pw_from->pw_gecos, pw_to->pw_gecos);
+	CopyString(pw_from->pw_dir, pw_to->pw_dir);
+	CopyString(pw_from->pw_shell, pw_to->pw_shell);
+#undef	CopyString
+	return(pw_to);
+}
+
+/*
+ *	fgetpwnam - get user from password file
+ */
+public struct passwd *
+fgetpwnam(name, pwfile)
+	char	*name,
+			*pwfile;
+{
+	FILE	*pf;
+	struct passwd	*px;		/* Password file traversal */
+
+	if ((pf = fopen(pwfile, "r")) == NULL)
+		logdie("Cannot open password file \"%s\".", pwfile);
+	/*
+	 * Scan local password file, looking for user
+	 */
+	while ((px = fgetpwent(pf)) != NULL) {
+		char	*tp = px->pw_name;
+
+		if (*tp == '+') tp++;		/* Ignore NIS stub entries */
+		if (strcmp(tp, name) == 0) {
+			(void) fclose(pf);
+			return(px);
+		}
+	}
+	(void) fclose(pf);
+	return(NULL);
+}
+
+/* End $RCSfile$ */
+@
+
+
+1.6
+log
+@Use memset(0) instead of bzero() where available
+@
+text
+@d105 1
+a105 1
+	strcpy(pwb, s);
+@
+
+
+1.5
+log
+@1. Remove 'const' declarations (too much compiler pain) 2. Fix copypwent() to not bomb on null strings
+@
+text
+@d100 3
+d104 1
+@
+
+
+1.4
+log
+@Change some variable names for clarity Add const declarations here and there
+@
+text
+@d25 1
+a25 1
+	const struct passwd	*p;	/* Passwd entry to put */
+d64 1
+a64 1
+	const struct passwd	*p;	/* Passwd entry to put */
+d93 1
+a93 1
+	const char	*s;	/* Passwd format string to crack */
+d96 1
+d101 1
+d103 1
+a103 1
+	p = s;
+d126 2
+a127 2
+	const struct passwd	*pw_from;	/* From */
+	struct passwd		*pw_to;		/* To */
+d135 3
+a137 1
+	pw_to->pw_name = strdup(pw_from->pw_name);
+d139 1
+a139 1
+	pw_to->pw_age = strdup(pw_from->pw_age);
+d142 1
+a142 1
+	pw_to->pw_comment = strdup(pw_from->pw_comment);
+d144 5
+a148 4
+	pw_to->pw_passwd = strdup(pw_from->pw_passwd);
+	pw_to->pw_gecos = strdup(pw_from->pw_gecos);
+	pw_to->pw_dir = strdup(pw_from->pw_dir);
+	pw_to->pw_shell = strdup(pw_from->pw_shell);
+d157 1
+a157 1
+	const char	*name,
+@
+
+
+1.3
+log
+@Beta 3 development checkin 2
+@
+text
+@d25 2
+a26 2
+	struct passwd	*p;	/* Passwd entry to put */
+	FILE	*f;		/* File pointer */
+d64 2
+a65 2
+	struct passwd	*p;	/* Passwd entry to put */
+	char		*b;	/* Buffer to build it in */
+d93 1
+a93 1
+	char	*s;		/* Pointer to open passwd format file */
+d123 3
+a125 3
+copypwent(f,t)
+	struct passwd	*f,		/* From */
+			*t;		/* To */
+d127 4
+a130 3
+	if (t == NULL) {
+		if ((t = (struct passswd *)malloc(sizeof(*t))) == NULL)
+			return(NULL);
+d132 2
+a133 2
+	*t = *f;	
+	t->pw_name = strdup(f->pw_name);
+d135 1
+a135 1
+	t->pw_age = strdup(f->pw_age);
+d138 1
+a138 1
+	t->pw_comment = strdup(f->pw_comment);
+d140 5
+a144 5
+	t->pw_passwd = strdup(f->pw_passwd);
+	t->pw_gecos = strdup(f->pw_gecos);
+	t->pw_dir = strdup(f->pw_dir);
+	t->pw_shell = strdup(f->pw_shell);
+	return(t);
+d152 2
+a153 2
+	char	*name,
+		*pwfile;
+@
+
+
+1.2
+log
+@beta 3 development checkin
+@
+text
+@d128 1
+a128 1
+		if ((t = (strct passswd *)malloc(sizeof(*t))) == NULL)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d49 1
+a49 1
+	if ((p = index(ibuf, '\n')) == 0)		/* Zap newline */
+d105 1
+a105 1
+	if (pp = index(pwdata.pw_passwd, ',')) {
+d127 4
+d132 1
+a132 1
+	t->pw_name = copystr(f->pw_name);
+d134 1
+a134 1
+	t->pw_age = copystr(f->pw_age);
+d137 1
+a137 1
+	t->pw_comment = copystr(f->pw_comment);
+d139 4
+a142 4
+	t->pw_passwd = copystr(f->pw_passwd);
+	t->pw_gecos = copystr(f->pw_gecos);
+	t->pw_dir = copystr(f->pw_dir);
+	t->pw_shell = copystr(f->pw_shell);
+@

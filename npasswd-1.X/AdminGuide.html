@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1><BR>
+The system administrator's guide to npasswd<BR>
+</H1>
+
+<P><BR>
+Npasswd is a eplacement  f<BR>
+passwd(1).   It incorporates checking to decrease the chance<BR>
+of users choosing vunerable passwords.<BR>
+</P>
+
+<P><BR>
+It does exactly one thing - change login  passwords,  though<BR>
+future releases will change shells and finger information.<BR>
+</P>
+
+<P><BR>
+Npasswd can be configured to run  under  a  number  of  UNIX<BR>
+variants,  both  BSD  and System 5 based. The systems that I<BR>
+know npasswd works on are: UMAX 4.3,  Ultrix  3.X  and  4.X,<BR>
+SunOS 4.X, AIX 3.X and other System 5 variants.<BR>
+<BR>
+2.  Why this program.<BR>
+<BR>
+The infamous Internet worm of November 1988 used  among  its<BR>
+attacks  a  password  guesser.   It  is frightening how many<BR>
+passwords on how many UNIX  systems  were  guessed  by  this<BR>
+algorithim.   With  the  publication of various papers about<BR>
+the internals of the worm,  its'  password  cracking  algor-<BR>
+ithims came to light.<BR>
+<BR>
+I replicated the worm password cracker  from  those  papers,<BR>
+ran  it against my password file and got too many hits to be<BR>
+comfortable.  I decided that rigourous validity checking was<BR>
+needed  for passwords, so I took the ``worm'' algorithim and<BR>
+rewrote it into a password checker.<BR>
+<BR>
+A simple version of that check package was posted to  USENET<BR>
+at  that  time, and still lurks on various FTP archives.  If<BR>
+you find this package, don't use it - there is better  stuff<BR>
+included in this distribution.<BR>
+<BR>
+Since 1988 programs such  as  ``Crack''  have  been  written<BR>
+which  are  much  better  at  password  guessing.  Huge dic-<BR>
+tionaries of words and phrases from many different languages<BR>
+and cultural areas have been compiled.  UNIX password crack-<BR>
+ing, once thought to be provice of only those with access to<BR>
+supercomputers,  is  within  easy reach of anyone with a 386<BR>
+box, a C compiler and patience.<BR>
+<BR>
+Npasswd lacks many of the features of vendor-supplied passwd<BR>
+programs  for  the  various  platforms on which it will run.<BR>
+<BR>
+Hence, the vendor passwd program should be kept  around  for<BR>
+these  purposes,  such as setting password expiration times.<BR>
+On the other hand, no vendor-supplied passwd program that  I<BR>
+have  seen  performs any kind of intelligent password check-<BR>
+ing, or allows the system administrator  to  configure  that<BR>
+process.<BR>
+<BR>
+3.  How to make it go.<BR>
+<BR>
+The process of configuring npasswd requires some thought  on<BR>
+the part of the system administrator.  It's not a ``plug and<BR>
+play'' process.  There are configuration options to  select,<BR>
+and  there  is  policy  in  the  code that may not meet your<BR>
+needs.<BR>
+<BR>
+The main decision that you need to  make  is  what  kind  of<BR>
+password database you use.  The supported methods are:<BR>
+<BR>
+o     Flat password file with or without DBM  lookup  files.<BR>
+     This  method  is  commonly  used by UNIX variants based<BR>
+     upon 4.3 BSD.<BR>
+<BR>
+o     The Network Information Service (Yellow Pages).   This<BR>
+     method is used by most UNIX variants that offer Network<BR>
+     File System (NFS), usually  for  clusters  of  worksta-<BR>
+     tions.  The NIS+ service of Solaris 2 is not supported.<BR>
+     Password aging is not supported for SunOS systems.<BR>
+<BR>
+o     Flat password file  in  Ultrix  ``enhanced''  security<BR>
+     mode.  This feature provides for 16 character passwords<BR>
+     and password aging.<BR>
+<BR>
+<BR>
+<BR>
+3.2.  Editing ancillary files.<BR>
+<BR>
+The file npasswd.help  should  be  editted  to  reflect  the<BR>
+preferences  you  have  chosen for the password checking and<BR>
+other local administrativa.  The file npasswd.conf should be<BR>
+editted  to  reflect  your  preferences.   See  below  for a<BR>
+detailed description of the configuration  file.   The  file<BR>
+npasswd.motd  should  be  have local administrativa, such as<BR>
+notice of any update latency (e.g. how  often  Yellow  Pages<BR>
+maps are rebuilt).<BR>
+<BR>
+3.3.  The configuration file.<BR>
+<BR>
+The parameters for password checking  are  provided  by  the<BR>
+configuration  file.   There  are  defaults  built  into the<BR>
+checkpassword routines, but the following configuration file<BR>
+directives  can  be  used to alter them.  Values in brackets<BR>
+'[ ]' is the default.<BR>
+<BR>
+dictionary      /path/to/dictionary<BR>
+        See the dictionaries section below.<BR>
+<BR>
+singlecase      yes | [no]<BR>
+        Allow or disallow single case passwords.<BR>
+<BR>
+minlength       N [6]<BR>
+        Set the minimum password length.<BR>
+<BR>
+maxlength       N [8]<BR>
+        Specifies how many characters are effective in a password.<BR>
+        Only the first N characters are used.<BR>
+<BR>
+<BR>
+<BR>
+                     December 17, 1996<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+                           - 4 -<BR>
+<BR>
+<BR>
+printonly       yes | [no]<BR>
+        Allow non-printable (ASCII control) characters in passwords<BR>
+<BR>
+badchars        &quot;<string>&quot;<BR>
+        Set a list of characters disallowed in passwords.<BR>
+        This form replaces the built-in illegal character list.<BR>
+        Control characters may be specified by the '^X' convention.<BR>
+<BR>
+badchars        +&quot;<string>&quot;<BR>
+        Set a list of characters disallowed in passwords.<BR>
+        This form adds to the built-in illegal character list.<BR>
+        Control characters may be specified by the '^X' convention.<BR>
+<BR>
+3.4.  Making it so.<BR>
+<BR>
+After the Makefile is configured  and  the  ancillary  files<BR>
+customized, then you are ready to build stuff.  The Makefile<BR>
+has the following entry points of interest:<BR>
+<BR>
+everything     This builds npasswd and the dictionary tools.<BR>
+               Run this after any change to the npasswd con-<BR>
+               figuration.<BR>
+<BR>
+all            This builds npasswd only.<BR>
+<BR>
+dicttools      This builds the dictionary tools.<BR>
+<BR>
+dictionaries   This reminds you that you need to  read  this<BR>
+               document  for  directions  about how to build<BR>
+               dictionaries.<BR>
+<BR>
+install        This builds the and installs the program, the<BR>
+               help  and  message  files.  The configuration<BR>
+               file and the password dictionaries  specified<BR>
+               therein  are  checked for consistency and the<BR>
+               configuration file installed if ok.<BR>
+<BR>
+checkcf        This performs a consistency check on the con-<BR>
+               figuration file.<BR>
+<BR>
+checkdicts     This performs a consistency check on the dic-<BR>
+               tionaries   specified  in  the  configuration<BR>
+               file.<BR>
+<BR>
+clean          This cleans up the debris.<BR>
+<BR>
+<BR>
+You will probably want to customize the manual page.<BR>
+<BR>
+The following method modules are provided with this  distri-<BR>
+bution:<BR>
+<BR>
+The module pw_passwd.c deals with flat /etc/passwd file  and<BR>
+can manage the hashed passwd database.<BR>
+<BR>
+The module pw_yp.c also deals with  flat  /etc/passwd  files<BR>
+and the Yellow Pages passwd service.<BR>
+<BR>
+The module pw_ultrix.c deals with flat /etc/password  files,<BR>
+hashed  passwd  databases and additionally works with Ultrix<BR>
+``enhanced'' security mode.<BR>
+<BR>
+The module pw_userinfo.c supports  a  locally  written  user<BR>
+database.   This  code  illustrates  how a totally different<BR>
+database method can fit into the npasswd structure.<BR>
+<BR>
+5.  More about password checking.<BR>
+<BR>
+The work of checking passwords is done by the  checkpassword<BR>
+library.   Candidate  password is subjected to the following<BR>
+challanges:<BR>
+<BR>
+1.   Enforcement of a minimal length.<BR>
+<BR>
+2.   Simple lexical checks to  catch  some  dumb  passwords,<BR>
+     such  as  repeats  of  the  same letter (e.g. ``aaa'').<BR>
+     Strange characters are also checked for.   By  default,<BR>
+     the  following  control  characters  are not allowed in<BR>
+     passwords:<BR>
+<BR>
+        control-c control-d  control-h  control-j  control-m<BR>
+        control-o control-r control-s control-q control-y<BR>
+<BR>
+     These are typical tty ``special''  characters  on  UNIX<BR>
+     systems.   A  user  could put these characters in their<BR>
+     password by quoting them, but  there  is  no  guarantee<BR>
+     that the tty modes used by login would allow them to be<BR>
+     properly entered, so they are best avoided.  This char-<BR>
+     acter  list  may  be replaced or supplimented by confi-<BR>
+     guration directives.<BR>
+<BR>
+3.   The  candidate  password  is  compared  against   host-<BR>
+     specific information.<BR>
+<BR>
+4.   The candidate password is checked against a  number  of<BR>
+     permutations on the users' current passwd information.<BR>
+<BR>
+5.   The candidate password is checked  against  the  user's<BR>
+     finger information.<BR>
+<BR>
+6.   The candidate password is  checked  against  the  Crack<BR>
+     rules.<BR>
+<BR>
+The checking process is table driven so  that  new  routines<BR>
+can  be  added easily.  See the sources in the checkpassword<BR>
+directory.<BR>
+<BR>
+6.  About dictionaries.<BR>
+<BR>
+Dictionaries are a vital  part  of  password  checking  (and<BR>
+cracking).   The  dictionaries  used by npasswd must be in a<BR>
+special hashed form.<BR>
+<BR>
+There are a number  of  dictionaries  supplied,  in  various<BR>
+sizes  and  vintage.   The optimal setup would be to combine<BR>
+them all into one huge dictionary, but you may prefer  pari-<BR>
+tioning them into smaller ones.<BR>
+<BR>
+6.1.  How to set up dictionaries.<BR>
+<BR>
+1.   Get your list for dictionary words together.  The  for-<BR>
+     mat of the file is one token (word or short phrase) per<BR>
+     line.  Blank lines and lines starting with '#' will  be<BR>
+     ignored.<BR>
+<BR>
+2.   Determine where you want the  dictionary  installed  on<BR>
+     the system.  The directory /usr/dict is where the stan-<BR>
+     dard spelling dictionary is stored.  However,  password<BR>
+     checking  dictionaries  are not always suitable for use<BR>
+     by spelling checkers, so put the password  dictionaries<BR>
+     where you have sufficent disk space.<BR>
+<BR>
+3.   For each dictionary you want to use, do the following:<BR>
+       mkdict      dictfile1      dictfile2      ...      -o<BR>
+       /path/to/installed/dict<BR>
+<BR>
+       Then add the line<BR>
+          dictionary/path/to/installed/dict<BR>
+       to the file npasswd.conf.<BR>
+<BR>
+7.  So what's the catch?<BR>
+<BR>
+Npasswd does exactly one thing -  changes  login  passwords.<BR>
+It  doesn't  anything more and doesn't do that totally right<BR>
+for all UNIX environments.  The seperation between upper and<BR>
+lower levels leads to considerable duplication of effort and<BR>
+state, and there is a couple of places where holes have been<BR>
+punched  through  the  layers  in  an ugly way.  Support for<BR>
+password aging is minimal at best, and the method varies per<BR>
+vendor and operating system release.<BR>
+<BR>
+Making npasswd totally compatable with  vendor  passwd  pro-<BR>
+grams would involve either reverse engineering their work or<BR>
+swiping their code.  Not having npasswd be totally  compati-<BR>
+ble leads to loss of functionality.<BR>
+<BR>
+8.  What's in the future?<BR>
+<BR>
+Work is continuing on npasswd  and  version  2.0  should  be<BR>
+available in the fall of 1993.  This version is expected  to<BR>
+have the following features:<BR>
+<BR>
+o     Support for changing login  shell  (chsh)  and  finger<BR>
+     information (chfn).<BR>
+<BR>
+o     Support for Solaris 2 and NIS+.<BR>
+<BR>
+o     Support for the Netinfo database of NeXTSTEP.<BR>
+<BR>
+o     Plug and play  support  for  more  UNIX  variants  and<BR>
+     architectures.<BR>
+<BR>
+o     A simplified configuration procedure.<BR>
+<BR>
+Since it's almost impossible to replicate the  command  line<BR>
+options  of  every version of passwd and since they increas-<BR>
+ingly do more than just changing a pasword file, I'm explor-<BR>
+ing  alternate  ideas  such  as building a front-end for the<BR>
+vendor-supplied programs.  It would  use  the  checkpassword<BR>
+library  to  check  passwords  and  then  interact  with the<BR>
+``real'' passwd program.  This will probably be  written  in<BR>
+expect (a variant of tcl ) or perl.<BR>
+<BR>
+<h2>9.  Where do I get help?</h2>
+<BR>
+The following electronic mail addresses  exist  for  npasswd<BR>
+users:<BR>
+<BR>
+npasswd-bugs@emx.cc.utexas.edu<BR>
+     Is where to report  bugs  and  send  enhacements.   Bug<BR>
+     reports  will  generally  be acknowleged but not neces-<BR>
+     sarily responded to.  I have  at  least  two  full-time<BR>
+     ``jobs''  at  my place of employment, and tend to batch<BR>
+     up npasswd  problems  and  deal  with  them  every  few<BR>
+     months.  It really helps if bug reports are accompanied<BR>
+     by source fixes, preferably in patch  diffs.   Enhance-<BR>
+     ments will be dealt with in the same way.<BR>
+<BR>
+npasswd-users@emx.cc.utexas.edu<BR>
+     Is a mailing list of all registered users of npasswd.<BR>
+<BR>
+npasswd-users-request@emx.cc.utexas.edu<BR>
+     Is where to send requests to be added to or delete from<BR>
+     the npasswd-users list.<BR>
+<BR>
+<h2>10.  Credit where credit is due.</h2>
+<BR>
+Npasswd and most of the ancillary routines were  written  by<BR>
+myself.   The  code for Ultrix enhanced security support was<BR>
+written by Paul Leyland  (pcl@ox.ac.uk).   The  ``Cracklib''<BR>
+password  checking  code  is  copyright 1993 by Alec Muffett<BR>
+(alec.muffett@uk.sun.com).  SunOS adjunct  password  support<BR>
+was  done  by  Dave Hayes (dave@jato.jpl.nasa.gov) and There<BR>
+are many others who supplied  bug  fixes  and  enhancements,<BR>
+some  of  which are included in this distribution, some not,<BR>
+but all are appreciated.<BR>
+
+</BODY>
+</HTML>

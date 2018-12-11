@@ -1,0 +1,4502 @@
+*** /tmp/d82jHv_	Thu Oct 15 10:34:42 1998
+--- doc/AdminGuide.html	Wed Oct 14 09:40:59 1998
+***************
+*** 281,289 ****
+  
+  <DT> <P> Populating alternate DBM database from a file:</DT>
+  
+! <DD> <TT>history_admin -m dbm -f /tmp/new-history load &lt; test-data</TT></DD>
+  
+! <DT> <P> To purge the default database with the default limits:</DT>
+  
+  <DD> <TT>history_admin -l purge</TT></DD>
+  
+--- 281,289 ----
+  
+  <DT> <P> Populating alternate DBM database from a file:</DT>
+  
+! <DD> <TT>history_admin -m dbm -f /tmp/new-history -i test-data load</TT></DD>
+  
+! <DT> <P>To purge the default database with the default limits:</DT>
+  
+  <DD> <TT>history_admin -l purge</TT></DD>
+  
+***************
+*** 378,386 ****
+  <P>
+  <HR WIDTH="100%">
+  <P>
+! Document id @(#) AdminGuide.html 1.9
+! <BR>Version 1.9
+! <BR>Last modified 07/20/98
+  
+  <P>
+  <ADDRESS>
+--- 378,386 ----
+  <P>
+  <HR WIDTH="100%">
+  <P>
+! Document id @(#) AdminGuide.html 1.10
+! <BR>Version 1.10
+! <BR>Last modified 10/14/98
+  
+  <P>
+  <ADDRESS>
+*** /tmp/drRxCO_	Thu Oct 15 10:34:43 1998
+--- doc/Jmakefile	Thu Oct  1 11:00:18 1998
+***************
+*** 41,47 ****
+  ;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  ;# 78712, ATTN: Technology Licensing Specialist.
+  ;#
+! ;# @(#)Jmakefile	1.12 07/22/98 (cc.utexas.edu)
+  ;#
+  ;# Makefile for npasswd documentation (mostly HTML docs)
+  ;#
+--- 41,47 ----
+  ;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  ;# 78712, ATTN: Technology Licensing Specialist.
+  ;#
+! ;# @(#)Jmakefile	1.13 10/01/98 (cc.utexas.edu)
+  ;#
+  ;# Makefile for npasswd documentation (mostly HTML docs)
+  ;#
+***************
+*** 48,53 ****
+--- 48,57 ----
+  
+  #include "../Jmake.local"
+  
++ /* Implicit symbols needed from config.sh */
++ >CC
++ >RM
++ 
+  Initialize(DOCS, $p_docdir)
+  
+  Describe(NROFF,	Nroff command)
+*** /tmp/d0Yr98t	Thu Oct 15 10:34:43 1998
+--- doc/Reference.html	Wed Oct 14 09:40:46 1998
+***************
+*** 534,540 ****
+  <I>Npasswd</i> can maintain a history of passwords to discourage frequent reuse.
+  <P>
+  See the
+! <A HREF="AdminGuide.html#check_history">history section</a>
+  of <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>.
+  <P>
+  
+--- 534,540 ----
+  <I>Npasswd</i> can maintain a history of passwords to discourage frequent reuse.
+  <P>
+  See the
+! <A HREF="AdminGuide.html#admin_history">history section</a>
+  of <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>.
+  <P>
+  
+***************
+*** 550,556 ****
+  <TD>Age</TD>
+  <TD>number</TD>
+  <TD>180 (days)</TD>
+! <TD>Passwords in the history older than this ignored.
+  </TD>
+  </TR>
+  
+--- 550,556 ----
+  <TD>Age</TD>
+  <TD>number</TD>
+  <TD>180 (days)</TD>
+! <TD>Use only passwords younger than N days.
+  </TD>
+  </TR>
+  
+***************
+*** 557,564 ****
+  <TR>
+  <TD>Depth</TD>
+  <TD>number</TD>
+! <TD>5</TD>
+! <TD>Use only the most recent N passwords.
+  </TD>
+  </TR>
+  
+--- 557,564 ----
+  <TR>
+  <TD>Depth</TD>
+  <TD>number</TD>
+! <TD>2</TD>
+! <TD>Use only the most recent N <STRONG>old</STRONG> passwords.
+  </TD>
+  </TR>
+  
+***************
+*** 1011,1019 ****
+  <P>
+  <HR WIDTH="100%">
+  <P>
+! Document id @(#) Reference.html 1.11<BR>
+! Version 1.11<BR>
+! Last modified 09/16/98<P>
+  <ADDRESS>
+  <A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+--- 1011,1019 ----
+  <P>
+  <HR WIDTH="100%">
+  <P>
+! Document id @(#) Reference.html 1.12<BR>
+! Version 1.12<BR>
+! Last modified 10/14/98<P>
+  <ADDRESS>
+  <A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+*** /tmp/d0FFO3M	Thu Oct 15 10:34:43 1998
+--- doc/checkpassword.3	Wed Oct 14 09:41:35 1998
+***************
+*** 1,5 ****
+  '\"
+! '\"	@(#)checkpassword.3	1.9 09/16/98 (cc.utexas.edu)
+  '\"
+  .TH checkpassword 3
+  .SH NAME
+--- 1,5 ----
+  '\"
+! '\"	@(#)checkpassword.3	1.10 10/14/98 (cc.utexas.edu)
+  '\"
+  .TH checkpassword 3
+  .SH NAME
+***************
+*** 231,240 ****
+  The default age is 180 days.
+  .TP
+  .BI depth " N"
+! When a password history record is fetched or updated, all but the most recent
+  .I N
+  passwords are discarded.  The age limit (see above) is also enforced.
+! The default is to retain the last 5 passwords.
+  .TP
+  .BI dbm " path"
+  Use
+--- 231,242 ----
+  The default age is 180 days.
+  .TP
+  .BI depth " N"
+! When a password history record is fetched or updated, all but the
+  .I N
++ most recent 
++ .B old
+  passwords are discarded.  The age limit (see above) is also enforced.
+! The default is to retain the last 2 passwords.
+  .TP
+  .BI dbm " path"
+  Use
+*** /tmp/dyec.r_	Thu Oct 15 10:34:44 1998
+--- doc/history_admin.1	Wed Oct 14 09:41:14 1998
+***************
+*** 41,47 ****
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)history_admin.1	1.4 07/20/98 (cc.utexas.edu)
+  '\"
+  .TH history_admin 1
+  .SH NAME
+--- 41,47 ----
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)history_admin.1	1.8 10/14/98 (cc.utexas.edu)
+  '\"
+  .TH history_admin 1
+  .SH NAME
+***************
+*** 61,66 ****
+--- 61,69 ----
+  .B \-\^f
+  .I file
+  ] [
++ .B \-\^i
++ .I file
++ ] [
+  .B \-\^l
+  ] [
+  .B \-\^m
+***************
+*** 107,113 ****
+  instead of \fInpasswd-lib\fP/\fBpasswd.conf\fP.
+  .TP
+  .BI \-\^d " depth"
+! Set the password retention limit to 
+  .IR depth .
+  A setting of 0 disables the depth limit.
+  .TP
+--- 110,116 ----
+  instead of \fInpasswd-lib\fP/\fBpasswd.conf\fP.
+  .TP
+  .BI \-\^d " depth"
+! Set the old password retention limit to 
+  .IR depth .
+  A setting of 0 disables the depth limit.
+  .TP
+***************
+*** 114,119 ****
+--- 117,125 ----
+  .BI \-\^f " file"
+  Path to the history database.
+  .TP
++ .BI \-\^i " file"
++ Input data.  Standard input is read if no input file is given.
++ .TP
+  .B \-\^l
+  Log errors with
+  .IR syslog (3).
+***************
+*** 139,144 ****
+--- 145,156 ----
+  .IR n .
+  See the "Command line options" section in the
+  \fINpasswd Reference Manual\fP for the available debugging levels.
++ .TP
++ .BI h
++ Print help text.
++ .TP
++ .BI V
++ Print version information.
+  .RE
+  .TP
+  .B \-\^v
+***************
+*** 153,160 ****
+  .TP
+  .I load
+  Reads history records (of the form described above)
+! from standard input and populates the database.
+  .TP
+  .I purge
+  Cleans the database of old and excess passwords:
+  .RS
+--- 165,176 ----
+  .TP
+  .I load
+  Reads history records (of the form described above)
+! from the input and populates the database.
+  .TP
++ .I merge
++ Reads history records (of the form described above)
++ from the input and merges them into the database.
++ .TP
+  .I purge
+  Cleans the database of old and excess passwords:
+  .RS
+***************
+*** 192,198 ****
+  Creating the default database:
+  .RS
+  .nf
+! history_admin\ load\ <\ /dev/null
+  .fi
+  .RE
+  .PP
+--- 208,214 ----
+  Creating the default database:
+  .RS
+  .nf
+! history_admin\ load <\ /dev/null
+  .fi
+  .RE
+  .PP
+***************
+*** 199,205 ****
+  Populating alternate DBM database from a file:
+  .RS
+  .nf
+! history_admin\ \-\^m\ dbm\ \-\^f\ /tmp/new-history\ load\ <\ test-data
+  .fi
+  .RE
+  .PP
+--- 215,221 ----
+  Populating alternate DBM database from a file:
+  .RS
+  .nf
+! history_admin\ \-\^m\ dbm\ \-\^f\ /tmp/new-history\ -i\ test-data\ load
+  .fi
+  .RE
+  .PP
+***************
+*** 215,228 ****
+  An error was encountered in the configuration file.  
+  .TP 5
+  Database error file '\fBfilename\fP' method '\fBwhat\fP' error '\fImessage\fP'
+! A bad database path or format was given.
+  .TP 5
+  No history database
+! The history mechanism has been disabled in the configuration file.
+  .TP 5
+  Unknown function '\fBwhat\fP'
+  An unknown function was given.
+  .TP 5
+  Cannot make temp file '\fBfilename\fP', error \fIerrno\fP
+  Failure to create database temporary file.
+  .TP 5
+--- 231,248 ----
+  An error was encountered in the configuration file.  
+  .TP 5
+  Database error file '\fBfilename\fP' method '\fBwhat\fP' error '\fImessage\fP'
+! A bad database path or method was specified on the command line.
+  .TP 5
+  No history database
+! The history mechanism has been disabled in the configuration file or
+! the history database is missing.
+  .TP 5
+  Unknown function '\fBwhat\fP'
+  An unknown function was given.
+  .TP 5
++ No memory for .\ .\ .
++ Temporary memory allocation failed.
++ .TP 5
+  Cannot make temp file '\fBfilename\fP', error \fIerrno\fP
+  Failure to create database temporary file.
+  .TP 5
+***************
+*** 229,252 ****
+  Cannot make DBM '\fBfilename\fP'
+  Failure to create DBM database.
+  .TP 5
+- No memory for DBM key copy
+- Temporary memory allocation failed.
+- .TP 5
+- Filter popen failed
+- The 
+- .IR popen (3s)
+- to process the flat history file format failed.
+- .TP 5
+  History purge errors - new database left in '\fBfilename\fP'
+  An error was encountered in purging the history.   The database was
+  left unchanged.
+  .TP 5
+! History load errors - new database left in '\fBfilename\fP'
+! An error was encountered trying to create a database.
+  .SH FILES
+  @NPASSWD-HIST@ \- the default history database
+  .SH BUGS
+! Undoubtedly there are bugs.  They are not known at this time.
+  .SH "SEE ALSO"
+  npasswd(1)
+  .br
+--- 249,271 ----
+  Cannot make DBM '\fBfilename\fP'
+  Failure to create DBM database.
+  .TP 5
+  History purge errors - new database left in '\fBfilename\fP'
+  An error was encountered in purging the history.   The database was
+  left unchanged.
+  .TP 5
+! History load/merge errors - new database left in '\fBfilename\fP'
+! A serious error was encountered doing a database create or merge.
+! .TP 5
+! DBM \fIdelete|replace|insert\fP for \fBuser\fP failed
+! The deletion, replacment or insertion of a DBM entry failed.
+! .TP 5
+! Replace DBM '\fBfile\fP' failed
+! A serious error was encountered loading a DBM dataahbase.
+  .SH FILES
+  @NPASSWD-HIST@ \- the default history database
+  .SH BUGS
+! Undoubtedly there are more bugs than have already been noted
+! (and fixed).
+  .SH "SEE ALSO"
+  npasswd(1)
+  .br
+*** /tmp/df2rvJ_	Thu Oct 15 10:34:44 1998
+--- doc/npasswd.1	Wed Oct 14 10:45:04 1998
+***************
+*** 41,47 ****
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)npasswd.1	1.5 07/20/98 (cc.utexas.edu)
+  '\"
+  .TH npasswd 1
+  .SH NAME
+--- 41,47 ----
+  '\" President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  '\" 78712, ATTN: Technology Licensing Specialist.
+  '\"
+! '\" @(#)npasswd.1	1.6 10/14/98 (cc.utexas.edu)
+  '\"
+  .TH npasswd 1
+  .SH NAME
+***************
+*** 132,143 ****
+  .PP
+  The following options are implemented:
+  .RS
+! \fB \-\^e \-\^g \fP
+  .RE
+  .PP
+  The following options are deferred to the vendor programs:
+  .RS
+! \fB \-\^a \-\^d \-\^h \-\^l \-\^n \-\^w \-\^r \-\^s \-\^x \fP
+  .RE
+  .PP
+  The following options are ignored:
+--- 132,143 ----
+  .PP
+  The following options are implemented:
+  .RS
+! \fB \-\^e \-\^g \-\^r\fP
+  .RE
+  .PP
+  The following options are deferred to the vendor programs:
+  .RS
+! \fB \-\^a \-\^d \-\^h \-\^l \-\^n \-\^w \-\^s \-\^x \fP
+  .RE
+  .PP
+  The following options are ignored:
+*** /tmp/d0MS3ro	Thu Oct 15 10:34:44 1998
+--- src/Common/common.h	Wed Oct 14 11:02:48 1998
+***************
+*** 1,5 ****
+  /*
+!  * @(#)common.h	1.10 07/09/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.common.h
+   *
+   * Function declarations for routines in the common module library
+   *
+--- 1,5 ----
+  /*
+!  * @(#)common.h	1.11 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.common.h
+   *
+   * Function declarations for routines in the common module library
+   *
+***************
+*** 81,87 ****
+  /*
+   * Routines in file_utils.c
+   */
+! size_t	FileSizeDiff _((char *, char *));
+  int	MakeLockTemp _((char *));
+  void	FixPwFileMode _((char *, char *));
+  
+--- 81,88 ----
+  /*
+   * Routines in file_utils.c
+   */
+! size_t	FileSize _((char *));
+! int	OpenWithLock _((char *));
+  int	MakeLockTemp _((char *));
+  void	FixPwFileMode _((char *, char *));
+  
+*** /tmp/d03sHmH	Thu Oct 15 10:34:45 1998
+--- src/Common/file_util.c	Wed Oct 14 11:02:48 1998
+***************
+*** 5,11 ****
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)file_util.c	1.1 03/26/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.file_util.c";
+  #endif
+  
+  /*
+--- 5,11 ----
+  #include "npasswd.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)file_util.c	1.2 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.file_util.c";
+  #endif
+  
+  /*
+***************
+*** 22,48 ****
+  Config_Value int	LockCycle = FLOCK_CYCLE;	/* How long to wait */
+  
+  /*
+!  * FileSizeDiff
+!  *	Find size difference between two files
+   * Usage
+!  *	diff = FileSizeDiff(file1, file2);
+   * Returns
+!  *	(size of <file2>) - (size of <file1>) bytes
+   */
+  public size_t
+! FileSizeDiff(fn1, fn2)
+! 	char	*fn1,	
+! 		*fn2;
+  {
+  	struct stat	stb;	/* ACME Scratch Storage */
+- 	size_t	s1;		/* ACME Scratch Storage */
+  
+! 	if (stat(fn1, &stb) < 0)
+! 		return(-1);
+! 	s1 = stb.st_size;
+! 	if (stat(fn2, &stb) < 0)
+! 		return(-1);
+! 	return(s1 - stb.st_size);
+  }
+  
+  /*
+--- 22,43 ----
+  Config_Value int	LockCycle = FLOCK_CYCLE;	/* How long to wait */
+  
+  /*
+!  * FileSize
+!  *	Get size of a file 
+   * Usage
+!  *	size = FileSize(file);
+   * Returns
+!  *	size of <fn> (bytes)
+   */
+  public size_t
+! FileSize(fn)
+! 	char	*fn;	
+  {
+  	struct stat	stb;	/* ACME Scratch Storage */
+  
+! 	if (stat(fn, &stb) < 0)
+! 		return(0);
+! 	return(stb.st_size);
+  }
+  
+  /*
+***************
+*** 73,78 ****
+--- 68,101 ----
+  	logdie("Cannot create temp file \"%s\"\n", name);
+  }
+  
++ /*
++  * OpenWithLock
++  *	Open a file with exclusive use checking
++  * Usage
++  *	fd = OpenWithLock(file);
++  * Returns
++  *	File descriptor of created file
++  * Error
++  *	Aborts if file cannot be created, usually because
++  *	the file exists.
++  */
++ public int
++ OpenWithLock(name)
++ 	char	*name;
++ {
++ 	int	fd;	/* ACME Scratch Storage */
++ 	int	cnt;	/* Retry counter */
++ 
++ 	for (cnt = 0; cnt <= LockTries; cnt++) {
++ 		if ((fd = open(name, O_WRONLY|O_EXCL, 0)) >= 0) 
++ 			return(fd);
++ 		debug(DB_DETAIL, "OpenWithLock \"%s\" cycle %d\n", name, cnt);
++ 		(void) sleep(LockCycle);
++ 	}
++ 	perror("File open");
++ 	logdie("Cannot lock open file \"%s\"\n", name);
++ }
++ 
+  #if	!(defined(HAS_FCHMOD) && defined(HAS_FCHMOD))
+  /*
+   * FixPwFileMode
+*** /tmp/dmFWhm_	Thu Oct 15 10:34:45 1998
+--- src/Common/getpass.c	Wed Oct 14 11:02:48 1998
+***************
+*** 8,14 ****
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)getpass.c	1.4 08/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.getpass.c";
+  #endif
+  
+  /*
+--- 8,14 ----
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)getpass.c	1.5 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.getpass.c";
+  #endif
+  
+  /*
+***************
+*** 18,71 ****
+  Config_Value unsigned int	PasswdMatchWait = PASSWORD_MATCH_WAIT;
+  
+  /*
+!  *	get_password -- read password and check against current.
+   */
+  public void
+! get_password(prompt, pwd_crypt, pwd_plain, pwlen)
+! 	char	*prompt,
+! 		*pwd_crypt;	/* Present password (encrypted) */
+! 	char	*pwd_plain;	/* Present password (plain)  */
+! 	int	pwlen;		/* Length of present password buffer */
+  {
+! 	int	ntries = 0;	/* Match attempt counter */
+! 	int	doit = 1;
+! 	char	*px;		/* Temp */
+! 	unsigned int naptime = PasswdMatchWait;	/* Sleep after bad entry */
+  
+! 	while (doit) {
+! 		if ((px = np_getpass(prompt)) == NULL)
+  			die("Password unmatched.\n");
+! 		if (*px == '\0')
+  			continue;
+! 		if (!password_cmp(pwd_crypt, px)) {
+  			printf("Password incorrect.\n");
+! 			if (naptime)
+! 				sleep(naptime);
+! 			if (ntries++ == PasswdMatchTries) {
+! 				if (naptime)
+! 					sleep(naptime);
+  				die("Password not matched.\n");
+  			}
+  			continue;
+  		}
+! 		doit = 0;
+  	}
+! 	(void) strncpy(pwd_plain, px, pwlen);
+  }
+  
+  /*
+!  *	password_cmp - compare old and new passwords
+   *
+!  *	Returns 1 if check = new, 0 if not
+   */
+  public 
+  password_cmp(current, check)
+! 	char	*current,
+! 		*check;
+  {
+! 	struct pw_svc	*svc = get_pwsvc();
+  
+! 	if (!*current)
+  		return(1);
+  
+  	return (strcmp(current, (*svc->PasswdCrypt)(check, current)) == 0);
+--- 18,76 ----
+  Config_Value unsigned int	PasswdMatchWait = PASSWORD_MATCH_WAIT;
+  
+  /*
+!  * get_password
+!  *	Read password from user and compare to present
+!  *
+!  * Effects:
+!  *	Stores matching plaintext password in <pwd_plain> buffer
+   */
+  public void
+! get_password(prompt, pwd_crypt, pwd_plain, pwd_psize)
+! 	char	*prompt,	/* Prompt string */
+! 		*pwd_crypt,	/* Present password (encrypted) */
+! 		*pwd_plain;	/* New password (plain) */
+! 	int	pwd_psize;	/* Size of pwd_plain */
+  {
+! 	int	ntries = 0;	/* Attempt counter */
+! 	char	*pwtemp;	/* Password read temp */
+  
+! 	for (;;) {
+! 		if ((pwtemp = np_getpass(prompt)) == NULL)
+  			die("Password unmatched.\n");
+! 		if (*pwtemp == '\0')
+  			continue;
+! 		if (password_cmp(pwd_crypt, pwtemp) == 0) {
+  			printf("Password incorrect.\n");
+! 			if (PasswdMatchWait > 0)
+! 				sleep(PasswdMatchWait);
+! 			if (++ntries == PasswdMatchTries) {
+! 				if (PasswdMatchWait > 0)
+! 					(void) sleep(PasswdMatchWait);
+  				die("Password not matched.\n");
+  			}
+  			continue;
+  		}
+! 		break;
+  	}
+! 	(void) strncpy(pwd_plain, pwtemp, pwd_psize);
+  }
+  
+  /*
+!  * password_cmp
+!  *	Compare old and new passwords
+   *
+!  * Returns:
+!  *	1 if match
+!  *	0 if not
+   */
+  public 
+  password_cmp(current, check)
+! 	char	*current,		/* Current password (encrypted) */
+! 		*check;			/* Password to compare (plain) */
+  {
+! 	struct pw_svc	*svc = get_pwsvc();	/* Passwd service */
+  
+! 	if (*current == 0)		/* Null password */
+  		return(1);
+  
+  	return (strcmp(current, (*svc->PasswdCrypt)(check, current)) == 0);
+***************
+*** 203,217 ****
+   */
+  public char	*
+  np_getpass(prompt)
+! char	*prompt;
+  {
+! 	struct TTY_SAVE	saved,
+! 			noecho;
+! 	struct sigblk	blocked;
+  	static char	ib[64];		/* Input buffer */
+! 	int	nr;
+  
+! 	if (!XSwitches[Xsw_UseStdin]) {
+  		(void) GET_TTY(0, &saved);
+  		noecho = saved;
+  		ECHO_OFF(noecho);
+--- 208,222 ----
+   */
+  public char	*
+  np_getpass(prompt)
+! 	char	*prompt;		/* Prompt string */
+  {
+! 	struct TTY_SAVE	saved,		/* Saved TTY modes */
+! 			noecho;		/* TTY mode for 'no echo' mode */
+! 	struct sigblk	blocked;	/* Blocked signals */
+  	static char	ib[64];		/* Input buffer */
+! 	int		nr;		/* Terminal read return */
+  
+! 	if (!XSwitches[Xsw_UseStdin]) {		/* Suppress tty echo ? */
+  		(void) GET_TTY(0, &saved);
+  		noecho = saved;
+  		ECHO_OFF(noecho);
+***************
+*** 221,235 ****
+  	}
+  	ib[0] = 0;
+  	nr = read(0, ib, sizeof(ib));
+! 	if (!XSwitches[Xsw_UseStdin]) {
+  		SET_TTY(0, &saved);
+  		unblock_signals(&blocked);
+  	}
+! 	(void) write(2, "\n", 1);
+! 	if (nr <= 0)		/* EOF or error */
+  		return(NULL);
+! 	chop_nl(ib);
+  	return(ib);
+  }
+- 
+  /* End getpass.c */
+--- 226,239 ----
+  	}
+  	ib[0] = 0;
+  	nr = read(0, ib, sizeof(ib));
+! 	if (!XSwitches[Xsw_UseStdin]) {		/* Reinstate tty echo? */
+  		SET_TTY(0, &saved);
+  		unblock_signals(&blocked);
+  	}
+! 	(void) write(2, "\n", 1);	/* Put newline to stderr */
+! 	if (nr <= 0)			/* EOF or error */
+  		return(NULL);
+! 	chop_nl(ib);			/* Pitch newline at end */
+  	return(ib);
+  }
+  /* End getpass.c */
+*** /tmp/dTfkcF_	Thu Oct 15 10:34:45 1998
+--- src/Common/pw_svc.c	Wed Oct 14 11:02:48 1998
+***************
+*** 9,20 ****
+   *	get_pwsvc()
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)pw_svc.c	1.12 09/23/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.pw_svc.c";
+  #endif
+  
+! #include "defines.h"
+! #include "constants.h"
+! #include "compatibility.h"
+  #include "pw_svc.h"
+  
+  extern char	*crypt();	/* Standard encryptor */
+--- 9,18 ----
+   *	get_pwsvc()
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)pw_svc.c	1.13 09/29/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.pw_svc.c";
+  #endif
+  
+! #include "npasswd.h"
+  #include "pw_svc.h"
+  
+  extern char	*crypt();	/* Standard encryptor */
+***************
+*** 38,44 ****
+   * init_pwsvc (Ultrix/OSF1)
+   *	Get service order for Digital UNIX (using /etc/svc.conf)
+   * Usage
+!  *	init_pwsvc(int argc, char **argv);
+   * Error exits
+   *	Error return from getsvc()
+   */
+--- 36,42 ----
+   * init_pwsvc (Ultrix/OSF1)
+   *	Get service order for Digital UNIX (using /etc/svc.conf)
+   * Usage
+!  *	init_pwsvc(int argc, char **argv, char **);
+   * Error exits
+   *	Error return from getsvc()
+   */
+***************
+*** 45,53 ****
+  #include <sys/svcinfo.h>
+  
+  void
+! init_pwsvc(argc, argv)
+  	int	argc;			/* Used in OSF/1 */
+  	char	**argv;			/* Used in OSF/1 */
+  {
+  	extern char 	*crypt16();	/* Extended encryptor */
+  #ifdef	OSF1_AUTH
+--- 43,52 ----
+  #include <sys/svcinfo.h>
+  
+  void
+! init_pwsvc(argc, argv, cmdsw)
+  	int	argc;			/* Used in OSF/1 */
+  	char	**argv;			/* Used in OSF/1 */
++ 	char	**cmdsw;		/* NOTUSED*/
+  {
+  	extern char 	*crypt16();	/* Extended encryptor */
+  #ifdef	OSF1_AUTH
+***************
+*** 123,129 ****
+  #endif	/* HAS_GETSVC_CONF */
+  
+  
+! #ifdef	HAS_NSSWITCH
+  #define	_SETUP	1
+  /*
+   * get_nsswitch
+--- 122,128 ----
+  #endif	/* HAS_GETSVC_CONF */
+  
+  
+! #if	defined(HAS_NSSWITCH) && defined(OS_SUNOS_5)
+  #define	_SETUP	1
+  /*
+   * get_nsswitch
+***************
+*** 182,196 ****
+  }
+  
+  void
+! init_pwsvc(argc, argv)
+! 	int	argc;	/*NOTUSED*/
+! 	char	**argv;	/*NOTUSED*/
+  {
+  #define	SV_NIS		"nis"
+  #define	SV_NISPLUS	"nisplus"
+  #define	SV_COMPAT	"compat"
+  #define	SV_FILES	"files"
+- 
+  	int	svo = 0;
+  	char	**svlist;
+  
+--- 181,201 ----
+  }
+  
+  void
+! init_pwsvc(argc, argv, cmdsw)
+! 	int	argc;		/*NOTUSED*/
+! 	char	**argv;		/*NOTUSED*/
+! 	char	**cmdsw;	/* Command line switches */
+  {
++ /*
++  *	Having a list of defines for service names is not really the
++  *	right way to go, but since source changes are needed to add
++  *	a method module, forcing changes here also is not the most
++  *	terrible thing.
++  */
+  #define	SV_NIS		"nis"
+  #define	SV_NISPLUS	"nisplus"
+  #define	SV_COMPAT	"compat"
+  #define	SV_FILES	"files"
+  	int	svo = 0;
+  	char	**svlist;
+  
+***************
+*** 201,206 ****
+--- 206,247 ----
+  	 * TODO: Figure out what security level needed for RPC 
+  	 * i.e. might a key need resetting.
+  	 */
++ 
++ 	/*
++ 	 * The -r command line option short-circuits nsswitch.conf processing
++ 	 */
++ 	if (cmdsw && cmdsw['r']) {
++ 		if (strcmp(cmdsw['r'], SV_FILES) == 0) {
++ 			_svcinfo.ServiceOrder[svo++] = srv_local;
++ 			debug(DB_LOOKUP, "-r local ");
++ 		}
++ 		if (strcmp(cmdsw['r'], SV_NIS) == 0) {
++ #ifdef	USE_NIS
++ 			_svcinfo.ServiceOrder[svo++] = srv_yp;
++ 			debug(DB_LOOKUP, "-r nis ");
++ #else
++ 			die("NIS support not enabled\n");
++ 			/*NOTREACHED*/
++ #endif
++ 		}
++ 		if (strcmp(cmdsw['r'], SV_NISPLUS) == 0) {
++ #ifdef	USE_NISPLUS_NOPE
++ 			_svcinfo.ServiceOrder[svo++] = srv_nis;
++ 			debug(DB_LOOKUP, "-r nisplus ");
++ #else
++ 			die("NIS+ not supported\n");
++ 			/*NOTREACHED*/
++ #endif
++ 		}
++ 		if (svo) {
++ 			_svcinfo.ServiceOrder[svo] = srv_last;
++ 			_svcinfo.init = 1;
++ 			debug(DB_LOOKUP, "\n");
++ 			return;
++ 		}
++ 		die("Unknown service selector '%s'\n", cmdsw['r']);
++ 		/*NOTREACHED*/
++ 	}
+  	for (svlist = get_nsswitch(NSS_DBNAM_PASSWD); *svlist; *svlist++) {
+  		if (strcmp(*svlist, SV_FILES) == 0) {
+  			_svcinfo.ServiceOrder[svo++] = srv_local;
+***************
+*** 251,257 ****
+  #undef	SV_FILES
+  #undef	SV_PWCOMPAT
+  }
+! #endif	/* OS_SUNOS_5 */
+  
+  #ifndef	_SETUP
+  /*
+--- 292,298 ----
+  #undef	SV_FILES
+  #undef	SV_PWCOMPAT
+  }
+! #endif	/* defined(HAS_NSSWITCH) && defined(OS_SUNOS_5) */
+  
+  #ifndef	_SETUP
+  /*
+***************
+*** 258,266 ****
+   * The default init_pwsvc() routine
+   */
+  void
+! init_pwsvc(argc, argv)
+  	int	argc;	/*NOTUSED*/
+  	char	**argv;	/*NOTUSED*/
+  {
+  	_svcinfo.SecurityLevel = sec_std;
+  #ifdef	SUNOS4_SECURITY
+--- 299,308 ----
+   * The default init_pwsvc() routine
+   */
+  void
+! init_pwsvc(argc, argv, cmdsw)
+  	int	argc;	/*NOTUSED*/
+  	char	**argv;	/*NOTUSED*/
++ 	char	**cmdsw; /*NOTUSED*/
+  {
+  	_svcinfo.SecurityLevel = sec_std;
+  #ifdef	SUNOS4_SECURITY
+***************
+*** 287,293 ****
+  get_pwsvc()
+  {
+  	if (_svcinfo.init == 0)
+! 		init_pwsvc(0, 0);
+  	return(&_svcinfo);
+  }
+  
+--- 329,335 ----
+  get_pwsvc()
+  {
+  	if (_svcinfo.init == 0)
+! 		init_pwsvc(0, 0, 0);
+  	return(&_svcinfo);
+  }
+  
+*** /tmp/d0A3zXk	Thu Oct 15 10:34:46 1998
+--- src/Common/pw_svc.h	Wed Oct 14 11:02:46 1998
+***************
+*** 1,7 ****
+  /*
+   *	Defines for using get_svc_conf()
+   *
+!  *	@(#)pw_svc.h	1.6 07/09/98 (cc.utexas.edu)
+   */
+  #ifndef	pw_svc_h
+  #define	pw_svc_h 1
+--- 1,7 ----
+  /*
+   *	Defines for using get_svc_conf()
+   *
+!  *	@(#)pw_svc.h	1.7 09/29/98 (cc.utexas.edu)
+   */
+  #ifndef	pw_svc_h
+  #define	pw_svc_h 1
+***************
+*** 45,51 ****
+  /*
+   * Function declaration
+   */
+! void init_pwsvc _((int, char **));
+  struct pw_svc *get_pwsvc();
+  
+  #endif
+--- 45,51 ----
+  /*
+   * Function declaration
+   */
+! void init_pwsvc _((int, char **, char **));
+  struct pw_svc *get_pwsvc();
+  
+  #endif
+*** /tmp/d0tSBTD	Thu Oct 15 10:34:46 1998
+--- src/Methods/pwm_local.c	Tue Oct 13 15:41:26 1998
+***************
+*** 23,29 ****
+  #include "passwdtab.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwm_local.c	1.31 07/20/98 (cc.utexas.edu)";
+  #endif
+  
+  /*
+--- 23,29 ----
+  #include "passwdtab.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwm_local.c	1.32 10/13/98 (cc.utexas.edu)";
+  #endif
+  
+  /*
+***************
+*** 110,119 ****
+  # ifdef	OS_SUNOS_4
+  	if (ypinfo.status == is_yp_client && !Switches['l'])
+  		return(0);
+! # else		/* OS_SUNOS_4 */
+! 	if (ypinfo.status == is_yp_client)
+! 		return(0);
+! # endif		/* OS_SUNOS_4 */
+  #endif	/* USE_NIS */
+  	(void) gethostname(localhost, sizeof(localhost));
+  	mp->pws_loc = strdup(localhost);
+--- 110,116 ----
+  # ifdef	OS_SUNOS_4
+  	if (ypinfo.status == is_yp_client && !Switches['l'])
+  		return(0);
+! # endif
+  #endif	/* USE_NIS */
+  	(void) gethostname(localhost, sizeof(localhost));
+  	mp->pws_loc = strdup(localhost);
+***************
+*** 256,262 ****
+  	int	fd;		/* Temp file create fd */
+  	int	repdone = 0;	/* Entry was replaced */
+  	int	mytempfile = 0;	/* Does PASSWD_TEMP belong to me? */
+! 	size_t	sizediff;	/* Size difference in old & new files */
+  	struct passwd	*px;	/* Password file traversal */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  	struct sigblk	blocked;
+--- 253,259 ----
+  	int	fd;		/* Temp file create fd */
+  	int	repdone = 0;	/* Entry was replaced */
+  	int	mytempfile = 0;	/* Does PASSWD_TEMP belong to me? */
+! 	int	sizediff;	/* Size difference in old & new files */
+  	struct passwd	*px;	/* Password file traversal */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  	struct sigblk	blocked;
+***************
+*** 430,453 ****
+  	 *
+  	 * Check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = FileSizeDiff(aux->whichPW->tempfile, aux->whichPW->pwfile);
+! 	sizediff += PasswdTolerance;
+! 	if (sizediff < 0)
+  		logdie("Passwd temp is %d bytes short\n", abs(sizediff));
+  
+  	(void) unlink(aux->whichPW->savefile);
+  	if (link(aux->whichPW->pwfile, aux->whichPW->savefile) < 0) {
+  		perror("Password file save");
+  		(void) unlink(aux->whichPW->tempfile);
+! 		logdie("Can't save password file");
+  	}
+  	if (rename(aux->whichPW->tempfile, aux->whichPW->pwfile) < 0) {
+  		perror("Password file replace");
+  		(void) unlink(aux->whichPW->tempfile);
+  		(void) link(aux->whichPW->savefile, aux->whichPW->pwfile);
+! 		logdie("Can't replace password file");
+  	}
+- /* 	(void) chmod(aux->whichPW->pwfile, PASSWD_MODE); */
+  #ifdef	DBM_PASSWD
+  	update_dbm_passwd(theUser, newUser);
+  #endif	/* DBM_PASSWD */
+--- 427,459 ----
+  	 *
+  	 * Check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = ( FileSize(aux->whichPW->tempfile) -
+! 		     FileSize(aux->whichPW->pwfile)) + PasswdTolerance;
+! 	if (sizediff < 0) {
+! #ifdef	SHORT_FILE_WARN
+! 		logerr("Password temp is %d bytes short\n", abs(sizediff));
+! #else
+  		logdie("Passwd temp is %d bytes short\n", abs(sizediff));
++ #endif
++ 	}
++ 	debug(DB_UPDATE,
++ 		"put_local_user: Install passwd '%s', temp '%s', save '%s'\n",
++ 		aux->whichPW->pwfile, aux->whichPW->tempfile,
++ 		aux->whichPW->savefile);
+  
+  	(void) unlink(aux->whichPW->savefile);
+  	if (link(aux->whichPW->pwfile, aux->whichPW->savefile) < 0) {
+  		perror("Password file save");
+  		(void) unlink(aux->whichPW->tempfile);
+! 		logdie("Cannot save password file");
+  	}
+  	if (rename(aux->whichPW->tempfile, aux->whichPW->pwfile) < 0) {
+  		perror("Password file replace");
+  		(void) unlink(aux->whichPW->tempfile);
+  		(void) link(aux->whichPW->savefile, aux->whichPW->pwfile);
+! 		(void) unlink(aux->whichPW->savefile);
+! 		logdie("Cannot replace password file");
+  	}
+  #ifdef	DBM_PASSWD
+  	update_dbm_passwd(theUser, newUser);
+  #endif	/* DBM_PASSWD */
+*** /tmp/dasPOi_	Thu Oct 15 10:34:46 1998
+--- src/Methods/shm_adjunct.c	Tue Oct 13 15:41:26 1998
+***************
+*** 16,22 ****
+   *	passed in, and aborts on serious error.
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_adjunct.c	1.9 07/20/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+--- 16,22 ----
+   *	passed in, and aborts on serious error.
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_adjunct.c	1.10 10/13/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+***************
+*** 182,188 ****
+  	int	fd;			/* Temp file create fd */
+  	int	repdone = 0;		/* Has the entry been found? */
+  	char	adjline[BUFSIZ];	/* Adjunct line to stuff in YP map */
+! 	size_t	sizediff;		/* Size difference in old & new files */
+  	struct passwd_Xadjunct	*px;	/* Password file traversal */
+  	struct sigblk	blocked;	/* Signals blocked during disk copy */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+--- 182,188 ----
+  	int	fd;			/* Temp file create fd */
+  	int	repdone = 0;		/* Has the entry been found? */
+  	char	adjline[BUFSIZ];	/* Adjunct line to stuff in YP map */
+! 	int	sizediff;		/* Size difference in old & new files */
+  	struct passwd_Xadjunct	*px;	/* Password file traversal */
+  	struct sigblk	blocked;	/* Signals blocked during disk copy */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+***************
+*** 246,257 ****
+  	 *
+  	 * So check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = FileSizeDiff(aux->whichSH->tempfile, aux->whichSH->pwfile);
+! 	sizediff += ShadowTolerance;
+! 	if (sizediff < 0)
+  		logdie("Shadow temp is %d bytes short\n", abs(sizediff));
+  
+! 	if (rename(aux->whichSH->pwfile, aux->whichSH->savefile) < 0) {
+  		perror("adjunct file save");
+  		(void) unlink(aux->whichSH->tempfile);
+  		logdie("Failed to save adjunct file.\n");
+--- 246,267 ----
+  	 *
+  	 * So check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = ( FileSize(aux->whichSH->tempfile) -
+! 		     FileSize(aux->whichSH->pwfile)) + ShadowTolerance;
+! 	if (sizediff < 0) {
+! #ifdef	SHORT_FILE_WARN
+! 		logerr("Shadow temp is %d bytes short\n", abs(sizediff));
+! #else
+  		logdie("Shadow temp is %d bytes short\n", abs(sizediff));
++ #endif
++ 	}
+  
+! 	debug(DB_UPDATE,
+! 		"update_shadow: Install shadow '%s', temp '%s', save '%s'\n",
+! 		aux->whichSH->pwfile, aux->whichSH->tempfile,
+! 		aux->whichSH->savefile);
+! 
+! 	if (link(aux->whichSH->pwfile, aux->whichSH->savefile) < 0) {
+  		perror("adjunct file save");
+  		(void) unlink(aux->whichSH->tempfile);
+  		logdie("Failed to save adjunct file.\n");
+*** /tmp/dHGeJB_	Thu Oct 15 10:34:47 1998
+--- src/Methods/shm_shadow.c	Tue Oct 13 15:41:26 1998
+***************
+*** 11,17 ****
+   *
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_shadow.c	1.14 07/20/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+--- 11,17 ----
+   *
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)shm_shadow.c	1.15 10/13/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "npasswd.h"
+***************
+*** 120,126 ****
+  	int	cnt;		/* Lock retry counter */
+  	int	repdone = 0;	/* Entry was replaced */
+  	time_t	now;		/* Current time */
+! 	size_t	sizediff;	/* Temp/shadow file size difference */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque; /* Metadata */
+  	struct spwd	*px;	/* Shadow file traversal */
+  	struct sigblk	blocked;	/* Signal blocker */
+--- 120,126 ----
+  	int	cnt;		/* Lock retry counter */
+  	int	repdone = 0;	/* Entry was replaced */
+  	time_t	now;		/* Current time */
+! 	int	sizediff;	/* Temp/shadow file size difference */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque; /* Metadata */
+  	struct spwd	*px;	/* Shadow file traversal */
+  	struct sigblk	blocked;	/* Signal blocker */
+***************
+*** 220,230 ****
+  	 *
+  	 * So check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = FileSizeDiff(aux->whichSH->tempfile, aux->whichSH->pwfile);
+! 	sizediff += ShadowTolerance;
+! 	if (sizediff < 0)
+  		logdie("Shadow temp is %d bytes short\n", abs(sizediff));
+  
+  	(void) unlink(aux->whichSH->savefile);
+  	if (link(aux->whichSH->pwfile, aux->whichSH->savefile) < 0) {
+  		perror("shadow file save");
+--- 220,240 ----
+  	 *
+  	 * So check the sizes and assume that will catch most errors.
+  	 */
+! 	sizediff = ( FileSize(aux->whichSH->tempfile) -
+! 		     FileSize(aux->whichSH->pwfile)) + ShadowTolerance;
+! 	if (sizediff < 0) {
+! #ifdef	SHORT_FILE_WARN
+! 		logerr("Shadow temp is %d bytes short\n", abs(sizediff));
+! #else
+  		logdie("Shadow temp is %d bytes short\n", abs(sizediff));
++ #endif
++ 	}
+  
++ 	debug(DB_UPDATE,
++ 		"update_shadow: Install shadow '%s', temp '%s', save '%s'\n",
++ 		aux->whichSH->pwfile, aux->whichSH->tempfile,
++ 		aux->whichSH->savefile);
++ 
+  	(void) unlink(aux->whichSH->savefile);
+  	if (link(aux->whichSH->pwfile, aux->whichSH->savefile) < 0) {
+  		perror("shadow file save");
+*** /tmp/dYGidu_	Thu Oct 15 10:34:47 1998
+--- src/PasswordCheck/TestHistory.sh	Tue Oct 13 13:59:43 1998
+***************
+*** 46,52 ****
+  # President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  # 78712, ATTN: Technology Licensing Specialist.
+  #
+! # @(#)TestHistory.sh	1.2 06/23/98 (cc.utexas.edu)
+  #
+  msg()
+  {
+--- 46,52 ----
+  # President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+  # 78712, ATTN: Technology Licensing Specialist.
+  #
+! # @(#)TestHistory.sh	1.5 10/13/98 (cc.utexas.edu)
+  #
+  msg()
+  {
+***************
+*** 137,142 ****
+--- 137,143 ----
+  		SINK=/dev/tty
+  		[ -c /dev/stdout ] && SINK=/dev/stdout
+  		opt_S=''
++ 		opt_V='-v'
+  		;;
+  	*)	[ -z "$method" ] && method=$1
+  		;;
+***************
+*** 172,177 ****
+--- 173,179 ----
+  msg Start history tests - database method \"$method\" `date`
+  msg
+  trap "rm -f ${DBF}* ${TEMP} ${SAVE}*; exit 1" 2 3 15
++ msg Test database = $DBF
+  
+  set_minor 1
+  	failures=0
+***************
+*** 188,194 ****
+  	incr_micro
+  	rm -f ${DBF}*
+  	msg `get_test` Test should return '"No history database"'
+! 	test_history $opt_S -f $DBF -m $method -a $t_age -d $t_depth -u $USER \
+  		-p pass1 put > $SINK
+  	if [ $? -ne 2 ]; then
+  		die `get_test` FAILED
+--- 190,196 ----
+  	incr_micro
+  	rm -f ${DBF}*
+  	msg `get_test` Test should return '"No history database"'
+! 	./test_history $opt_S -f $DBF -m $method -a $t_age -d $t_depth -u $USER \
+  		-p pass1 put > $SINK
+  	if [ $? -ne 2 ]; then
+  		die `get_test` FAILED
+***************
+*** 210,216 ****
+  	incr_micro
+  	msg `get_test` Populating history
+  	for T in 1 2 3 4; do
+! 		test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-p pass$T -u $USER put > $SINK || \
+  				die `get_test` $T FAILED
+  		sleep 2
+--- 212,218 ----
+  	incr_micro
+  	msg `get_test` Populating history
+  	for T in 1 2 3 4; do
+! 		./test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-p pass$T -u $USER put > $SINK || \
+  				die `get_test` $T FAILED
+  		sleep 2
+***************
+*** 221,227 ****
+  	#
+  	incr_micro
+  	msg `get_test` Fetching history data
+! 	test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  		-u $USER get > $SINK || die `get_test` FAILED
+  	msg `get_test` OK
+  	#
+--- 223,229 ----
+  	#
+  	incr_micro
+  	msg `get_test` Fetching history data
+! 	./test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  		-u $USER get > $SINK || die `get_test` FAILED
+  	msg `get_test` OK
+  	#
+***************
+*** 231,237 ****
+  	msg `get_test` Looking for passwords in history
+  	ofailures=$failures
+  	for T in 1 2 3; do
+! 		test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-u $USER -p pass$T find || error $T FAILED
+  	done
+  	#
+--- 233,239 ----
+  	msg `get_test` Looking for passwords in history
+  	ofailures=$failures
+  	for T in 1 2 3; do
+! 		./test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-u $USER -p pass$T find || error $T FAILED
+  	done
+  	#
+***************
+*** 240,257 ****
+  	incr_micro
+  	msg `get_test` Testing history_admin dump and load
+  
+! 	history_admin -m $method -f $DBF   -d 0 -a 0 dump | sort > $DBF.0
+! 	history_admin -m $method -f $DBF.1 -d 0 -a 0 load < $DBF.0
+! 	history_admin -m $method -f $DBF.1 -d 0 -a 0 dump | sort > $DBF.2
+  	if diff $DBF.0 $DBF.2 > $DBF.3 ; then
+  		msg `get_test` OK
+  	else
+! 		spew
+  		error FAILED
+  	fi
+  	rm -f $DBF.0 $DBF.1 $DBF.2 $DBF.3
+  	[ $failures -gt 0 ] && die `get_test` Cannot continue
+! 	msg $tn History put/get tests OK
+  
+  set_minor 2
+  	t_age=30
+--- 242,344 ----
+  	incr_micro
+  	msg `get_test` Testing history_admin dump and load
+  
+! 	./history_admin -m $method -f $DBF   -d 0 -a 0 dump | sort > $DBF.0
+! 	./history_admin -m $method -f $DBF.1 -d 0 -a 0 $opt_V load < $DBF.0
+! 	./history_admin -m $method -f $DBF.1 -d 0 -a 0 dump | sort > $DBF.2
+  	if diff $DBF.0 $DBF.2 > $DBF.3 ; then
+  		msg `get_test` OK
+  	else
+! 		spew $DBF.3
+  		error FAILED
+  	fi
+  	rm -f $DBF.0 $DBF.1 $DBF.2 $DBF.3
++ 
++ 	incr_micro
++ 
++ 	#
++ 	# Test 1 - merge which adds data to existing user
++ 	#
++ 	msg `get_test` "Testing history_admin merge (append to entry)"
++ 	incr_micro
++ 
++ 	for u in `head -10 /etc/passwd | awk '{FS=":"} {print $1}'`; do
++ 		./test_history $opt_S -m $method -f $DBF -a 0 -d 0 \
++ 			-p pass$u -u $u put > $SINK || \
++ 				die `get_test` Populate $u failed
++ 	done
++ 
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 dump | \
++ 		 sort > $SAVE
++ 	first=`head -1 $SAVE`			# Pick first user in history
++ 	whom=`echo $first | sed 's/:.*//'`	# Peel off user name
++ 
++ 	before="`./history_admin -c /dev/null -m $method \
++ 		-f $DBF -a 0 -d 0 dump | grep \"^${whom}:\"`"
++ 
++ 	echo "$first" | ./history_admin -c /dev/null -m $method \
++ 			-f $DBF -a 0 -d 0 $opt_V merge
++ 	
++ 	after="`./history_admin -c /dev/null -m $method \
++ 		-f $DBF -a 0 -d 0 dump | grep \"^${whom}:\"`"
++ 
++ 	if [ "$before" = "$after" ]; then
++ 		msg "before: $before"
++ 		msg "after: $after"
++ 		error FAILED
++ 		exit 1
++ 	else
++ 		msg `get_test` OK
++ 	fi
++ 
++ 	#
++ 	# Test 2 - merge which adds new users
++ 	#
++ 	# Replicate each entry with a slightly munged username
++ 	# Leave pristine copy of DB in $SAVE
++ 	#
++ 	msg `get_test` "Testing history_admin merge (adding entries)"
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 \
++ 		$opt_V load < $SAVE
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 dump | \
++ 		sed 's/^/U/' > $TEMP.1
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 \
++ 		$opt_V merge < $TEMP.1
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 dump | \
++ 		sort > $TEMP.1
++ 	#
++ 	# TEMP.1 should have 2x the lines of SAVE, and the count of
++ 	# different lines should equal line count of SAVE
++ 	# 
++ 	td=`diff $SAVE $TEMP.1 | grep -c '^> '`
++ 	od=`cat $SAVE | wc -l`
++ 	if [ $od = $td ]; then
++ 		msg `get_test` OK
++ 	else
++ 		error DB should have `expr $od \* 2` lines, has `wc -l $TEMP.1`
++ 		msg `get_test` FAILED
++ 	fi
++ 
++ 	incr_micro
++ 	msg `get_test` Testing history_admin database purge
++ 	#
++ 	# The records entered in the last 'merge' should be removed
++ 	#
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 $opt_V purge 
++ 	./history_admin -c /dev/null -m $method -f $DBF -a 0 -d 0 dump | \
++ 		 sort > $TEMP.1
++ 	#
++ 	# TEMP.1 and SAVE should be identical
++ 	#
++ 	if diff $SAVE $TEMP.1 > $TEMP.2; then
++ 		msg `get_test` OK
++ 	else
++ 		spew $TEMP.2
++ 		error FAILED
++ 	fi
++ 	rm -rf $TEMP.1 $TEMP.2 $TEMP.3 $TEMP.4
++ 
+  	[ $failures -gt 0 ] && die `get_test` Cannot continue
+! 	msg $tn History put/get/merge/purge tests OK
+  
+  set_minor 2
+  	t_age=30
+***************
+*** 268,274 ****
+  	msg `get_test` Making existing entries 31 old
+  	back=`expr 86400 \* 31`
+  
+! 	./history_admin -m $method -f $DBF -a 0 -d 0 dump | tee $SAVE | \
+  		awk 'BEGIN { FS = ":" } {
+  		for (i = 1; i <= NF; i++) {
+  			c = index($i, ",");
+--- 355,361 ----
+  	msg `get_test` Making existing entries 31 old
+  	back=`expr 86400 \* 31`
+  
+! 	./history_admin -m $method -f $DBF -a 0 -d 0 dump | \
+  		awk 'BEGIN { FS = ":" } {
+  		for (i = 1; i <= NF; i++) {
+  			c = index($i, ",");
+***************
+*** 294,300 ****
+  	# Add a new entry
+  	#
+  	msg `get_test` Adding a fresh entry
+! 	test_history $opt_S -m $method -f $DBF -a 0 -d 0 \
+  		-u $USER -p pass999 put > $SINK || \
+  			die `get_test` New password put failed
+  	#
+--- 381,387 ----
+  	# Add a new entry
+  	#
+  	msg `get_test` Adding a fresh entry
+! 	./test_history $opt_S -m $method -f $DBF -a 0 -d 0 \
+  		-u $USER -p pass999 put > $SINK || \
+  			die `get_test` New password put failed
+  	#
+***************
+*** 305,311 ****
+  	msg `get_test` These passwords should not be found "(too old)"
+  	ofailures=$failures
+  	for T in 1 2 3; do
+! 		test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-u $USER -p pass$T find && \
+  				error $T FAILED
+  	done
+--- 392,398 ----
+  	msg `get_test` These passwords should not be found "(too old)"
+  	ofailures=$failures
+  	for T in 1 2 3; do
+! 		./test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  			-u $USER -p pass$T find && \
+  				error $T FAILED
+  	done
+***************
+*** 315,321 ****
+  	#
+  	incr_micro
+  	msg `get_test` This recent password should be found
+! 	test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  		-u $USER -p pass999 find || error FAILED
+  
+  	msg $tn History age lookup tests OK
+--- 402,408 ----
+  	#
+  	incr_micro
+  	msg `get_test` This recent password should be found
+! 	./test_history $opt_S -m $method -f $DBF -a $t_age -d $t_depth \
+  		-u $USER -p pass999 find || error FAILED
+  
+  	msg $tn History age lookup tests OK
+***************
+*** 323,333 ****
+  	incr_micro
+  	msg `get_test` Testing auto-removal of stale entries
+  
+! 	before=`history_admin -m $method -f $DBF -a 0 -d 0 dump | grep $USER`
+! 	test_history $opt_S -m $method -f $DBF -a $t_age -d 0 \
+  		-u $USER -p pass998 put > $SINK || \
+  			die `get_test` New password put failed
+! 	after=`history_admin -m $method -f $DBF -a $t_age -d 0 dump |grep $USER`
+  
+  	bcount=`echo "$before" | awk 'BEGIN {FS=":"} { print NF }'`
+  	acount=`echo "$after"  | awk 'BEGIN {FS=":"} { print NF }'`
+--- 410,420 ----
+  	incr_micro
+  	msg `get_test` Testing auto-removal of stale entries
+  
+! 	before=`./history_admin -m $method -f $DBF -a 0 -d 0 dump | grep $USER`
+! 	./test_history $opt_S -m $method -f $DBF -a $t_age -d 0 \
+  		-u $USER -p pass998 put > $SINK || \
+  			die `get_test` New password put failed
+! 	after=`./history_admin -m $method -f $DBF -a $t_age -d 0 dump |grep $USER`
+  
+  	bcount=`echo "$before" | awk 'BEGIN {FS=":"} { print NF }'`
+  	acount=`echo "$after"  | awk 'BEGIN {FS=":"} { print NF }'`
+***************
+*** 362,368 ****
+  	ofailures=$failures
+  	msg `get_test` The next 2 passwords should not be found
+  	for T in 1 2; do
+! 		test_history $opt_S -m $method -f $DBF -d $t_depth \
+  			-u $USER -p pass$T find && error FAILED
+  	done
+  	[ $failures = $ofailures ] && msg `get_test` OK
+--- 449,455 ----
+  	ofailures=$failures
+  	msg `get_test` The next 2 passwords should not be found
+  	for T in 1 2; do
+! 		./test_history $opt_S -m $method -f $DBF -d $t_depth \
+  			-u $USER -p pass$T find && error FAILED
+  	done
+  	[ $failures = $ofailures ] && msg `get_test` OK
+***************
+*** 374,380 ****
+  	ofailures=$failures
+  	msg `get_test` The next 2 passwords should be found
+  	for T in 3 4; do
+! 		test_history $opt_S -m $method -f $DBF -d $t_depth \
+  			-u $USER -p pass$T find || error FAILED
+  	done
+  	[ $failures = $ofailures ] && msg `get_test` OK
+--- 461,467 ----
+  	ofailures=$failures
+  	msg `get_test` The next 2 passwords should be found
+  	for T in 3 4; do
+! 		./test_history $opt_S -m $method -f $DBF -d $t_depth \
+  			-u $USER -p pass$T find || error FAILED
+  	done
+  	[ $failures = $ofailures ] && msg `get_test` OK
+***************
+*** 383,389 ****
+  
+  echo ""
+  msg End history tests - $failures failures `date`
+! rm -f ${DBF}* $TEMP $SAVE
+  exit $failures
+  #
+  # End TestHistory.sh
+--- 470,476 ----
+  
+  echo ""
+  msg End history tests - $failures failures `date`
+! rm -f ${DBF}* ${TEMP}* $SAVE
+  exit $failures
+  #
+  # End TestHistory.sh
+*** /tmp/dFgwYN_	Thu Oct 15 10:34:47 1998
+--- src/PasswordCheck/hist_dbm.c	Tue Oct 13 17:37:17 1998
+***************
+*** 47,53 ****
+  #include "pwck_history.h"
+  
+  #ifndef lint
+! static char utid[] = "@(#)hist_dbm.c	1.3 07/20/98 (cc.utexas.edu)";
+  #endif
+  
+  /*
+--- 47,53 ----
+  #include "pwck_history.h"
+  
+  #ifndef lint
+! static char utid[] = "@(#)hist_dbm.c	1.4 10/13/98 (cc.utexas.edu)";
+  #endif
+  
+  /*
+***************
+*** 105,111 ****
+  	(void) setreuid(-1, statbuf.st_uid);
+  	if ((hdb = dbm_open(HistoryDB, O_RDWR, 0)) == 0) {
+  		debug(DB_UPDATE,
+! 			"pwh_put_dbm: second open failure %d\n", errno);
+  	}
+  	(void) setreuid(-1, oldeuid);
+  	return(hdb);
+--- 105,111 ----
+  	(void) setreuid(-1, statbuf.st_uid);
+  	if ((hdb = dbm_open(HistoryDB, O_RDWR, 0)) == 0) {
+  		debug(DB_UPDATE,
+! 			"xdbm_open: second open failure %d\n", errno);
+  	}
+  	(void) setreuid(-1, oldeuid);
+  	return(hdb);
+***************
+*** 165,171 ****
+  			(void) strncpy(rdata, hdata.dptr, hdata.dsize);
+  			rdata[hdata.dsize] = 0;
+  		}
+! 		debug(DB_PWCHECK, "pwh_dbm_put: found <%s>\n", rdata);
+  		return(rdata);
+  	}
+  	debug(DB_PWCHECK, "pwh_get_dbm: not found\n");
+--- 165,171 ----
+  			(void) strncpy(rdata, hdata.dptr, hdata.dsize);
+  			rdata[hdata.dsize] = 0;
+  		}
+! 		debug(DB_PWCHECK, "pwh_get_dbm: found <%s>\n", rdata);
+  		return(rdata);
+  	}
+  	debug(DB_PWCHECK, "pwh_get_dbm: not found\n");
+*** /tmp/d0y39Us	Thu Oct 15 10:34:48 1998
+--- src/PasswordCheck/history_admin.c	Tue Oct 13 14:40:25 1998
+***************
+*** 50,56 ****
+   *	and shares a lot of state internal to that code.
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)history_admin.c	1.6 07/17/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.history_admin.c";
+  #endif
+  
+  /*
+--- 50,56 ----
+   *	and shares a lot of state internal to that code.
+   */
+  #ifndef lint
+! static char sccsid[] = "@(#)history_admin.c	1.12 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.history_admin.c";
+  #endif
+  
+  /*
+***************
+*** 58,64 ****
+   */
+  #include <stdio.h>
+  #include <ctype.h>
+- #include <grp.h>
+  /*
+   * Npasswd includes
+   */
+--- 58,63 ----
+***************
+*** 72,77 ****
+--- 71,102 ----
+  # include <ndbm.h>
+  #endif
+  
++ /*
++  * Definitions for linked list management
++  */
++ typedef struct _list_item {	/* List data item */
++ 	char	*tag,		/* Tag value */
++ 		*data;		/* Datum */
++ 	struct _list_item *next; /* Next item in list */
++ } list_item;
++ 
++ typedef struct {		/* List descriptor */
++ 	list_item *head,	/* First data item */
++ 		  *tail,	/* End of list (insert point) */
++ 		  *curr;	/* Current point (for traversal) */
++ } list_table;
++ 
++ #define	list_new()	((list_table *) calloc(sizeof(list_table), 1))
++ int		list_insert _((list_table *, char *, char *));
++ list_item	*list_first _((list_table *));
++ list_item	*list_find _((list_table *, char *));
++ list_item	*list_next _((list_table *));
++ void		list_item_update _((list_item *, char *, char *));
++ void		list_item_append _((list_item *, char *, char *));
++ 
++ /*
++  * Global variables
++  */
+  int	logging = 0;		/* Emit messages via syslog? */
+  int	verbose = 0;		/* User level verbose */
+  void	(*xdie)() = die;	/* Fatal error report routine */
+***************
+*** 94,99 ****
+--- 119,125 ----
+  	[-c file]	Alternate npasswd configuration file\n\
+  	[-d N]		Set password retention depth to N\n\
+  	[-f file]	Set database path\n\
++ 	[-i file]	Input data file\n\
+  	[-l]		Log errors via syslog\n\
+  	[-m method]	Set database method\n\
+  	[-v]		Verbose mode\n\
+***************
+*** 101,106 ****
+--- 127,133 ----
+  	[-Xh]		Help\n\
+  	function	What to do:\n\
+  		load - build history database from stdin\n\
++ 		merge - merge into history database from stdin\n\
+  		dump - dump history database to stdout\n\
+  		purge - remove dead users and old passwords\n\
+  ";
+***************
+*** 110,124 ****
+   */
+  char	*filter_input _((char *));
+  int	file_dump _((char *));
+! int	file_load _((char *, FILE *));
+  int	file_purge _((char *));
+  #ifdef	I_NDBM
+  int	dbm_dump _((char *));
+  int	dbm_load _((char *, FILE *));
+  int	dbm_purge _((char *));
+  #endif
+  
+  #define	ProgramName	"history_admin"
+  
+  /*
+   * main
+--- 137,154 ----
+   */
+  char	*filter_input _((char *));
+  int	file_dump _((char *));
+! int	file_load _((char *, FILE *, int));
+  int	file_purge _((char *));
+  #ifdef	I_NDBM
+  int	dbm_dump _((char *));
+  int	dbm_load _((char *, FILE *));
++ int	dbm_merge _((char *, FILE *));
+  int	dbm_purge _((char *));
+  #endif
+  
+  #define	ProgramName	"history_admin"
++ #define	vprintf		if (verbose) printf
++ #define	nullstr(_P_)	((_P_) == NULL || *(_P_) == 0)
+  
+  /*
+   * main
+***************
+*** 135,140 ****
+--- 165,171 ----
+  		*dbfile = 0;		/* DB filename */
+  	char	*configfile = CONFIG_FILE; /* Npasswd configuration file */
+  	FILE	*cfp;			/* Control file */
++ 	FILE	*input = stdin;		/* Data stream */
+  	extern char	*optarg;	/* From getopt() */
+  	extern int	optind;		/* From getopt() */
+  
+***************
+*** 142,148 ****
+  	/*
+  	 * Process command line arguments
+  	 */
+! 	while ((opt = getopt(argc, argv, "a:c:d:f:lm:vX:")) != EOF) {
+  		switch (opt) {
+  		case 'a':	/* -a password-age */
+  			HistoryAge = atoi(optarg) * SEC_DAY;
+--- 173,179 ----
+  	/*
+  	 * Process command line arguments
+  	 */
+! 	while ((opt = getopt(argc, argv, "a:c:d:f:i:lm:vX:")) != EOF) {
+  		switch (opt) {
+  		case 'a':	/* -a password-age */
+  			HistoryAge = atoi(optarg) * SEC_DAY;
+***************
+*** 156,161 ****
+--- 187,198 ----
+  		case 'f':	/* -f history-file */
+  			dbfile = optarg;
+  			break;
++ 		case 'i':	/* -i input-file */
++ 			if ((input = fopen(optarg, "r")) == NULL) {
++ 				perror(optarg);
++ 				die("Cannot open input file\n");
++ 			}
++ 			break;
+  		case 'l':	/* -l (logging) */
+  			logging = 1;
+  			break;
+***************
+*** 169,174 ****
+--- 206,212 ----
+  			switch (*optarg) {
+  			case 'D':
+  				set_debug(++optarg, admin_debug);
++ 				verbose = 1;
+  				break;
+  			case 'h': {
+  				debug_table *dt = admin_debug;
+***************
+*** 179,184 ****
+--- 217,225 ----
+  					printf(" %s\t%s\n", dt->name, dt->help);
+  				return(0);
+  				}
++ 			case 'V':
++ 				printf("Version %s of %s\n", "1.12", "10/13/98");
++ 				return(0);
+  			}
+  		}
+  	}
+***************
+*** 204,210 ****
+  			printf(" %s\t%s\n", dt->name, dt->help);
+  		return(1);
+  	}
+- 
+  	/*
+  	 * Read npasswd configuration and pick out history directives
+  	 */
+--- 245,250 ----
+***************
+*** 235,253 ****
+  		(void) fclose(cfp);
+  	}
+  	/*
+! 	 * Database path set on command line?
+  	 */
+! 	if (dbfile) {
+  		char	*tmp[4];
+  		char	*error;
+  
+  		tmp[0] = "database";
+  		tmp[1] = method;
+! 		tmp[2] = dbfile;
+  		tmp[3] = 0;
+  		if (error = pwck_history_configure(tmp))
+! 			(*xdie)(
+! 			"Database error: file '%s' method '%s' error '%s'\n",
+  				dbfile, method, error);
+  	}
+  
+--- 275,292 ----
+  		(void) fclose(cfp);
+  	}
+  	/*
+! 	 * Database path or method set on command line?
+  	 */
+! 	if (dbfile || strcmp(method, DEFAULT_METHOD)) {
+  		char	*tmp[4];
+  		char	*error;
+  
+  		tmp[0] = "database";
+  		tmp[1] = method;
+! 		tmp[2] = dbfile ? dbfile : HISTORYDB_DEFAULT;
+  		tmp[3] = 0;
+  		if (error = pwck_history_configure(tmp))
+! 			(*xdie)("Database error: file '%s' method '%s' error '%s'\n",
+  				dbfile, method, error);
+  	}
+  
+***************
+*** 282,295 ****
+  		if (HistoryDB == 0)
+  			(*xdie)("No history database\n");
+  		if (Method_File)
+! 			return(file_load(HistoryDB, stdin));
+  #ifdef	I_NDBM
+  		if (Method_DBM)
+! 			return(dbm_load(HistoryDB, stdin));
+  #endif
+  		return(2);
+  	}
+  	/*
+  	 * Function 'purge' - Clean up history
+  	 */
+  	if (instringcase(function, "purge")) {
+--- 321,348 ----
+  		if (HistoryDB == 0)
+  			(*xdie)("No history database\n");
+  		if (Method_File)
+! 			return(file_load(HistoryDB, input, 0));
+  #ifdef	I_NDBM
+  		if (Method_DBM)
+! 			return(dbm_load(HistoryDB, input));
+  #endif
+  		return(2);
+  	}
+  	/*
++ 	 * Function 'merge' - merge to history from stdin data
++ 	 */
++ 	if (instringcase(function, "merge")) {
++ 		if (HistoryDB == 0)
++ 			(*xdie)("No history database\n");
++ 		if (Method_File)
++ 			return(file_load(HistoryDB, input, 1));
++ #ifdef	I_NDBM
++ 		if (Method_DBM)
++ 			return(dbm_merge(HistoryDB, input));
++ #endif
++ 		return(2);
++ 	}
++ 	/*
+  	 * Function 'purge' - Clean up history
+  	 */
+  	if (instringcase(function, "purge")) {
+***************
+*** 313,318 ****
+--- 366,447 ----
+  #undef	Method_DBM
+  
+  /*
++  * clone_file_stat
++  *	Clone ownership and modes from file to file
++  *
++  * Returns
++  *	Number of errors
++  */
++ clone_file_stat(donor, target)
++ 	char	*donor,		/* Donor file */
++ 		*target;	/* Target file */
++ {
++ 	struct stat	stb;
++ 	int	errors = 0;
++ 
++ 	if (stat(donor, &stb) == 0) {
++ 		if (chown(target, stb.st_uid, stb.st_gid) < 0) {
++ 			perror("clone_mode chown");
++ 			errors++;
++ 		}
++ 		if (chmod(target, stb.st_mode) < 0) {
++ 			perror("clone_mode chmod");
++ 			errors++;
++ 		}
++ 	}
++ 	return(errors);
++ }
++ 
++ /*
++  * install_file
++  *	Install a new file with various checks
++  *
++  * Returns
++  *	0 on success
++  *	1 on failure
++  */
++ install_file(target, new, save)
++ 	char	*target,	/* Target file */
++ 		*new,		/* New file */
++ 		*save;		/* Save file */
++ {
++ 	if (save && access(target, 0) == 0) {	/* Move target to save */
++ 		(void) unlink(save);
++ 		if (rename(target, save) < 0) {
++ 			int xerrno = errno;
++ 
++ 			perror("Save file rename");
++ 			if (logging)
++ 				logerr("Install save ('%s','%s') failure %d",
++ 					target, save, xerrno);
++ 			return(1);
++ 		}
++ 	}
++ 
++ 	if (rename(new, target) < 0) {		/* Move new to current */
++ 		int xerrno = errno;
++ 
++ 		perror("New file rename");
++ 		if (logging)
++ 			logerr("Install new ('%s','%s') failure %d",
++ 				new, target, xerrno);
++ 		(void) unlink(target);
++ 		if (save) {
++ 			if (rename(save, target) < 0) {
++ 				int xerrno = errno;
++ 			
++ 				perror("Save file putback");
++ 				if (logging)
++ 					logerr("Install putback ('%s','%s') failure %d",
++ 						save, target, xerrno);
++ 			}
++ 		}
++ 		return(1);
++ 	}
++ 	return(0);
++ }
++ 
++ /*
+   * filter_input
+   *	Verify history line
+   *
+***************
+*** 339,349 ****
+   */
+  
+  /*
+!  * Awk scirpt to spew the last history line for each user
+   */
+! #define	FileIncantation \
+! "/bin/awk 'BEGIN {FS = \":\"} {u[$1] = $0} END {for (f in u) {print u[f]}}'"
+  
+  /*
+   * file_purge
+   *	Clean a flat file history datbase
+--- 468,520 ----
+   */
+  
+  /*
+!  * file_read
+!  *	Read a history database and store in list
+!  *
+!  * There may be multiple records for a user, only the last of which is used.
+!  *
+!  * Returns
+!  *	List descriptor on success
+!  *	Aborts on error
+   */
+! list_table	*
+! file_read(file)
+! 	char	*file;			/* History file */
+! {
+! 	FILE		*in;		/* Input file pointer */
+! 	list_table	*nl;		/* List table pointer */
+! 	char		buf[BUFSIZ];	/* Input buffer */
+  
++ 	if ((nl = list_new()) == NULL)
++ 		(*xdie)("No memory for read list\n");
++ 
++ 	if ((in = fopen(file, "r")) == NULL) {
++ 		int xerrno = errno;
++ 
++ 		perror(file);
++ 		(*xdie)("Cannot open history file '%s', error %d\n",
++ 			file, xerrno);
++ 	}
++ 	while (fgets(buf, sizeof(buf), in)) {
++ 		list_item	*lp;
++ 		char		*iptr,	/* Input pointer */
++ 				*dptr;	/* Data pointer  */
++ 
++ 		if ((iptr = filter_input(buf)) == 0)
++ 			continue;
++ 		chop_nl(buf);
++ 		if ((dptr = strchr(buf, ENTRY_SEP)) == NULL)
++ 			continue;
++ 		*dptr++ = 0;
++ 		if (lp = list_find(nl, buf))
++ 			list_item_update(lp, NULL, dptr);
++ 		else
++ 			list_insert(nl, iptr, dptr);
++ 	}
++ 	(void) fclose(in);
++ 	return(nl);
++ }
++ 
+  /*
+   * file_purge
+   *	Clean a flat file history datbase
+***************
+*** 355,370 ****
+  file_purge(file)
+  	char *file;			/* History file */
+  {
+! 	FILE	*file_in,		/* Input stream */
+! 		*file_out;		/* Output stream */
+! 	char	tempfile[MAXPATHLEN],	/* Temp history file */
+! 		savefile[MAXPATHLEN],	/* Saved history file */
+  		buf[HISTORY_RECLEN];	/* Read buffer */
+  	int	errors = 0,		/* Error count */
+  		how_many = 0,		/* Record count */
+  		deleted = 0,		/* Deleted record count */
+  		t;			/* Temp */
+! 	struct stat	stb;		/* History file stat */
+  
+  	if (access(file, 0) < 0) {
+  		if (verbose)
+--- 526,541 ----
+  file_purge(file)
+  	char *file;			/* History file */
+  {
+! 	FILE	*out;			/* Output stream */
+! 	char	*tempfile,		/* Temp history file */
+! 		*savefile,		/* Saved history file */
+  		buf[HISTORY_RECLEN];	/* Read buffer */
+  	int	errors = 0,		/* Error count */
+  		how_many = 0,		/* Record count */
+  		deleted = 0,		/* Deleted record count */
+  		t;			/* Temp */
+! 	list_table	*history;	/* History list */
+! 	list_item	*hi;		/* History list item */
+  
+  	if (access(file, 0) < 0) {
+  		if (verbose)
+***************
+*** 371,392 ****
+  			warn("No history file\n");
+  		return(1);
+  	}
+  	/*
+- 	 * Invoke history file filter
+- 	 */
+- 	(void) sprintf(buf, "%s %s", FileIncantation, file);
+- 	if ((file_in = popen(buf, "r")) == NULL) {
+- 		if (verbose)
+- 			warn("Filter popen failed\n");
+- 		return(1);
+- 	}
+- 	/*
+  	 * Construct temporary and save file names
+  	 */
+! 	(void) strcpy(tempfile, file);
+! 	(void) strcat(tempfile, ".temp");
+! 	(void) strcpy(savefile, file);
+! 	(void) strcat(savefile, ".old");
+  	/*
+  	 * Create the temp file
+  	 */
+--- 542,559 ----
+  			warn("No history file\n");
+  		return(1);
+  	}
++ 
+  	/*
+  	 * Construct temporary and save file names
+  	 */
+! 	if ((tempfile = malloc(strlen(file) + 8)) == 0)
+! 		(*xdie)("No memory for tempfile string\n");
+! 	(void) sprintf(tempfile, "%s.temp", file);
+! 
+! 	if ((savefile = malloc(strlen(file) + 8)) == 0)
+! 		(*xdie)("No memory for savefile string\n");
+! 	(void) sprintf(savefile, "%s.old", file);
+! 
+  	/*
+  	 * Create the temp file
+  	 */
+***************
+*** 394,488 ****
+  		(*xdie)("Cannot make temp file '%s', error %d\n",
+  			tempfile, errno);
+  	}
+! 	file_out = fdopen(t, "w");		/* Get stdio pointer */
+! 
+  	debug(DB_VERBOSE, "purge_file: file '%s'\ntemp '%s'\nsave '%s'\n",
+  		file, tempfile, savefile);
+  
+  	/*
+!  	 * Give temp file ownership and mode of the original
+  	 */
+! 	(void) stat(file, &stb);
+! 	if (chown(tempfile, stb.st_uid, stb.st_gid) < 0) {
+! 		perror("History temp chown");
+! 		errors++;
+! 	}
+!         if (chmod(tempfile, stb.st_mode) < 0) {
+! 		perror("History temp chmod");
+! 		errors++;
+! 	}
+  
+- 	while (fgets(buf, sizeof(buf), file_in)) {
+- 		char	*c,		/* Temp */
+- 			*t;		/* Temp */
+- 		char	name[16];	/* User name temp */
+- 
+  		how_many++;
+! 		c = strchr(buf, ENTRY_SEP);
+! 		*c++ = 0;
+! 		(void) strcpy(name, buf);
+! 		/*
+! 		 * What about alternate passwd maps/files?
+! 		 */
+! 		if (getpwnam(name) == 0) {
+! 			if (verbose)
+! 				printf("User '%s' removed\n", name);
+  			deleted++;
+  			continue;
+  		}
+! 		t = clean_history(c, HistoryDepth, HistoryAge, 0, 0);
+! 		debug(DB_VERBOSE, "Purge: new <%s%c%s>\n", name, ENTRY_SEP, t);
+! 		(void) fprintf(file_out, "%s%c%s\n", name, ENTRY_SEP, t);
+  	}
+! 	(void) fclose(file_in);
+! 	(void) fclose(file_out);
+  
+  	/*
+  	 * Install temp file as history file
+  	 */
+! 	if (errors) {
+  		warn("History purge errors - new database left in '%s'\n",
+  			tempfile);
+  		return(1);
+  	}
+! 	(void) unlink(savefile);
+! 	if (rename(file, savefile) < 0) {	/* Move current to save */
+! 		int xerrno = errno;
+! 
+! 		perror("History file save failure");
+! 		if (logging)
+! 			logerr("History file save failure %d", xerrno);
+! 		(void) unlink(tempfile);
+  		return(1);
+  	}
+- 	if (rename(tempfile, file) < 0) {	/* Move new to current */
+- 		int xerrno = errno;
+  
+- 		perror("History file temp rename failure");
+- 		if (logging)
+- 			logerr("History file temp rename failure %d", xerrno);
+- 		(void) unlink(tempfile);
+- 		(void) unlink(file);
+- 		if (rename(savefile, file) < 0) {
+- 			int xerrno = errno;
+- 		
+- 			perror("Saved history file putback failure");
+- 			if (logging)
+- 				logerr("Saved history file putback failure %d",
+- 					xerrno);
+- 		}
+- 		return(1);
+- 	}
+- 	/*
+- 	 * Success - confirm and finish
+-  	 */
+  	if (logging)
+  		syslog(LOG_INFO,
+  			"Password history purge: %d records %d deletions",
+  			how_many, deleted);
+! 	if (verbose)
+! 		printf("Password history purge: %d records %d deletions\n",
+! 			how_many, deleted);
+  	return(0);
+  }
+  
+--- 561,615 ----
+  		(*xdie)("Cannot make temp file '%s', error %d\n",
+  			tempfile, errno);
+  	}
+! 	out = fdopen(t, "w");		/* Get stdio pointer */
+  	debug(DB_VERBOSE, "purge_file: file '%s'\ntemp '%s'\nsave '%s'\n",
+  		file, tempfile, savefile);
+  
+  	/*
+! 	 * Traverse the history, checking if the user is still in the
+! 	 * password file and if so, clean their entry and put to temp file.
+  	 */
+! 	history = file_read(file);
+! 	for (hi = list_first(history); hi; hi = list_next(history)) {
+! 		char	*t;	/* Temp */
+  
+  		how_many++;
+! 		if (getpwnam(hi->tag) == 0) {
+! 			vprintf("Delete history for %s (not in passwd)\n", hi->tag);
+  			deleted++;
+  			continue;
+  		}
+! 		t = clean_history(hi->data, HistoryDepth, HistoryAge, 0, 0);
+! 		if (nullstr(t)) {
+! 			vprintf("Delete history for %s (null)\n", hi->tag);
+! 			continue; 
+! 		}
+! 		debug(DB_DETAIL, "New purge entry <%s%c%s>\n",
+! 			hi->tag, ENTRY_SEP, t);
+! 		(void) fprintf(out, "%s%c%s\n", hi->tag, ENTRY_SEP, t);
+  	}
+! 	(void) fclose(out);
+  
+  	/*
+  	 * Install temp file as history file
+  	 */
+! 	if (clone_file_stat(file, tempfile)) {
+  		warn("History purge errors - new database left in '%s'\n",
+  			tempfile);
+  		return(1);
+  	}
+! 	if (install_file(file, tempfile, savefile)) {
+! 		warn("History purge errors - new database left in '%s'\n",
+! 			tempfile);
+  		return(1);
+  	}
+  
+  	if (logging)
+  		syslog(LOG_INFO,
+  			"Password history purge: %d records %d deletions",
+  			how_many, deleted);
+! 	vprintf("Password history purge: %d records %d deletions\n",
+! 		how_many, deleted);
+  	return(0);
+  }
+  
+***************
+*** 493,505 ****
+   *
+   * Returns
+   *	0 on success
+!  *	1 on failure
+   */
+  file_dump(file)
+! 	char *file;		/* History file */
+  {
+! 	FILE	*in;		/* Input stream */
+! 	char	buf[HISTORY_RECLEN]; /* Read buffer */
+  
+  	if (access(file, 0) < 0) {
+  		if (verbose)
+--- 620,632 ----
+   *
+   * Returns
+   *	0 on success
+!  *	1 if history file missing
+   */
+  file_dump(file)
+! 	char	*file;		/* History file */
+  {
+! 	list_table	*hlist;	/* List pointer */
+! 	list_item	*hitem;	/* List item */
+  
+  	if (access(file, 0) < 0) {
+  		if (verbose)
+***************
+*** 506,521 ****
+  			warn("No history file\n");
+  		return(1);
+  	}
+! 	(void) sprintf(buf, "%s %s", FileIncantation, file);
+! 	if ((in = popen(buf, "r")) == NULL) {
+! 		if (verbose)
+! 			warn("Filter popen failed\n");
+! 		return(1);
+  	}
+- 	while (fgets(buf, sizeof(buf), in)) {
+- 		printf("%s", buf);
+- 	}
+- 	(void) fclose(in);
+  	return(0);
+  }
+  
+--- 633,642 ----
+  			warn("No history file\n");
+  		return(1);
+  	}
+! 	hlist = file_read(file);
+! 	for (hitem = list_first(hlist); hitem; hitem = list_next(hlist)) {
+! 		printf("%s%c%s\n", hitem->tag, ENTRY_SEP, hitem->data);
+  	}
+  	return(0);
+  }
+  
+***************
+*** 527,649 ****
+   *	0 on success
+   *	1 on failure
+   */
+! file_load(file, input)
+  	char	*file;			/* History file */
+  	FILE	*input;			/* Input stream */
+  {
+! 	FILE	*file_out;		/* Output stream */
+! 	char	tempfile[MAXPATHLEN],	/* Temp history file */
+! 		savefile[MAXPATHLEN],	/* Saved history file */
+  		buf[HISTORY_RECLEN];	/* Read buffer */
+! 	int	errors = 0,		/* Error count */
+! 		how_many = 0,		/* Record count */
+! 		new_file = 0,		/* Making new history file? */
+! 		t;			/* Temp */
+! 	struct stat	stb;		/* History file stat */
+  
+  	/*
+! 	 * Construct temporary file name
+  	 */
+! 	(void) strcpy(tempfile, file);
+! 	(void) strcat(tempfile, ".temp");
+  
+  	/*
+!  	 * Give temp file ownership of the original (if present)
+  	 */
+! 	if (stat(file, &stb) < 0) {
+! 		new_file = 1;
+! 		(void) strcpy(tempfile, file);
+! 	}
+! 
+! 	if ((t = MakeLockTemp(tempfile)) < 0) {
+  		(*xdie)("Cannot make temp file '%s', error %d\n",
+  			tempfile, errno);
+  	}
+  
+! 	if (new_file == 0) {
+! 		if (chown(tempfile, stb.st_uid, stb.st_gid) < 0) {
+! 			perror("History temp chown");
+! 			errors++;
+! 		}
+! 		if (chmod(tempfile, stb.st_mode) < 0) {
+! 			perror("History temp chmod");
+! 			errors++;
+! 		}
+! 	}
+  
+- 	file_out = fdopen(t, "w");		/* Get stdio pointer */
+  	/*
+! 	 * Read history lines from stdin and pack into the database
+  	 */
+  	while (fgets(buf, sizeof(buf), input)) {
+! 		char	*c,		/* Temp */
+! 			*t;		/* Temp */
+! 		char	name[16];	/* Temp */
+  
+  		chop_nl(buf);
+! 
+! 		if ((t = filter_input(buf)) == 0)
+  			continue;
+! 		if ((c = strchr(t, ENTRY_SEP)) == 0)
+  			continue;
+! 		*c++ = 0;
+! 		(void) strcpy(name, t);
+! 		t = clean_history(c, 0, 0, 0, 0);
+! 		(void) fprintf(file_out, "%s%c%s\n", name, ENTRY_SEP, t);
+  		how_many++;
+  	}
+- 	(void) fclose(file_out);
+  
+! 	if (errors) {
+! 		warn("History load errors - new database left as '%s'\n",
+! 			tempfile);
+! 		return(1);
+  	}
+! 	if (new_file == 0) {
+! 		/*
+! 		 * Install temp file as history file
+! 		 */
+! 		(void) strcpy(savefile, file);
+! 		(void) strcat(savefile, ".old");
+! 	
+! 		(void) unlink(savefile);
+! 		if (rename(file, savefile) < 0) { /* Move current to save */
+! 			int xerrno = errno;
+! 	
+! 			perror("History file save failure");
+! 			if (logging)
+! 				logerr("History file save failure %d", xerrno);
+! 			(void) unlink(tempfile);
+  			return(1);
+  		}
+- 		if (rename(tempfile, file) < 0) { /* Move new to current */
+- 			int xerrno = errno;
+- 	
+- 			perror("History file temp rename failure");
+- 			if (logging)
+- 				logerr("History file temp rename failure %d", xerrno);
+- 			(void) unlink(tempfile);
+- 			(void) unlink(file);
+- 			if (rename(savefile, file) < 0) {
+- 				int xerrno = errno;
+- 			
+- 				perror("Saved history file putback failure");
+- 				if (logging)
+- 					logerr("Saved history file putback failure %d",
+- 						xerrno);
+- 			}
+- 			return(1);
+- 		}
+  	}
+  	/*
+! 	 * Success - confirm and finish
+   	 */
+  	if (logging)
+! 		syslog(LOG_INFO, "Load password history to file '%s': %d records",
+! 			file, how_many);
+! 	if (verbose)
+! 		printf("Loaded %d records to password history file '%s'\n",
+! 			how_many, file);
+  	return(0);
+  }
+  
+--- 648,774 ----
+   *	0 on success
+   *	1 on failure
+   */
+! file_load(file, input, merge)
+  	char	*file;			/* History file */
+  	FILE	*input;			/* Input stream */
++ 	int	merge;			/* Add to existing data? */
+  {
+! 	FILE	*out;			/* Output stream */
+! 	char	*tempfile,	/* Temp history file */
+! 		*savefile,	/* Saved history file */
+  		buf[HISTORY_RECLEN];	/* Read buffer */
+! 	int	how_many = 0,		/* Record count */
+! 		ofd;			/* Temp */
+! 	list_table	*hlist;
+! 	list_item	*hitem;
+  
+  	/*
+! 	 * Construct temporary and save file names
+  	 */
+! 	if ((tempfile = malloc(strlen(file) + 8)) == 0)
+! 		(*xdie)("No memory for tempfile string\n");
+! 	(void) sprintf(tempfile, "%s.temp", file);
+  
++ 	if ((savefile = malloc(strlen(file) + 8)) == 0)
++ 		(*xdie)("No memory for savefile string\n");
++ 	(void) sprintf(savefile, "%s.old", file);
++ 
++ 	debug(DB_VERBOSE, "file_load: file '%s'\ntemp '%s'\nsave '%s'\n",
++ 		file, tempfile, savefile);
+  	/*
+! 	 * Make the temp file
+  	 */
+! 	if ((ofd = MakeLockTemp(tempfile)) < 0) {
+  		(*xdie)("Cannot make temp file '%s', error %d\n",
+  			tempfile, errno);
+  	}
++ 	out = fdopen(ofd, "w");		/* Get stdio pointer */
+  
+! 	/*
+! 	 * If merging read the database, else make new list
+! 	 */
+! 	if (merge)
+! 		hlist = file_read(file);
+! 	else
+! 		hlist = list_new();
+  
+  	/*
+! 	 * Read history lines from <input> and pack/merge into the database
+  	 */
+  	while (fgets(buf, sizeof(buf), input)) {
+! 		char	*iptr,
+! 			*dptr;		/* Temp */
+  
+  		chop_nl(buf);
+! 		if ((iptr = filter_input(buf)) == 0)
+  			continue;
+! 		if ((dptr = strchr(iptr, ENTRY_SEP)) == 0)
+  			continue;
+! 		*dptr++ = 0;
+! 
+! 		/*
+! 		 * If user is already in history, replace with input
+! 		 * or append input to entry
+! 		 */
+! 		if (hitem = list_find(hlist, iptr)) {
+! 			if (merge) {
+! 				*--dptr = ENTRY_SEP;
+! 				debug(DB_DETAIL,
+! 					"file_load: Append <%s> to <%s:%s>\n",
+! 					dptr, hitem->tag, hitem->data);
+! 				list_item_append(hitem, NULL, dptr);
+! 			} else {
+! 				debug(DB_DETAIL, "file_load: Update %s:<%s>\n",
+! 					iptr, dptr);
+! 				list_item_update(hitem, NULL, dptr);
+! 			}
+! 		} else {
+! 			debug(DB_DETAIL,
+! 				"file_load: Insert <%s:%s>\n", iptr, dptr);
+! 			list_insert(hlist, iptr, dptr);
+! 		}
+  		how_many++;
+  	}
+  
+! 	/*
+! 	 * Traverse the history list, clean the entries and put
+! 	 * into the new history
+! 	 */
+! 	for (hitem = list_first(hlist); hitem; hitem = list_next(hlist)) {
+! 		char	*t = clean_history(hitem->data, 0, 0, 0, 0);
+! 
+! 		if (nullstr(t))		/* "Shouldn't happen" */
+! 			continue;
+! 		(void) fprintf(out, "%s%c%s\n", hitem->tag, ENTRY_SEP, t);
+  	}
+! 	(void) fclose(out);
+! 
+! 	/*
+! 	 * If the database file exists, copy the mode and ownership
+! 	 */
+! 	if (access(file, 0) == 0) {
+! 		if (clone_file_stat(file, tempfile)) {
+! 			warn("History load/merge errors - new database left in '%s'\n",
+! 				tempfile);
+  			return(1);
+  		}
+  	}
+  	/*
+! 	 * Move temp file to database file
+! 	 */
+! 	if (install_file(file, tempfile, savefile)) {
+! 		warn("History load/merge errors - new database left in '%s'\n",
+! 			tempfile);
+! 		return(1);
+! 	}
+! 	/*
+! 	 * Confirm and finish
+   	 */
+  	if (logging)
+! 		syslog(LOG_INFO, "%d records %sed to history file '%s'",
+! 			how_many, (merge ? "merg" : "add"), file);
+! 	vprintf("%d records %sed to password history file '%s'\n",
+! 		how_many,  (merge ? "merg" : "add"), file);
+  	return(0);
+  }
+  
+***************
+*** 652,664 ****
+   */
+  
+  #ifdef	I_NDBM
+  /* 
+   * dbm_purge
+   *	Cleanup DBM history database
+   *
+   * Returns
+!  *	0 on success
+!  *	1 on failure
+   */
+  dbm_purge(file)
+  	char *file;			/* History DBM file */
+--- 777,804 ----
+   */
+  
+  #ifdef	I_NDBM
++ /*
++  * NDBM support for history database
++  */
++ 
++ /*
++  * C string to DBM value conversion
++  */
++ #define	str2dbm(_D_,_S_) { _D_.dptr = _S_; _D_.dsize = strlen(_S_); }
++ 
++ /*
++  * DBM value to C string conversion (assumes that _D_ is large enough)
++  */
++ #define	dbm2str(_S_,_D_) { (void) strncpy(_S_,_D_.dptr,_D_.dsize);\
++ 				  _S_[_D_.dsize] = 0; }
+  /* 
+   * dbm_purge
+   *	Cleanup DBM history database
+   *
+   * Returns
+!  *	number of errors
+!  *
+!  * NOTE: Does not free all dynamically allocated storage
+   */
+  dbm_purge(file)
+  	char *file;			/* History DBM file */
+***************
+*** 665,728 ****
+  {
+  	DBM	*hdb;		/* Database pointer */
+  	datum	hkey;		/* DBM lookup datum */
+! 	int	how_many = 0,	/* Entry counter */
+! 		deleted = 0;	/* Deletion counter */
+  
+  	/*
+  	 * Open database
+  	 */
+  	if ((hdb = dbm_open(file, O_RDWR, 0)) == 0) {
+! 		perror("Cannot open history DBM\n");
+  		if (logging)
+! 			logerr("Cannot open DBM history database");
+  		return(1);
+  	}
+  	/*
+! 	 * Step through the keys in the database
+  	 */
+  	for (hkey = dbm_firstkey(hdb); hkey.dptr != NULL; hkey = dbm_nextkey(hdb)) {
+! 		datum	hdata;		/* Data lookup temp */
+! 		char    *new,		/* New entry temp */
+! 			*key,		/* Key lookup temp */
+! 			*data;		/* Data temp */
+  
+! 		how_many++;
+! 		if ((key = malloc(hkey.dsize + 1)) == NULL)
+! 			(*xdie)("No memory for DBM key copy\n");
+! 		(void) strncpy(key, hkey.dptr, hkey.dsize);
+! 		key[hkey.dsize] = 0;
+  
+  		/*
+! 		 * Is this user in the password file?
+  		 */
+! 		if (getpwnam(key) == NULL) {
+! 			if (verbose)
+! 				printf("User %s not in passwd file\n", key);
+! 			(void) dbm_delete(hdb, hkey);
+  			continue;
+  		}
+  
+! 		hdata = dbm_fetch(hdb, hkey);
+! 		if ((data = malloc(hdata.dsize + 1)) == NULL)
+! 			(*xdie)("No memory for DBM key copy\n");
+! 		(void) strncpy(data, hdata.dptr, hdata.dsize);
+! 		data[hdata.dsize] = 0;
+! 
+! 		new = clean_history(data, HistoryDepth, HistoryAge, 0, 0);
+! 		hdata.dptr = new;
+! 		hdata.dsize = strlen(new);
+! 		if (dbm_store(hdb, hkey, hdata, DBM_REPLACE) < 0) {
+! 			warn("DBM replace for '%s' failed", key);
+  			if (logging)
+! 				logerr("DBM replace for '%s' failed", key);
+! 			dbm_close(hdb);
+! 			return(1);
+  		}
+- 		free(key);
+- 		free(data);
+  	}
+! 	dbm_close(hdb);
+! 	return(0);
+  }
+  
+  /* 
+--- 805,904 ----
+  {
+  	DBM	*hdb;		/* Database pointer */
+  	datum	hkey;		/* DBM lookup datum */
+! 	int	count = 0,	/* Entry counter */
+! 		deleted = 0,	/* Deletion counter */
+! 		errors = 0;	/* Errors encountered */
+! 	list_table	*history;/* History list */
+! 	list_item	*hi;	/* List item */
+  
+  	/*
+  	 * Open database
+  	 */
+  	if ((hdb = dbm_open(file, O_RDWR, 0)) == 0) {
+! 		perror("History DBM open");
+  		if (logging)
+! 			logerr("Cannot open DBM '%s' for purge", file);
+  		return(1);
+  	}
++ 
+  	/*
+! 	 * Traverse the database, checking if the user is still in the
+! 	 * password file and store the result
+  	 */
++ 	if ((history = list_new()) == 0)
++ 		(*xdie)("No memory for DBM purge list\n");
++ 
+  	for (hkey = dbm_firstkey(hdb); hkey.dptr != NULL; hkey = dbm_nextkey(hdb)) {
+! 		char	tmp[DBLKSIZ];	/* String temp */
+  
+! 		dbm2str(tmp, hkey);
+! 		if (getpwnam(tmp))
+! 			list_insert(history, tmp, "U");	/* Update this entry */
+! 		else
+! 			list_insert(history, tmp, "D");	/* Delete this entry */
+! 		count++;
+! 	}
+  
++ 	/*
++ 	 * Traverse the history list, cleaning and deleting entries as needed
++ 	 */
++ 	for (hi = list_first(history); hi; hi = list_next(history)) {
++ 		datum	ukey;		/* Lookup temp */
++ 		datum	udata;		/* Data temp */
++ 		char	hdata[DBLKSIZ];	/* String temp */
++ 		char	*ht;		/* String temp */
++ 
++ 		str2dbm(ukey, hi->tag);
++ 		if (*hi->data == 'D') {	/* Delete this entry */
++ 			vprintf("Delete history for %s (not in passwd)\n",
++ 				hi->tag);
++ 			if (dbm_delete(hdb, ukey) < 0) {
++ 				warn("DBM delete for %s failed", hi->tag);
++ 				errors++;
++ 			}
++ 			deleted++;
++ 			continue;
++ 		}
++ 
+  		/*
+! 		 * Fetch the history entry for cleaning
+  		 */
+! 		udata = dbm_fetch(hdb, ukey);
+! 		dbm2str(hdata, udata);
+! 		ht = clean_history(hdata, HistoryDepth, HistoryAge, 0, 0);
+! 		/*
+! 		 * If the history is empty, delete the entry
+! 		 */
+! 		if (nullstr(ht)) {
+! 			vprintf("Delete history for %s (empty)\n", hi->data);
+! 			if (dbm_delete(hdb, ukey) < 0) {
+! 				warn("DBM delete for %s failed", hi->tag);
+! 				errors++;
+! 			}
+! 			deleted++;
+  			continue;
+  		}
+  
+! 		/*
+! 		 * Store the cleaned history entry
+! 		 */
+! 		str2dbm(udata, ht);
+! 		if (dbm_store(hdb, ukey, udata, DBM_REPLACE) < 0) {
+! 			errors++;
+! 			warn("DBM replace for %s failed", hi->tag);
+  			if (logging)
+! 				logerr("DBM replace for %s failed", hi->tag);
+  		}
+  	}
+! 	dbm_close(hdb);		/* Finished with database */
+! 
+! 	if (logging)
+! 		syslog(LOG_INFO,
+! 			"History purge: %d records %d deletions %d errors",
+! 			count, deleted, errors);
+! 	vprintf("History purge: %d records %d deletions %d errors\n",
+! 		count, deleted, errors);
+! 	return(errors);
+  }
+  
+  /* 
+***************
+*** 748,775 ****
+  		return(1);
+  	}
+  	/*
+! 	 * Step through the keys in the database
+  	 */
+  	for (hkey = dbm_firstkey(hdb); hkey.dptr != NULL; hkey = dbm_nextkey(hdb)) {
+  		datum	hdata;
+! 		char	*name,
+! 			*data;
+  
+  		hdata = dbm_fetch(hdb, hkey);
+! 
+! 		if ((name = malloc(hkey.dsize + 1)) == NULL)
+! 			(*xdie)("No memory for DBM key copy\n");
+! 		(void) strncpy(name, hkey.dptr, hkey.dsize);
+! 		name[hkey.dsize] = 0;
+! 
+! 		if ((data = malloc(hdata.dsize + 1)) == NULL)
+! 			(*xdie)("No memory for DBM key copy\n");
+! 		(void) strncpy(data, hdata.dptr, hdata.dsize);
+! 		data[hdata.dsize] = 0;
+! 
+  		printf("%s%c%s\n", name, ENTRY_SEP, data);
+- 		free(data);
+- 		free(name);
+  	}
+  	dbm_close(hdb);
+  	return(0);
+--- 924,940 ----
+  		return(1);
+  	}
+  	/*
+! 	 * Step through the keys in the database and spew to stdout
+  	 */
+  	for (hkey = dbm_firstkey(hdb); hkey.dptr != NULL; hkey = dbm_nextkey(hdb)) {
+  		datum	hdata;
+! 		char	name[DBLKSIZ],
+! 			data[DBLKSIZ];
+  
+  		hdata = dbm_fetch(hdb, hkey);
+! 		dbm2str(name, hkey);
+! 		dbm2str(data, hdata);
+  		printf("%s%c%s\n", name, ENTRY_SEP, data);
+  	}
+  	dbm_close(hdb);
+  	return(0);
+***************
+*** 777,947 ****
+  
+  /* 
+   * dbm_load
+!  *	Build history database DBM from stdin data
+   *
+   * Returns
+!  *	0 on success
+!  *	1 on failure
+   */
+  dbm_load(file, input)
+  	char	*file;		/* History DBM file */
+  	FILE	*input;		/* Input stream */
+  {
+! 	DBM	*hdb;			/* Database pointer */
+! 	char	file_pag[MAXPATHLEN],	/* Database .pag file */
+! 		file_dir[MAXPATHLEN],	/* Database .dir file */
+! 		temp_pag[MAXPATHLEN],	/* Temp file .pag file */
+! 		temp_dir[MAXPATHLEN],	/* Temp file .dir file */
+! 		temp_file[MAXPATHLEN];	/* Temp file */
+  	char	inbuf[HISTORY_RECLEN];	/* Read buffer */
+- 	int	new_file = 0;		/* Making new file */
+  	int	errors = 0;		/* Error count */
+  	int	how_many = 0;		/* Count of records loaded */
+  	struct stat stb;		/* Stat buffer */
+  
+  #define	db_files(_d_,_p_,_n_) \
+! 	(void) strcpy(_d_, _n_); (void) strcat(_d_, ".dir"); \
+! 	(void) strcpy(_p_, _n_); (void) strcat(_p_, ".pag");
+  
+! 	db_files(file_dir, file_pag, file);	/* Make history DB names */
+  
+  	/*
+! 	 * Database exists?
+!  	 */
+! 	if (stat(file_dir, &stb) < 0) {
+! 		(void) strcpy(temp_file, file);
+! 		new_file = 1;
+! 	} else {
+! 		(void) strcpy(temp_file, file);
+! 		(void) strcat(temp_file, "-temp");
+! 	}
+! 	db_files(temp_dir, temp_pag, temp_file);	/* Make temp DB names */
+  
+  	/*
+! 	 * Open database read-write
+  	 */
+! 	if ((hdb = dbm_open(temp_file, O_RDWR|O_CREAT, HISTORYDB_MODE)) == 0) {
+! 		perror("Cannot open DBM");
+! 		(*xdie)("Cannot make DBM '%s'\n", temp_file);
+! 		return(1);
+  	}
+! 	if (new_file == 0) {
+  		/*
+! 		 * Give temp files same owner and mode as existing
+  		 */
+! 		if (chown(temp_dir, stb.st_uid, stb.st_gid) < 0) {
+! 			perror("Chown DBM dir");
+  			errors++;
+  		}
+! 		if (chmod(temp_dir, stb.st_mode) < 0) {
+! 			perror("Chmod DBM dir");
+! 			errors++;
+! 		}
+! 		if (chown(temp_pag, stb.st_uid, stb.st_gid) < 0) {
+! 			perror("Chown DBM pag");
+! 			errors++;
+! 		}
+! 		if (chmod(temp_pag, stb.st_mode) < 0) {
+! 			perror("Chmod DBM pag");
+! 			errors++;
+! 		}
+  	}
+  	/*
+  	 * Read history lines from stdin and pack into the database
+  	 */
+  	while (fgets(inbuf, sizeof(inbuf), input)) {
+! 		datum	hkey,		/* DBM key */
+! 			hdata;		/* DBM data */
+! 		char	name[16];	/* Temp */
+! 		char	*c,		/* Temp */
+! 			*n,		/* Temp */
+! 			*t;		/* Temp */
+  
+  		chop_nl(inbuf);
+  
+! 		if ((t = filter_input(inbuf)) == 0)
+  			continue;
+  
+! 		if ((c = strchr(t, ENTRY_SEP)) == 0)
+  			continue;
+! 		*c++ = 0;
+! 		n = clean_history(c, 0, 0, 0, 0);
+  
+! 		hkey.dptr = t;
+! 		hkey.dsize = strlen(t);
+  
+! 		hdata.dptr = n;
+! 		hdata.dsize = strlen(n);
+  
+  		/*
+  		 * Store new data
+  		 */
+  		if (dbm_store(hdb, hkey, hdata, DBM_REPLACE) < 0) {
+! 				warn("DBM store failed\nHistory load errors - new database left as '%s'\n",
+! 					temp_file);
+! 				dbm_close(hdb);
+! 				return(1);
+! 			}
+! 			how_many++;
+  		}
+! 		dbm_close(hdb);
+  
+! 		/*
+! 		 * Install temp file
+! 		 */
+! 		if (new_file == 0) {
+! 			char	save_dir[MAXPATHLEN],	/* Save .dir file */
+! 				save_pag[MAXPATHLEN],	/* Save .pag file */
+! 				save_file[MAXPATHLEN];	/* Save file */
+  
+! 			(void) strcpy(save_file, file);
+! 			(void) strcat(save_file, "-old");
+! 			db_files(save_dir, save_pag, save_file);
+  
+- 			/*
+- 			 * Save existing file
+- 			 */
+- 			if (rename(file_dir, save_dir) < 0) {
+- 				perror("Save .dir file failure");
+- 				errors++;
+- 			}
+- 			if (rename(file_pag, save_pag) < 0) {
+- 				perror("Save .pag file failure");
+- 				errors++;
+- 			}
+  
+! 			/*
+! 			 * Install temp file
+! 			 */
+! 			if (rename(temp_dir, file_dir) < 0) {
+! 				perror("History .dir rename failure");
+! 				errors++;
+! 				if (rename(save_dir, file_dir) < 0)
+! 					perror("Putback .dir failure");
+! 			}
+! 			if (rename(temp_pag, file_pag) < 0) {
+! 				perror("History .pag rename failure");
+! 				errors++;
+! 				if (rename(save_pag, file_pag) < 0)
+! 					perror("Putback .pag failure");
+! 			}
+! 			if (errors) {
+! 				warn("History load errors - new database left as '%s'\n", temp_file);
+! 			return(1);
+! 		}
+! 	}
+  	/*
+! 	 * Success - confirm and finish
+!  	 */
+! 	if (logging)
+! 		syslog(LOG_INFO, "Password history load to DBM '%s': %d records",
+! 			file, how_many);
+! 	if (verbose)
+! 		printf("Loaded %d records to password history DBM '%s'\n",
+! 			how_many, file);
+  	return(0);
+- #undef	db_files
+  }
+- #endif	/* I_NDBM */
+  
+  /* End history_admin.c */
+--- 942,1340 ----
+  
+  /* 
+   * dbm_load
+!  *	Build history database DBM from input
+   *
+   * Returns
+!  *	error count
+   */
+  dbm_load(file, input)
+  	char	*file;		/* History DBM file */
+  	FILE	*input;		/* Input stream */
+  {
+! 	DBM	*hdb;		/* Database pointer */
+! 	char	*file_pag,	/* Database .pag name */
+! 		*file_dir,	/* Database .dir name */
+! 		*temp_pag,	/* Temp file .pag name */
+! 		*temp_dir,	/* Temp file .dir name */
+! 		*tempfile,	/* Temp file name */
+! 		*save_dir = NULL,	/* Save file .dir name */
+! 		*save_pag = NULL,	/* Save file .pag name */
+! 		*savefile = NULL;	/* Save file name */
+  	char	inbuf[HISTORY_RECLEN];	/* Read buffer */
+  	int	errors = 0;		/* Error count */
+  	int	how_many = 0;		/* Count of records loaded */
+  	struct stat stb;		/* Stat buffer */
+  
+  #define	db_files(_d_,_p_,_n_) \
+! 	(void) sprintf(_d_, "%s.dir", _n_);\
+! 	(void) sprintf(_p_, "%s.pag", _n_)
+  
+! #define	fn_alloc(_d_,_f_,_p_) \
+! 	if ((_d_ = malloc(strlen(_f_) + _p_)) == NULL) \
+! 		(*xdie)("No memory for tempfile string\n")
+  
+  	/*
+! 	 * Make DB file names
+! 	 */
+! 	fn_alloc(file_dir, file, 8);
+! 	fn_alloc(file_pag, file, 8);
+! 	db_files(file_dir, file_pag, file);
+  
+  	/*
+! 	 * Make temp file names
+  	 */
+! 	fn_alloc(tempfile, file, 8);
+! 	(void) sprintf(tempfile, "%s.temp", file);
+! 	fn_alloc(temp_dir, tempfile, 6);
+! 	fn_alloc(temp_pag, tempfile, 6);
+! 	db_files(temp_dir, temp_pag, tempfile);
+! 	debug(DB_VERBOSE, "dbm_load: file '%s' temp '%s'\n", file, tempfile);
+! 
+! 	/*
+! 	 * Open database
+! 	 */
+! 	if ((hdb = dbm_open(tempfile, O_RDWR|O_CREAT, HISTORYDB_MODE)) == 0) {
+! 		perror("DBM temp create");
+! 		(*xdie)("Cannot create DBM '%s'\n", tempfile);
+  	}
+! 	/*
+! 	 * Read history lines from stdin and pack into the database
+! 	 */
+! 	while (fgets(inbuf, sizeof(inbuf), input)) {
+! 		datum	hkey,		/* DBM key */
+! 			hdata;		/* DBM data */
+! 		char	*dptr,		/* History data start */
+! 			*nptr,		/* New history data */
+! 			*iptr;		/* Start of input line */
+! 
+! 		chop_nl(inbuf);
+! 
+! 		if ((iptr = filter_input(inbuf)) == 0)		/* Null input */
+! 			continue;
+! 		if ((dptr = strchr(iptr, ENTRY_SEP)) == 0)	/* Bad input */
+! 			continue;
+! 		*dptr++ = 0;
+! 
+! 		nptr = clean_history(dptr, 0, 0, 0, 0);
+! 		if (nullstr(nptr))
+! 			continue;
+! 
+! 		str2dbm(hkey, iptr);
+! 		str2dbm(hdata, nptr);
+  		/*
+! 		 * Store new data
+  		 */
+! 		if (dbm_store(hdb, hkey, hdata, DBM_INSERT) < 0) {
+! 			warn("DBM insert failed for '%s'\n", iptr);
+  			errors++;
+  		}
+! 		how_many++;
+  	}
++ 	dbm_close(hdb);
++ 
++ 	if (stat(file_dir, &stb) == 0) {	/* Database exists */
++ 		/*
++ 		 * Make save file names
++ 		 */
++ 		fn_alloc(savefile, file, 8);
++ 		(void) sprintf(savefile, "%s.old", file);
++ 		fn_alloc(save_dir, savefile, 6);
++ 		fn_alloc(save_pag, savefile, 6);
++ 		db_files(save_dir, save_pag, savefile);
++ 		debug(DB_VERBOSE, "dbm_load: file '%s' save '%s'\n",
++ 			file, savefile);
++ 
++ 		/*
++ 		 * Copy mode and ownership from original
++ 		 */
++ 		errors += clone_file_stat(file_dir, temp_dir);
++ 		errors += clone_file_stat(file_pag, temp_pag);
++ 	}
++ 	if (errors) {
++ 		warn("History load errors - new database left as '%s'\n",
++ 			tempfile);
++ 		return(errors);
++ 	}
++ 	if (install_file(file_dir, temp_dir, save_dir)) {
++ 		warn("Replace DBM '%s' failed\n", file_dir);
++ 		return(1);
++ 	}
++ 	if (install_file(file_pag, temp_pag, save_pag)) {
++ 		warn("Replace DBM '%s' failed\n", file_pag);
++ 		return(1);
++ 	}
++ 
++ 	if (logging)
++ 		syslog(LOG_INFO, "%d records loaded to history DBM '%s'",
++ 			how_many, file);
++ 	vprintf("%d records loaded to history DBM '%s'\n", how_many, file);
++ 	return(0);
++ #undef	db_files
++ #undef	fn_alloc
++ }
++ 
++ /* 
++  * dbm_merge
++  *	Build history database DBM from stdin data
++  *
++  * Returns
++  *	0 on success
++  *	1 on failure
++  */
++ dbm_merge(file, input)
++ 	char	*file;		/* History DBM file */
++ 	FILE	*input;		/* Input stream */
++ {
++ 	DBM	*hdb;			/* Database pointer */
++ 	char	inbuf[HISTORY_RECLEN];	/* Read buffer */
++ 	int	errors = 0;		/* Error count */
++ 	int	how_many = 0;		/* Count of records loaded */
++ 	struct stat stb;		/* Stat buffer */
++ 
++ 	if ((hdb = dbm_open(file, O_RDWR, HISTORYDB_MODE)) == 0) {
++ 		perror("DBM merge open");
++ 		(*xdie)("Cannot open DBM '%s' for merge\n", file);
++ 	}
+  	/*
+  	 * Read history lines from stdin and pack into the database
+  	 */
+  	while (fgets(inbuf, sizeof(inbuf), input)) {
+! 		datum	hkey,		/* Lookup key */
+! 			hdata,		/* Store data */
+! 			htemp;		/* Lookup data */
+! 		char	*dptr,		/* Temp */
+! 			*nptr,		/* Temp */
+! 			*iptr;		/* Temp */
+  
+  		chop_nl(inbuf);
+  
+! 		if ((iptr = filter_input(inbuf)) == NULL)
+  			continue;
+  
+! 		if ((dptr = strchr(iptr, ENTRY_SEP)) == NULL)
+  			continue;
+! 		*dptr++ = 0;
+  
+! 		/*
+! 		 * If the user is in the db, fetch entry and append input
+! 		 */
+! 		str2dbm(hkey, iptr);
+! 		htemp = dbm_fetch(hdb, hkey);
+! 		if (htemp.dptr) {
+! 			char 	*nd = malloc(htemp.dsize + strlen(dptr) + 2);
+! 			char	*td;
+  
+! 			if (nd == NULL)
+! 				(*xdie)("No memory for DBM merge key extend\n");
+! 			(void) strncpy(nd, htemp.dptr, htemp.dsize);
+! 			nd[htemp.dsize] = 0;
+! 			debug(DB_DETAIL, "dbm_merge: Append <%s> to <%s:%s>\n",
+! 					dptr, iptr, nd);
+! 			(void) strcat(nd, ENTRY_SEP_STR);
+! 			(void) strcat(nd, dptr);
+  
++ 			td = clean_history(nd, 0, 0, 0, 0);
++ 			if (nullstr(td)) {	/* "Shouldn't happen" */
++ 				warn("Unexpected null history '%s'\n",iptr);
++ 				free(nd);
++ 				continue;
++ 			}
++ 			nptr = td;
++ 		} else {
++ 			debug(DB_DETAIL, "dbm_merge: Insert <%s:%s>\n", iptr, dptr);
++ 			nptr = clean_history(dptr, 0, 0, 0, 0);
++ 			if (nullstr(nptr))
++ 				continue;
++ 		}
+  		/*
+  		 * Store new data
+  		 */
++ 		str2dbm(hdata, nptr);
+  		if (dbm_store(hdb, hkey, hdata, DBM_REPLACE) < 0) {
+! 			warn("DBM replace for '%s' failed\n", iptr);
+! 			errors++;
+  		}
+! 		how_many++;
+! 	}
+! 	dbm_close(hdb);
+  
+! 	if (errors)
+! 		warn("%s history merge errors\n", errors);
+! 	if (logging)
+! 		syslog(LOG_INFO, "Merged %d records to history DBM '%s', %d errors",
+! 			how_many, file, errors);
+! 	vprintf("Merged %d records to history DBM '%s'\n", how_many, file);
+! 	return(errors);
+! }
+  
+! #endif	/* I_NDBM */
+  
+  
+! /*
+!  * These routines impliment a simple linked list mechanism.
+!  * The keys are unordered; tags are not unique; searches are linear;
+!  * no routines exist to free lists or items.
+!  */
+! 
+! /*
+!  * list_insert
+!  *	Make a new item in a linked list
+!  *
+!  * Returns
+!  *	0 on failure
+!  *	1 on success
+!  */
+! list_insert(table, tag, data)
+! 	list_table *table;		/* Target list */
+! 	char	*tag,			/* Tag string */
+! 		*data;			/* Data string */
+! {
+! 	list_item	*nd;		/* Temp */
+! 	char		*t;		/* Temp */
+! 
+! 	if (table == 0)
+! 		return(0);
+! 
+! 	if ((nd = (list_item *)calloc(sizeof(list_item),1)) == 0)
+! 		return(0);
+  	/*
+! 	 * Do our own mallocs() so that space can be free()ed
+! 	 * in list_item_update() and list_item_append()
+! 	 */
+! 	t = malloc(strlen(tag) + 2);
+! 	(void) strcpy(t, tag);
+! 	nd->tag = t;
+! 
+! 	t = malloc(strlen(data) + 2);
+! 	(void) strcpy(t, data);
+! 	nd->data = t;
+! 	nd->next = 0;
+! 
+! 	if (table->head == 0)
+! 		table->head = nd;
+! 
+! 	if (table->tail)
+! 		(table->tail)->next = nd;
+! 	table->tail = nd;
+! 	return(1);
+! }
+! 
+! /*
+!  * list_find
+!  *	Search linked list. The list in unordered, so we suck it up and do
+!  *	a brain-dead linear (order N) search.
+!  *
+!  * Returns
+!  *	Pointer to first list item found with matching tag
+!  *	NULL if not found
+!  */
+! list_item	*
+! list_find(table, tag)
+! 	list_table	*table;		/* List to search */
+! 	char		*tag;		/* What to search for */
+! {
+! 	list_item	*dtp;		/* Temp */
+! 
+! 	if (table == 0 || nullstr(tag))	/* Bad args */
+! 		return(0);
+! 	if ((dtp = table->head) == 0)	/* Empty list */
+! 		return(0);
+! 	while (dtp) {
+! 		if (strcmp(tag, dtp->tag) == 0)
+! 			return(dtp);
+! 		dtp = dtp->next;
+! 	}
+  	return(0);
+  }
+  
++ /*
++  * list_first
++  *	Return the first item in a list
++  */
++ list_item *
++ list_first(table)
++ 	list_table	*table;		/* Table to traverse */
++ {
++ 	if (table == 0 || table->head == 0)	/* Bad arg or empty list */
++ 		return(0);
++ 	table->curr = table->head;	/* Set traversal pointer */
++ 	return(list_next(table));
++ }
++ 
++ /*
++  * list_next
++  *	Return next data item in list
++  */
++ list_item *
++ list_next(table)
++ 	list_table	*table;		/* Table to traverse */
++ {
++ 	list_item	*rv;		/* Return value */
++ 
++ 	if (table == 0 || table->head == 0)	/* Bad arg or empty list */
++ 		return(0);
++ 	if (table->curr) {
++ 		rv = table->curr;
++ 		table->curr = (table->curr)->next;
++ 		return(rv);
++ 	}
++ 	return(0);
++ }
++ 
++ /*
++  * list_item_update
++  *	Update contents of a list item
++  */
++ void
++ list_item_update(lp, ntag, ndata)
++ 	list_item	*lp;		/* List item to update */
++ 	char		*ntag,		/* New tag string */
++ 			*ndata;		/* New data string */
++ {
++ 	if (lp == 0)			/* Bad arg */
++ 		return;
++ 	if (ntag && *ntag) {		/* Change tag? */
++ 		char	*t = malloc(strlen(ntag) + 2);
++ 
++ 		(void) strcpy(t, ntag);
++ 		free(lp->tag);
++ 		lp->tag = t;
++ 	}
++ 	if (ndata && *ndata) {		/* Change data? */
++ 		char	*t = malloc(strlen(ndata) + 2);
++ 
++ 		(void) strcpy(t, ndata);
++ 		free(lp->data);
++ 		lp->data = t;
++ 	}
++ }
++ 
++ /*
++  * list_item_append
++  *	Appends to contents of a list item
++  */
++ void
++ list_item_append(lp, atag, adata)
++ 	list_item	*lp;		/* List item */
++ 	char		*atag,		/* Additional tag string */
++ 			*adata;		/* Additional data string */
++ {
++ 	if (lp == 0)			/* Bad arg */
++ 		return;
++ 	if (atag && *atag) {		/* Additional tag? */
++ 		char	*t = malloc(strlen(lp->tag) + strlen(atag) + 4);
++ 
++ 		(void) sprintf(t, "%s%s", lp->tag, atag);
++ 		free(lp->tag);
++ 		lp->tag = t;
++ 	}
++ 	if (adata && *adata) {		/* Additional data? */
++ 		char	*t = malloc(strlen(lp->data) + strlen(adata) + 4);
++ 
++ 		(void) sprintf(t, "%s%s", lp->data, adata);
++ 		free(lp->data);
++ 		lp->data = t;
++ 	}
++ }
++ 
+  /* End history_admin.c */
+*** /tmp/d0fTNPL	Thu Oct 15 10:34:49 1998
+--- src/PasswordCheck/pwck_history.c	Wed Oct 14 09:26:12 1998
+***************
+*** 64,72 ****
+   */
+  
+  #ifndef lint
+- static char sccsid[] = "@(#)pwck_history.c 1.0 12/11/93 (asic.ict.pwr.wroc.pl)";
+  static char vers_id[] = "noreusal.c : v1.0 Tomasz Surmacz 15 Nov 1993";
+! static char utid[] = "@(#)pwck_history.c	1.27 07/17/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "options.h"
+--- 64,71 ----
+   */
+  
+  #ifndef lint
+  static char vers_id[] = "noreusal.c : v1.0 Tomasz Surmacz 15 Nov 1993";
+! static char sccsid[] = "@(#)pwck_history.c	1.30 10/14/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "options.h"
+***************
+*** 162,168 ****
+  			args++;
+  			if (!*args)
+  				return("Missing NIS+ table name");
+! 			HistoryDB = strdup(*args);
+  			HistoryMethod = "nisplus";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: NIS+ table '%s'\n",
+--- 161,168 ----
+  			args++;
+  			if (!*args)
+  				return("Missing NIS+ table name");
+! 			if (strcmp(*args, HISTORYDB_DEFAULT))
+! 				HistoryDB = strdup(*args);
+  			HistoryMethod = "nisplus";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: NIS+ table '%s'\n",
+***************
+*** 184,190 ****
+  			args++;
+  			if (!*args)
+  				return("Missing NIS map name");
+! 			HistoryDB = strdup(*args);
+  			HistoryMethod = "nis";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: NIS map '%s'\n",
+--- 184,191 ----
+  			args++;
+  			if (!*args)
+  				return("Missing NIS map name");
+! 			if (strcmp(*args, HISTORYDB_DEFAULT))
+! 				HistoryDB = strdup(*args);
+  			HistoryMethod = "nis";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: NIS map '%s'\n",
+***************
+*** 208,218 ****
+  			args++;
+  			if (!*args)
+  				return("Missing DBM name");
+  #if	(CDEBUG < CDEBUG_FILES)
+! 			if (**args != '/')
+! 				return("Bad file name");
+  #endif
+! 			HistoryDB = strdup(*args);
+  			HistoryMethod = "dbm";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: DBM database '%s'\n",
+--- 209,221 ----
+  			args++;
+  			if (!*args)
+  				return("Missing DBM name");
++ 			if (strcmp(*args, HISTORYDB_DEFAULT)) {
+  #if	(CDEBUG < CDEBUG_FILES)
+! 				if (**args != '/')
+! 					return("Bad file name");
+  #endif
+! 				HistoryDB = strdup(*args);
+! 			}
+  			HistoryMethod = "dbm";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: DBM database '%s'\n",
+***************
+*** 232,242 ****
+  			args++;
+  			if (!*args)
+  				return("Missing file name");
+  #if	(CDEBUG < CDEBUG_FILES)
+! 			if (**args != '/')
+! 				return("Bad file name");
+  #endif
+! 			HistoryDB = strdup(*args);
+  			HistoryMethod = "file";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: file '%s'\n",
+--- 235,247 ----
+  			args++;
+  			if (!*args)
+  				return("Missing file name");
++ 			if (strcmp(*args, HISTORYDB_DEFAULT)) {
+  #if	(CDEBUG < CDEBUG_FILES)
+! 				if (**args != '/')
+! 					return("Bad file name");
+  #endif
+! 				HistoryDB = strdup(*args);
+! 			}
+  			HistoryMethod = "file";
+  			debug(DB_CONFIG,
+  				"pwck_history_configure: file '%s'\n",
+***************
+*** 287,305 ****
+  	return("Unknown history directive");
+  }
+  
+! private int bytime(a1, a2)
+! 	void *a1, *a2;
+  {
+! 	char	*t;
+! 	time_t	t1 = 0,
+! 		t2 = 0;
+! 	char **c1 = (char **)a1;
+! 	char **c2 = (char **)a2;
+  
+  	if (*c1 && (t = strchr(*c1, FIELD_SEP)))
+  		t1 = (time_t )atol(++t);
+  	if (*c2 && (t = strchr(*c2, FIELD_SEP)))
+  		t2 = (time_t )atol(++t);
+  	if (t1 > t2) return(-1);
+  	if (t1 < t2) return(1);
+  	return(0);
+--- 292,322 ----
+  	return("Unknown history directive");
+  }
+  
+! /*
+!  * bytime
+!  *	Sort function to compare history items by timestamp
+!  *
+!  * Returns:
+!  *	 0 if items are the same age
+!  *	 1 if item1 younger than item2
+!  *	-1 if item1 older than item2
+!  */
+! private int
+! bytime(a1, a2)
+! 	void	*a1,		/* Pointer to item 1 */
+! 		*a2;		/* Pointer to item 2 */
+  {
+! 	char	*t;		/* Temp */
+! 	time_t	t1 = 0,		/* Item 1 time */
+! 		t2 = 0;		/* Item 2 time */
+! 	char **c1 = (char **)a1; /* Char pointer to item 1 */
+! 	char **c2 = (char **)a2; /* Char pointer to item 2 */
+  
+  	if (*c1 && (t = strchr(*c1, FIELD_SEP)))
+  		t1 = (time_t )atol(++t);
+  	if (*c2 && (t = strchr(*c2, FIELD_SEP)))
+  		t2 = (time_t )atol(++t);
++ 	/* time_t is unsigned - cannot do "return(t1 - t2)" */
+  	if (t1 > t2) return(-1);
+  	if (t1 < t2) return(1);
+  	return(0);
+***************
+*** 309,316 ****
+   * clean_history
+   *	Filter a history line, remove old and extra passwords
+   *
+!  * Usage
+!  *	new-history = clean_history(old-history);
+   */
+  public char *
+  clean_history(data, depth, age, epoch, maxlen)
+--- 326,337 ----
+   * clean_history
+   *	Filter a history line, remove old and extra passwords
+   *
+!  * Returns:
+!  *	Address of buffer containing the cleaned entry or
+!  *	NULL on error
+!  *
+!  * Effects:
+!  *	The cleaned entry is copied back into the <data> argument buffer
+   */
+  public char *
+  clean_history(data, depth, age, epoch, maxlen)
+***************
+*** 318,349 ****
+  	int	depth;		/* How many passwords to keep */
+  	time_t	age,		/* Password retention limit */
+  		epoch;		/* Current time */
+! 	size_t	maxlen;		/* Maximum line length */
+  {
+! 	char	*nd = calloc((strlen(data) + 2), sizeof(char));
+! 	char	**hv = split(data, ENTRY_SEP, 0, 0),
+! 		**hp;
+! 	int	seen = 0;
+! 	int	i;
+  	time_t	now = epoch ? epoch : time((time_t *)0);
+  
+! 	if (nd == 0)
+! 		logdie("(clean_history) Cannot allocate memory");
+! 	if (maxlen == 0)
+! 		maxlen = HISTORY_RECLEN;
+  
+  	/*
+  	 * Sort the entries by time - youngest first
+  	 */
+! 	for (hp = hv, i = 0; *hp; hp++, i++);
+! 	if (i > 1)
+! 		qsort((void *)hv, i, sizeof(char *), bytime);
+  
+! 	for (hp = hv; *hp; hp++) {
+  		char	*t;
+  		time_t	pwtime;
+  
+! 		if (t = strchr(*hp, FIELD_SEP)) {
+   			*t = 0;
+  			pwtime = (time_t )atol(t+1);
+   			*t = FIELD_SEP;
+--- 339,378 ----
+  	int	depth;		/* How many passwords to keep */
+  	time_t	age,		/* Password retention limit */
+  		epoch;		/* Current time */
+! 	size_t	maxlen;		/* Sizeof <data> */
+  {
+! 	char	*newdata;	/* New version of <data> */
+! 	char	**hvec,		/* Split version of <data> */
+! 		**hptr;		/* List traversal temp */
+! 	int	seen = 0;	/* How many passwords in this entry */
+! 	int	i;		/* Temp */
+  	time_t	now = epoch ? epoch : time((time_t *)0);
++ 				/* Epoch for time comparisons */
+  
+! 	if (data == NULL)
+! 		return(NULL);
+  
++ 	if ((newdata = calloc((strlen(data) + 2), sizeof(char))) == NULL)
++ 		logdie("(clean_history) No memory for history copy");
++ 
++ 	if (maxlen == 0)			/* Assume buffer length */
++ 		maxlen = HISTORY_RECLEN;	/* if not given by caller */
++ 
+  	/*
+  	 * Sort the entries by time - youngest first
+  	 */
+! 	if ((hvec = split(data, ENTRY_SEP, 0, 0)) == 0)
+! 		logdie("(clean_history) History split failed");
+  
+! 	for (hptr = hvec, i = 0; *hptr; hptr++, i++);	/* Get size of list */
+! 	if (i > 1)				/* Sort in time order */
+! 		qsort((void *)hvec, i, sizeof(char *), bytime);
+! 
+! 	for (hptr = hvec; *hptr; hptr++) {		/* Traverse the list */
+  		char	*t;
+  		time_t	pwtime;
+  
+! 		if (t = strchr(*hptr, FIELD_SEP)) {
+   			*t = 0;
+  			pwtime = (time_t )atol(t+1);
+   			*t = FIELD_SEP;
+***************
+*** 354,370 ****
+  		if (age && (now - pwtime) > age) {
+  			debug(DB_PWCHECK,
+  				"clean_history: old '%s' age = %lu limit = %lu\n",
+! 				*hp, (now - pwtime), age);
+  			continue;
+  		}
+  		/*
+! 		 * Ignore if more than <HistoryDepth>
+! 		 * have already been seen
+  		 */
+! 		if (depth && ++seen > depth) {
+  			debug(DB_PWCHECK,
+  				"clean_history: Depth limit %d reached, discard '%s'\n",
+! 				depth, *hp);
+  			continue;
+  		}
+  		/*
+--- 383,401 ----
+  		if (age && (now - pwtime) > age) {
+  			debug(DB_PWCHECK,
+  				"clean_history: old '%s' age = %lu limit = %lu\n",
+! 				*hptr, (now - pwtime), age);
+  			continue;
+  		}
+  		/*
+! 		 * Ignore if more than <HistoryDepth> have already been seen
+! 		 *
+! 		 * "HistoryDepth" means "how many old passwords matter"
+! 		 * (hence use "seen++")
+  		 */
+! 		if (depth && seen++ > depth) {
+  			debug(DB_PWCHECK,
+  				"clean_history: Depth limit %d reached, discard '%s'\n",
+! 				depth, *hptr);
+  			continue;
+  		}
+  		/*
+***************
+*** 371,421 ****
+  		 * Length check - don't go over HISTORY_RECLEN chars
+  		 * Old items will be discarded.
+  		 */
+! 		if ((strlen(nd) + strlen(*hp) + 1) > maxlen) {
+  			debug(DB_PWCHECK,
+  				"clean_history: length limit %d reached, discard '%s'\n",
+! 				maxlen, *hp);
+  			continue;
+  		}
+! 	/* Always want to save the *most recent* password */ /* XXX */
+! 		if (*nd) {
+! 			(void) strcat(nd, ENTRY_SEP_STR);
+! 			(void) strcat(nd, *hp);
+  		}
+  		else {
+! 			(void) strcpy(nd, *hp);
+  		}
+  	}
+! 	free((char *)hv);
+! 	(void) strcpy(data, nd);
+! 	free(nd);
+  	debug(DB_PWCHECK, "clean_history: Return <%s>\n", data);
+  	return(data);
+  }
+  
+  /*
+!  * pwck_get_history - Fetch history entry
+   *
+!  * Returns
+!  *	History for <user->pw_name> if found
+!  *	(char *)0 if not
+!  *
+!  * A routine seperate from pwck_history() is needed for the test
+!  * suite to verify the raw history database lookup
+   */
+  public char *
+  pwck_get_history(user)
+  	char *user;	/* Name of user */
+  {
+! 	char	*rc;
+  
+! 	if (HistoryDB == 0 || *HistoryDB == 0)
+! 		return(0);		/* No history */
+  
+  	if (rc = (*get)(user))
+  		return(rc);
+  	debug(DB_PWCHECK, "pwck_history: no history for %s\n", user);
+! 	return(0);
+  }
+  
+  /*
+--- 402,461 ----
+  		 * Length check - don't go over HISTORY_RECLEN chars
+  		 * Old items will be discarded.
+  		 */
+! 		if ((strlen(newdata) + strlen(*hptr) + 1) > maxlen) {
+  			debug(DB_PWCHECK,
+  				"clean_history: length limit %d reached, discard '%s'\n",
+! 				maxlen, *hptr);
+  			continue;
+  		}
+! 		if (*newdata) {
+! 			(void) strcat(newdata, ENTRY_SEP_STR);
+! 			(void) strcat(newdata, *hptr);
+  		}
+  		else {
+! 			(void) strcpy(newdata, *hptr);
+  		}
+  	}
+! 	/*
+! 	 * Try to return the youngest password (first in the sorted
+! 	 * list), even if it is too old.
+! 	 */
+! 	if (*newdata == 0 && *hvec) {
+! 		(void) strcpy(newdata, *hvec);
+! 		debug(DB_PWCHECK,
+! 			"clean_history: Null list backoff '%s'\n", *hvec);
+! 	}
+! 
+! 	free((char *)hvec);
+! 	(void) strcpy(data, newdata);
+! 	free(newdata);
+  	debug(DB_PWCHECK, "clean_history: Return <%s>\n", data);
+  	return(data);
+  }
+  
+  /*
+!  * pwck_get_history
+!  *	Fetch history entry for user
+   *
+!  * Returns:
+!  *	Value from db method get() routine
+!  *	NULL if history not found or error
+   */
+  public char *
+  pwck_get_history(user)
+  	char *user;	/* Name of user */
+  {
+! 	char	*rc;	/* Return code */
+  
+! 	if (user == 0)			/* Null user? */
+! 		return(NULL);
+! 	if (HistoryDB == NULL || *HistoryDB == 0)
+! 		return(NULL);		/* No history */
+  
+  	if (rc = (*get)(user))
+  		return(rc);
+  	debug(DB_PWCHECK, "pwck_history: no history for %s\n", user);
+! 	return(NULL);
+  }
+  
+  /*
+***************
+*** 423,429 ****
+   *
+   * Returns:
+   *	Message if password exists in the history database
+!  *	(char *)0 if not
+   */
+  public char *
+  pwck_history(password, user)
+--- 463,469 ----
+   *
+   * Returns:
+   *	Message if password exists in the history database
+!  *	'PWCK_OK' if not
+   */
+  public char *
+  pwck_history(password, user)
+***************
+*** 430,441 ****
+  	char	*password;	/* Password to check (plaintext) */
+  	struct passwd	*user;	/* Passwd info for user */
+  {
+! 	char	*histent,
+! 		**hv,
+! 		**plist,
+! 		*rval = PWCK_OK;
+! 	struct pw_svc *svc = get_pwsvc();
+! 	static char mesg[STRINGLEN];
+  
+  	debug(DB_VERBOSE, "pwck_history: %s '%s'\n", user->pw_name, password);
+  
+--- 470,481 ----
+  	char	*password;	/* Password to check (plaintext) */
+  	struct passwd	*user;	/* Passwd info for user */
+  {
+! 	char	*histent,		/* History data */
+! 		**hv,			/* Split history data */
+! 		**plist,		/* History entry traversal */
+! 		*rval = PWCK_OK;	/* Return value */
+! 	static char mesg[STRINGLEN];	/* Error message buffer */
+! 	struct pw_svc *svc = get_pwsvc(); /* Password service */
+  
+  	debug(DB_VERBOSE, "pwck_history: %s '%s'\n", user->pw_name, password);
+  
+***************
+*** 450,478 ****
+  	if ((histent = pwck_get_history(user->pw_name)) == 0)
+  		return(PWCK_OK);		/* No history */
+  
+! 	hv = split(
+! 		clean_history(histent, HistoryDepth, HistoryAge, 0, 0),
+! 			ENTRY_SEP, 0, 0);
+! 	for (plist = hv; *plist; plist++) {
+! 		char	*t;
+  
+! 		if (t = strchr(*plist, FIELD_SEP)) {
+! 			time_t	pwtime;
+  
+! 			*t++ = 0;
+! 			pwtime = (time_t )atol(t);
+! 			t = (*svc->PasswdCrypt)(password, *plist);
+! 			if (strcmp(t, *plist) == 0) {	/* Found <password> */
+! 				char	*ct = ctime(&pwtime);
+  
+! 				chop_nl(ct);
+! 				(void) sprintf(mesg, MSG_REUSE, &ct[4]);
+! 				rval = mesg;
+! 				break;
+  			}
+  		}
+  	}
+- 	free((char *)hv);
+  	debug(DB_PWCHECK, "pwck_history: %s\n", rval ? rval : "not found");
+  	return(rval);
+  }
+--- 490,518 ----
+  	if ((histent = pwck_get_history(user->pw_name)) == 0)
+  		return(PWCK_OK);		/* No history */
+  
+! 	if (hv = split(clean_history(histent, HistoryDepth, HistoryAge, 0, 0),
+! 			ENTRY_SEP, 0, 0)) {
+! 		for (plist = hv; *plist; plist++) {
+! 			char	*t;	/* Temp */
+  
+! 			if (t = strchr(*plist, FIELD_SEP)) {
+! 				time_t	pwtime;		/* Current time */
+  
+! 				*t++ = 0;
+! 				pwtime = (time_t )atol(t);
+! 				t = (*svc->PasswdCrypt)(password, *plist);
+! 				if (strcmp(t, *plist) == 0) {	/* Found <password> */
+! 					char	*ct = ctime(&pwtime);
+  
+! 					chop_nl(ct);
+! 					(void) sprintf(mesg, MSG_REUSE, &ct[4]);
+! 					rval = mesg;
+! 					break;
+! 				}
+  			}
+  		}
++ 		free((char *)hv);
+  	}
+  	debug(DB_PWCHECK, "pwck_history: %s\n", rval ? rval : "not found");
+  	return(rval);
+  }
+***************
+*** 479,500 ****
+  
+  /*
+   * password_history_update()
+!  *	Store password in history database.
+   * Usage
+   *	pwck_history_update(struct passwd *user, char *crypted_password);
+   */
+  public int
+  password_history_update(user, crypted_password, epoch)
+! 	char	*user,
+! 		*crypted_password;
+! 	time_t	epoch;
+  {
+  #ifdef	OSF1_AUTH	/* And maybe HPUX_AUTH also */
+  	if (osf_history_update(user, crypted_password))
+  		return;
+  #endif
+  	if (HistoryDB == 0 || *HistoryDB == 0)
+! 		return(0);	/* No history */
+  	return((*put)(user, crypted_password, epoch));
+  }
+  /* End pwck_history.c */
+--- 519,545 ----
+  
+  /*
+   * password_history_update()
+!  *	Store password in history database
+   * Usage
+   *	pwck_history_update(struct passwd *user, char *crypted_password);
++  * Returns:
++  *	Value from db method put() routine or
++  *	0 if history disabled or null argument
+   */
+  public int
+  password_history_update(user, crypted_password, epoch)
+! 	char	*user,			/* User name */
+! 		*crypted_password;	/* Encrypted password */
+! 	time_t	epoch;			/* Timestamp */
+  {
+  #ifdef	OSF1_AUTH	/* And maybe HPUX_AUTH also */
+  	if (osf_history_update(user, crypted_password))
+  		return;
+  #endif
++ 	if (user == 0)			/* Null user? */
++ 		return(0);
+  	if (HistoryDB == 0 || *HistoryDB == 0)
+! 		return(0);		/* No history */
+  	return((*put)(user, crypted_password, epoch));
+  }
+  /* End pwck_history.c */
+*** /tmp/dMtbKq_	Thu Oct 15 10:34:49 1998
+--- src/PasswordCheck/pwck_history.h	Tue Sep 29 15:03:17 1998
+***************
+*** 42,48 ****
+   * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
+! /* @(#)pwck_history.h	1.3 06/16/98 (cc.utexas.edu) */
+  
+  /*
+   * Private include for npasswd password history routines
+--- 42,48 ----
+   * 78712, ATTN: Technology Licensing Specialist.
+   */
+  
+! /* @(#)pwck_history.h	1.4 09/29/98 (cc.utexas.edu) */
+  
+  /*
+   * Private include for npasswd password history routines
+***************
+*** 89,94 ****
+--- 89,95 ----
+  #define	MIN_HISTORY_TIMEOUT	30	/* The shortest timeout allowed */
+  #define HISTORYDB_MODE		0600	/* History database file mode */
+  #define	HISTORY_RECLEN		1024	/* How long a history entry can be */
++ #define	HISTORYDB_DEFAULT	"-"	/* Magic DB path token = use default */
+  
+  extern char	*HistoryDB,
+  		*HistoryMethod;
+*** /tmp/d3HqFJ_	Thu Oct 15 10:34:50 1998
+--- src/PasswordCheck/pwck_main.c	Wed Oct 14 09:24:38 1998
+***************
+*** 61,67 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwck_main.c	1.32 08/17/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "pwck_defines.h"
+--- 61,67 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)pwck_main.c	1.33 10/13/98 (cc.utexas.edu)";
+  #endif
+  
+  #include "pwck_defines.h"
+***************
+*** 178,184 ****
+  		Config.length_warn ? "yes" : "no");
+  
+  	printf("%sMaxPassword\t%d\n", prefix, Config.max_length);
+! 	printf("%sMaxRepeats\t%d\n", prefix, Config.run_length);
+  	printf("%sMinPassword\t%d\n", prefix, Config.min_length);
+  
+  	printf("%sPasswordChecks\t", prefix);
+--- 178,184 ----
+  		Config.length_warn ? "yes" : "no");
+  
+  	printf("%sMaxPassword\t%d\n", prefix, Config.max_length);
+! 	printf("%sMaxRepeat\t%d\n", prefix, Config.run_length);
+  	printf("%sMinPassword\t%d\n", prefix, Config.min_length);
+  
+  	printf("%sPasswordChecks\t", prefix);
+*** /tmp/d0mg2Bo	Thu Oct 15 10:34:50 1998
+--- src/PasswordCheck/test_history.c	Wed Sep 30 15:13:38 1998
+***************
+*** 47,53 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)test_history.c	1.7 07/09/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.test_history.c";
+  #endif
+  
+  #include <stdio.h>
+--- 47,53 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)test_history.c	1.8 09/30/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.test_history.c";
+  #endif
+  
+  #include <stdio.h>
+***************
+*** 91,96 ****
+--- 91,97 ----
+  		*alt_data = 0,
+  		*dbfile = 0,
+  		*method = DEFAULT_METHOD,
++ 		*uname,
+  		*rc;
+  	struct passwd *pw;
+  	extern char	*optarg;	/* From getopt() */
+***************
+*** 157,169 ****
+  		printf("History depth = %d\n", HistoryDepth);
+  		printf("History age = %d days\n", HistoryAge / SEC_DAY);
+  	}
+! 	if (alt_user) {
+! 		if ((pw = getpwnam(alt_user)) == 0)
+! 			die("Cannot get password info for %s\n", alt_user);
+! 	} else {
+! 		if ((pw = getpwuid(getuid())) == 0)
+! 			die("Cannot get password info for you\n");
+! 	}
+  
+  	if (instringcase(function, "clean")) {
+  		if (alt_data) {
+--- 158,168 ----
+  		printf("History depth = %d\n", HistoryDepth);
+  		printf("History age = %d days\n", HistoryAge / SEC_DAY);
+  	}
+! 	if ((pw = getpwuid(getuid())) == 0)
+! 		die("Cannot get password info for you\n");
+! 	uname = pw->pw_name;
+! 	if (alt_user)
+! 		uname = alt_user;
+  
+  	if (instringcase(function, "clean")) {
+  		if (alt_data) {
+***************
+*** 172,177 ****
+--- 171,178 ----
+  			printf("Original history: <%s>\n", alt_data);
+  			nhist = clean_history(alt_data, HistoryDepth,
+  				HistoryAge, 0, 0);
++ 			if (nhist == NULL)
++ 				nhist = "";
+  			printf("Cleaned history:  <%s>\n", nhist);
+  		} else {
+  			printf("No history data (use -D)\n");
+***************
+*** 180,186 ****
+  	}
+  	if (instringcase(function, "put")) {
+  		char	*ct = crypt(password, "pw");
+! 		int	rv = password_history_update(pw->pw_name, ct, 0);
+  		switch (rv) {
+  			case 0:
+  				printf("No history database\n");
+--- 181,187 ----
+  	}
+  	if (instringcase(function, "put")) {
+  		char	*ct = crypt(password, "pw");
+! 		int	rv = password_history_update(uname, ct, 0);
+  		switch (rv) {
+  			case 0:
+  				printf("No history database\n");
+***************
+*** 187,197 ****
+  				return(2);
+  				/*NOTREACHED*/
+  			case 1:
+! 				printf("Put %s ok for %s\n", ct, pw->pw_name);
+  				return(0);
+  				/*NOTREACHED*/
+  			default:
+! 				printf("Put failed %s\n", pw->pw_name);
+  				return(1);
+  				/*NOTREACHED*/
+  		}
+--- 188,198 ----
+  				return(2);
+  				/*NOTREACHED*/
+  			case 1:
+! 				printf("Put %s ok for %s\n", ct, uname);
+  				return(0);
+  				/*NOTREACHED*/
+  			default:
+! 				printf("Put failed %s\n", uname);
+  				return(1);
+  				/*NOTREACHED*/
+  		}
+***************
+*** 198,212 ****
+  		return(3);
+  	}
+  	if (instringcase(function, "get")) {
+! 		if (rc = (char *)pwck_get_history(pw->pw_name)) {
+! 			printf("History for %s: %s\n", pw->pw_name, rc);
+  			return(0);
+  		} else {
+! 			printf("No history for %s\n", pw->pw_name);
+  			return(1);
+  		}
+  	}
+  	if (instringcase(function, "find")) {
+  		if (rc = pwck_history(password, pw)) {
+  			printf("<%s> FOUND %s\n", password, rc);
+  			return(0);
+--- 199,215 ----
+  		return(3);
+  	}
+  	if (instringcase(function, "get")) {
+! 		if (rc = (char *)pwck_get_history(uname)) {
+! 			printf("History for %s: %s\n", uname, rc);
+  			return(0);
+  		} else {
+! 			printf("No history for %s\n", uname);
+  			return(1);
+  		}
+  	}
+  	if (instringcase(function, "find")) {
++ 		if (alt_user && (pw = getpwnam(alt_user)) == 0)
++ 			die("Cannot get password info for %s\n", alt_user);
+  		if (rc = pwck_history(password, pw)) {
+  			printf("<%s> FOUND %s\n", password, rc);
+  			return(0);
+*** /tmp/d0T4H6H	Thu Oct 15 10:34:50 1998
+--- src/configure.c	Tue Oct 13 18:12:27 1998
+***************
+*** 55,61 ****
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)configure.c	1.31 09/16/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.configure.c";
+  #endif
+  
+  #include "npasswd.h"
+--- 55,61 ----
+   */
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)configure.c	1.32 10/13/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.configure.c";
+  #endif
+  
+  #include "npasswd.h"
+***************
+*** 107,112 ****
+--- 107,113 ----
+  	{ "passwd.AlphaOnly",		PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.MinPassword",		PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.MaxPassword",		PWCHECK_PASSTHRU,	NONE },
++ 	{ "passwd.MaxRepeat",		PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.LengthWarn",		PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.PrintableOnly",	PWCHECK_PASSTHRU,	NONE },
+  	{ "passwd.WhiteSpace",		PWCHECK_PASSTHRU,	NONE },
+*** /tmp/dAUV1m_	Thu Oct 15 10:34:51 1998
+--- src/main.c	Tue Sep 29 14:19:57 1998
+***************
+*** 51,57 ****
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)main.c	1.43 09/23/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.main.c";
+  #endif
+  
+  /*
+--- 51,57 ----
+  #include "pw_svc.h"
+  
+  #ifndef lint
+! static char sccsid[] = "@(#)main.c	1.44 09/29/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.main.c";
+  #endif
+  
+  /*
+***************
+*** 121,127 ****
+  	set_die_callback(pw_cleanup);
+  	process_arguments(argc, argv, envp); /* Process command line */
+  
+! 	init_pwsvc(argc, argv);
+  	checktty();
+  	savetty();
+  	temp = getlogin();
+--- 121,127 ----
+  	set_die_callback(pw_cleanup);
+  	process_arguments(argc, argv, envp); /* Process command line */
+  
+! 	init_pwsvc(argc, argv, Switches);
+  	checktty();
+  	savetty();
+  	temp = getlogin();
+***************
+*** 276,283 ****
+  #endif
+  
+  #ifdef	OS_SUNOS_5
+! # define	OPTIONS_DEFER	"adhln:w:x:r:s:"/* SunOS 5 options punted */
+! # define	OPTIONS_OS 	"eg"		/* SunOS 5 options supported */
+  # define	OPTIONS_IGNORE 	"D:"		/* SunOS 5 options to ignore */
+  #endif
+  
+--- 276,283 ----
+  #endif
+  
+  #ifdef	OS_SUNOS_5
+! # define	OPTIONS_DEFER	"adhln:w:x:s:"	/* SunOS 5 options punted */
+! # define	OPTIONS_OS 	"egr:"		/* SunOS 5 options supported */
+  # define	OPTIONS_IGNORE 	"D:"		/* SunOS 5 options to ignore */
+  #endif
+  
+***************
+*** 407,412 ****
+--- 407,415 ----
+  		case 'g':		/* Change finger info */
+  			what_to_do = CHFN;
+  			break;
++ 		case 'r':		/* Select service */
++ 			Switches[(char)opt] = strdup(optarg);
++ 			break;
+  
+  #endif	/* OS_SUNOS_5 */
+  #ifdef OS_HPUX
+*** /tmp/dttjyE_	Thu Oct 15 10:34:51 1998
+--- src/options.h.SH	Wed Oct 14 10:44:00 1998
+***************
+*** 72,78 ****
+   * Change to options.h will go away the next time Configure is run!
+   * Make permanent changes to options.h.SH
+   *
+!  * @(#)options.h.SH	1.11 07/16/98 (cc.utexas.edu)
+   */
+  
+  /*
+--- 72,78 ----
+   * Change to options.h will go away the next time Configure is run!
+   * Make permanent changes to options.h.SH
+   *
+!  * @(#)options.h.SH	1.12 10/14/98 (cc.utexas.edu)
+   */
+  
+  /*
+***************
+*** 142,147 ****
+--- 142,148 ----
+  #define	CRACKLIB_DEBUG		/* Enable debugging in Cracklib */
+  #define	CRACKLIB_PERROR		/* Enable error message spew in Cracklib */
+  
++ 
+  /*
+   * Defines which will are usually set by Configure
+   */
+***************
+*** 171,176 ****
+--- 172,179 ----
+  #define XPASSWD_SAVE	/path	/* Alternate passwd save file */
+  #define XPASSWD_LOCK	/path	/* Alternate passwd lock file */
+  
++ #define	SHORT_FILE_WARN		/* Do not abort when temp files come up short */
++ 
+  /*
+   * Defines for NIS method module "src/Methods/pwm_nis.c"
+   */
+*** /tmp/d0aHytj	Thu Oct 15 10:34:51 1998
+--- src/version.c.SH	Wed Oct 14 09:45:23 1998
+***************
+*** 70,76 ****
+  
+  /*
+   *	npasswd version information
+!  *	@(#)version.c.SH	1.13 09/23/98 (cc.utexas.edu)
+   */
+  !NO!SUBS!
+  $spitshell >>version.c <<!GROK!THIS!
+--- 70,76 ----
+  
+  /*
+   *	npasswd version information
+!  *	@(#)version.c.SH	1.14 10/14/98 (cc.utexas.edu)
+   */
+  !NO!SUBS!
+  $spitshell >>version.c <<!GROK!THIS!
+***************
+*** 81,87 ****
+  Build options:	$cc_osflags\n";
+  
+  char	*npasswd_version = "$package $baserev (07/01/1998)",
+! 	*npasswd_patchlevel = "03 (09/23/1998)";
+  
+  /*
+   * End version.c.SH
+--- 81,87 ----
+  Build options:	$cc_osflags\n";
+  
+  char	*npasswd_version = "$package $baserev (07/01/1998)",
+! 	*npasswd_patchlevel = "04 (10/14/1998)";
+  
+  /*
+   * End version.c.SH

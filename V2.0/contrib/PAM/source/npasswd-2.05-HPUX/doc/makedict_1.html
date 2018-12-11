@@ -1,0 +1,134 @@
+<BODY><PRE>
+
+
+
+User Commands                                         makedict(1)
+
+
+
+<B>NAME</B>
+     makedict - build npasswd dictionaries
+     packer - pack hashed dictionary files
+     unpacker - unpack hashed dictionary files
+
+<B>SYNOPSIS</B>
+     /<B>makedict </B>-<B>o </B><I>output </I>[ -<B>m </B><I>source </I>] [ -<B>T </B><I>temp  </I>]
+     words ... words
+     /<B>packer </B>dictionary-name
+     /<B>unpacker </B>dictionary-name
+
+<B>DESCRIPTION</B>
+     <B>Makedict </B>builds the hashed  dictionaries  used  by  <B>npasswd</B>.
+     The  dictionary  hash files are built from <I>word lists</I>, which
+     are text files with one word per line.
+
+     Three hashed files are created with the suffixes <B>.hwm</B>, <B>.pwd</B>,
+     and <B>.pwi </B>.
+
+     <B>Packer </B>is a low-level utility which  reads  words  (one  per
+     line)  from  standard  input and packs them into hash files.
+     <B>Makedict </B>is a smart front-end to <B>packer</B>,  and  is  the  pre-
+     ferred tool for dictionary building.
+
+     <B>Unpacker </B>dumps dictionary hashes  to  standard  output,  one
+     word per line.
+
+<B>OPTIONS</B>
+     Options for <B>makedict</B>.
+
+     -<B>o </B><I>output</I>
+          Create the dictionary <B>output</B>.
+
+     -<B>m </B><I>source</I>
+          Merge in words in dictionary <B>source</B>.
+
+     -<B>T </B><I>temp</I>
+          Use <B>temp </B>as the temporary directory for  sorting.   Use
+          this  option if the default temporary directory used by
+          <I>sort</I>(1) is small.
+
+     <I>words </I>... <I>words</I>
+          Word lists. Compressed files (ending with  <B>.Z  </B>or  <B>.gz</B>)
+          can be used.
+
+     <B>Packer </B>and <B>unpacker </B>take one argument - the name of the dic-
+     tionary file to pack or unpack.
+
+<B>EXAMPLES</B>
+     To make the dictionary 'my-dict':
+          makedict -o my-dict word-list-1 ... word-list-n
+
+
+
+
+SunOS 5.6                 Last change:                          1
+
+
+
+
+
+
+User Commands                                         makedict(1)
+
+
+
+          Will produce the  files  <B>my-dict.pwd</B>,  <B>my-dict.pwi  </B>and
+          <B>my-dict.hwm</B>.
+
+     To add words to an existing dictionary:
+          makedict -o existing-dict -m existing-dict word-list-1 ... word-list-n
+
+<B>DIAGNOSTICS</B>
+     Missing option to -o
+          No output file was specified.
+
+     Missing option to -T
+          No temporary directory was specified.
+
+     Missing option to -m
+          No merge dictionary was specified.
+
+     Empty or missing hash file <I>name</I>
+          One of the dictionary hash files came up empty,  either
+          because  the  sources  were  empty or a filesytem error
+          occurred.
+
+<B>BUGS</B>
+     The input to <B>packer must be sorted</B>,  else  the  result  hash
+     files will be faulty.  Use <B>makedict </B>instead.
+
+<B>SEE ALSO</B>
+     npasswd(1)
+     <I>Npasswd Reference Manual</I>
+
+<B>AUTHOR</B>
+     Clyde Hoover
+     Academic Computing  Services  and  Instructional  Technology
+     Services
+     The University of Texas at Austin
+     c.hoover@cc.utexas.edu
+     8c9 1998, The  University  of  Texas  at  Austin.  All  rights
+     reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SunOS 5.6                 Last change:                          2
+
+
+
+</PRE></BODY>

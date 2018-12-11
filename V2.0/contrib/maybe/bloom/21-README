@@ -1,0 +1,32 @@
+Dictionary contains, for every word on list
+-------------------------------------------
+
+    1 Lowercase all		    (1st 8 characters)
+    2 Unless all alpha are u.c.,
+	lowercase initial and
+	final char		    (1st 8 characters)
+    3 Strip punctuation		    (1st 8 characters)
+    4 Strip whitespace		    (1st 8 characters)
+    5 Strip punctuation and whitesp (1st 8 characters)
+    6 If >8 characters, reverse	    (1st 8 characters)	IF_LONG_REVERSE
+    7 Strip vowels aeiou	    (1st 8 characters)	IF_VOWEL_STRIP
+
+
+Transformations of proposed password	(In effect, these "undo" the
+------------------------------------	 transformations of dictionary words
+					 that Crack tries.)
+
+     Truncate to 8 characters
+     If all alpha are u.c., make all l.c.
+     Else lowercase initial and final letter
+
+   0 Test as is
+   1 Strip one leading or trailing nonalpha, test
+   2 If leading nonalpha, and 8 characters, strip leading nonalpha, then
+     test all possible continuations to 8 characters
+   3 Unpluralize (special treatment for 8-character strings), test
+   4 Inverse "mycroft" transforms, test
+   5 Unbracket (remove () [] {} <>), test
+   6 Unduplicate (fredfred --> fred), test
+   7 Unreflect ((fredderf --> fred, frederf --> fred), test
+   8 Reverse (derf --> fred), test

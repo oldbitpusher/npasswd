@@ -1,0 +1,192 @@
+<html>
+<head>
+<title>NIS and password aging</title>
+<link rel=stylesheet type="text/css" href="npasswd.css">
+</head>
+<!-- %W% %G% %P% -->
+<body>
+<hr>
+<p>
+<h1 align=center>NIS and password aging</h1>
+<p>
+<hr>
+<p>
+<p>
+<h2>Concepts</h2>
+<div class=para>
+Solaris (and some versions of Linux) have centralized many administrative
+    functions into Pluggable Authentication Modules (PAMs).
+<p>
+The PAM routines do the work of password verification and changing.
+<p>
+Example: <b>/bin/login</b> calls the <b>pam_unix</b>
+module (see <b>/etc/pam.conf</b>) to handle the <b>login</b> service.
+That module prompts the user for a password,
+figures out from <b>/etc/nsswitch.conf</b> which backend
+(<b>/usr/lib/nss_XXX.so</b>) to load to find the user information.
+<p>
+<h4> From the Solaris 7 man page shadow(4):</h4>
+<div class=para>
+<p>
+<b>/etc/shadow</b> is an access-restricted ASCII system  file  that
+stores  users'  encrypted passwords and related information.
+The shadow file can be used in conjunction with other shadow
+sources,   including   the   NIS   maps   passwd.byname  and
+passwd.byuid and the NIS+ table <b>passwd</b>.  Programs  use  the
+<i>getspnam</i>(3C) routines to access this information.
+<pre>
+       The fields are
+  
+       <b>lastchg</b>   The number of days between January 1, 1970, and
+                 the date that the password was last modified.
+       <b>min</b>       The minimum number of days required between password changes.
+       <b>max</b>       The maximum number of days the password is valid.
+       <b>warn</b>      The number of days before password expires that
+                 the user is warned.
+       <b>inactive</b>  The number of days of inactivity allowed for that user.
+       <b>expire </b>   An absolute date specifying when login may no longer be used.
+</pre>
+</div>
+  
+<h4>How it works</h4>
+<div class=para>
+<p>
+If <tt>((current-time - lastchg) &gt; max)</tt>
+the password has expired and the module performs a password change.
+The calling program knows nothing of this.
+The <i>passwd</i> program is <b>not</b> invoked, hence <i>npasswd</i>
+cannot be inserted in the process.
+<p> 
+<i>Npasswd</i> does the following:
+<ul> 
+<li> Updates <b>lastchg</b> to mark when it changed the password.
+<li> Checks <b>min</b> to enforce minimal password age.
+<li> Does <b>not</b> check <b>max</b>, except to disallow changes under some conditions.
+<li> Invokes the vendor <b>passwd</b> program to change aging for a password.
+</ul>
+</div>
+</div>
+<p> 
+<h2>NIS and password aging</h2>
+<div class=para>
+<p>
+Password aging parameters are not included in the standard passwd file format.
+Though the definition for <b>struct passwd</b> has a <b>pw_age</b>
+element, there is no corresponding field in <tt>/etc/passwd</tt>.
+There can be no password aging without supplimental information.
+<p>
+This supplimental information is typically stored in <tt>/etc/shadow</tt>,
+along with the encrytped password.
+When the standard NIS maps are built, the encrypted password is taken from
+shadow entries and included in the <b>passwd.byname</b> and
+<b>passwd.byuid</b> maps.
+The format of these maps <b>do not</b> include the aging information.
+<p>
+This means that password aging <b>is not available</b> on NIS clients.</font>
+<p>
+From Volume 1 of <i>Solaris 8 System Administration Guide</i>:
+<p>
+<blockquote>
+If you are using NIS+ or the /etc files to store user
+account information, you can set up password aging on a
+user's password.
+</blockquote>
+<p>
+The only way to have password aging is to run
+NIS in <b>C2</b> security mode. This gets you a NIS map named
+<tt>passwd.adjunct.byname</tt> which contains the shadow password and aging information.
+<p>
+</div>
+
+<h2>Changing passwords on NIS clients</h2>
+<div class=para>
+<P>
+From the manual page for yppasswd(1m):
+<p>
+<blockquote>
+	Entries in the <b>passwd</b>, <b>shadow</b> or
+	<b>passwd.adjunct</b>  files  are  only 
+	changed  if  the  password presented by <i>yppasswd</i>(1) matches the
+	encrypted  password  of the  entry.
+</blockquote>
+<p>
+From <i>/usr/include/rpcsvc/yppasswd.h</i>:
+<pre>
+	struct yppasswd {
+		char *oldpass;          /* old (unencrypted) password */
+		struct passwd newpw;    /* new pw structure */
+	};
+</pre>
+<p>
+If <i>npasswd</i> detects that it is running on a NIS client
+<tt>(hostname != NIS master for passwd.byname)</tt>,
+or does not find the passwd entry in any
+of the files in its list (but did get it from NIS), it will use the
+RPC interface to make the passwd change.
+<p>
+As detailed above, the RPC interface <b>requires</b>
+the current password be provided
+in cleartext.  The <tt>yppasswd</tt> daemon will only work if this is given (or the
+target entry has a null password).
+<p>
+<i>Npasswd</i> makes the assumption that if root is changing someone else's password
+on a NIS client, it is because the current password is unknown.  In that
+case,  <b>the password CANNOT be changed via the RPC interface</b>.  The only
+place to change an unknown password is the NIS master.
+<p>
+One could fault <i>npasswd</i> for being pendantic on this point.  
+My experience as a system administrator
+is that when I am changing a users' password as root, it is because the user
+does not know it,  hence I must make the change on the
+NIS master, then invoke the NIS map update procedure so the user can login.
+<p>
+The bottom line is that substantial user management (e.g. password changes)
+needs to be done <b>on the NIS master</b>.
+</div>
+<p>
+<h2>Password files on NIS masters</h2>
+<div class=para>
+<p>
+During the process of customizing npasswd,
+the <i>Configure</i> script probes the system for password files.
+This list is presented and the builder is offered the option of changing it.
+<P>
+In the process of looking for a user entry, npasswd examines <b>every</b>
+file in this list.  If the user is found and the entry is not
+an NIS stub (e.g. <tt>+user::0:0:::</tt>),
+then that file is marked as the source
+for the entry and the password field will be changed in that file.  
+<P>
+Should the user not be found in any of the local files then NIS is
+searched.  If the user is found in NIS, that service is marked as the
+source and the password will be changed via the RPC mechanism.
+<P>
+When a file other than <tt>/etc/passwd</tt> is used as the NIS map source,
+that file must be in included in the password file list.
+<P>
+For example, if your NIS map is built from <tt>/var/yp/src/passwd</tt>,
+then that file must be in npasswd's internal file list.
+<P>
+If you attempt to change a local password on the NIS master 
+and get the message "<b>Information can only be changed on NIS master</b>",
+then you need to redo the password file list.
+<P>
+To do this, run <tt>"Configure -d"</tt> and when
+prompted "<tt>Change passwd file list?</tt>" reply 'y' and enter the path to 
+your NIS passwd master file.  Then rebuild and install <i>npasswd</i>.
+<P>
+</div>
+<hr>
+<p>
+Document id %Z% %M% %I%<br>
+Version %I%<br>
+Last modified %G%<br>
+<p>
+<ADDRESS>
+Clyde Hoover<br>
+<A HREF="http://www.utexas.edu/its/">Information Technology Services</A>
+<BR><A HREF="http://www.utexas.edu/">The University of Texas at Austin</A>
+<BR><FONT SIZE=-1><A HREF="Copyright.html">Copyright 2004</A>, The University
+</ADDRESS>
+</BODY>
+</HTML>

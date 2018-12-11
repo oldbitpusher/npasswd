@@ -1,0 +1,20 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(SCCS/s.unpacker.c)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lsecurity:
+AC_CHECK_LIB(security, main)
+
+dnl Checks for header files.
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+
+dnl Checks for library functions.
+
+AC_OUTPUT(Makefile)

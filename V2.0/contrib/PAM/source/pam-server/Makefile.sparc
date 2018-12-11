@@ -1,0 +1,27 @@
+
+INCLUDES=-I../../include
+OBJX=
+OBJS=pwstrongd.o pwstrongc.o
+ SRC=pwstrongd.c pwstrongc.c
+
+ LIBS=-lsocket -lnsl -L../../lib/SunOS-sparc -lpwcheck -lhide -lcomobj -lstrongconfig -R/usr/lib/passwd/lib
+
+  CC=cc $(INCLUDES) $(LIBS) -O -DTI_ITSS_PW_CHECK
+  CC=cc $(INCLUDES) $(LIBS)
+xx=lint $(INCLUDES) $(LIBS)
+
+all: $(OBJX) $(SRC) pwstrongd pwstrongc
+
+lint: pwstrongd.c pwstrongc.c
+	lint $(INCLUDES) -lsocket -lnsl -R./pwstrongd pwstrongd.c
+	lint $(INCLUDES) -lsocket -lnsl -R./pwstrongc pwstrongc.c
+	@rm *.lnt
+
+clean:
+	/bin/rm -f $(OBJS) pwstrongd pwstrongc
+
+install: all
+	@./install_ksh
+
+config:
+	@./Configure

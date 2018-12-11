@@ -1,0 +1,54 @@
+
+Npasswd 2.0 developer kit README
+
+The npasswd kit is built using the dist package - a set of tools to
+ease the construction and maintenance of portable software.
+
+The central component of which is the Configure script generator,
+metaconfig. This program scans source files, feature files (units),
+and builds a Configure script. Configure probes the system, requests
+information from the user, and saves the results for use in
+customizing the package.
+
+The "jmake" facilty is used to create Makefiles (which dovetails into
+metaconfig).  The jmake syntax is compact but sometimes obtuse.
+
+I have worked to keep within the programming and packaging conventions
+of the dist environment.  The major deviation is that our shop uses SCCS
+for source control rather than RCS.
+
+In the this kit are the following:
+
+* All Jmakefile sources for building the Makefiles
+* Metaconfig units included in the npasswd Configure
+* The 'dist' package version 3.0, patchlevel 70
+* Various convience scripts that make my life easier
+
+The dist kit must be customized for your site in order to use 'jmake'
+and 'metaconfig': 
+
+	cd developer
+	./Configure
+	# Install wherever you wish. Some scripts will need slight tweaking
+	# if you install in a automounted directory (i.e. remove "/tmp_mnt"
+	# from paths).
+
+Sources for the 'dist' kit are available from the CPAN archives:
+
+	Africa
+	    ftp://ftp.is.co.za/programming/perl/CPAN/
+	Australia:
+	    ftp://coombs.anu.edu.au/pub/perl/
+	Europe:
+	    ftp://ftp.cs.ruu.nl/pub/PERL/CPAN/
+	    ftp://ftp.demon.co.uk/pub/mirrors/perl/CPAN/
+	    ftp://ftp.funet.fi/pub/languages/perl/CPAN/
+	    ftp://ftp.pasteur.fr/pub/computing/unix/perl/CPAN/
+	    ftp://ftp.rz.ruhr-uni-bochum.de/pub/programming/languages/perl/CPAN/
+	    ftp://ftp.sunet.se/pub/lang/perl/CPAN/
+	    ftp://orpheu.ci.uminho.pt/pub/lang/perl/
+	USA
+	    ftp://ftp.cis.ufl.edu/pub/perl/CPAN/
+	    ftp://ftp.delphi.com/pub/mirrors/packages/perl/CPAN/
+	    ftp://ftp.sterling.com/programming/languages/perl/
+	    ftp://uiarchive.cso.uiuc.edu/pub/lang/perl/CPAN/

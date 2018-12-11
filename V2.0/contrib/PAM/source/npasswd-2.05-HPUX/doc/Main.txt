@@ -1,0 +1,199 @@
+
+     _________________________________________________________________
+   
+                           Npasswd Documentation
+     _________________________________________________________________
+   
+Introduction
+
+   Npasswd is a replacement for the passwd command for UNIX. It subjects
+   user passwords to stringent guessability checks to decrease the chance
+   of users choosing vulnerable passwords. It addresses other
+   deficiencies found of standard password change programs. Npasswd is
+   designed to replace the programs passwd, chfn and chsh.
+   
+   Npasswd should work under most versions of UNIX and UNIX-like
+   operating systems. It does not replicate every feature of every
+   password program on every UNIX platform. If the installer chooses to
+   replace the system programs with npasswd, they will be preserved and
+   used to perform the functions that npasswd cannot do.
+   
+   Many UNIX platforms use shadow passwords, which makes it harder for a
+   bad guy to obtain encrypted passwords. But there are still plenty of
+   systems which have the encrypted passwords available for all the world
+   to see.
+   
+   Having shadow passwords in and of itself greatly reduces vulnerability
+   to password crackers. But that protection is a function of the UNIX
+   file system. If you use unsecure NIS or a misconfigured NIS+, you can
+   still give away your passwords.
+   
+   Combining intelligent password checking with a shadow database
+   provides the best protection short of one-time use passwords or
+   challenge/response smart card systems.
+   
+   Configuring npasswd requires some thought on the part of the
+   administrator. It's not a "plug and play" process. There are
+   configuration options to select, and there is policy in the code that
+   may not meet your needs.
+   ______________________________________________________________________
+   
+History
+
+   In November of 1988 the infamous Morris worm escaped its playpen and
+   went on a rampage across the Internet, bringing UNIX systems to their
+   knees and causing widespread trouble. Among the Worm's attacks was a
+   password guesser, which was fairly clever and unnervingly successful.
+   
+   Our systems (University of Texas Academic Computing Servies) escaped
+   being ravaged by the Worm because our main mail gateway was not a VAX
+   or SUN.
+   
+   Afterwards the Worm was dissected and papers released describing its
+   anatomy. From these papers I replicated the password cracker, ran it
+   against our password files and got plenty of hits. I rewrote the
+   cracker into a primitive password checker that was posted to
+   comp.sources.misc in 1989.
+   
+   The UNIX password encryption crypt(3) was considered good that the
+   cyphertext could not be cracked, so it was safe to have the encrypted
+   passwords visible to all.
+   
+   The Worm approached password cracking from a "human engineering"
+   perspective. People are likely to choose passwords which are easy to
+   remember - such as their login name or phone number. The Worm's
+   password cracker encrypted various plaintext strings and compared them
+   to the encrypted password. The plaintext came from user's passwd
+   information and the UNIX spelling dictionary. This approach was fairly
+   successful.
+   
+   Our UNIX vendors were shipping the primitive V7 passwd program which
+   did no significant password checking. This lack of vendor support
+   meant the only way to have more secure passwords was to replace it. I
+   wrote npasswd around my "worm" password checker.
+   
+   By late 1989 npasswd had replaced /bin/passwd on all of our public
+   UNIX systems. After a few sweeps with my password checker, some
+   pointed email and other unfriendly actions, I and my colleagues
+   breathed easier - at least for awhile.
+   
+   In 1991 (or so) Crack was released and the world changed. It did not
+   attempt to reverse the password encryption, but used a brute force
+   attack similar to that of the Worm. Anyone with a 386 box (the hot
+   commodity system of the time), a C compiler and some patience could
+   crack passwords at their leisure.
+   
+   I began to look into integrating Crack into npasswd. I found that
+   npasswd needed serious updating - the UNIX environment was changing,
+   and there had been plenty of porting problems.
+   
+   I had also learned a lot more about C programming, so I decided that
+   npasswd needed an extensive rewrite. That work started in July of
+   1993.
+   ______________________________________________________________________
+   
+The future
+
+   The rewrite was more complicated and taken over 5 years (off and on).
+   All of the UNIX platforms which hosted the original npasswd have have
+   been retired. There is new hardware (64-bit CPUs), new operating
+   systems (Solaris 2, OSF/1), new user databases (NIS+) and security
+   facilities.
+   
+   These facilities are sophisticated and capable, but too often have
+   unstable and/or undocumented programming interfaces - as well as
+   difficult bugs to work around. Manipulating these databases is much
+   more complex than updating field 2 of /etc/passwd.
+   
+   Although some vendor password change utilities are better at
+   disallowing easily guessed passwords, most still rely upon file system
+   protections to keep the cyphertext away from prying eyes.
+   
+   Vendors could make the life of a system administrator more pleasant by
+   allowing the system administrator to interpose a site-specific
+   password check policy.
+   
+   The work of keeping up with new releases of UNIX systems and new
+   features can take up a lot of time. I do not know if I will be able to
+   continue this work.
+   ______________________________________________________________________
+   
+Acknowledgments
+
+   A lot of people have contributed their work to npasswd over the years.
+   I've got a large collection of variants of npasswd 1 done by lots of
+   folks. Many have provided good ideas and code that have been
+   incorporated into version 2.0.
+   
+   Here are some of the more outstanding contributors that I can recall:
+   
+   Alec Muffet for providing me Crack modules ready to use and a copious
+       collection of word lists.
+       Paul Leyland of Oxford University, UK provided support for Ultrix
+       enhanced security (which was the base for OSF/1 enhanced security
+       support).
+       Donnie Emeson for adding character class diversity requirements to
+       the password lexical check code.
+       Mike Stute for HP-UX support and some improvements to the
+       dictionary lookup password checking.
+       One of the most popular variants of npasswd was produced at NASA
+       Jet Propulsion Laboratory in Pasadena, California. Two guys who
+       did a lot of the JPL work were Dan Kegel, who added Crack password
+       checking and Dave Hayes who added SunOS 4 adjunct password support
+       (among other things).
+       Tomasz Surmacz, Institute of Cybernetics, Technical Technical
+       University of Wroclaw, Poland, contributed the password original
+       history code.
+       Charles Seeger, University of Florida CIS Department and Steve
+       Swartz, University of Wisconsin for supplying code to include chfn
+       and chsh functionality.
+       
+   There are many more who made suggestions and provided code that wasn't
+   used, but whose comments were appreciated.
+   ______________________________________________________________________
+   
+Bibliography
+
+   Documents on the Internet Worm:
+   
+     * [1]With Microscope and Tweezers: An Analysis of the Internet Virus
+       of November, 1988 Mark W. Eichin and Jon Rochlis, MIT.
+     * [2]A Tour of the Worm, Donn Seeley, Department of Computer
+       Science, University of Utah.
+       
+   Documents on password security:
+   
+     * [3]Foiling the cracker: A Survey of, and Improvements to, Password
+       Security. Daniel V. Klein, Software Engineering Institute,
+       Carniege Mellon University.
+     * Password Security: A Case History. Robert Morris and Ken Thompson,
+       AT&T Bell Laboratories 1978. Originally part of Volume 2A of the
+       Seventh Edition UNIX Programmers Manual, dated January 1979 and
+       included in the 4.3 BSD System Managers Manual.
+   ______________________________________________________________________
+   
+   [4][LINK]Top    [5][LINK]Home
+   ______________________________________________________________________
+   
+   Document id @(#) Main.html 1.8
+   Version 1.8
+   Last modified 07/20/98
+   
+   
+    [6]Clyde Hoover
+    [7]Academic Computing Services and Instructional Technology Services
+    [8]The University of Texas at Austin
+    [9]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./Worm-MIT.ps
+   2. file://localhost/./Worm-Utah.ps
+   3. file://localhost/./PasswordSecurity.ps
+   4. file://localhost/./Main.html#top
+   5. file://localhost/./TOC_std.html
+   6. mailto:c.hoover@cc.utexas.edu
+   7. http://www.utexas.edu/cc
+   8. http://www.utexas.edu/
+   9. file://localhost/./Copyright.html

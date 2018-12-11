@@ -1,0 +1,297 @@
+<HTML>
+<HEADER>
+<link rel=stylesheet type="text/css" href="../../npasswd.css">
+
+<title>With Microscope and Tweezers: Introduction</title>
+<link rev="made" href="mailto:eichin@mit.edu">
+</HEADER>
+<BODY>
+<h1>With Microscope and Tweezers:</h1>
+<h2>An Analysis of the Internet Virus of November 1988</h2>
+<H3>Introduction</H3>
+
+<ul>
+<LI> <A HREF="intro.html#organization">Organization</A>
+<LI> <A HREF="intro.html#rose">A Rose by Any Other Name</A>
+<LI> <A HREF="intro.html#goals">Goals and Targets</A>
+<LI> <A HREF="intro.html#majorpoints">Major Points</A>
+	<ul>
+	<LI>  How it entered
+	<LI>  Who it attacked
+	<LI>  What it attacked
+	<LI>  What it did NOT do
+	</ul>
+</ul>
+<a name="intro">
+
+The Internet<a href="bibliography.html#internet">[internet]</a><a href="bibliography.html#notablenets">[notablenets]</a>, a collection of
+interconnected networks linking approximately 60,000 computers, was
+attacked by a virus program on 2 November 1988.  The Internet
+community is comprised of academic, corporate, and 
+goverment research users, all seeking to exchange information to
+enhance their research efforts.
+ <P>
+The virus broke into Berkeley Standard Distribution (BSD)
+<A HREF="intro.html#footnote-unix">UNIX</A> and derivative systems.  Once
+resident in a computer, it attempted to break into other machines
+on the network.  This paper is an analysis of that virus program
+and
+of the reaction of the Internet community to the attack.
+ <P>
+
+<Hr>Footnotes:
+<UL>
+<LI> <A NAME="footnote-unix">UNIX is a trademark of AT&T.
+DEC, VAX, and Ultrix are trademarks of Digitial Equipment Corporation.
+Sun, SunOS, and NFS are trademarks of Sun Microsystems, Inc.
+IBM is a trademark of International Business Machines, Inc.
+</UL>
+<Hr>
+
+<A NAME="organization">
+<H4>Organization</H4>
+
+
+In Section <a href="intro.html#intro">[intro]</a> we discuss the categorization of
+the program which attacked the Internet, the goals of the teams
+working on isolating the virus and the methods they employed, and
+summarize what the virus did and did not actually do.
+In Section <a href="strategies.html#strat">[strat]</a> 
+we discuss in more detail the strategies it employed, the specific
+attacks it used, and the effective and ineffective defenses
+proposed by the community.
+ <P>
+Section <a href="chronology.html#chron">[chron]</a> is a detailed
+presentation of the chronology of the virus.  It
+describes how our group at MIT found out and reacted to the crisis,
+and relate the experiences and actions of select other groups
+throughout the country, especially as they interacted with our group.
+ <P>
+Once the crisis had passed, the Internet community had time not only to explore
+the
+vulnerabilities which had allowed the attack to succeed, but also to
+consider how future attacks could be prevented.
+Section <a href="conclusion.html#lessons">[lessons]</a> presents our views on the lessons learned and problems
+to be faced in the future.  
+In Section <a href="ack.html#acks">[acks]</a> we acknowledge the people on
+our team and the people at other sites who aided us in the effort to
+understand the virus.
+ <P>
+We present a subroutine by subroutine description of the virus program
+itself in Appendix <a href="program.html#progappendix">[progappendix]</a>, including a diagram
+of the information flow through the routines which comprise the
+``cracking engine''. 
+Appendix <a href="dict.html#dict">[dict]</a> contains a list of the words included in the
+built-in dictionary carried by the virus.
+ <P>
+Finally in Appendix <a href="people.html#cast">[cast]</a> we provide an alphabetized list of all
+the people mentioned in this paper, their affiliations, and their
+network mail addresses.
+ <P>
+
+<A NAME="rose">
+<H4>A Rose by Any Other Name</H4>
+
+The question of how to classify the program which infected the
+Internet has received a fair amount of attention.  Was it a ``virus''
+or ``worm''; or was it something else?
+ <P>
+There is confusion about the term ``virus.''  To a biologist a virus
+is an agent of infection which can only grow and reproduce within a
+host cell.  A lytic virus enters a cell and uses the cell's own
+metabolic machinery to replicate.  The newly created viruses (more
+appropriately called ``virons'') break out of the infected cell,
+destroying it, and then seek out new cells to infect.  A lysogenetic virus,
+on the other hand, alters the genetic material of its host cells.  When
+the host cell reproduces it unwittingly reproduces the viral genes.
+At some point in the future, the viral genes are activated and many
+virons are produced by the cell.  These proceed to break out of the
+cell and seek out other cells to infect<a href="bibliography.html#biovirus2">[biovirus2]</a>.  Some single
+strand DNA viruses do not kill the host cell;  they use the
+machinery of the host cell to reproduce (perhaps slowing normal celluar
+growth by diverting resources) and exit the cells in a
+non-destructive manner<a href="bibliography.html#biossdna">[biossdna]</a>.  
+ <P>
+A ``worm'' is an organism with an elongated segmented body.  Because
+of the shape of their bodies worms can
+snake around obstacles and work their way into unexpected places.
+Some worms, for example the tapeworm, are parasites.  They live inside
+of a host organism, feeding directly from nutrients intended for host
+cells.  These worms reproduce by shedding one of their segments which
+contains many eggs.  They have difficulty in reaching new hosts,
+since they usually leave an infected host through its excretory system
+and may not readily come into contact with another host<a href="bibliography.html#bioworm">[bioworm]</a>.
+ <P>
+In deciding which term fits the program which infected the Internet,
+we must decide which part of the system is analogous to the
+``host''.  Possibilities include the network, host computers,
+programs, and processes.   We must also consider the actions of the
+program and its structure.
+ <P>
+Viewing the network layer as the ``host'' is not fruitful; the
+network was not attacked, specific hosts on the network were.
+The infection never spread beyond the Internet even though there were
+gateways to other types of networks.   
+One could view the
+infection as a worm, which ``wiggled'' throughout the network.  But as
+Beckman points out<a href="bibliography.html#ncsc">[ncsc]</a> the program didn't have connected
+``segments'' in any sense.  Thus it can't be a worm.
+ <P>
+A model showing the computers as the ``host'' is more promising.  The
+infection of 2 November entered the hosts, reproduced, and exited in
+search of new hosts to infect.  Some people might argue that since
+the host was not destroyed in this process, that the
+infecting program was more like a worm than a virus.  But, as
+mentioned earlier, not all viruses destroy their host cells.
+Denning
+<a href="bibliography.html#denning">[denning]</a> defines a computer worm as a program which enters a
+workstation and disables it.  In that sense the infection could be
+considered a worm, but we reject this definition.  The infected computers
+were affected but not all were ``disabled''. There is also no analog to
+the segments of a biological worm.
+ <P>
+Denning has described how many personal computer programs have been
+infected by viral programs<a href="bibliography.html#denning">[denning]</a>.  These are frequently
+analogous to lysogenetic viruses because they modify the actual
+program code as stored in the computer's secondary storage.  As the
+infected programs are copied from computer to computer through normal
+software distribution, the viral code is also copied.  At some point
+the viral code may activate and perform some action such as deleting
+files or displaying a message.  Applying this definition of a virus while
+viewing programs as ``hosts'' does not
+work for the Internet infection, since the virus neither attacked nor
+modified programs in any way.
+ <P>
+If, however, processes are view as ``hosts'', then the Internet
+infection can clearly be considered a viral infection.  The virus
+entered hosts through a daemon process, tricking that process into
+creating a viral process, which would then attempt to reproduce.  In
+only one case, the finger attack, was the daemon process actually
+changed; but as we noted above only lysogenetic viruses actually
+change their host's genetic material.  
+ <P>
+Denning defines a bacterium as a program which
+replicates itself and feeds off the host's computational resources.
+While this seems to describe the program which infected the Internet,
+it is an awkward and vague description which doesn't seem to convey the
+nature of the infection at all.
+ <P>
+Thus we have chosen to call the program which infected the Internet a
+virus.  We feel it is accurate and descriptive.
+ <P>
+<A NAME="goals">
+<H4>Goals and Targets</H4>
+
+
+The program that attacked many Internet hosts was itself
+attacked by teams of programmers around the country. The goal of these
+teams was to find out <em>all</em> the inner workings of the
+virus.  This included not just
+understanding how to stop further attacks, but also understanding
+whether any permanent damage had been done, including 
+destruction or alteration of data during the actual
+infection, or possible ``time bombs'' left for later execution.
+ <P>
+There were several steps in achieving these goals:
+including
+<ul>
+<li> isolating a specimen of the virus in a form which could be analyzed.
+<li> ``decompiling'' the virus, into a form that could be shown to
+reduce to the executable of the real thing, so that the higher level
+version could be interpreted.
+<li> analyzing the strategies used by the virus, and the elements of
+its design, in order to find weaknesses and methods of defeating it.
+</ul>
+ <P>
+The first two steps were completed by the morning of 4 November 1988. Enough
+of the third was complete to determine that the virus was harmless,
+but there were no clues to the higher level issues, such as the reason
+for the virus' rapid spread.
+ <P>
+Once the decompiled code existed, and the threat of the virus known to
+be minimal, it was clear to the MIT team and those at Berkeley that
+the code should be protected.  We understood that the knowledge
+required to write such a program could not be kept secret, but felt
+that if the code were publicly available, someone could too easily
+modify it and release a damaging mutated strain.
+If this occurred before many hosts had
+removed the bugs which allowed the penetration in the first place,
+much damage would be done.
+ <P>
+There was also a clear need to explain to the community what the virus
+was and how it worked. This information, in the form of this report,
+can actually be <em>more</em> useful to interested people than the
+source code could be, since it includes discussion of the side effects
+and results of the code, as well as flaws in it, rather than merely
+listing the code line by line. Conversely, there are people interested
+in the intricate detail of how and why certain routines were used;
+there should be enough detail here to satisfy them as well.  Readers
+will also find Seely<a href="bibliography.html#seely">[seely]</a> and Spafford's<a href="bibliography.html#spafpaper">[spafpaper]</a> papers
+interesting.
+ <P>
+<A NAME="majorpoints"></A>
+<H4>Major Points</H4>
+
+This section provides an outline of the how the virus attacked and
+who it attacked.  It also lists several things the virus did not do,
+but which many people seem to have attributed to the virus.  All of
+the following points are described in more detail in Section <a href="strategies.html#strat">[strat]</a>.
+ <P>
+<H5>How it entered</H5>
+
+<ul>
+<li> sendmail (needed debug mode, as in SunOS binary releases)
+<li> finger<a href="bibliography.html#finger">[finger]</a> (only VAX
+hosts were victims)
+<li> remote execution system, using
+<ul>
+<li> rexec
+<li> rsh
+</ul>
+</ul>
+
+<H5>Who it attacked</H5>
+
+<ul>
+<li> accounts with obvious passwords, such as
+<ul>
+<li> none at all
+<li> the user name
+<li> the user name appended to itself
+<li> the ``nickname''
+<li> the last name
+<li> the last name spelled backwards
+</ul>
+<li> accounts with passwords in a 432 word dictionary
+(see Appendix <a href="dict.html#dict">[dict]</a>)
+<li> accounts with passwords in <code>/usr/dict/words</code>
+<li> accounts which trusted other machines via the <code>.rhosts</code> mechanism 
+</ul>
+
+<H5>What it attacked</H5>
+
+<ul>
+<li> SUNs and VAXes only 
+<li> machines in <code>/etc/hosts.equiv</code>
+<li> machines in <code>/.rhosts</code>
+<li> machines in cracked accounts' <code>.forward</code> files
+<li> machines in cracked accounts' <code>.rhosts</code> files
+<li> machines listed as network gateways in routing tables
+<li> machines at the far end of point-to-point interfaces
+<li> possibly machines at randomly guessed addresses on networks of first
+hop gateways
+</ul>
+
+<H5>What it did NOT do</H5>
+
+<ul>
+<li> gain privileged access (it almost never broke in as <code>root</code>)
+<li> destroy or attempt to destroy any data
+<li> leave time bombs behind
+<li> differentiate among networks (such as MILNET, ARPANET)
+<li> use UUCP at all
+<li> attack specific well-known or privileged accounts such as <code>root</code>
+</ul>
+
+</body>
+</html>

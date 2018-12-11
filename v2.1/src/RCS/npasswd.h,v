@@ -1,0 +1,1460 @@
+head	1.31;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.31
+date	98.07.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	98.04.21.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	97.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	97.06.18.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	97.05.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	97.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	96.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	96.04.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	96.03.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	94.10.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	94.09.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	94.06.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	94.05.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	94.03.31.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	94.03.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	94.03.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	94.03.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	94.03.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	93.12.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	93.07.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.31
+log
+@Add new code to permission enum
+@
+text
+@/*
+ * 	Tangled web of ifdefs for various systems
+ *	This cleans up the Makefile
+ *
+ *	$Id$
+ */
+
+#define	npasswd_h 1
+
+#include "constants.h"
+#include "defines.h"
+#include "compatibility.h"
+#include "options.h"
+
+#ifdef	NEED_CLIB_DECLS
+/*
+ * This block of declarations may cause compilation to fail on
+ * systems that have any of the routines already defined in
+ * a system include file.
+ */
+char	*getlogin(),
+	*malloc(),
+	*index(),
+	*rindex(),
+	*ttyname();
+#endif
+
+/*
+ * Password change permission type
+ */
+enum chg_perm {
+	deny = 0,	/* Cannot change */
+	self,		/* Changing own password */
+	other,		/* Privleged user changing other */
+	allow		/* Generic "I'm not unhappy" code */
+};
+
+struct passwd_files {
+	char	*pwfile,	/* Name of password file */
+		*tempfile,	/* Name of password temp file */
+		*savefile,	/* Name of password save file */
+		*lockfile;	/* Name of password lock file */
+	uid_t	uid;		/* File owner */
+	gid_t	gid;		/* File group */
+	mode_t	mode;		/* File mode */
+};
+
+/*
+ * The "meta-passwd" entry
+ */
+struct mpasswd {
+	struct passwd	pw;
+#define	mpw_name	pw.pw_name	/* Conveince definitions */
+#define	mpw_passwd	pw.pw_passwd	/* to simplify access to */
+#define	mpw_uid		pw.pw_uid	/* passwd structure elements */
+#define	mpw_gid		pw.pw_gid
+#define	mpw_shell	pw.pw_shell
+#define	mpw_gecos	pw.pw_gecos
+#define	mpw_shell	pw.pw_shell
+#define	mpw_dir		pw.pw_dir
+#ifdef	PWQUOTA
+#define	mpw_quota	pw.pw_quota
+#endif
+#ifdef	PWCOMMENT
+#define	mpw_comment	pw.pw_comment
+#endif
+	char		*mpw_opasswd;	/* Original password string */
+					/* which might be a shadow cookie */
+	struct {		/* Password aging information */
+		time_t	last_change;	/* Time of last change */
+		time_t	can_change;	/* Time till change ok */
+		time_t	must_change;	/* Time when must change */
+		time_t	warn_user;	/* When user gets warned */
+#ifdef	PWAGE
+#define	mpw_age		pw.pw_age
+#else
+#define	mpw_age		pwage.xage
+		char	*xage;
+#endif
+	} pwage;
+	char	key[128],	/* Database "access key" */
+		password[128];	/* Database "access pass" */
+	char	*pws_name,	/* Service name (NIS, NIS+) */
+		*pws_loc;	/* Location of service (hostname) */
+	int	pws_remote;	/* Is the service local? */
+	void	*opaque;	/* Method opaque data block */
+};
+
+/*
+ * Signal stuff
+ */
+struct sigblk {
+#if	(SIG_TYPE == SIG_TYPE_UNIX)
+	Signal_t	(*sigvalues[NSIG])();
+#endif
+#if	(SIG_TYPE == SIG_TYPE_POSIX)
+	sigset_t	sigvalues,
+			savesigs;
+#endif
+#if	(SIG_TYPE == SIG_TYPE_BSD)
+	unsigned int	sigvalues,
+			savesigs;
+#endif
+};
+
+
+/*
+ * Function prototypes
+ */
+void		pw_initialize();
+struct mpasswd	*pw_getuserbyname _((char *));
+enum chg_perm	pw_permission _((struct mpasswd *, struct mpasswd *));
+int		pw_check _((struct mpasswd *, char *, char *));
+void		pw_replace _((struct mpasswd *, struct mpasswd *, int));
+void		pw_cleanup _((int));
+void		passwd _((struct mpasswd *, struct mpasswd *));
+void		chfn _((struct mpasswd *, struct mpasswd *));
+void		chsh _((struct mpasswd *, struct mpasswd *));
+void		motd _((char *, char *));
+
+#ifdef	USE_NIS
+struct passwd	*ypgetpwnam _((char *, char *));
+#endif
+
+/*
+ * Variables in main.c
+ */
+extern char	*Switches[];
+extern char	*XSwitches[];
+extern Uid_t	CallerUid;
+
+extern int	LockTries,
+		LockCycle;
+
+extern char	*npasswd_version,
+		*npasswd_patchlevel,
+		*checkpasswd_version,
+		*checkpasswd_patchlevel,
+		*build_info;
+
+extern int	errno;			/* System error code */
+
+#include "Common/common.h"	/* Include later to pick up type decls */
+
+/* End $RCSfile$ */
+@
+
+
+1.30
+log
+@Remove global vars svc, ProgramName, DebugLevel and pwReadTries
+@
+text
+@d34 2
+a35 1
+	other		/* Privleged user changing other */
+@
+
+
+1.29
+log
+@Remove some function prototypes
+@
+text
+@a13 1
+#include "Common/pw_svc.h"
+a128 3
+extern char	*ProgramName;
+extern int	DebugLevel,
+		pwReadTries;
+a141 2
+extern struct pw_svc	svc;	/* System "name service" info */
+
+@
+
+
+1.28
+log
+@1.Wrap pw_comment if PWCOMMENT ifdef 2. Fix Signal_t type 3. Add "orignal password" field to struct mpasswd
+@
+text
+@a119 2
+void		get_password _((char *, char *, char *, int));
+char		*np_getpass _((char *));
+d126 1
+a126 1
+ * Routines in main.c
+a127 5
+size_t	FileSizeDiff _((char *, char *));
+int	MakeLockTemp _((char *));
+void	FixPwFileMode _((char *, char *));
+
+
+@
+
+
+1.27
+log
+@1. Remove getpass() decl 2. Add np_getpass() decl
+@
+text
+@d64 1
+d66 3
+d94 1
+a94 1
+	Signal_t	sigvalues[NSIG];
+@
+
+
+1.26
+log
+@Ifdef PWQUOTA use of pw_quota
+@
+text
+@a26 1
+char	*getpass _((char *));
+d117 1
+@
+
+
+1.25
+log
+@Add definitions for LockTries & LockCycle
+@
+text
+@d62 1
+d64 1
+@
+
+
+1.24
+log
+@Add uid/gid/mode elements to struct passwd_files
+@
+text
+@d136 3
+@
+
+
+1.23
+log
+@1. Remote NEED_GETPASS 2. Remove 'const' declarations (too much compiler pain)
+@
+text
+@d44 3
+@
+
+
+1.22
+log
+@Change pwsvc -> pw_svc
+@
+text
+@d26 2
+a27 2
+	*ttyname(),
+	*getpass();
+d103 3
+a105 3
+struct mpasswd	*pw_getuserbyname _((const char *));
+enum chg_perm	pw_permission _((const struct mpasswd *, const struct mpasswd *));
+int		pw_check _((const struct mpasswd *, const char *, char *));
+d107 1
+a107 1
+void		pw_cleanup _((const int));
+d111 2
+a112 2
+void		motd _((const char *, const char *));
+void		get_password _((const char *, const char *, char *, const int));
+d115 1
+a115 1
+struct passwd	*ypgetpwnam _((const char *, char *));
+d121 3
+a123 3
+size_t	FileSizeDiff _((const char *, const char *));
+int	MakeLockTemp _((const char *));
+void	FixPwFileMode _((const char *, const char *));
+a124 6
+/* Damn systems that define this already ... */
+#ifdef	NEED_GETPASS
+char	*getpass _((const char *));
+#else
+extern char     *getpass();
+#endif
+@
+
+
+1.21
+log
+@Beta 3: compiles under OSF/1 3.2
+@
+text
+@d14 1
+a14 1
+#include "Common/svc_info.h"
+d147 1
+a147 1
+extern struct pwsvc	svc;	/* System "name service" info */
+@
+
+
+1.20
+log
+@Add lots of const decls
+@
+text
+@a58 1
+#define	mpw_age		pw.pw_age
+d66 6
+@
+
+
+1.19
+log
+@Beta 3 development checkin 2
+@
+text
+@d16 1
+a16 1
+#ifdef	XNEED_CLIB_DECLS
+d25 1
+d93 8
+a100 4
+void		pw_initialize _((int, char **));
+struct mpasswd	*pw_getuserbyname _((char *));
+enum chg_perm	pw_permission _((struct mpasswd *, struct mpasswd *));
+int		pw_check _((struct mpasswd *, char *, char *));
+d102 1
+a102 1
+void		pw_cleanup _((int));
+d106 2
+a107 2
+void		motd _((char *, char *));
+void		get_password _((char *, char *, char *, int));
+a108 1
+
+d110 1
+a110 1
+struct passwd	*ypgetpwnam _((char *s, char *));
+d116 3
+a118 3
+size_t	FileSizeDiff _((char *, char *));
+int	MakeLockTemp _((char *));
+void	FixPwFileMode _((char *, char *));
+d122 1
+a122 1
+public char	*getpass _((char *));
+d132 1
+@
+
+
+1.18
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d8 2
+d14 1
+a29 33
+ * Security level names
+ */
+enum sec_order {		/* System security level */
+	sec_std = 0,
+	sec_u4upgrade,		/* Ultrix 4 'upgrade' */
+	sec_u4enhanced,		/* Ultrix 4 'enhanced' */
+	sec_sunC2,		/* SunOS 4 C2 security */
+	sec_OSFenhanced		/* Digital UNIX (OSF/1) enhanced */
+};
+extern enum sec_order svc_SecurityLevel;
+
+/*
+ * Database service names
+ */
+enum svc_names {
+	srv_local,
+	srv_yp,
+	srv_nisplus,
+	srv_nidot,
+	srv_niroot,
+	srv_kerb,
+	srv_hesiod,
+	srv_unknown,
+	srv_last = 99
+};
+extern enum svc_names svc_ServiceOrder[];
+
+/*
+ * Password encryptor
+ */
+extern char *(*svc_PasswdCrypt)();
+
+/*
+a97 1
+
+d101 2
+d104 2
+a105 5
+struct passwd	*copypwent _((struct passwd*, struct passwd *));
+struct passwd	*fgetpwnam _((char *, char *));
+struct passwd	*fgetpwent _((FILE *));
+struct passwd	*sgetpwent _((char *));
+char		*sputpwent _((struct passwd *, char *));
+d107 1
+a108 14
+void	svc_get _((int, char **, char **));
+
+void	motd _((char *, char *));
+void	debug _((int, char *, ...));
+
+void	die _((char *, ...));
+void	warn _((char *, ...));
+
+void	logdie _((char *, ...));
+void	logerr _((char *, ...));
+
+void	block_signals _((struct sigblk *, ...));
+void	unblock_signals _((struct sigblk *));
+
+a115 5
+#ifndef HAS_STRCASECMP
+int	strcasecmp _((char*, char *));
+int	strncasecmp _((char*, char *));
+#endif
+
+d118 1
+a118 1
+public char	*getpass(char *);
+d137 1
+a137 1
+#include "lib/lib_util.h"	/* Include later to pick up type decls */
+d139 2
+@
+
+
+1.17
+log
+@Rename some elements of the mpasswd struct
+@
+text
+@d8 2
+a19 1
+	*crypt(),
+d27 1
+a27 1
+ * End the configuration code (tangled wed of preprocessor commands)
+a28 42
+
+/*
+ * Definitions for making the source look pretty
+ */
+#define	public	/* */
+#define	private	static
+#ifdef	HAS_CONST
+# define	const	const
+#else
+# define	const	/* */
+#endif
+
+/*
+ * Debugging levels.  Debugging is activated by the -D command line option
+ */
+#define	DB_NONE		0		/* No debug */
+#define	DB_VERBOSE	1		/* Mild verbosity */
+#define	DB_LEVEL2	2		/* Nothing yet */
+#define	DB_LEVEL3	3		/* Nothing yet */
+#define	DB_LOOKUP	4		/* Trace user lookup */
+#define	DB_UPDATE	5		/* Trace user update */
+#define	DB_LEVEL6	6		/* Nothing yet */
+#define	DB_LEVEL7	7		/* Nothing yet */
+#define	DB_CONFIG	8		/* Trace configuration processing */
+#define	DB_ALL		99		/* Trace *everything* */
+
+/*
+ * Various string buffer sizings
+ */
+#define	STRINGLEN	32		/* Length for miscelleanous strings */
+#define	PW_LINELEN	512		/* Length for passwd lines */
+#define	TMPBUFSIZ	1024		/* Size of miscellanous buffers */
+/*
+ * Time stuff
+ */
+#define DAYS_PER_WEEK   7
+#define	SEC_PER_DAY	(time_t )(24 * 60 * 60)
+#define	SEC_PER_WEEK	(time_t )(SEC_PER_DAY * DAYS_PER_WEEK)
+
+/*
+ * Service lookup ordering
+ */
+d31 4
+a34 4
+	sec_u4upgrade,		/* Ultrix 4.X 'upgrade' */
+	sec_u4enhanced,		/* Ultrix 4.X 'enhanced' */
+	sec_sunC2,		/* SunOS 4.X C2 security */
+	sec_OSFenhanced		/* OSF/1 2.X 'enhanced' */
+d36 1
+a36 1
+extern enum sec_order SecurityLevel;
+d38 4
+a41 1
+enum svc_order {			/* Service order */
+d52 1
+a52 1
+extern enum svc_order ServiceOrder[];
+d54 4
+a57 1
+extern char *(*PasswdCrypt)();
+a91 1
+		char	do_aging;	/* Should aging be done? */
+d95 1
+a120 11
+#ifdef	__STDC__
+/*
+ * If your compiler claims __STDC__ but doesn't have prototypes,
+ * get another compiler.  I suggest gcc.
+ */
+void		pw_initialize(int, char **);
+struct mpasswd	*pw_getuserbyname(char *);
+enum chg_perm	pw_permission(struct mpasswd *, struct mpasswd *);
+int		pw_check(struct mpasswd *, char *, char *);
+void		pw_replace(struct mpasswd *, char *, char *, char *);
+void		pw_cleanup(int);
+d122 6
+a127 3
+void		passwd(struct mpasswd *, struct mpasswd *);
+void		chfn(struct mpasswd *, struct mpasswd *);
+void		chsh(struct mpasswd *, struct mpasswd *);
+d129 3
+a131 7
+char		*copystr(char *);
+struct passwd	*copypwent(struct passwd*, struct passwd *);
+struct passwd	*fgetpwnam(char *, char *);
+struct passwd	*fgetpwent(FILE *);
+struct passwd	*sgetpwent(char *);
+char		*sputpwent(struct passwd *, char *);
+struct passwd	*ypgetpwnam(char *s, char *);
+d133 6
+a138 3
+char	*random_string(char *, int);
+enum chg_perm	can_change(struct mpasswd *, struct mpasswd *);
+size_t	cmp_file_size(char *, char *);
+d140 1
+a140 10
+void	get_password(char *, char *, char *, int);
+void	motd(char *, char *);
+void	debug(int, char *, ...);
+void	die(char *, ...);
+void	warn(char *, ...);
+void	logdie(char *, ...);
+void	logerr(char *, ...);
+void	block_signals(struct sigblk *, ...);
+void	unblock_signals(struct sigblk *);
+int	mklocktemp(char *);
+d142 2
+a143 1
+#else
+d145 2
+a146 6
+void		pw_initialize();
+struct mpasswd	*pw_getuserbyname();
+enum chg_perm	pw_permission();
+int		pw_check();
+void		pw_replace();
+void		pw_cleanup();
+d148 2
+a149 3
+void		passwd();
+void		chfn();
+void		chsh();
+d151 2
+a152 21
+char		*copystr();
+struct passwd	*copypwent();
+struct passwd	*fgetpwnam();
+struct passwd	*fgetpwent();
+struct passwd	*sgetpwent();
+struct passwd	*ypgetpwnam();
+char		*sputpwent();
+char		*sputpwaent();
+char		*random_string();
+enum chg_perm	can_change();
+size_t		cmp_file_size();
+void		get_password();
+void		motd();
+void		debug();
+void		die();
+void		warn();
+void		logdie();
+void		logerr();
+void		block_signals();
+void		unblock_signals();
+int		mklocktemp();
+d154 10
+a165 1
+#if	0
+a171 1
+#endif
+d173 2
+a174 2
+
+extern char	*CommandLineOption[];
+a176 1
+		ProgramInput,
+d187 2
+@
+
+
+1.16
+log
+@Eliminate the "ypcompat" service number
+@
+text
+@d114 4
+a117 4
+	struct passwd	pw;	/* Passwd info */
+#define	mpw_name	pw.pw_name
+#define	mpw_passwd	pw.pw_passwd
+#define	mpw_uid		pw.pw_uid
+d126 5
+a130 5
+	struct {
+		char	doit;			/* Should aging be done? */
+		time_t	last_change;		/* Time of last change */
+		time_t	min_time;		/* Time till change ok */
+		time_t	max_time;		/* Time when must change */
+d132 6
+a137 6
+	char		*misc;			/* Miscellanous stuff */
+	char		key[128],		/* Database "access key" */
+			password[128];		/* Database "access pass" */
+	char		*where;			/* Where they are */
+	int		remote;			/* Is it remote or not */
+	void		*opaque;		/* Method opaque data block */
+@
+
+
+1.15
+log
+@1. Change debug level numbers, fill in empty slots 2. Change XBUFLEN to TMPBUFSIZ 3. Add prototypes for debug() routine
+@
+text
+@a81 1
+	srv_ypcompat,
+@
+
+
+1.14
+log
+@Beta 3 development checkin
+@
+text
+@d45 8
+a52 4
+#define	DB_LOUD		2		/* More verbosity */
+#define	DB_CONFIG	3		/* Trace configuration processing */
+#define	DB_LOOKUP	6		/* Trace user lookup */
+#define	DB_UPDATE	7		/* Trace user update */
+d54 3
+d59 1
+a59 1
+#define	XBUFLEN		1024		/* Size of miscellanous buffers */
+d187 1
+d222 1
+@
+
+
+1.13
+log
+@Change arguments to get_password
+@
+text
+@d11 1
+a11 1
+#ifdef	NEED_CLIB_DECLS
+d34 1
+a34 1
+#if	defined(__STDC__) || defined(AC_CONST)
+d52 1
+d139 1
+a139 1
+	signal_t	sigvalues[NSIG];
+d151 4
+d224 10
+d240 6
+d247 2
+@
+
+
+1.12
+log
+@Change password aging stuff in mpasswd struct
+@
+text
+@d173 1
+a173 1
+void	get_password(char *, char *, int);
+@
+
+
+1.11
+log
+@Cleanup debugging level defines
+@
+text
+@d23 1
+a23 1
+# endif
+d34 2
+a35 2
+#ifdef	__STDC__
+# define	fixed	const
+d37 1
+a37 1
+# define	fixed	/* */
+d50 2
+a51 3
+#define	STRINGLEN	32
+#define	PASSWD_FILE_SLOP 128
+
+d80 1
+d119 7
+a125 4
+	char		age_password;		/* Should aging be done? */
+	time_t		last_change;		/* Last password change */
+	time_t		min_change_time;	/* Time till change ok */
+	time_t		expire;			/* Time when must change */
+d171 1
+a171 1
+size_t	sizecheck(char *, char *);
+d181 1
+d206 1
+a206 1
+size_t		sizecheck();
+d215 1
+@
+
+
+1.10
+log
+@1. Add support for OSF/1 security mode. 2. Add password aging into to struct mpasswd. 3. Add pointer to which encryption routine to use.
+@
+text
+@d30 1
+a30 1
+ * Constants
+d34 5
+d40 9
+a48 4
+#define	DB_NONE	0
+#define	DB_VERBOSE	1
+#define	DB_LOOKUP	6
+#define	DB_UPDATE	7
+d52 4
+@
+
+
+1.9
+log
+@Move stuff around and remove other stuff
+@
+text
+@d53 2
+a54 1
+	sec_sunC2		/* SunOS 4.X C2 security */
+d71 2
+d105 4
+a108 8
+#ifdef	S5_SHADOW
+	long		sp_lstchg;
+	long		sp_min;
+	long		sp_max;
+	long		sp_warn;
+	long		sp_inact;
+	long		sp_expire;
+#endif
+@
+
+
+1.8
+log
+@Change CLIBDEFINES to  NEED_CLIB_DECLS
+@
+text
+@d35 4
+a38 3
+#define	DEBUG_NONE	0
+#define	DEBUG_VERBOSE	1
+#define	DEBUG_PWUPDATE	8
+d41 4
+d98 1
+d102 8
+a116 1
+#if	SUN_SHADOW
+d118 1
+a118 3
+ * Would like to use the real Sun adjunct passwd structure, but it's pretty
+ * messy to encode and decode, so use a stupid subsitute (which is what the
+ * Sun version does also).  What a crock.
+d120 12
+a131 10
+struct passwd_Xadjunct {
+	char	*pwa_name;
+	char	*pwa_passwd;
+	char	*pwa_minimum;
+	char	*pwa_maximum;
+	char	*pwa_def;
+	char	*pwa_au_always;
+	char	*pwa_au_never;
+	char	*pwa_version;
+	char	*pwa_age;
+a132 9
+# ifdef	__STDC__
+struct passwd_Xadjunct   *fgetapwent(FILE *);
+char		*sputpwaent(struct passwd_Xadjunct *, char *);
+# else
+struct passwd_Xadjunct   *fgetapwent();
+char		*sputpwaent();
+# endif
+#endif	/* SUN_SHADOW */
+
+d150 1
+d153 1
+a153 3
+char		*sputpwent(struct passwd *, char *);
+
+char		*random_string(char *, int);
+d155 1
+a155 1
+size_t		sizecheck(char *, char *);
+d157 8
+a164 6
+void		get_password(char *, char *, int);
+void		motd(char *, char *);
+void		die(char *, ...);
+void		warn(char *, ...);
+void		logdie(char *, ...);
+void		logerr(char *, ...);
+d196 2
+@
+
+
+1.7
+log
+@Move syslog stuff into options.h
+@
+text
+@d11 1
+a11 1
+#ifndef	CLIBDEFINES
+d23 1
+a23 1
+# endif /* CLIBDEFINES */
+@
+
+
+1.6
+log
+@1. Move compatibilty stuff to compatiblity.h 2. Provide more function decls
+@
+text
+@a10 16
+#ifdef	USE_SYSLOG
+#include <syslog.h>
+# ifndef	LOG_AUTH
+#  define	LOG_AUTH	0
+# endif
+# ifndef	LOG_CONS
+#  define	LOG_CONS	0
+# endif
+# ifndef	ERROR_LOG_LEVEL
+#  define	ERROR_LOG_LEVEL		LOG_ERR
+# endif
+# ifndef	MESSAGE_LOG_LEVEL
+#  define	MESSAGE_LOG_LEVEL	LOG_INFO
+# endif
+#endif
+
+@
+
+
+1.5
+log
+@Support OSF/1 on ALPHA
+@
+text
+@d8 2
+a9 4
+#undef	_ALLDONE_
+#define		TIME_H	<time.h>
+#define		ERRNO_H	<errno.h>
+#define	CONST	const
+a10 183
+#ifdef	OS_SUNOS_4			/* SunOS 4.X (up to 4.1.3) */
+# define	OS_BSD		1	/* Generically BSD */
+# define	HAS_SIGMASK	1	/* Generically BSD  */
+# define	SUNOS_TTY	1	/* Use SunOS ioctls */
+# define	NEED_GETPASS	1
+# define	S5_PWAGING	1	/* Uses System 5 password aging */
+# define	PW_COMMENT	1	/* Has pw_comment field */
+# define	SUN_SHADOW	1	/* Change Sun shadow passwords */
+# define	YP_PASSWD	1	/* Enable RPC password changes */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# define	VENDOR_COMPAT	0	/* Full compatibilty with vendor prog */
+# define	USE_SYS_TIME_H	1	/* Use <sys/time.h> */
+# undef	TIME_H
+# define TIME_H	<sys/time.h>
+typedef	void	(*signal_t);
+#ifdef	_ALLDONE_
+	ERROR_Too_many_os_selections_made
+#else
+# define	_ALLDONE_	1
+#endif
+#endif
+
+#ifdef	OS_SOLARIS_2			/* SunOS 5.X (Solaris 2.X) *?
+# define	OS_SYS54	1	/* Mostly SVR4 */
+# define	SYS5_TTY	1	/* Use SYS5 ioctls */
+# define	S5_PWAGING	1	/* Uses System 5 password aging */
+# define	S5_SHADOW	1	/* Uses System 5 password aging */
+# define	PW_COMMENT	1	/* Has pw_comment field */
+# define	YP_PASSWD	1	/* Enable RPC password changes */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# define	USE_MEMOPS	1	/* Use system 5 memory routines */
+#ifdef	_ALLDONE_
+	ERROR_Too_many_os_selections_made
+#else
+# define	_ALLDONE_	1
+#endif
+#endif
+
+#ifdef	OS_ULTRIX_4		/* Ultrix 4.X */
+# define	OS_BSD		1	/* Generically BSD  */
+# define	HAS_SIGMASK	1	/* Generically BSD  */
+# define	ULTRIX_SHADOW	1	/* Use Ultrix security mode */
+# define	NO_CLNT_SPERRNO	1	/* Doesn't have clnt_sperrno(3) */
+# define	NEED_PUTPWENT	1	/* Doesn't have putpwent(3) */
+# define	NEED_FGETPWENT	1	/* Doesn't have fgetpwent(3) */
+# define	PW_COMMENT	1	/* Has pw_comment field */
+# define	YP_PASSWD	1	/* Enable RPC password changes */
+# define	DBM_PASSWD	1	/* Uses DBM lookaside files */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# define	STD_PW_LEN	13	/* Length of standard pw string */
+# define	USE_SYS_TIME_H	0	/* Need to include <time.h> */
+# define	USE_getsvc	1	/* Use DEC's getsvc() call */
+extern char    *crypt16();
+typedef	void	(*signal_t);
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+#endif
+
+#ifdef	OS_DEC_OSF1_1			/* DEC OSF/1 version 1.X */
+# define	OS_BSD		1	/* Generically BSD */
+# define	USE_UNISTD_H 	0
+# define	USE_STDLIB_H 	1
+# define	USE_MEMOPS	1	/* Use system 5 memory routines */
+# define	HAS_SIGMASK	1	/* Generically BSD  */
+# define	NEED_GETPASS	1
+# define	NEED_FGETPWENT	1	/* Doesn't have fgetpwent(3) */
+# undef		S5_PWAGING		/* No password aging */
+# define	PW_COMMENT	1	/* Has pw_comment field */
+# define	YP_PASSWD	1	/* Enable RPC password changes */
+# define	DBM_PASSWD	1	/* Uses DBM lookaside files */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# undef		VENDOR_COMPAT
+# define	USE_SYS_TIME_H	1	/* Use <sys/time.h> */
+# define	USE_getsvc	1	/* Use DEC's getsvc() call */
+# undef		_NO_PROTO
+typedef	void	(*signal_t);
+extern char    *crypt();
+extern char    *crypt16();
+#ifdef	_ALLDONE_
+	ERROR_Too_many_os_selections_made
+#else
+# define	_ALLDONE_	1
+#endif
+#endif
+
+#ifdef	OS_AIX_3			/* AIX 3.2> */
+# define	NEED_FGETPWENT	1	/* Doesn't have fgetpwent(3) */
+# define	S5PW_AGE	1	/* Has pw_age field */
+# define	USE_MEMOPS	1	/* Use system 5 memory routines */
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+#endif
+
+#ifdef	OS_BSD_43			/* Plain 4.3BSD system */
+# define	OS_BSD		1	/* Generically BSD  */
+# define	HAS_SIGMASK	1	/* Generically BSD  */
+# define	DBM_PASSWD	1	/* Has DBM lookaside files */
+# define	PW_COMMENT	1	/* Has pw_comment field */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+# endif
+
+#ifdef	OS_SYS_5123		/* System V R[123]* */
+# define	OS_SYS5		1
+# define	NEED_RENAME	1
+# define	SYS5_TTY	1
+# define	USE_MEMOPS	1	/* Use system 5 memory routines */
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+#endif
+
+#ifdef	OS_SYS_54			/* System V R4 */
+# define	OS_SYS5		1
+# define	SYS5_TTY	1
+# define	USE_MEMOPS	1	/* Use system 5 memory routines */
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+#endif
+
+#ifdef	POSIX_ENV		/* XXX */
+/* #define	_POSIX_SOURCE	1	/* XXX */
+#include <fcntl.h>
+#include <limits.h>
+#include <locale.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <unistd.h>
+#endif
+
+/*
+ *	Pull in system include files
+ */
+#include <sys/param.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+#include <signal.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <pwd.h>
+#ifdef	__STDC__
+#include <stdarg.h>
+# define	VA_DCL(_X_)	(char *_X_, ...)
+# define	VA_START(X,Y)	va_start(X,Y)
+#else
+#include <varargs.h>
+# define	VA_DCL(_X_)	(va_alist) va_dcl
+# define	VA_START(X,Y)	va_start(X)
+#endif
+
+#ifdef  USE_SYS_ERRNO_H
+# include <sys/errno.h>
+#else
+# include <errno.h>
+#endif
+
+#ifdef  USE_SYS_TIME_H
+# include <sys/time.h>
+#else
+# include <time.h>
+#endif
+
+#ifdef	DEBUG
+#undef	USE_SYSLOG		/* XXXX */
+#endif
+
+d27 1
+a27 20
+#ifdef	USE_MEMOPS
+# include <memory.h>
+# define	INDEX(s, c)	strchr(s, c)
+# define	RINDEX(s, c)	strrchr(s, c)
+# define	BZERO(a, l)	memset(a, 0, l)
+# define	BCOPY(s, d, l)	memcpy(d, s, l)
+#else
+# define	INDEX(s, c)	index(s, c)
+# define	RINDEX(s, c)	rindex(s, c)
+# define	BZERO(a, l)	bzero(a, l)
+# define	BCOPY(s, d, l)	bcopy(s, d, l)
+#endif
+
+#ifdef	USE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef	USE_STDLIB_H
+#  include <stdlib.h>
+#endif
+# if !defined(USE_STDLIB_H) && !defined(USE_UNISTD_H)
+d39 1
+a39 1
+# endif /* USE_STDLIB_H */
+a40 6
+#define	SIGTYPE	(void *)		/* This might be wrong */
+
+#ifndef MAXHOSTNAMLEN
+# define MAXHOSTNAMLEN 64
+#endif
+
+d201 1
+d203 4
+@
+
+
+1.4
+log
+@Development checkin: 1. Remove some stuff not globally needed 2. Fix include of time.h 3. Make acc happier
+@
+text
+@d9 3
+d15 1
+a15 1
+# define	BSD_SIGNALS	1	/* Generically BSD  */
+d25 2
+d53 1
+a53 1
+# define	BSD_SIGNALS	1	/* Generically BSD  */
+d64 1
+d74 27
+d114 1
+a114 1
+# define	BSD_SIGNALS	1	/* Generically BSD  */
+a124 10
+#ifdef	OS_DEC_OSF_1		/* Dec's OSF/1 system */
+# define	BSD_SIGNALS	1	/* Generically BSD  */
+# define	USE_SYSLOG	1	/* Syslog messages */
+# ifdef	_ALLDONE_
+   ERROR_Too_many_os_selections_made
+# else
+#  define	_ALLDONE_	1
+# endif
+#endif
+
+d149 1
+a149 1
+#define	_POSIX_SOURCE	1	/* XXX */
+d164 1
+d170 9
+d225 1
+a225 1
+#if	(USE_UNISTD_H || POSIX)
+d227 2
+a228 2
+# else
+# ifdef	USE_STDLIB_H
+d230 2
+a231 1
+# else
+a243 1
+#endif	/* USE_UNISTD_H */
+d348 1
+d351 1
+d373 1
+a374 1
+char		*sputpwaent(struct passwd_Xadjunct *, char *);
+d378 1
+d380 7
+d410 2
+@
+
+
+1.3
+log
+@Development checkin
+@
+text
+@d21 1
+d58 1
+d60 1
+d153 6
+a217 1
+
+a218 1
+ *
+a219 1
+ *
+a222 29
+ *	File names - many can be overidden by the config file
+ */
+#ifndef	PASSWD_FILE
+# define	PASSWD_FILE	"/etc/passwd"
+#endif
+ 
+#ifndef	PASSWD_SAVE
+# define	PASSWD_SAVE	"/etc/opasswd"
+#endif
+
+#ifndef	PASSWD_TEMP
+# define	PASSWD_TEMP	"/etc/ptmp"
+#endif
+
+#ifndef	PASSWD_LOCK
+# define	PASSWD_LOCK	"/etc/passwd.ptmp"
+#endif
+
+#ifndef	PASSWD_CONFIG
+# define	PASSWD_CONFIG	"/usr/adm/passwd.conf"
+#endif
+#ifndef	PASSWD_HELP
+# define	PASSWD_HELP	"/usr/adm/passwd.help"
+#endif
+#ifndef	PASSWD_MOTD
+# define	PASSWD_MOTD	"/usr/adm/passwd.motd"
+#endif
+
+/*
+a227 11
+#define	PASSWD_MODE	0644
+
+/*
+ * Names of NIS maps where passwd information is stored
+ */
+#define	PASSWD_BYNAME	"passwd.byname"
+#define	PASSWD_BYUID	"passwd.byuid"
+#define	ADJUNCT_BYNAME	"passwd.adjunct.byname"
+
+#define	PASSWD_SIZE_SLOP	128
+ 
+a233 4
+#define DAYS_PER_WEEK	7
+#define SEC_PER_WEEK	((time_t )(24 * DAYS_PER_WEEK * 60 * 60))
+
+
+d274 4
+a277 1
+struct mpasswd {		/* Meta-passwd entry */
+d316 1
+a316 1
+struct passwd_Xadjunct   *fgetapwent(/* FILE *af */);
+@
+
+
+1.2
+log
+@Add more function prototypes
+@
+text
+@d21 1
+d258 1
+d296 9
+d358 1
+a358 1
+int		pw_permission(struct mpasswd *, struct mpasswd *);
+d374 1
+d377 1
+d383 1
+a383 1
+int		pw_permission();
+d399 1
+d401 2
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a347 1
+int		pw_passwdcmp(char *, char *);
+d351 5
+d363 1
+d368 19
+a386 16
+void		pw_initialize(/* int argc, char **argv */);
+struct mpasswd	*pw_getuserbyname(/* char *username  */);
+int		pw_permission(/* struct mpasswd *user, *caller */);
+int		pw_passwdcmp(/* char *current, *new */);
+int		pw_check(/* struct mpasswd *user, char *newpass */);
+void		pw_replace(/* struct mpasswd *theUser, char *newpw,
+			*newfn, *newsh */);
+void		pw_cleanup(/* int condition */);
+char		*copystr(/* char *s */);
+struct passwd	*copypwent(/* struct pwent s,d */);
+struct passwd	*fgetpwnam(/* char *name, *pwfile */);
+struct passwd	*fgetpwent(/* FILE *p */);
+struct passwd	*sgetpwent(/* char *s */);
+struct passwd	*ypgetpwnam(/* char *s, *domain */);
+char		*sputpwent(/* struct passwd *p, char *b */);
+char		*random_string(/* char buf, int buflen */);
+@

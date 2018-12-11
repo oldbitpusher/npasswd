@@ -1,0 +1,508 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.7
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.10.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.08.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.04.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@1. Add copyright notice  2. Fix introductory comments
+@
+text
+@/*
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+ *
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+ *
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+ *
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+ */
+
+/*
+ * Routines to deal with passwords.
+ */
+
+#include "npasswd.h"
+#include "pw_svc.h"
+
+#ifndef lint
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+#endif
+
+/*
+ * Configuration settings
+ */
+Config_Value int		PasswdMatchTries = PASSWORD_MATCH_TRIES;
+Config_Value unsigned int	PasswdMatchWait = PASSWORD_MATCH_WAIT;
+
+/*
+ * get_password
+ *	Read password from user and compare to present
+ *
+ * Effects:
+ *	Stores matching plaintext password in <pwd_plain> buffer
+ */
+public void
+get_password(prompt, pwd_crypt, pwd_plain, pwd_psize)
+	char	*prompt,	/* Prompt string */
+		*pwd_crypt,	/* Present password (encrypted) */
+		*pwd_plain;	/* New password (plain) */
+	int	pwd_psize;	/* Size of pwd_plain */
+{
+	int	ntries = 0;	/* Attempt counter */
+	char	*pwtemp;	/* Password read temp */
+
+	for (;;) {
+		if ((pwtemp = np_getpass(prompt)) == NULL)
+			die("Password unmatched.\n");
+		if (*pwtemp == '\0')
+			continue;
+		if (password_cmp(pwd_crypt, pwtemp) == 0) {
+			printf("Password incorrect.\n");
+			if (PasswdMatchWait > 0)
+				sleep(PasswdMatchWait);
+			if (++ntries == PasswdMatchTries) {
+				if (PasswdMatchWait > 0)
+					(void) sleep(PasswdMatchWait);
+				die("Password not matched.\n");
+			}
+			continue;
+		}
+		break;
+	}
+	(void) strncpy(pwd_plain, pwtemp, pwd_psize);
+}
+
+/*
+ * password_cmp
+ *	Compare old and new passwords
+ *
+ * Returns:
+ *	1 if match
+ *	0 if not
+ */
+public 
+password_cmp(current, check)
+	char	*current,		/* Current password (encrypted) */
+		*check;			/* Password to compare (plain) */
+{
+	struct pw_svc	*svc = get_pwsvc();	/* Passwd service */
+
+	if (*current == 0)		/* Null password */
+		return(1);
+
+	return (strcmp(current, (*svc->PasswdCrypt)(check, current)) == 0);
+}
+
+/*
+ * np_getpass
+ *	Replacement for libc getpass(3)
+ * Usage:
+ *	pass = np_getpass(prompt);
+ * Returns:
+ *	Password string
+ *	NULL if EOF encountered or error
+ * Comments:
+ *	This routine is used instead of getpass(3):
+ *
+ *	1. The system getpass() throws away all but the first 8 characters
+ *	   of a password string.  On some systems passwords can be longer
+ *	   than 8, but getpass(3) hasn't caught up yet.
+ *
+ *	2. getpass(3) returns a empty string if the user input was empty
+ *	   (blank line), or the /dev/tty read got an EOF or error.
+ *	   There *is* a difference between those conditions and I really
+ *	   want to know it and behave accordingly.  Why make a user
+ *	   start over again if they hit RETURN one time too many?
+ *
+ *	3. The SunOS 4 getpass(3) returns an empty string if the user
+ *	   sent a SIGNIT (control-c).  This is stupid behavior.
+ *
+ *	This code assumes that stdin is the terminal (which has been
+ *	verified upstream), so /dev/tty is NOT used.
+ *	Signals are caught and terminal modes reset upstream.
+ */
+#define	PROMPT_FD	2		/* File descriptor for prompts */
+
+public char	*
+np_getpass(prompt)
+	char	*prompt;		/* Prompt string */
+{
+	struct sigblk	blocked;	/* Blocked signals */
+	static char	ib[64];		/* Input buffer */
+	int		nr;		/* Terminal read return */
+
+	ib[0] = 0;
+	if (XSwitches[Xsw_UseStdin] == 0) {	/* Stdin is a tty */
+		term_echo(0);
+		(void) write(PROMPT_FD, prompt, strlen(prompt));
+		block_signals(&blocked, SIGTSTP, 0);
+		nr = term_read(ib, sizeof(ib));
+		term_echo(1);
+		(void) write(PROMPT_FD, "\n", 1);
+		unblock_signals(&blocked);
+	} else {
+		nr = term_read(ib, sizeof(ib));
+	}
+	if (nr <= 0)			/* EOF or error */
+		return(NULL);
+	chop_nl(ib);			/* Pitch newline at end */
+	return(ib);
+}
+#undef	PROMPT_FD
+
+/* End $RCSfile$ */
+@
+
+
+1.6
+log
+@Move terminal mode stuff to term.c, use new routines
+@
+text
+@d2 41
+a42 3
+ *	This program duplicates the manual page behavior of the 4.XBSD
+ *	passwd(1) command.  It can be configured for use with a variety
+ *	of passwd systems (/etc/passwd, /etc/shadow, databases).
+d45 4
+@
+
+
+1.5
+log
+@1. Massage comments a bit 2. Fix PasswdMatchTries fencepost error
+@
+text
+@a79 102
+ * Terminal handling code.
+ *
+ * The following methods are supported:
+ *	termios via POSIX tc[gs]attr() routines
+ *	termios via TCGETS/TCSETS
+ *	termio via TCGETA/TCSETA
+ *	V7 sgtty
+ *
+ * Configure will set only *one* of the symbols used,  so that
+ * termios takes precedence over termio which suprecedes sgtty..
+ *
+ * This is a bloody damn mess - probably the next revision
+ * will toss most of these options and only support termios
+ */
+#ifdef	I_TERMIOS
+/*
+ * Has TERMIOS
+ */
+# include <termios.h>
+static struct termios saved_tty_mode;
+# define	TTY_SAVE	termios
+# define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+# define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+# ifdef	HAS_POSIX_TTY
+#  define	GET_TTY(_fd_, _b_)	tcgetattr(_fd_, (_b_))
+#  define	SET_TTY(_fd_, _b_)	tcsetattr(_fd_, TCSANOW, (_b_))
+# else
+#  define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETS, (_b_))
+#  define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETS, (_b_))
+# endif	/* HAS_POSIX_TTY */
+#endif	/* I_TERMIOS */
+
+#if	(defined(I_TERMIO) && !defined(GET_TTY))
+/*
+ * Has TERMIO
+ */
+#include <sys/termio.h>		/* SUN OS 4.0 termio */
+static struct termio saved_tty_mode;
+# define	TTY_SAVE	termio
+# define	ECHO_OFF(_b_)		_b_.c_lflag =~ ECHO
+# define	ECHO_ON(_b_)		_b_.c_lflag =| ECHO
+# define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TCGETA, (_b_))
+# define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TCSETA, (_b_))
+#endif	/* I_TERMIO */
+
+/*
+ * Neither TERMIOS or TERMIO - use BSD sgtty
+ */
+#if	(defined(I_SGTTY) && !defined(GET_TTY))
+# include <sgtty.h>		/* BSD tty */
+# define	TTY_SAVE	sgttyb
+# define	ECHO_OFF(_b_)		_b_.sg_flags =~ ECHO
+# define	ECHO_ON(_b_)		_b_.sg_flags =| ECHO
+# define	GET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCGETP, (_b_))
+# define	SET_TTY(_fd_, _b_)	ioctl(_fd_, TIOCSETP, (_b_))
+#endif	/* I_SGTTY */
+
+#ifndef	GET_TTY
+/* # ifdef _STDC_ */
+/* #	error Cannot figure out how to do tty stuff */
+/* # endif */
+	ERROR Cannot figure out how to do tty stuff
+#endif
+
+static struct {
+	char		valid;
+	struct TTY_SAVE mode;
+} tty_save = { 0 };
+
+/*
+ * savetty
+ *	Save terminal settings
+ * Usage:
+ *	savetty();
+ * Effects:
+ *	Stores terminal mode in the "tty_save" structure for
+ *	restoration by fixtty()
+ */
+public void
+savetty()
+{
+	(void) GET_TTY(0, &tty_save.mode);
+	tty_save.valid++;
+}
+
+/*
+ * fixtty
+ *	Restore saved terminal settings
+ * Usage:
+ *	fixtty()
+ * Effects:
+ *	Changes terminal settings from the "tty_save" structure
+ *	if that data is valid
+ */
+public void
+fixtty()
+{
+	if (tty_save.valid)
+		(void) SET_TTY(0, &tty_save.mode);
+}
+
+/*
+d107 2
+a112 2
+	struct TTY_SAVE	saved,		/* Saved TTY modes */
+			noecho;		/* TTY mode for 'no echo' mode */
+d117 4
+a120 6
+	if (!XSwitches[Xsw_UseStdin]) {		/* Suppress tty echo ? */
+		(void) GET_TTY(0, &saved);
+		noecho = saved;
+		ECHO_OFF(noecho);
+		(void) write(2, prompt, strlen(prompt));
+		(void) SET_TTY(0, &noecho);
+d122 3
+a124 5
+	}
+	ib[0] = 0;
+	nr = read(0, ib, sizeof(ib));
+	if (!XSwitches[Xsw_UseStdin]) {		/* Reinstate tty echo? */
+		SET_TTY(0, &saved);
+d126 2
+a128 1
+	(void) write(2, "\n", 1);	/* Put newline to stderr */
+d134 2
+@
+
+
+1.4
+log
+@Block SIGTSTP while echo is off
+@
+text
+@d21 5
+a25 1
+ *	get_password -- read password and check against current.
+d28 5
+a32 5
+get_password(prompt, pwd_crypt, pwd_plain, pwlen)
+	char	*prompt,
+		*pwd_crypt;	/* Present password (encrypted) */
+	char	*pwd_plain;	/* Present password (plain)  */
+	int	pwlen;		/* Length of present password buffer */
+d34 2
+a35 4
+	int	ntries = 0;	/* Match attempt counter */
+	int	doit = 1;
+	char	*px;		/* Temp */
+	unsigned int naptime = PasswdMatchWait;	/* Sleep after bad entry */
+d37 2
+a38 2
+	while (doit) {
+		if ((px = np_getpass(prompt)) == NULL)
+d40 1
+a40 1
+		if (*px == '\0')
+d42 1
+a42 1
+		if (!password_cmp(pwd_crypt, px)) {
+d44 5
+a48 5
+			if (naptime)
+				sleep(naptime);
+			if (ntries++ == PasswdMatchTries) {
+				if (naptime)
+					sleep(naptime);
+d53 1
+a53 1
+		doit = 0;
+d55 1
+a55 1
+	(void) strncpy(pwd_plain, px, pwlen);
+d59 2
+a60 1
+ *	password_cmp - compare old and new passwords
+d62 3
+a64 1
+ *	Returns 1 if check = new, 0 if not
+d68 2
+a69 2
+	char	*current,
+		*check;
+d71 1
+a71 1
+	struct pw_svc	*svc = get_pwsvc();
+d73 1
+a73 1
+	if (!*current)
+d211 1
+a211 1
+char	*prompt;
+d213 3
+a215 3
+	struct TTY_SAVE	saved,
+			noecho;
+	struct sigblk	blocked;
+d217 1
+a217 1
+	int	nr;
+d219 1
+a219 1
+	if (!XSwitches[Xsw_UseStdin]) {
+d229 1
+a229 1
+	if (!XSwitches[Xsw_UseStdin]) {
+d233 2
+a234 2
+	(void) write(2, "\n", 1);
+	if (nr <= 0)		/* EOF or error */
+d236 1
+a236 1
+	chop_nl(ib);
+a238 1
+
+@
+
+
+1.3
+log
+@Call get_pwsvc() when needed
+@
+text
+@d210 1
+d220 1
+d224 1
+a224 1
+	if (!XSwitches[Xsw_UseStdin])
+d226 2
+d234 1
+@
+
+
+1.2
+log
+@1. Parameterize PasswdMatchTries 2. Add password_cmp() [moved from passwd.c]
+@
+text
+@d8 1
+d66 2
+d71 1
+a71 1
+	return (strcmp(current, (*svc.PasswdCrypt)(check, current)) == 0);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d16 1
+a16 1
+Config_Value int		PasswdMatchTries = 3;
+d55 16
+@

@@ -1,0 +1,48 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	98.05.22.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@<!-- Main index for npasswd 2.0 manual -->
+<!-- Don't try to edit this with netscape 3 gold - it will barf on
+     the frames -->
+<!-- $Id$ (cc.utexas.edu) -->
+<html>
+<head>
+<title>Npasswd configuration reference</title>
+</head>
+<!-- Don't put body tags - will break frames -->
+
+<frameset cols="200,*" border=5>
+	<frame name="Ref_TOC" src="Reference_TOC.html" scrolling=auto>
+	<frame name="Ref_Content" src="Reference.html" scolling=auto>
+	<noframes>
+		<P>
+		Your browser doesn't have frames.
+		<P>
+		<h3>Here is the non-frames
+			<A HREF="Reference.html">Configuration reference.</a></h3>
+		<P>
+	</noframes>
+</frameset>
+
+</html>
+<!-- End $RCSfile$ -->
+@

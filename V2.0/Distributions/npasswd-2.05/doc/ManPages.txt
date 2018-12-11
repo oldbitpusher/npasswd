@@ -1,0 +1,43 @@
+
+     _________________________________________________________________
+   
+                            Npasswd Manual Pages
+     _________________________________________________________________
+   
+   The following manual pages are available:
+   
+   [1]checkpassword(1) Password check utility.
+   [2]checkpassword(3) The password check library.
+   [3]history_admin(1) Utility to administer the password history
+   database.
+   [4]npasswd(1) Change login password, shell or finger information.
+   [5]makedict(1) Utilities for building dictionaries.
+   ______________________________________________________________________
+   
+   [6][LINK]Top    [7][LINK]Home
+     _________________________________________________________________
+   
+   Document id @(#) ManPages.html 1.3
+   Version 1.3
+   Last modified 06/30/98
+   
+   
+    [8]Clyde Hoover
+    [9]Academic Computing Services and Instructional Technology Services
+    [10]The University of Texas at Austin
+    [11]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./checkpassword_1.html
+   2. file://localhost/./checkpassword_3.html
+   3. file://localhost/./history_admin_1.html
+   4. file://localhost/./npasswd_1.html
+   5. file://localhost/./makedict_1.html
+   6. file://localhost/./ManPages.html#top
+   7. file://localhost/./TOC_std.html
+   8. mailto:c.hoover@cc.utexas.edu
+   9. http://www.utexas.edu/cc
+  10. http://www.utexas.edu/
+  11. file://localhost/./Copyright.html

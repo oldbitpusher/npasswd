@@ -1,0 +1,33 @@
+?RCS: $Id: d_passwd.U,v 3.0.1.1 1994/08/29 16:09:51 ram Exp $
+?RCS:
+?RCS: Copyright (c) 1991-1993, Raphael Manfredi
+?RCS: 
+?RCS: You may redistribute only under the terms of the Artistic Licence,
+?RCS: as specified in the README file that comes with the distribution.
+?RCS: You may reuse parts of this distribution only within the terms of
+?RCS: that same Artistic Licence; a copy of which may be found at the root
+?RCS: of the source tree for dist 3.0.
+?RCS:
+?RCS: Original Author: Andy Dougherty <doughera@lafcol.lafayette.edu>
+?RCS:
+?RCS: $Log: d_passwd.U,v $
+?RCS: Revision 3.0.1.1  1994/08/29  16:09:51  ram
+?RCS: patch32: created by ADO
+?RCS:
+?MAKE:d_passwd: Inlibc
+?MAKE:	-pick add $@ %<
+?S:d_passwd:
+?S:	This variable conditionally defines the HAS_PASSWD symbol, which
+?S:	indicates to the C program that the passwd() routine is available.
+?S:.
+?C:HAS_PASSWD :
+?C:	This symbol, if defined, indicates that the passwd routine is
+?C:	available.
+?C:.
+?H:#$d_passwd HAS_PASSWD		/**/
+?H:.
+?LINT:set d_passwd
+: see if passwd exists
+set passwd d_passwd
+eval $inlibc
+

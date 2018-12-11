@@ -1,0 +1,25 @@
+How to build original distribtions:
+
+	Update depend.master
+	bin/find_sccs_versions depend.master > depend.sccs
+	edit bin/BuildDistributions (and update version #)
+	bin/BuildDistributions
+
+To build patches
+
+	bin/make_patches patch-no | sh
+
+To put stuff in distribution area
+
+	mv npasswd-2.NN.* Distributions
+	cp Distributions/npasswd-2.NN \
+		~www/cc/unix/software/npasswd/dist/
+	cp PATCH-NN/PATCH.tar ~www/cc/unix/software/npasswd/dist/patch.NX-NN.tar
+	cd ~www/cc/unix/software/npasswd
+	edit download2.html
+	edit news.html (pick description from NEWS source file)
+
+To update documentation (on UTS)
+
+	cd doc; make dist; make install DOCS=~www/cc/unix/software/npasswd/doc
+

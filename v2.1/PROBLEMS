@@ -1,0 +1,72 @@
+Problems & ideas with 2.05
+
+----------------
+13 May 1999 Dave Alden <alden@math.ohio-state.edu>
+
+Add -XO (ask password once)
+	>> Add to 2.06 [Maybe meld into -XI]
+	>> Need to add to documentation
+
+Add -XS for root chsh to non-approved shell
+	>> Add to 2.06
+	>> Need to add to documentation
+
+----------------
+22 Jun 1999 Brent Hetherwick <hetherwi@math.wisc.edu>
+
+NFS root access problem with history database
+	* Fixed in 2.06
+
+----------------
+21 Jun 1999 Alec Mann <alec@bioss.sari.ac.uk>
+
+Configure password/shadow read loop bad behavior
+	* Fixed in 2.06
+
+Message about password history againg change even when user has
+no password aging on
+	* Fixed in 2.06
+ 
+NIS interaction problem
+	>> Don't understand problem
+
+----------------
+03 Jun 1999 "Peter C. Vernam" <pcv1584@epoch1.draper.com>
+
+Request for PAM version of npasswd check engine
+	>> Nice idea, but will take some time
+
+Suggestion for auxillary password change hook
+	* Put into 2.06 with AUX_PASSWORD_CHANGE ifdef
+
+----------------
+27 Apr 1999 12:52:08 "Brian J. Coan" <brian@igc.org>
+
+Fixes for SunOS 4.X
+	>> Incorporated into 2.06
+
+----------------
+20 Sep 1999 
+dbroady@lexmark.com
+
+Subject: Bug fix for DBM history update/put (errno = too many files open)
+
+	* Fixed in 2.06
+
+----------------
+Shannon, Ryan C <rshannon@access.com>
+September 30, 1999 4:34 PM
+
+Command line option to disable password read interaction.
+
+	* Added to 2.06
+
+----------------
+ Wed, 27 Oct 1999 11:57:50 -0500
+From: Derek Terveer <deterveer@ncs.com>
+
+Local DBM passwd update error:
+
+	* Fixed in 2.06
+
+----------------

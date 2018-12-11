@@ -1,0 +1,24 @@
+if [ ! -d PATCH-04/ ]; then
+	echo Cannot find patch directory PATCH-04/
+	exit 1
+fi
+echo Applying patch 04
+
+mv -f Configure Configure.pre
+mv -f Makefile.SH Makefile.SH.pre
+mv -f doc/AdminGuide.txt doc/AdminGuide.txt.pre
+mv -f doc/Makefile.SH doc/Makefile.SH.pre
+mv -f doc/Reference.txt doc/Reference.txt.pre
+mv -f doc/checkpassword.cat3 doc/checkpassword.cat3.pre
+mv -f doc/checkpassword_3.html doc/checkpassword_3.html.pre
+mv -f doc/history_admin.cat1 doc/history_admin.cat1.pre
+mv -f doc/history_admin_1.html doc/history_admin_1.html.pre
+mv -f doc/npasswd.cat1 doc/npasswd.cat1.pre
+mv -f doc/npasswd_1.html doc/npasswd_1.html.pre
+echo Extracting replacement sources ...
+tar xpfv PATCH-04/SOURCES.tar
+mv -f NEWS NEWS.pre
+mv -f PATCH-04/NEWS .
+echo Patching sources ...
+patch -p0 < PATCH-04/DIFFS
+

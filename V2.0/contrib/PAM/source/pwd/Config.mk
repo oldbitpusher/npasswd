@@ -1,0 +1,3 @@
+
+TARGETS=$(OBJS)
+  CC=cc $(INCLUDES) -O

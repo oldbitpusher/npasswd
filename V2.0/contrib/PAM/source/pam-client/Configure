@@ -1,0 +1,37 @@
+#!/bin/ksh
+
+tf=Config.mk
+cc=cc
+
+[ "`uname -m`" = 'i86pc' ] && cc="gcc -D__EXTENSIONS__"
+
+print "" > ${tf}
+
+OSTYPE=`uname -s`
+
+[ $OSTYPE = 'SunOS' ] && IDENT=`uname -p`
+[ $OSTYPE = 'HP-UX' ] && IDENT=`uname -m | sed 's=/==g'`
+
+
+case $OSTYPE in
+
+SunOS)
+  print 'OBJX=udp-client.o ../../lib/'${OSTYPE}-${IDENT}'/libstrongconfig.a ../../lib/'${OSTYPE}-${IDENT}'/libhide.a ../../lib/'${OSTYPE}-${IDENT}'/libcomobj.a' >> ${tf}
+  print 'TARGETS=$(OBJS) pam_strongpw.so.1 pwstrongchk'			>> ${tf}
+  print 'LIBS=-lsocket -lnsl'						>> ${tf}
+  print 'OPTS='								>> ${tf}
+  print 'CC='$cc' $(INCLUDES) $(OPTS) -DSunOS -O'			>> ${tf}
+
+;;
+
+HP-UX)
+  print 'OBJX=udp-client.o ../../lib/'${OSTYPE}-${IDENT}'/libstrongconfig.a ../../lib/'${OSTYPE}-${IDENT}'/libhide.a ../../lib/'${OSTYPE}-${IDENT}'/libcomobj.a' >> ${tf}
+  print 'TARGETS=$(OBJS) pam_strongpw.sl.1 pwstrongchk'			>> ${tf}
+  print 'LIBS=-lsec -lnsl'						>> ${tf}
+  print 'OPTS=+Z'								>> ${tf}
+  print 'CC='$cc' $(INCLUDES) $(OPTS) -DHPUX'				>> ${tf}
+
+;;
+esac
+
+#END

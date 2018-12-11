@@ -1,0 +1,1039 @@
+diff -rc ./src/PasswordCheck/pwck_crack.c ../beta/src/PasswordCheck/pwck_crack.c
+*** ./src/PasswordCheck/pwck_crack.c	Thu Sep 12 16:20:19 1996
+--- ../beta/src/PasswordCheck/pwck_crack.c	Fri Nov 21 14:45:18 1997
+***************  APPLIED IN DIFFERENT FORM
+*** 4,9 ****
+--- 4,10 ----
+   *		PWCK_INDICT if <password> was in any dictionary
+   *		PWCK_OK if password found in a dictionary
+   *		PWCK_FAIL if a dictionary cannot be opened
++  * 09/23/97 MStute	Cosmetic DEBUG changes
+   */
+  
+  #ifndef lint
+diff -rc ./src/PasswordCheck/pwck_defines.h ../beta/src/PasswordCheck/pwck_defines.h
+*** ./src/PasswordCheck/pwck_defines.h	Wed Oct 29 14:06:31 1997
+--- ../beta/src/PasswordCheck/pwck_defines.h	Wed Nov 19 10:31:23 1997
+***************
+*** 2,7 **** APPLIED IN DIFFERENT FORM
+--- 2,14 ----
+   *	pwck_lib.h - definitions for checkpassword library modules
+   * 
+   *	@(#)pwck_defines.h	1.7 10/29/97 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.pwck_defines.h
++  * 09/29/97 MStute	Added defines for _filterstring PWCK_FS_
++  *			Prototype _filterstring
++  * 10/01/97 MStute	Added DB_ options from constants.h to correct
++  *			differences
++  *			Corrected mtry macro for proper param. expansion
++  *			flipped searchin and searchfor
++  * 10/02/97 MStute	Added lowercase macro
+   */
+  
+  #include "compatibility.h"
+***************
+*** 19,24 ****
+--- 26,32 ----
+  public int	pwck_local _((char *, struct passwd *, char *));
+  public int	pwck_passwd _((char *, struct passwd *, char *));
+  public int	pwck_history _((char *, struct passwd *, char *));
++ public char	*_filterstring _((char *, char *, int));
+  
+  /*
+   *	Dictionary info
+***************
+*** 53,68 ****	APPLIED IN ALTERNATE FORM
+  extern struct pw_svc	svc;
+  
+  #ifndef	DB_NONE
+! # define	DB_NONE		0	/* No debug */
+! # define	DB_VERBOSE	1	/* Mild verbosity */
+! # define	DB_LEVEL2	2	/* Nothing yet */
+! # define	DB_LEVEL3	3	/* Nothing yet */
+! # define	DB_LOOKUP	4	/* Trace user lookup */
+! # define	DB_UPDATE	5	/* Trace user update */
+! # define	DB_LEVEL6	6	/* Nothing yet */
+! # define	DB_LEVEL7	7	/* Nothing yet */
+! # define	DB_CONFIG	8	/* Trace configuration processing */
+! # define	DB_ALL		99	/* Trace *everything* */
+  #endif
+  
+  /*
+--- 61,76 ----
+  extern struct pw_svc	svc;
+  
+  #ifndef	DB_NONE
+! #define	DB_NONE		0		/* No debug */
+! #define	DB_VERBOSE	1		/* Mild verbosity */
+! #define	DB_LOOKUP	2		/* Trace user lookup */
+! #define	DB_UPDATE	3		/* Trace user update */
+! #define	DB_LEVEL7	4		/* Nothing yet */
+! #define	DB_CONFIG	5		/* Trace configuration processing */
+! #define	DB_MISC1	6		/* Nothing yet */
+! #define	DB_MISC2	7		/* Nothing yet */
+! #define	DB_DETAIL	8		/* Lots of details */
+! #define	DB_ALL		9		/* Trace *everything* */
+  #endif
+  
+  /*
+***************
+*** 73,81 ****	APPLIED IN ALTERNATE FORM
+  #define try(_P_,_C_,_V_) if (*(_C_) && strcasecmp((_P_),(_C_)) == 0) return(_V_)
+  
+  /* Multiple string comparasion */
+! #define mtry(_P_,_C_,_V_)  if (*(_C_) && instring((_P_),(_C_))) return(_V_)
+  
+  /* Compact string compare */
+  #define	streq(_X_,_S_)	(strncasecmp((_X_),(_S_), strlen(_X_)) == 0)
+  
+  /* End pwck_defines.h */
+--- 81,98 ----
+  #define try(_P_,_C_,_V_) if (*(_C_) && strcasecmp((_P_),(_C_)) == 0) return(_V_)
+  
+  /* Multiple string comparasion */
+! #define mtry(_P_,_C_,_V_)  if (*(_C_) && instring((_C_),(_P_))) return(_V_)
+  
+  /* Compact string compare */
+  #define	streq(_X_,_S_)	(strncasecmp((_X_),(_S_), strlen(_X_)) == 0)
+  
++ /*Convert string to lowercase*/
++ #define lowercase(_S_) while(*(_S_)) *(_S_)++=tolower(*(_S_))
++ 
++ /*Character filter types*/
++ #define PWCK_FS_DIGITS	0x01	/*bitmap for _filterstring*/
++ #define PWCK_FS_WHITE	0x02
++ #define PWCK_FS_PUNCT	0x04
++ #define PWCK_FS_CNTRL	0x08
++ #define PWCK_FS_ALL	0xff
+  /* End pwck_defines.h */
+diff -rc ./src/PasswordCheck/pwck_history.c ../beta/src/PasswordCheck/pwck_history.c
+*** ./src/PasswordCheck/pwck_history.c	Tue Sep 23 12:23:05 1997
+--- ../beta/src/PasswordCheck/pwck_history.c	Mon Nov 24 18:24:43 1997
+***************
+*** 388,396 **** APPLIED
+  		if (strcmp(who, ibuf) == 0) {
+  			*colon = ':';
+  			if (rdata[0])
+! 				(void) strcat(rdata, colon);
+  			else
+! 				(void) strcpy(rdata, ibuf);
+  		}
+  	}
+  	(void) fclose(histfp);
+--- 388,396 ----
+  		if (strcmp(who, ibuf) == 0) {
+  			*colon = ':';
+  			if (rdata[0])
+! 				(void) strncat(rdata, colon,sizeof(rdata) - strlen(rdata));
+  			else
+! 				(void) strncpy(rdata, ibuf,sizeof(rdata));
+  		}
+  	}
+  	(void) fclose(histfp);
+diff -rc ./src/PasswordCheck/pwck_lexical.c ../beta/src/PasswordCheck/pwck_lexical.c
+*** ./src/PasswordCheck/pwck_lexical.c	Wed Oct 29 14:39:20 1997
+--- ../beta/src/PasswordCheck/pwck_lexical.c	Fri Nov 21 16:05:22 1997
+***************
+*** 22,27 ****
+--- 22,28 ----
+   *		PWCK_OBVIOUS if password has too many repeated characters
+   *		PWCK_ILLCHAR if password has an illegal character
+   *		PWCK_OK if passwd is ok
++  * 11/03/97 Mstute	Fixed P_x array indexes (stack overflow)
+   */
+  
+  #ifndef lint
+***************
+*** 30,42 ****
+  
+  #include "pwck_defines.h"
+  
+! #define	P_U	1 	/* Upper case in password */
+! #define	P_L	2 	/* Lower case in password */
+! #define	P_C	3 	/* Control chars in password */
+! #define	P_D	4 	/* Digits in password */
+! #define	P_P	5 	/* Punctutation chars in password */
+! #define	P_S	6 	/* Whitespace chars in password */
+! #define	P_MAX	P_S
+  
+  
+  /*
+--- 31,43 ----
+  
+  #include "pwck_defines.h"
+  
+! #define	P_U	0 	/* Upper case in password */
+! #define	P_L	1 	/* Lower case in password */
+! #define	P_C	2 	/* Control chars in password */
+! #define	P_D	3 	/* Digits in password */
+! #define	P_P	4 	/* Punctutation chars in password */
+! #define	P_S	5 	/* Whitespace chars in password */
+! #define	P_MAX	P_S + 1
+  
+  
+  /*
+diff -rc ./src/PasswordCheck/pwck_local.c ../beta/src/PasswordCheck/pwck_local.c
+*** ./src/PasswordCheck/pwck_local.c	Thu Aug 29 12:59:41 1996
+--- ../beta/src/PasswordCheck/pwck_local.c	Thu Nov 20 08:32:51 1997
+***************
+*** 2,7 ****
+--- 2,12 ----
+   *	pwck_local - Perform 'local' password checks.
+   *
+   *	Returns PWCK_OBVIOUS if password flunks, else PWCK_OK
++  * 09/18/97 MStute	Added check for digits. With a prebuilt dict.
++  *			numeric-only passwords crack very quickly
++  * 10/02/97 MStute	Added new rules to hostname and rhosts vs password
++  *				1) remove PW digits versus host
++  *				2) remove PS digits and whitespace vs rhosts
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)pwck_local.c	1.8 8/29/96 (cc.utexas.edu)";
+***************
+*** 20,30 ****
+  {
+  	FILE	*rh;
+  	char	myname[MAXHOSTNAMLEN],		/* Scratch */
+! 		temp[MAXPATHLEN];	/* Scratch */
+  	struct hostent	*h;
+  
+  	(void) gethostname(myname, sizeof(myname));
+! 	try(password, myname, PWCK_OBVIOUS);
+  	/*
+  	 * Check against the full hostname and aliases
+  	 */
+--- 25,62 ----
+  {
+  	FILE	*rh;
+  	char	myname[MAXHOSTNAMLEN],		/* Scratch */
+! 		temp[MAXPATHLEN],	/* Scratch */
+! 		alphaPW[BUFSIZ],	/*Alpha only PW*/
+! 		lcPW[BUFSIZ];		/*Lowercase PW*/
+  	struct hostent	*h;
++ 	char *ptr;
+  
++ #if DEBUG
++ 	printf("pwck_local:\"%s\"\n",password);
++ #endif
++ 	ptr=password;
++ 	lowercase(ptr);
++ 	(void) _filterstring(password,lcPW,PWCK_FS_DIGITS);
++ 	(void) _filterstring(password,alphaPW,PWCK_FS_DIGITS|PWCK_FS_WHITE|
++ 					      PWCK_FS_PUNCT);
++ 	debug(DB_DETAIL,"lcPW: %s\nAlphaPW: %s\n",lcPW,alphaPW);
++ 	/*
++  	 * check against digits only
++  	 * There is another for digits in pwck_passwd 
++ 	 * since this module may not be
++  	 * included in the list of procedures
++  	 */
++  	if(*lcPW='\0') {
++ 	  (void) sprintf(mesg,"it is digits only");
++ 	  return(PWCK_OBVIOUS);
++           }
++ 
+  	(void) gethostname(myname, sizeof(myname));
+! 	ptr=myname;
+! 	lowercase(ptr);
+! 	try(password, myname, PWCK_OBVIOUS);	/*host vs PW*/
+! 	try(lcPW, myname, PWCK_OBVIOUS);	/*host vs -digits*/
+! 	try(alphaPW,myname,PWCK_OBVIOUS);	/*host PW -digits -white -punct*/
+  	/*
+  	 * Check against the full hostname and aliases
+  	 */
+***************
+*** 32,39 ****
+--- 64,77 ----
+  		char	**hh;
+  
+  		try(password, h->h_name, PWCK_OBVIOUS);
++ 		try(lcPW, h->h_name, PWCK_OBVIOUS);
+  		for (hh = h->h_aliases; *hh; hh++) {
+  			try(password, *hh, PWCK_OBVIOUS);
++ 		ptr=*hh;
++ 		lowercase(ptr);
++ 		try(password, *hh, PWCK_OBVIOUS);
++ 		try(lcPW, *hh, PWCK_OBVIOUS);
++ 		try(alphaPW, *hh, PWCK_OBVIOUS);
+  		}
+  	}
+  	/*
+***************
+*** 42,48 ****
+  	(void) sprintf(temp, "%s/.rhosts", user->pw_dir);
+  	if (rh = fopen(temp, "r")) {
+  		while (fgets(temp, sizeof(temp), rh)) {
+! 			if (instring(password, temp)) {
+  				(void) fclose(rh);
+  				return(PWCK_OBVIOUS);
+  			}
+--- 80,91 ----
+  	(void) sprintf(temp, "%s/.rhosts", user->pw_dir);
+  	if (rh = fopen(temp, "r")) {
+  		while (fgets(temp, sizeof(temp), rh)) {
+! 			ptr=temp;
+! 			lowercase(ptr);
+! 			debug(DB_DETAIL,"Trying %s\n",temp);
+! 			if (instring(password, temp) ||
+!                             instring(lcPW, temp)     ||
+! 			    instring(alphaPW,temp)) {
+  				(void) fclose(rh);
+  				return(PWCK_OBVIOUS);
+  			}
+diff -rc ./src/PasswordCheck/pwck_main.c ../beta/src/PasswordCheck/pwck_main.c
+*** ./src/PasswordCheck/pwck_main.c	Wed Oct 29 14:39:39 1997
+--- ../beta/src/PasswordCheck/pwck_main.c	Mon Nov 24 18:50:46 1997
+***************
+*** 20,25 ****
+--- 20,33 ----
+   *	The pwck_* routines are called thusly:
+   *		rc = pwck_foo(char *password, struct passwd *user,
+   *			char *mesg);
++  * 09/30/97 MStute	If "PasswordChecks" token is found in configuration file
++  *			clear current list of vectors in checkpasswd_configure.
++  *			Otherwise checks are performed multiple times
++  * 10/01/97 MStute	Added clear_proc function instead of in-line code
++  * 10/02/97 MStute	Added clear_dict to stop searching dictionaries
++  *			multiple times. If "dictionaries" token is found
++  *			clear_dict is called
++  *
+   */
+  
+  #ifndef lint
+***************
+*** 33,38 ****
+--- 41,48 ----
+  private void	add_one_dict _((char *));
+  private int	add_all_dicts _((char *));
+  private void	add_proc _((char *));
++ private void	clear_dict _((void));
++ private void	clear_proc _((void));
+  
+  /*
+   * Explanitory texts for why a password was rejected
+***************
+*** 144,150 ****
+  	(void) strcpy(xpasswd, password);
+  	if (Config.max_length)
+  		xpasswd[Config.max_length] = 0;
+- 
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+  		if ((rcode = (*checkfunc)(xpasswd, user, elucidate)) != PWCK_OK) {
+--- 154,159 ----
+***************
+*** 287,292 ****
+--- 296,302 ---- *** APPLIED IN DIFFERENT WAY
+  		char	**pp = &data[1];
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		clear_dict(); /*Clear current list*/
+  		while (*pp) {
+  			int	rc = add_all_dicts(*pp++);
+  			if (rc < 0)
+***************
+*** 306,311 ****
+--- 316,322 ---- APPLIED IN DIFFERENT WAY
+  		char	**pp = &data[1];
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		clear_proc(); /*If given a new list, clear old first*/
+  		while (*pp)
+  			add_proc(*pp++);
+  		cf_ok;
+***************
+*** 322,331 **** APPLIED
+  		if (xcc[0] == 0)
+  			return(0);
+  		if (append)
+! 			(void) strcat(Config.badchars, xcc);
+  		else
+  			(void) strncpy(Config.badchars, xcc,
+! 				sizeof(Config.badchars));
+  		cf_ok;
+  	}
+  	free((char *)data);
+--- 333,343 ----
+  		if (xcc[0] == 0)
+  			return(0);
+  		if (append)
+! 			(void) strncat(Config.badchars, xcc,
+! 			sizeof(Config.badchars) - strlen(Config.badchars));
+  		else
+  			(void) strncpy(Config.badchars, xcc,
+! 			sizeof(Config.badchars));
+  		cf_ok;
+  	}
+  	free((char *)data);
+***************
+*** 424,430 ****
+--- 436,464 ---- APPLIED IN DIFFERENT WAY
+  #endif	/* HAS_READDIR */
+  }
+  
++ /*
++  * clear_dict
++  *	Clears dictionaries from current list
++  * Usage
++  *	clear_dict()
++  * Dictionaries are stored in a linked list
++  * 10/02/97 MStute 	Created
++  */
++ private void
++ clear_dict()
++ {
++  dictionary *nextDict,		/*Next dictionary in list*/
++ 	    *freeDict;		/*Dictionary to free*/
+  
++  debug(DB_CONFIG,"clear_dict:\n");
++  nextDict=Config.dictionaries;
++  while(nextDict) {
++    freeDict=nextDict;
++    nextDict=nextDict->next;
++    free(freeDict);
++    }
++ }
++ 
+  /*
+   * This is the table of password check routines
+   * If more checks are desired, add the functions to the tables below.
+***************
+*** 433,438 ****
+--- 467,473 ----
+  	char	*name;
+  	checkproc	addr;
+  };
++ 
+  private struct _procnames procnames[] = {
+  	{ "lexical",	pwck_lexical },
+  	{ "local",	pwck_local  },
+***************
+*** 467,472 ****
+--- 502,524 ----
+  }
+  
+  /*
++  * clear_proc
++  *	Clears the password check list of vectors
++  * Usage
++  *	clear_proc()
++  * 10/01/97 MStute	Created
++  */
++ private void
++ clear_proc()
++ {
++  checkproc *cp;		/*ACME Scratch Storage*/
++ 
++  debug(DB_CONFIG,"clear_proc:\n");
++  for(cp=Config.checkprocs;*cp;cp++)
++    *cp=0;  /* Clear entry*/
++ }
++ 
++ /*
+   * _flipstring 
+   *	 Reverse a string
+   * Usage
+***************
+*** 489,492 ****
+--- 541,586 ----
+  	*t = 0;
+  	return(copy);
+  }
++ 
++ /*
++  * _filterstring 
++  *	 Filter a set of characters from a string
++  * Usage
++  *	filtered = _filterstring(char *source, char *copy, int filter_type
++  * Type can be PWCK_FS_DIGITS	-	filters digits
++  * 	       PWCK_FS_WHITE	-	filters whitespace
++  *	       PWCK_FS_PUNCT	-	filters puntuation
++  *	       PWCK_FS_CNTRL    -	fitlers control codes
++  * 	       PWCK_FS_ALL      -	filters everything above
++  * Returns 
++  *	pointer to copy (char *)
++  * 09/28/97 MStute 	Created
++  */
++ public char *
++ _filterstring(string, copy, filter)
++ char *string;
++ char *copy;
++ int filter;
++ {
++  register char *tp;
++  register int i;
++ 
++  tp=copy;	                        
++  while(*string) { 
++    if(!(
++       (filter & PWCK_FS_DIGITS && isdigit(*string))   /*Remove digits*/
++       ||
++       (filter & PWCK_FS_WHITE  && isspace(*string))   /*Remove whitepace*/
++       ||
++       (filter & PWCK_FS_PUNCT  && ispunct(*string))   /*Remove punctation*/
++       ||
++       (filter & PWCK_FS_CNTRL  && iscntrl(*string))   /*Remove control*/
++       ))
++       *tp++=*string;               
++    string++;
++    }
++  *tp='\0';
++  return(copy);
++ }
++ 
+  /* End pwck_main.c */
+diff -rc ./src/PasswordCheck/pwck_passwd.c ../beta/src/PasswordCheck/pwck_passwd.c
+*** ./src/PasswordCheck/pwck_passwd.c	Thu Aug 29 12:59:41 1996
+--- ../beta/src/PasswordCheck/pwck_passwd.c	Mon Nov 24 18:46:49 1997
+***************
+*** 8,13 ****
+--- 8,18 ----
+   *		PWCK_OBVIOUS if password is part of the users' passwd info
+   *		PWCK_FINGER if password is part of the user's finger info
+   *		PWCK_OK if password is ok
++  * 09/29/97 MStute	Changed strcpy to strncpy to avoid unusual GECOS entries
++  *			Added more strigent GECOS rules. Even though try
++  *			strcasecmp's everything I lowercase it all.
++  * 11/20/97 MStute	Shame on me, users are reversing their login names
++  *			and appending a number. More checks versus passwd
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)pwck_passwd.c	1.10 8/29/96 (cc.utexas.edu)";
+***************
+*** 14,19 ****
+--- 19,25 ----
+  #endif
+  
+  #include "pwck_defines.h"
++ #include "options.h"
+  
+  public int
+  pwck_passwd(password, user, mesg)
+***************
+*** 21,48 ****
+  	struct passwd	*user;	/* Passwd info */
+  	char	*mesg;			/* Where to stash message */
+  {
+! 	char	temp[BUFSIZ];	/* Scratch */
+  	char	*tp;
+  
+  #ifdef	DEBUG
+  	printf("pwck_passwd: \"%s\"\n", password);
+  #endif
+  	(void) strcpy(mesg, "it is part of your passwd information");
+- 	try(password, user->pw_name, PWCK_OBVIOUS);
+- 			/* Checks 'name' and 'Name' */
+  
+- 	(void) strcpy(temp, user->pw_name);
+- 	(void) strcat(temp, user->pw_name);
+- 	try(password, temp, PWCK_OBVIOUS);	/* Check 'namename' */
+  
+! 	(void) strcpy(temp, user->pw_name);
+  	tp = _flipstring(user->pw_name, temp);
+! 	try(password, tp, PWCK_OBVIOUS);	/* 'eman' */
+  
+  	/*
+  	 * Try every word in user's GECOS entry
+  	 */
+! 	mtry(password, user->pw_gecos, PWCK_FINGER);
+  	return(PWCK_OK);
+  }
+  /* End pwck_passwd.c */
+--- 27,125 ----
+  	struct passwd	*user;	/* Passwd info */
+  	char	*mesg;			/* Where to stash message */
+  {
+! 	char	temp[BUFSIZ];		/* Scratch */
+! 	char	alphaPW[BUFSIZ];	/*Alpha only password*/
+! 	char 	lcGecos[BUFSIZ];	/*Lowercase GECOS entry*/
+! 	char	lcPW[BUFSIZ];		/*Lowercase password*/
+  	char	*tp;
++ 	int	i;			/*ACME*/
+  
+  #ifdef	DEBUG
+  	printf("pwck_passwd: \"%s\"\n", password);
+  #endif
++ 	strncpy(lcPW,password,sizeof(lcPW));
++ 	tp = lcPW;
++ 	lowercase(tp); /*lcPW now contains lowercase password*/
++ 	(void) strncpy(temp,user->pw_name,sizeof(temp));
++ 	tp = temp;
++ 	lowercase(tp);	/*temp now contains lc user name*/
+  	(void) strcpy(mesg, "it is part of your passwd information");
+  
+  
+!         (void) _filterstring(lcPW,alphaPW,PWCK_FS_DIGITS);
+! 	/*
+! 	 * Digit/whitespace check is
+! 	 * here in case pwck_local or pwck_crack isn't in the proc list.
+!  	 * It will probably fail the following try anyway, but this is
+! 	 * a better message.
+!          */
+!         if(*alphaPW=='\0') {
+! 		(void) strcpy(mesg,"it is all digits");
+! 	 	return(PWCK_OBVIOUS);
+! 	}
+! 
+! 				/* Checks 'name' and 'Name' */
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW, temp, PWCK_OBVIOUS); 		/*lc PW vs name*/
+! 	try(alphaPW,  temp, PWCK_OBVIOUS);	/*lc PW -digits vs name*/
+!         (void) _filterstring(lcPW,alphaPW,PWCK_FS_DIGITS|PWCK_FS_PUNCT);
+! 	try(alphaPW,  temp, PWCK_OBVIOUS);	/*lc PW -digits -punct vs name*/
+! 				/* Check 'namename' */
+! 	(void) strncat(temp, user->pw_name, sizeof(temp) - strlen(temp));
+! 	tp = temp;
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW, temp, PWCK_OBVIOUS);		/*namename vs password*/
+! 	try(alphaPW, temp, PWCK_OBVIOUS);	/*namename vs password - digits*/
+! 
+  	tp = _flipstring(user->pw_name, temp);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW,    tp, PWCK_OBVIOUS);		/* lc PW vs 'eman' */
+! 	try(alphaPW, tp, PWCK_OBVIOUS);		/* lc PW -digits vs 'eman'*/
+  
++ 	/* Some new GECOS rules here - MStute 9/97
++ 	 * 1) Lower case password versus lower case GECOS
++ 	 * 2) LC password minus digits versus lowercase GECOS
++ 	 * 3) LC PW -digits -whitespace versus GECOS -whitespace -punct
++ 	 * 4) Reverse GECOS and try 1 -3 again with results
++ 	 */
++ 
+  	/*
+  	 * Try every word in user's GECOS entry
+  	 */
+! 	debug(DB_DETAIL,"GECOS:%s\n",user->pw_gecos);
+! 		/*Lowercase GECOS*/
+! 	strncpy(lcGecos,user->pw_gecos,sizeof(lcGecos));
+! 	tp=lcGecos;
+! 	lowercase(tp);
+! 
+! 	debug(DB_DETAIL,"New GECOS:%s\nNew PW:%s\nNew APW:%s\n",
+! 		lcGecos,lcPW,alphaPW);
+! 
+! 	mtry(lcPW,lcGecos,PWCK_FINGER);		/*lc PW vs GECOS*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER);	/*lc -[0..9] PW vs GECOS*/
+! 	
+! 		/*Remove whitespace and punct in GECOS*/
+! 	tp=_filterstring(user->pw_gecos,lcGecos,PWCK_FS_WHITE|PWCK_FS_PUNCT);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New GECOS:%s\n",lcGecos);
+! 	
+! 	mtry(password,lcGecos,PWCK_FINGER);	/*lc PW vs GECOS -ws -punct*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER);	/*lc -[0..9] PW vs above*/
+! 
+! 	/*Reverse GECOS and try the previous rules*/
+! 	tp=_flipstring(user->pw_gecos,temp);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New rGECOS:%s\n",temp);
+! 	mtry(password,temp,PWCK_FINGER);	/*lc PW vs rGECOS*/
+! 	mtry(alphaPW,temp,PWCK_FINGER);	/*lc -[0..9] PW vs rGECOS*/
+! 
+! 	tp=_filterstring(temp,lcGecos,PWCK_FS_WHITE|PWCK_FS_PUNCT);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New rGECOS:%s\n",lcGecos);
+! 	mtry(lcPW,lcGecos,PWCK_FINGER);	   /*lc PW vs rGECOS -ws -punct*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER); /*lc -[0..9] PW vs rGECOS -ws -punct*/
+  	return(PWCK_OK);
+  }
+  /* End pwck_passwd.c */
+Common subdirectories: ./src/PasswordCheck/cracklib/CREDITS and ../beta/src/PasswordCheck/cracklib/CREDITS
+Only in ../beta/src/PasswordCheck/cracklib: Makefile
+diff -rc ./src/PasswordCheck/cracklib/Makefile.SH ../beta/src/PasswordCheck/cracklib/Makefile.SH
+*** ./src/PasswordCheck/cracklib/Makefile.SH	Wed Oct 29 15:01:05 1997
+--- ../beta/src/PasswordCheck/cracklib/Makefile.SH	Fri Nov 21 09:28:45 1997
+***************
+*** 51,59 ****
+  # Automatically generated parameters -- do not edit
+  
+  SUBDIRS = tools
+  CC_DBFLAGS =  $cc_dbflags
+  CC_TESTFLAGS =  $cc_tstflags
+! CFLAGS =  -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags \$(CC_TESTFLAGS)
+  OBJECTS =   \$(CRACK_OBJ)
+  SOURCES =   \$(CRACK_SRC)
+  
+--- 51,61 ----
+  # Automatically generated parameters -- do not edit
+  
+  SUBDIRS = tools
++ INCLUDE_PATH =  -I.. -I../.. -I../Common
+  CC_DBFLAGS =  $cc_dbflags
+  CC_TESTFLAGS =  $cc_tstflags
+! CFLAGS =  \$(INCLUDE_PATH) -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags \$(CC_TESTFLAGS)
+! DPFLAGS =  \$(INCLUDE_PATH)
+  OBJECTS =   \$(CRACK_OBJ)
+  SOURCES =   \$(CRACK_SRC)
+  
+Only in ../beta/src/PasswordCheck/cracklib: Makefile.bak
+diff -rc ./src/PasswordCheck/cracklib/fascist.c ../beta/src/PasswordCheck/cracklib/fascist.c
+*** ./src/PasswordCheck/cracklib/fascist.c	Tue Sep 23 12:24:52 1997
+--- ../beta/src/PasswordCheck/cracklib/fascist.c	Fri Nov 21 15:54:25 1997
+***************
+*** 4,9 ****
+--- 4,13 ----
+   * upon hardware or computer systems, and maintains copyright as set out 
+   * in the "LICENCE" document which accompanies distributions of Crack v4.0 
+   * and upwards.
++  *
++  * 09/19/97 MStute 	Added DICT_DISP option to show dictionary word
++  *			on a failed attempt
++  *			Added two more transmorgifying rules
+   */
+  
+  static char vers_id[] = "fascist.c : v2.3p2 Alec Muffett 18 May 1993";
+***************
+*** 13,18 ****
+--- 17,23 ----
+  #include <ctype.h>
+  #include <sys/types.h>
+  #include <pwd.h>
++ #include "options.h"
+  
+  #define ISSKIP(x) (isspace(x) || ispunct(x))
+  
+***************
+*** 40,45 ****
+--- 45,52 ----
+      "/3s3e",
+      "/0s0o",
+      "/1s1i",
++     "/!s!i",
++     "/!s!i/1s1i",
+      "/4s4h",
+      "/1s1l",
+      "/$s$s/1s1l",
+***************
+*** 138,143 ****
+--- 145,153 ----
+  
+  #define	EM_NAME		"it is based upon your user name"
+  #define	EM_PASSWD	"it is based upon your user information"
++ #ifdef DICT_DISP
++ #define EM_WDICT	"it is based on the word:"
++ #endif
+  #define	EM_DICT		"it is based upon a dictionary word"
+  #define	EM_SSN		"it looks like a Social Security Number"
+  #define	EM_RDICT	EM_DICT
+***************
+*** 231,237 ****
+  	return (EM_PASSWD);
+      }
+  
+!     strcpy(gbuffer, Lowercase(pwp->pw_gecos));
+  
+      wc = 0;
+      ptr = gbuffer;
+--- 241,247 ----
+  	return (EM_PASSWD);
+      }
+  
+!     strncpy(gbuffer, Lowercase(pwp->pw_gecos),sizeof(gbuffer));
+  
+      wc = 0;
+      ptr = gbuffer;
+***************
+*** 287,301 ****
+      {
+  	for (i = 0; i < j; i++)
+  	{
+! 	    strcpy(buffer, uwords[i]);
+! 	    strcat(buffer, uwords[j]);
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+  	    }
+  
+! 	    strcpy(buffer, uwords[j]);
+! 	    strcat(buffer, uwords[i]);
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+--- 297,311 ----
+      {
+  	for (i = 0; i < j; i++)
+  	{
+! 	    strncpy(buffer, uwords[i], sizeof(buffer));
+! 	    strncat(buffer, uwords[j], sizeof(buffer) - strlen(buffer));
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+  	    }
+  
+! 	    strncpy(buffer, uwords[j], sizeof(buffer));
+! 	    strncat(buffer, uwords[i], sizeof(buffer) - strlen(buffer));
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+***************
+*** 335,340 ****
+--- 345,353 ----
+      char rpassword[STRINGSIZE];
+      register char *password;
+      int32 notfound;
++ #ifdef DICT_DISP
++     static char message[101];
++ #endif
+  
+      notfound = PW_WORDS(pwp);
+      password = rpassword;
+***************
+*** 430,436 ****
+--- 443,456 ----
+  	}
+  	if (FindPW(pwp, a) != notfound)
+  	{
++ #ifdef DICT_DISP
++ 	    if(strlen(EM_DICT)+strlen(a)+1>100)	/*MRS 09/97*/
++ 		return(EM_DICT);
++ 	    sprintf(message,"%s %s",EM_WDICT,a);
++ 	    return(message);
++ #else
+  	    return (EM_DICT);
++ #endif
+  	}
+      }
+  
+***************
+*** 447,453 ****
+--- 467,480 ----
+  
+  	if (FindPW(pwp, a) != notfound)
+  	{
++ #ifdef DICT_DISP
++ 	    if(strlen(EM_DICT)+strlen(a)+1>100)	/*MRS 09/97*/
++ 		return(EM_DICT);
++ 	    sprintf(message,"%s %s",EM_WDICT,a);
++ 	    return(message);
++ #else
+  	    return (EM_RDICT);
++ #endif
+  	}
+      }
+  
+diff -rc ./src/PasswordCheck/cracklib/rules.c ../beta/src/PasswordCheck/cracklib/rules.c
+*** ./src/PasswordCheck/cracklib/rules.c	Tue Sep 23 12:23:51 1997
+--- ../beta/src/PasswordCheck/cracklib/rules.c	Fri Nov 21 14:48:29 1997
+***************
+*** 4,9 ****
+--- 4,14 ----
+   * upon hardware or computer systems, and maintains copyright as set out 
+   * in the "LICENCE" document which accompanies distributions of Crack v4.0 
+   * and upwards.
++  *
++  * 11/21/97 MStute	Made string handling more robust on the assumption
++  *			that if someone comprimeses the dictionaries
++  *			that can't use long words to stack smash npasswd
++  *			Rule) NEVER MAKE ASSUMPTIONS IN A SUID PROGRAM
+   */
+  
+  static char vers_id[] = "rules.c : v5.0p3 Alec Muffett 20 May 1993";
+***************
+*** 141,147 ****
+      register int length;
+      static char area[STRINGSIZE];
+      length = strlen(string);
+!     strcpy(area, string);
+  
+      if (!Suffix(string, "ch") ||
+  	!Suffix(string, "ex") ||
+--- 146,152 ----
+      register int length;
+      static char area[STRINGSIZE];
+      length = strlen(string);
+!     strncpy(area, string,sizeof(area));
+  
+      if (!Suffix(string, "ch") ||
+  	!Suffix(string, "ex") ||
+***************
+*** 150,156 ****
+  	!Suffix(string, "ss"))
+      {
+  	/* bench -> benches */
+! 	strcat(area, "es");
+      } else if (length > 2 && string[length - 1] == 'y')
+      {
+  	if (strchr("aeiou", string[length - 2]))
+--- 155,161 ----
+  	!Suffix(string, "ss"))
+      {
+  	/* bench -> benches */
+! 	strncat(area, "es",sizeof(area) - strlen(area));
+      } else if (length > 2 && string[length - 1] == 'y')
+      {
+  	if (strchr("aeiou", string[length - 2]))
+***************
+*** 160,175 ****
+  	} else
+  	{
+  	    /* gully -> gullies */
+! 	    strcpy(area + length - 1, "ies");
+  	}
+      } else if (string[length - 1] == 's')
+      {
+  	/* bias -> biases */
+! 	strcat(area, "es");
+      } else
+      {
+  	/* catchall */
+! 	strcat(area, "s");
+      }
+  
+      return (area);
+--- 165,180 ----
+  	} else
+  	{
+  	    /* gully -> gullies */
+! 	    strncpy(area + length - 1, "ies",sizeof(area));
+  	}
+      } else if (string[length - 1] == 's')
+      {
+  	/* bias -> biases */
+! 	strncat(area, "es",sizeof(area) - strlen(area));
+      } else
+      {
+  	/* catchall */
+! 	strncat(area, "s",sizeof(area));
+      }
+  
+      return (area);
+***************
+*** 421,427 ****
+      static char area[STRINGSIZE];
+      char area2[STRINGSIZE];
+      area[0] = '\0';
+!     strcpy(area, input);
+  
+      for (ptr = control; *ptr; ptr++)
+      {
+--- 426,432 ----
+      static char area[STRINGSIZE];
+      char area2[STRINGSIZE];
+      area[0] = '\0';
+!     strncpy(area, input,sizeof(area));
+  
+      for (ptr = control; *ptr; ptr++)
+      {
+***************
+*** 448,455 ****
+  	    strcat(area, Reverse(area));
+  	    break;
+  	case RULE_DUPLICATE:
+! 	    strcpy(area2, area);
+! 	    strcat(area, area2);
+  	    break;
+  	case RULE_GT:
+  	    if (!ptr[1])
+--- 453,460 ----
+  	    strcat(area, Reverse(area));
+  	    break;
+  	case RULE_DUPLICATE:
+! 	    strncpy(area2, area, sizeof(area));
+! 	    strncat(area, area2, sizeof(area) - strlen(area));
+  	    break;
+  	case RULE_GT:
+  	    if (!ptr[1])
+***************
+*** 497,504 ****
+  	    } else
+  	    {
+  		area2[0] = *(++ptr);
+! 		strcpy(area2 + 1, area);
+! 		strcpy(area, area2);
+  	    }
+  	    break;
+  	case RULE_APPEND:
+--- 502,509 ----
+  	    } else
+  	    {
+  		area2[0] = *(++ptr);
+! 		strncpy(area2 + 1, area, sizeof(area2) - 1);
+! 		strncpy(area, area2,sizeof(area));
+  	    }
+  	    break;
+  	case RULE_APPEND:
+***************
+*** 532,538 ****
+  		    Debug(1, "Mangle: extract: weird argument in '%s'\n", control);
+  		    return ((char *) 0);
+  		}
+! 		strcpy(area2, area);
+  		for (i = 0; length-- && area2[start + i]; i++)
+  		{
+  		    area[i] = area2[start + i];
+--- 537,543 ----
+  		    Debug(1, "Mangle: extract: weird argument in '%s'\n", control);
+  		    return ((char *) 0);
+  		}
+! 		strncpy(area2, area,sizeof(area2));
+  		for (i = 0; length-- && area2[start + i]; i++)
+  		{
+  		    area[i] = area2[start + i];
+***************
+*** 590,597 ****
+  		    *(p2++) = *(p1++);
+  		}
+  		*(p2++) = *(++ptr);
+! 		strcpy(p2, p1);
+! 		strcpy(area, area2);
+  	    }
+  	    break;
+  	    /* THE FOLLOWING RULES REQUIRE CLASS MATCHING */
+--- 595,602 ----
+  		    *(p2++) = *(p1++);
+  		}
+  		*(p2++) = *(++ptr);
+! 		strncpy(p2, p1, sizeof(p2));
+! 		strncpy(area, area2, sizeof(area));
+  	    }
+  	    break;
+  	    /* THE FOLLOWING RULES REQUIRE CLASS MATCHING */
+***************
+*** 603,612 ****
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strcpy(area, Purge(area, *(++ptr)));
+  	    } else
+  	    {
+! 		strcpy(area, PolyPurge(area, ptr[2]));
+  		ptr += 2;
+  	    }
+  	    break;
+--- 608,617 ----
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strncpy(area, Purge(area, *(++ptr)), sizeof(area));
+  	    } else
+  	    {
+! 		strncpy(area, PolyPurge(area, ptr[2]), sizeof(area));
+  		ptr += 2;
+  	    }
+  	    break;
+***************
+*** 617,627 ****
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strcpy(area, Substitute(area, ptr[1], ptr[2]));
+  		ptr += 2;
+  	    } else
+  	    {
+! 		strcpy(area, PolySubst(area, ptr[2], ptr[3]));
+  		ptr += 3;
+  	    }
+  	    break;
+--- 622,632 ----
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strncpy(area, Substitute(area, ptr[1], ptr[2]),sizeof(area));
+  		ptr += 2;
+  	    } else
+  	    {
+! 		strncpy(area, PolySubst(area, ptr[2], ptr[3]),sizeof(area));
+  		ptr += 3;
+  	    }
+  	    break;

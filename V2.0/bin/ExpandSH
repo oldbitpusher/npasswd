@@ -1,0 +1,24 @@
+#! /bin/sh
+#
+# Script to build Makefile.SH from Jmakefile in the distribution
+# subdirectories
+#
+
+cwd=`pwd`
+if [ ! -d $cwd/bin ]; then
+	echo Cannot find bin directory
+	exit 1
+fi
+
+case "$1" in
+	-n)	echo="echo" ;;
+esac
+
+sh Makefile.SH
+for d in `grep Makefile.SH MANIFEST | awk '{ print $1 }' | sed 's@/Makefile.SH@@'` ; do
+	[ ! -d $d ] && continue
+	( cd $d || exit 1; sh Makefile.SH )
+done
+exit 0
+#
+# End %M%

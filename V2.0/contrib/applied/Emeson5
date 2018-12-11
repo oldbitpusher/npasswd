@@ -1,0 +1,43 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06518
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:14:03 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01072
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:14:00 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13707
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:13:57 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08742; Wed, 10 Dec 1997 10:16:00 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101716.KAA08742@zlin.Colorado.EDU>
+Subject: Changes #5
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:15:59 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 683
+
+@@@@@@@@@@@@@@@@@@@@  Start of diffs   @@@@@@@@@@@@@@@@@@@
+*** passwd.c.orig       Fri Dec  5 12:23:14 1997
+--- passwd.c    Fri Dec  5 12:26:16 1997
+***************
+*** 182,187 ****
+--- 182,188 ----
+                /*
+                 * Get confirmation
+                 */
++               (void) strcpy(newpw1,px);
+                if ((px = np_getpass("New password (again): ")) == NULL)
+                        die("Password unchanged.\n");
+                (void) strcpy(newpw2, px);
+@@@@@@@@@@@@@@@@@@@@     end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

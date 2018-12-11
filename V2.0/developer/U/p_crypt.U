@@ -1,0 +1,33 @@
+?RCS:
+?RCS: @(#)p_crypt.U	1.4 03/26/98
+?RCS:
+?RCS: Unit p_crypt.U - see which crypt program to use
+?RCS:
+?MAKE:p_crypt: test Setvar Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_crypt
+?S:p_crypt:
+?S:	This variable is set the name of the crypt routine to use
+?S:.
+
+t=''
+set bigcrypt t
+eval "$inlibc"
+echo ' '
+if $test $t = "$define"; then
+	echo 'Using bigcrypt() for encrypting passwords'
+	p_crypt='bigcrypt'
+else
+	t=''
+	set crypt16 t
+	eval "$inlibc"
+	if $test $t = "$define"; then
+		echo 'Using crypt16() for encrypting passwords'
+		p_crypt='crypt16'
+	else
+		echo 'Using crypt() for encrypting passwords'
+		p_crypt='crypt'
+	fi
+fi
+echo ' '
+

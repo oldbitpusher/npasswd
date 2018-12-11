@@ -1,0 +1,25 @@
+#!/bin/ksh
+
+SL='pam_strongpw.so'
+SO='pam_strongpw.so.1'
+SD='/usr/lib/security'
+
+umask 0022
+
+if [ ! -d $SD ]
+then
+	print ""
+	print "  ERROR: Security shared library directory could not be found!\n"
+	print ""
+	exit 1;
+fi
+
+[ -x "${SD}/${SO}"     ] && /bin/mv "${SD}/${SO}" "${SD}/${SO}-OLD"
+[ -x "${SO}"           ] && /bin/cp "${SO}"       "${SD}/${SO}"
+[ -x "${SD}/${SO}-OLD" ] && /bin/rm -f "${SD}/${SO}-OLD"
+
+[ -e "${SD}/${SL}"     ] && /bin/rm "${SD}/${SL}"
+
+/bin/ln -s "./${SO}" "${SD}/${SL}"
+
+#END

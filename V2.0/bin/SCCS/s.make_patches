@@ -1,0 +1,40 @@
+h49480
+s 00001/00001/00018
+d D 1.2 99/02/01 14:10:32 clyde 2 1
+c Exclude diffs for any filename starting with Jmake
+e
+s 00019/00000/00000
+d D 1.1 99/02/01 14:09:05 clyde 1 0
+c date and time created 99/02/01 14:09:05 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+#!/bin/sh
+#
+MASTER="depend.master"
+SCCSV="depend.sccs"
+NEW="depend.new"
+MANIFEST=MANIFEST
+
+if [ -z "$1" ]; then
+	echo Usage: $0 patch-number 1>&2
+	exit 1
+fi
+
+echo "Need to do \"make_source_depend MANIFEST\"?" 1>&2
+
+bin/find_sccs_versions $MASTER > $NEW
+D 2
+bin/make_sccs_diffs -n $NEW -o $SCCSV -v $1 | grep -v Jmakefile 
+E 2
+I 2
+bin/make_sccs_diffs -n $NEW -o $SCCSV -v $1 | grep -v Jmake
+E 2
+echo "Move $NEW to $SCCSV if happy" 1>&2
+
+exit 0
+E 1

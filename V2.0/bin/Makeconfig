@@ -1,0 +1,8 @@
+#! /bin/sh
+#
+PATH=./bin:$PATH
+for t in 8 7 6 5 4 3 2 1 0; do
+	[ -f Configure.$t ] && mv -f Configure.$t Configure.`expr $t + 1`
+done
+mv Configure Configure.0
+exec metaconfig -k $*

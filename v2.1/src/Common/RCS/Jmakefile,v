@@ -1,0 +1,295 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.11
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	96.09.12.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.08.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.07.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@Add term.c and pager.c
+@
+text
+@;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# $Id$ (cc.utexas.edu)
+;#
+
+;#
+;# Makefile for npasswd commom object library
+;#
+#include "../../Jmake.local"
+
+Initialize(INCLUDE_PATH, -I.. -I../..)
+
+SOURCES = \
+	chop_nl.c \
+	compatibility.c \
+	file_util.c \
+	getpass.c \
+	instring.c \
+	messages.c \
+	mpw_util.c \
+	pager.c \
+	pw_svc.c \
+	pw_util.c \
+	signals.c \
+	split.c \
+	term.c \
+	pw_svc.c \
+	xatoi.c \
+	xdecode.c
+
+OBJECTS = \
+|expand f!$(SOURCES)!
+	!f:\.c=\.o \
+-expand \\
+
+Describe(libcomobj.a, Build npasswd common object library)
+NormalLibraryTarget(comobj, $(SOURCES), $(OBJECTS))
+
+DependTarget()
+
+DebugTarget()
+
+Describe(lint, Check C sources with lint)
+LintTarget()
+
+/* End $RCSfile$ */
+@
+
+
+1.10
+log
+@Major rework
+@
+text
+@d62 1
+d67 1
+@
+
+
+1.9
+log
+@1. Add copyright message 2. Add pw_svc.c to source list 3. Add more local stuff
+@
+text
+@d78 1
+a78 1
+LocalDebug()
+d80 1
+a80 1
+LocalEnd()
+d82 3
+@
+
+
+1.8
+log
+@Add file_util.c and getpass.c
+@
+text
+@a0 3
+/*
+ * Jmakefile for npasswd utility library
+ */
+d2 2
+a3 1
+;# $Id$ (cc.utexas.edu) %P%
+d5 41
+a45 1
+Initialize(INCLUDE_PATH, -I.. -I../..)
+d47 4
+a50 3
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+d52 1
+a52 1
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+d62 1
+d75 1
+d78 5
+a82 2
+DependTarget()
+/*  End $RCSfile$ */
+@
+
+
+1.7
+log
+@Add ../.. to INCLUDE_PATH
+@
+text
+@d18 2
+@
+
+
+1.6
+log
+@Add INCLUDE_PATH for CC and mkdep
+@
+text
+@d7 1
+a7 1
+Initialize(INCLUDE_PATH, -I..)
+@
+
+
+1.5
+log
+@Change svc_info to pw_svc
+@
+text
+@d7 2
+d11 1
+a11 1
+Initialize(CFLAGS, -I.. $ccflags $cc_osflags $(CC_TESTFLAGS))
+d13 2
+@
+
+
+1.4
+log
+@Beta 3 development checkin 2
+@
+text
+@d20 1
+a20 1
+	svc_info.c \
+@
+
+
+1.3
+log
+@Add 'depend' target
+@
+text
+@d12 1
+a13 1
+	chop_nl.c \
+d15 4
+@
+
+
+1.2
+log
+@beta 3 development checkin
+@
+text
+@d26 2
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d12 7
+a18 3
+	messages.c \
+	pw_utils.c \
+	svc_get.c
+@

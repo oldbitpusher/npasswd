@@ -1,0 +1,1027 @@
+head	1.15;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.15
+date	99.07.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	98.09.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.04.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	97.09.19.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	97.05.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.07.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.04.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Fix typo in HPUX security code
+@
+text
+@/*
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+ *
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+ *
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+ *
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+ */
+
+/*
+ * Routines to fetch the "service order" list for "passwd".
+ * There is a "init_pwsvc()" routine for each service
+ * variant (nsswitch, svc.conf, etc).
+ *
+ * Exported routines:
+ *	init_pwsvc()
+ *	get_pwsvc()
+ */
+
+#ifndef lint
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+#endif
+
+#include "npasswd.h"
+#include "pw_svc.h"
+
+extern char	*crypt();	/* Standard encryptor */
+
+static struct pw_svc _svcinfo = { 
+	0,			/* Not initialized */
+	crypt,			/* Password encryptor */
+	sec_std,		/* System security level */
+	{ 			/* Passwd lookup services */
+#ifdef  USE_NIS
+		srv_local, srv_yp, srv_last
+#else
+		srv_local, srv_last
+#endif
+	}
+};
+
+#ifdef	HAS_SVCCONF		/* Ultrix and Digital UNIX (OSF/1) */
+#define	_SETUP	1		/* A setup method has been selected */
+/*
+ * init_pwsvc (Ultrix/OSF1)
+ *	Get service order for Digital UNIX (using /etc/svc.conf)
+ * Usage
+ *	init_pwsvc(int argc, char **argv, char **);
+ * Error exits
+ *	Error return from getsvc()
+ */
+#include <sys/svcinfo.h>
+
+void
+init_pwsvc(argc, argv, cmdsw)
+	int	argc;			/* Used in OSF/1 */
+	char	**argv;			/* Used in OSF/1 */
+	char	**cmdsw;		/* NOTUSED*/
+{
+	extern char 	*crypt16();	/* Extended encryptor */
+#ifdef	OSF1_AUTH
+	extern char 	*bigcrypt();	/* Really extended encryptor */
+#endif
+	struct svcinfo	*svc;	/* Service info */
+	int	i,		/* Temp */
+		j,		/* Temp */
+		s;		/* Temp */
+
+	_svcinfo.SecurityLevel = sec_std;
+	_svcinfo.PasswdCrypt = crypt;
+
+	if ((svc = getsvc()) == 0)
+		logdie("Cannot get service configuration.\n");
+
+	debug(DB_LOOKUP, "init_pwsvc (svc.conf): "):
+	for (s = i = 0; (j = svc->svcpath[SVC_PASSWD][i]) != SVC_LAST; i++) {
+		switch(j) {
+		case SVC_LOCAL:
+			_svcinfo.ServiceOrder[s++] = srv_local;
+			debug(DB_LOOKUP, "local "):
+			break;
+		case SVC_YP:
+			_svcinfo.ServiceOrder[s++] = srv_yp;
+			debug(DB_LOOKUP, "nis "):
+			break;
+		case SVC_BIND:
+			_svcinfo.ServiceOrder[s++] = srv_hesiod;
+			debug(DB_LOOKUP, "bind "):
+			break;
+		}
+	}
+	_svcinfo.ServiceOrder[s++] = srv_last;
+
+	switch (svc->svcauth.seclevel) {
+	case SEC_BSD:
+		_svcinfo.SecurityLevel = sec_std;
+		debug(DB_LOOKUP, "(security_std) "):
+		break;
+	case SEC_UPGRADE:
+		_svcinfo.SecurityLevel = sec_u4upgrade;
+		debug(DB_LOOKUP, "(security_upgrade) "):
+		break;
+	case SEC_ENHANCED:
+		_svcinfo.SecurityLevel = sec_u4enhanced;
+		debug(DB_LOOKUP, "(security_enhanced) "):
+#ifdef	ULTRIX_AUTH
+		_svcinfo.PasswdCrypt = crypt16;
+#endif
+		break;
+	}
+#ifdef	OSF1_AUTH
+	/*
+	 * If there is a Trusted Computing Base directory, then
+	 * we are running enhanced security.
+	 * On OSF/1, the "security level" returned by getsvc() is wrong.
+	 */
+	if (access(OSF1_TCB, 0) == 0) {
+		SIAENTITY *who;
+
+		if (sia_ses_init(&who, argc, argv, NULL, NULL, NULL, 0, NULL)
+			== SIASUCCESS) {
+				_svcinfo.SecurityLevel = sec_OSFenhanced;
+				_svcinfo.PasswdCrypt = bigcrypt;
+				debug(DB_LOOKUP, "(security_C2) "):
+		}
+	}
+#endif
+	debug(DB_LOOKUP, "\n"):
+	_svcinfo.init = 1;
+}
+#endif	/* HAS_GETSVC_CONF */
+
+
+#if	defined(HAS_NSSWITCH) && defined(OS_SUNOS_5)
+#define	_SETUP	1
+/*
+ * get_nsswitch
+ *	Process the Solaris 2 name service switch 
+ * Usage
+ *	service_list = get_nsswitch(char *database-name);
+ */
+#undef	private			/* Avoid use of 'private' in includes below */
+#include <nsswitch.h>
+#include <nss_dbdefs.h>
+
+static char **
+get_nsswitch(what)
+	char	*what;
+{
+	struct __nsw_switchconfig *config;
+	struct __nsw_lookup     *p;
+	enum __nsw_parse_err    error;
+	static char	*srvlist[N_SVC];
+	int	svcno = 0;
+
+	config = __nsw_getconfig(what, &error);
+	switch (error) {
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_SUCCESS:
+#else
+	case __NSW_PARSE_SUCCESS:
+#endif
+		break;
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_NOFILE:
+#else
+	case __NSW_PARSE_NOFILE:
+#endif
+		warn("Warning: \"%s\" not found.\n", __NSW_CONFIG_FILE);
+		return(0);
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_NOPOLICY:
+#else
+	case __NSW_PARSE_NOPOLICY:
+#endif
+		return(0);
+#if	(OS_MINOR_VERSION >= 3)
+	case __NSW_CONF_PARSE_SYSERR:
+#else
+	case __NSW_PARSE_SYSERR:
+#endif
+		warn("Warning: Syntax error in \"%s\".\n", __NSW_CONFIG_FILE);
+		return(0);
+	}
+	for (p = config->lookups; p; p = p->next) {
+		srvlist[svcno++] = strdup(p->service_name);
+	}
+	srvlist[svcno] = 0;
+	return(srvlist);
+}
+
+void
+init_pwsvc(argc, argv, cmdsw)
+	int	argc;		/*NOTUSED*/
+	char	**argv;		/*NOTUSED*/
+	char	**cmdsw;	/* Command line switches */
+{
+/*
+ *	Having a list of defines for service names is not really the
+ *	right way to go, but since source changes are needed to add
+ *	a method module, forcing changes here also is not the most
+ *	terrible thing.
+ */
+#define	SV_NIS		"nis"
+#define	SV_NISPLUS	"nisplus"
+#define	SV_COMPAT	"compat"
+#define	SV_FILES	"files"
+	int	svo = 0;
+	char	**svlist;
+
+	_svcinfo.SecurityLevel = sec_std;
+	debug(DB_LOOKUP, "init_pwsvc nsswitch: ");
+
+	/*
+	 * TODO: Figure out what security level needed for RPC 
+	 * i.e. might a key need resetting.
+	 */
+
+	/*
+	 * The -r command line option short-circuits nsswitch.conf processing
+	 */
+	if (cmdsw && cmdsw['r']) {
+		if (strcmp(cmdsw['r'], SV_FILES) == 0) {
+			_svcinfo.ServiceOrder[svo++] = srv_local;
+			debug(DB_LOOKUP, "-r local ");
+		}
+		if (strcmp(cmdsw['r'], SV_NIS) == 0) {
+#ifdef	USE_NIS
+			_svcinfo.ServiceOrder[svo++] = srv_yp;
+			debug(DB_LOOKUP, "-r nis ");
+#else
+			die("NIS support not enabled\n");
+			/*NOTREACHED*/
+#endif
+		}
+		if (strcmp(cmdsw['r'], SV_NISPLUS) == 0) {
+#ifdef	USE_NISPLUS_NOPE
+			_svcinfo.ServiceOrder[svo++] = srv_nis;
+			debug(DB_LOOKUP, "-r nisplus ");
+#else
+			die("NIS+ not supported\n");
+			/*NOTREACHED*/
+#endif
+		}
+		if (svo) {
+			_svcinfo.ServiceOrder[svo] = srv_last;
+			_svcinfo.init = 1;
+			debug(DB_LOOKUP, "\n");
+			return;
+		}
+		die("Unknown service selector '%s'\n", cmdsw['r']);
+		/*NOTREACHED*/
+	}
+	for (svlist = get_nsswitch(NSS_DBNAM_PASSWD); *svlist; *svlist++) {
+		if (strcmp(*svlist, SV_FILES) == 0) {
+			_svcinfo.ServiceOrder[svo++] = srv_local;
+			debug(DB_LOOKUP, "local ");
+		}
+#if	defined(USE_NIS) || defined(USE_NISPLUS)
+		if (strcmp(*svlist, SV_NIS) == 0) {
+			_svcinfo.ServiceOrder[svo++] = srv_yp;
+			debug(DB_LOOKUP, "nis ");
+		}
+		if (strcmp(*svlist, SV_COMPAT) == 0) {
+			char	**pwsv = get_nsswitch(NSS_DBNAM_PASSWD_COMPAT);
+			enum	svc_services sv_compat = srv_yp;
+			char	*what = "nis";
+
+			/* Check for service passwd_compat: */
+			if (pwsv) {
+				for (; *pwsv; pwsv++) {
+					if (strcmp(*pwsv, SV_NISPLUS) == 0) {
+						sv_compat = srv_nisplus;
+						what = "nisplus";
+					}
+				}
+				_svcinfo.ServiceOrder[svo++] = sv_compat;
+				debug(DB_LOOKUP, "compat/%s ", what);
+			} else {
+				_svcinfo.ServiceOrder[svo++] = srv_local;
+				_svcinfo.ServiceOrder[svo++] = sv_compat;
+				debug(DB_LOOKUP, "compat/%s ", what);
+			}
+		}
+#endif
+#ifdef	USE_NISPLUS
+		if (strcmp(*svlist, SV_NISPLUS) == 0) {
+			die("NIS+ not supported\n");
+			_svcinfo.ServiceOrder[svo++] = srv_nisplus;
+			debug(DB_LOOKUP, "nisplus ");
+		}
+#endif
+	}
+	_svcinfo.ServiceOrder[svo] = srv_last;
+	_svcinfo.init = 1;
+	debug(DB_LOOKUP, "\n");
+
+#undef	SV_NIS
+#undef	SV_NISPLUS
+#undef	SV_COMPAT
+#undef	SV_FILES
+#undef	SV_PWCOMPAT
+}
+#endif	/* defined(HAS_NSSWITCH) && defined(OS_SUNOS_5) */
+
+#ifndef	_SETUP
+/*
+ * The default init_pwsvc() routine
+ */
+void
+init_pwsvc(argc, argv, cmdsw)
+	int	argc;	/*NOTUSED*/
+	char	**argv;	/*NOTUSED*/
+	char	**cmdsw; /*NOTUSED*/
+{
+	_svcinfo.SecurityLevel = sec_std;
+#ifdef	SUNOS4_SECURITY
+	if (issecure()) {
+		_svcinfo.SecurityLevel = sec_sunC2;
+		debug(DB_LOOKUP, "init_pwsvc: SUN C2\n");
+	}
+#endif	/* OS_SUNOS_4 */
+#ifdef	HPUX_AUTH
+	_svcinfo.SecurityLevel = sec_HPtrusted;
+	debug(DB_LOOKUP, "init_pwsvc: HPUX auth\n");
+#endif
+	_svcinfo.init = 1;
+}
+#endif	/* _SETUP */
+
+/*
+ * get_pwsvc
+ *	Return the password service info block
+ * Usage:
+ *	ptr = get_pwsvc();
+ */
+struct pw_svc *
+get_pwsvc()
+{
+	if (_svcinfo.init == 0)
+		init_pwsvc(0, 0, 0);
+	return(&_svcinfo);
+}
+
+/* End $RCSfile$ */
+@
+
+
+1.14
+log
+@1. Add copyright notice 2. Reformat function comments
+@
+text
+@d359 1
+a359 1
+	_svcinfo.SecurityLevel = sec_HPUXtrusted;
+@
+
+
+1.13
+log
+@1. Add command line switch vector arg to init_pwsvc() 2. Impliment -r option for SunOS 5
+@
+text
+@d2 2
+a3 4
+ * $RCSfile$
+ *	Routines to fetch the "service order" list for "passwd".
+ *	There is a "init_pwsvc()" routine for each service
+ *	variant (nsswitch, svc.conf, etc).
+d5 46
+a50 1
+ * Exported routines
+d54 1
+d370 1
+a370 1
+ *	ptr = get_pwsvc()
+@
+
+
+1.12
+log
+@Add  _svcinfo.init = 1 in more places
+@
+text
+@d15 1
+a15 3
+#include "defines.h"
+#include "constants.h"
+#include "compatibility.h"
+d39 1
+a39 1
+ *	init_pwsvc(int argc, char **argv);
+d46 1
+a46 1
+init_pwsvc(argc, argv)
+d49 1
+d125 1
+a125 1
+#ifdef	HAS_NSSWITCH
+d184 4
+a187 3
+init_pwsvc(argc, argv)
+	int	argc;	/*NOTUSED*/
+	char	**argv;	/*NOTUSED*/
+d189 6
+a198 1
+
+d209 36
+d295 1
+a295 1
+#endif	/* OS_SUNOS_5 */
+d302 1
+a302 1
+init_pwsvc(argc, argv)
+d305 1
+d332 1
+a332 1
+		init_pwsvc(0, 0);
+@
+
+
+1.11
+log
+@1. Change get_pwsvc() to init_pwsvc(), eliminate some args 2. Add new get_pwsvc()
+@
+text
+@d245 1
+d276 1
+@
+
+
+1.10
+log
+@1. Move crypt16() and bigcrypt() decls 2. Add HP-UX support 3. Little cleanup
+@
+text
+@d4 1
+a4 1
+ *	There is a "get_pwsvc()" routine for each service
+d8 1
+d23 1
+d38 1
+a38 1
+ * get_pwsvc (Ultrix/OSF1)
+d41 1
+a41 2
+ *	svcblk = get_pwsvc(int argc, char **argv,
+ *		char **envp, struct pwsvc *return);
+d47 2
+a48 2
+public struct pw_svc
+get_pwsvc(argc, argv, envp, svp)
+a50 2
+	char	**envp;			/*NOTUSED*/
+	struct pw_svc	*svp;		/* Return value (if present */
+d67 1
+a67 1
+	debug(DB_LOOKUP, "get_pwsvc (svc.conf): "):
+d121 1
+a121 5
+	if (svp) {
+		*svp = _svcinfo;
+		return(svp);
+	}
+	return(&_svcinfo);
+d184 2
+a185 2
+public struct pw_svc *
+get_pwsvc(argc, argv, envp, svp)
+a187 2
+	char	**envp;	/*NOTUSED*/
+	struct pw_svc	*svp;
+d198 1
+a198 1
+	debug(DB_LOOKUP, "get_pwsvc nsswitch: ");
+a245 5
+	if (svp) {
+		*svp = _svcinfo;
+		return(svp);
+	} 
+	return(&_svcinfo);
+d257 1
+a257 1
+ * The default svc_get() routine
+d259 2
+a260 2
+public struct pw_svc *
+get_pwsvc(argc, argv, envp, svp)
+a262 2
+	char	**envp; /*NOTUSED*/
+	struct pw_svc	*svp;
+d268 1
+a268 1
+		debug(DB_LOOKUP, "get_pwsvc: SUN C2\n");
+d273 1
+a273 1
+	debug(DB_LOOKUP, "get_pwsvc: HPUX auth\n");
+a274 5
+	if (svp) {
+		*svp = _svcinfo;
+		return(svp);
+	}
+	return(&_svcinfo);
+d278 14
+@
+
+
+1.9
+log
+@Establish a default service order for "passwd_compat" on Solaris 2
+@
+text
+@a19 7
+#ifdef	ULTRIX_AUTH
+extern char 	*crypt16();	/* Extended encryptor */
+#endif
+#ifdef	OSF1_AUTH
+extern char 	*crypt16();	/* Extended encryptor */
+extern char 	*bigcrypt();	/* Really extended encryptor */
+#endif
+d53 4
+d205 1
+a205 1
+	debug(DB_LOOKUP, "svc_get nsswitch: ");
+d280 1
+a280 1
+	if (issecure())
+d282 2
+d285 4
+@
+
+
+1.8
+log
+@Fix NIS+ service order lookup
+@
+text
+@d239 4
+@
+
+
+1.7
+log
+@More structure name changes
+@
+text
+@d224 1
+a224 1
+		if (strcmp(*svlist, NSS_DBNAM_PASSWD_COMPAT) == 0) {
+d230 6
+a235 4
+			for (; *pwsv; pwsv++) {
+				if (strcmp(*pwsv, SV_NISPLUS) == 0) {
+					sv_compat = srv_nisplus;
+					what = "nisplus";
+d237 2
+a239 2
+			_svcinfo.ServiceOrder[svo++] = sv_compat;
+			debug(DB_LOOKUP, "compat/%s ", what);
+@
+
+
+1.6
+log
+@Rename routines
+@
+text
+@d53 1
+a53 1
+public struct svcinfo
+d58 1
+a58 1
+	struct pwsvc	*svp;		/* Return value (if present */
+d192 1
+a192 1
+public struct pwsvc *
+d197 1
+a197 1
+	struct pwsvc	*svp;
+d268 1
+a268 1
+public struct pwsvc *
+d273 1
+a273 1
+	struct pwsvc	*svp;
+@
+
+
+1.5
+log
+@Fix memory allocation bug
+@
+text
+@d2 4
+a5 1
+ * npasswd module $RCSfile$
+d7 2
+a8 6
+ * This module contains routines to fetch the "service order" list
+ * for this system.  There is a "svc_get()"  routine for each service
+ * variant (nsswitch, svc.conf, etc).
+ *
+ * Compilation: cc -c $RCSfile$
+ *
+d17 1
+a17 1
+#include "svc_info.h"
+d19 1
+a19 1
+extern char	*crypt();
+d21 1
+a21 1
+extern char 	*crypt16();
+d24 2
+a25 1
+extern char 	*bigcrypt();
+d28 1
+a28 1
+static struct pwsvc _svcinfo = { 
+d40 1
+a40 1
+#ifdef	HAS_SVC_CONF		/* Ultrix and Digital UNIX (OSF/1) */
+d43 7
+a49 1
+ * svc_get - Process the service configuration for Ultrix 4.X and OSF/1
+d54 5
+a58 5
+svc_info(argc, argv, envp, svp)
+	int	argc;
+	char	**argv;
+	char	**envp;	/*NOTUSED*/
+	struct pwsvc	*svp;
+d71 1
+a71 1
+	debug(DB_LOOKUP, "svc_info (svc.conf): "):
+d137 4
+a140 1
+ * svc_get - Process the 'name service' configuration of Solaris 2
+d142 1
+a142 1
+#undef	private
+d169 1
+a169 1
+		printf("Warning: \"%s\" not found.\n", __NSW_CONFIG_FILE);
+d182 1
+a182 1
+		printf("Warning: Syntax error in \"%s\".\n", __NSW_CONFIG_FILE);
+d193 1
+a193 1
+svc_info(argc, argv, envp, svp)
+d269 1
+a269 1
+svc_info(argc, argv, envp, svp)
+@
+
+
+1.4
+log
+@Beta 3 development checkin 2
+@
+text
+@d144 1
+a144 2
+	char	*srvlist[N_SVC];
+	char	**rv;
+d180 1
+a180 9
+	rv = (char **)calloc(sizeof(char *), svcno);
+	if (rv == 0)
+		logdie("Cannot allocate memory for service list\n");
+#ifdef	HAS_MEMCPY
+	memcpy((void *)rv, (void *)&srvlist, (svcno * sizeof(char *)));
+#else
+	bcopy((void *)&srvlist, (void *)rv, (svcno * sizeof(char *)));
+#endif
+	return(rv);
+@
+
+
+1.3
+log
+@Beta 3 devlopment checkin
+@
+text
+@d21 6
+d28 1
+a28 1
+static struct svcinfo _svcinfo = { 
+d37 1
+a37 1
+	{
+d48 1
+a48 1
+svc_info(argc, argv, envp)
+d52 1
+d119 4
+d133 1
+d137 1
+a137 1
+private char **
+d162 1
+a162 1
+		return;
+d168 1
+a168 1
+		return;
+d175 1
+a175 1
+		return;
+d178 1
+a178 1
+		srvlist[svcno++] = copystr(p->service_name);
+d192 2
+a193 2
+public struct svcinfo *
+svc_info(argc, argv, envp)
+d197 1
+d226 1
+a226 1
+			enum	svc_order sv_compat = srv_yp;
+d250 4
+d268 2
+a269 2
+private void
+svc_get(argc, argv, envp)
+d273 1
+d280 4
+@
+
+
+1.2
+log
+@beta 3 development checkin
+@
+text
+@a8 1
+ * Includes:		npasswd.h
+a10 3
+
+#include "npasswd.h"
+
+d15 5
+d21 5
+a25 3
+public char	(*svc_PasswdCrypt)() = crypt;	/* Password encryptor */
+public enum sec_order svc_SecurityLevel;	/* OS security level */
+public enum svc_order svc_ServiceOrder[32] = {	/* Passwd lookup services */
+d27 1
+a27 1
+	srv_local, srv_yp, srv_last
+d29 1
+a29 1
+	srv_local, srv_last
+d31 1
+d41 2
+a42 2
+public void
+svc_get(argc, argv, envp)
+d52 2
+a53 1
+	svc_SecurityLevel = sec_std;
+d58 1
+a58 1
+	debug(DB_LOOKUP, "svc_get (svc.conf): "):
+d62 1
+a62 1
+			svc_ServiceOrder[s++] = srv_local;
+d66 1
+a66 1
+			svc_ServiceOrder[s++] = srv_yp;
+d70 1
+a70 1
+			svc_ServiceOrder[s++] = srv_hesiod;
+d75 1
+a75 1
+	svc_ServiceOrder[s++] = srv_last;
+d79 1
+a79 1
+		svc_SecurityLevel = sec_std;
+d83 1
+a83 1
+		svc_SecurityLevel = sec_u4upgrade;
+d87 1
+a87 1
+		svc_SecurityLevel = sec_u4enhanced;
+d90 1
+a90 1
+		PasswdCrypt = crypt16;
+d105 2
+a106 2
+				svc_SecurityLevel = sec_OSFenhanced;
+				PasswdCrypt = bigcrypt;
+d112 1
+d132 1
+a132 1
+	char	*srvlist[32];	/* LIMIT */
+d172 3
+d176 1
+d180 2
+a181 2
+public void
+svc_get(argc, argv, envp)
+d194 1
+a194 1
+	svc_SecurityLevel = sec_std;
+d203 1
+a203 1
+			svc_ServiceOrder[svo++] = srv_local;
+d208 1
+a208 1
+			svc_ServiceOrder[svo++] = srv_yp;
+d223 1
+a223 1
+			svc_ServiceOrder[svo++] = sv_compat;
+d230 1
+a230 1
+			svc_ServiceOrder[svo++] = srv_nisplus;
+d235 1
+a235 1
+	svc_ServiceOrder[svo] = srv_last;
+d237 1
+d257 1
+a257 1
+	svc_SecurityLevel = sec_std;
+d260 1
+a260 1
+		svc_SecurityLevel = sec_sunC2;
+d262 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d19 11
+d48 1
+a48 1
+	SecurityLevel = sec_std;
+d57 1
+a57 1
+			ServiceOrder[s++] = srv_local;
+d61 1
+a61 1
+			ServiceOrder[s++] = srv_yp;
+d65 1
+a65 1
+			ServiceOrder[s++] = srv_hesiod;
+d70 1
+a70 1
+	ServiceOrder[s++] = srv_last;
+d74 1
+a74 1
+		SecurityLevel = sec_std;
+d78 1
+a78 1
+		SecurityLevel = sec_u4upgrade;
+d82 1
+a82 1
+		SecurityLevel = sec_u4enhanced;
+d100 1
+a100 1
+				SecurityLevel = sec_OSFenhanced;
+d117 1
+a179 1
+#define	SV_PWCOMPAT	"passwd_compat"
+d184 1
+a184 1
+	SecurityLevel = sec_std;
+d191 1
+a191 1
+	for (svlist = get_nsswitch(__NSW_PASSWD_DB); *svlist; *svlist++) {
+d193 1
+a193 1
+			ServiceOrder[svo++] = srv_local;
+d198 1
+a198 1
+			ServiceOrder[svo++] = srv_yp;
+d201 2
+a202 2
+		if (strcmp(*svlist, SV_COMPAT) == 0) {
+			char	**pwsv = get_nsswitch(SV_PWCOMPAT);
+d213 1
+a213 1
+			ServiceOrder[svo++] = sv_compat;
+d220 1
+a220 1
+			ServiceOrder[svo++] = srv_nisplus;
+d225 1
+a225 1
+	ServiceOrder[svo] = srv_last;
+d246 1
+a246 1
+	SecurityLevel = sec_std;
+d249 1
+a249 1
+		SecurityLevel = sec_sunC2;
+@

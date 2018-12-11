@@ -1,0 +1,225 @@
+body {
+	background: white; 
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 12px; 
+	font-style: normal; 
+	font-weight: normal; 
+	font-variant: normal; 
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: .25in;
+	margin-right: .25in;
+} 
+table {
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	margin-left: 0;
+	margin-right: 0;
+} 
+form {
+	margin-bottom: 0; 
+	margin-top: 0; 
+	margin-left: 0;
+	margin-right: 0;
+} 
+.currentmenu {
+	background-color: #eeeeee; 
+	color: #000000; 
+	font-weight: bold; 
+} 
+.dropmenu {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	color: #333333; 
+	font-weight: normal; 
+	font-style: normal; 
+	font-size: 10px; 
+} 
+.trail {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 10px; 
+	font-weight: normal; 
+	font-style: normal; 
+} 
+.trail A:link {
+	color: #333333; 
+	font-weight: normal; 
+	text-decoration: underline; 
+} 
+.trail A:visited {
+	color: #333333; 
+	font-weight: normal; 
+	text-decoration: underline; 
+} 
+.trail A:hover {
+	color: #333333; 
+	font-weight: normal; 
+	text-decoration: underline; 
+} 
+.content {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 12px; 
+	font-style: normal; 
+} 
+.content A:link {
+	color: #cc5500; 
+	font-weight: bold; 
+	text-decoration: none; 
+} 
+.content A:visited {
+	color: #cc5500; 
+	font-weight: bold; 
+	text-decoration: none; 
+} 
+.content A:hover {
+	color: #cc5500; 
+	font-weight: bold; 
+	text-decoration: underline; 
+} 
+.content H1 {
+	font-size: 16px; 
+	font-weight: bold; 
+	color: #333333; 
+} 
+.content H2 {
+	font-size: 14px; 
+	font-weight: bold; 
+	color: #333333; 
+} 
+.content H1 A {
+	font-size: 16px; 
+	font-weight: bold; 
+	color: #333333; 
+	text-decoration: underline; 
+} 
+.content H2 A {
+	font-size: 14px; 
+	font-weight: bold; 
+	color: #333333; 
+	text-decoration: underline; 
+} 
+.content A H1 {
+	font-size: 16px; 
+	font-weight: bold; 
+	color: #333333; 
+text-decoration: underline; 
+} 
+.content A H2 {
+font-size: 14px; 
+font-weight: bold; 
+color: #333333; 
+text-decoration: underline; 
+} 
+.content H3 {
+font-size: 13px; 
+font-weight: bold; 
+color: #333333; 
+} 
+.content H4 {
+font-size: 12px; 
+font-weight: bold; 
+color: #333333; 
+} 
+.content A H3 {
+font-size: 13px; 
+font-weight: bold; 
+color: #333333; 
+text-decoration: underline; 
+} 
+.content A H4 {
+font-size: 12px; 
+font-weight: bold; 
+color: #333333; 
+text-decoration: underline; 
+} 
+.content H5 {
+font-size: 11px; 
+font-weight: bold; 
+color: #333333; 
+}
+.content H6 {
+font-size: 10px; 
+font-weight: bold; 
+color: #333333; 
+} 
+.content A H5 {
+font-size: 11px; 
+font-weight: bold; 
+color: #333333; 
+text-decoration: underline; 
+} 
+.content A H6 {
+font-size: 10px; 
+font-weight: bold; 
+color: #333333; 
+text-decoration: underline; 
+} 
+.sidenavbar {
+font-family: Verdana, Arial, Helvetica, sans-serif; 
+color: #333333; 
+font-weight: bold; 
+font-style: normal; 
+font-size: 10px; 
+} 
+.sidenavbar A:link {
+color: #cc5500; 
+text-decoration: none; 
+} 
+.sidenavbar A:active {
+text-decoration: none; 
+} 
+.sidenavbar A:visited {
+color: #cc5500; 
+text-decoration: none; 
+} 
+.sidenavbar A:hover {
+color: #cc5500; 
+text-decoration: underline; 
+} 
+.navbar {
+font-family: Verdana, Arial, Helvetica, sans-serif; 
+color: #ffffff; 
+font-weight: bold; 
+font-style: normal; 
+font-size: 10px; 
+}
+.navbar A:link {
+color: #ffffff; 
+text-decoration: none; 
+} 
+.navbar A:active {
+color: #ffffff; 
+text-decoration: none; 
+} 
+.navbar A:visited {
+color: #ffffff; 
+text-decoration: none; 
+} 
+.navbar A:hover {
+color: #ffffff; 
+text-decoration: underline; 
+} 
+.signature {
+font-family: Verdana, Arial, Helvetica, sans-serif; 
+color: #333333; 
+font-weight: normal; 
+font-style: normal; 
+font-size: 10px; 
+} 
+.signature p {
+color: #333333; 
+text-decoration: none; 
+} 
+.signature A:link {
+color: #cc5500; 
+text-decoration: none; 
+} 
+.signature A:visited {
+color: #cc5500; 
+text-decoration: none; 
+} 
+
+div.para { margin-left: 40px; }
+
+tr.tags { vertical-align: top; }
+td.tag { font-weight: bold; align: left; }
+

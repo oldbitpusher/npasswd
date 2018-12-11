@@ -1,0 +1,33 @@
+ ## Installation Scripts use these common settings.
+ #
+ #  Victor Burns (Texas Instruments) v-burns@ti.com
+
+ ##
+ #  Location of Installation files
+
+ SRC_PATH=NOTSET
+
+ ##
+ #  Selected Path of Installation
+
+ DST_PATH=/usr/lib/passwd
+
+ ##
+ #  Normal Path of Proper Installation
+ #  (Do not change! Coded into software.)
+
+ REALPATH=/usr/lib/passwd
+
+
+ ####
+ ##
+ #    DO NOT EDIT
+
+ CWD=${0%/*}
+ CWD=${CWD%/install}
+ [ "$CWD" = '.' ] && CWD=`/usr/bin/pwd`
+ [ "$CWD" = ''  ] && CWD=`/usr/bin/pwd`
+ CWD=${CWD%/install}
+ [ "${SRC_PATH}" = 'NOTSET' ] && SRC_PATH=$CWD
+
+ ##END

@@ -1,0 +1,25 @@
+dict/0-Index			Master index of word lists
+dict/WORDS-TO-USE		Default selection of word lists
+dict/Antworth.gz
+dict/CIS.gz
+dict/CRL-Words.gz
+dict/Congress.gz
+dict/Domains.gz
+dict/Dosref.gz
+dict/Ethnologue.gz
+dict/Family-Names.gz
+dict/Ftpsites.gz
+dict/Given-Names.gz
+dict/Jargon.gz
+dict/Koran.gz
+dict/LCarrol.gz
+dict/Movies.gz
+dict/Muffet-Words.gz
+dict/Paradise-Lost.gz
+dict/Python.gz
+dict/Roget-Words.gz
+dict/Trek.gz
+dict/Unabr-Dict.gz
+dict/Unix-Dict.gz
+dict/World-Factbook.gz
+dict/Zipcodes.gz

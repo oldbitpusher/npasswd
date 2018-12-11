@@ -1,0 +1,56 @@
+
+   ______________________________________________________________________
+   
+                          Npasswd bug report form
+   ______________________________________________________________________
+   
+   This is a suggested form for reporting npasswd bugs. The more detailed
+   information provided, the better the chance of getting a fix. Please
+   remember that I have a limited variety of UNIX platforms available for
+   testing.
+   
+
+OS and hardware:
+
+
+Output of npasswd -XV:
+
+
+Description of problem:
+
+
+
+Output of npasswd -XDall:
+
+
+
+Attempted fixes/workarounds:
+   ______________________________________________________________________
+   
+   Mail bug report to [1]npasswd-support@www.utexas.edu
+   ______________________________________________________________________
+   
+   [2][LINK][3]Home
+   ______________________________________________________________________
+   
+   Document id @(#) BugReport.html 1.2
+   Version 1.2
+   Last modified 09/14/98
+   
+   
+    [4]Clyde Hoover
+    
+   [5]Academic Computing Services and Instructional Technology Services
+   [6]The University of Texas at Austin
+   [7]Copyright 1998, The University of Texas at Austin. All rights
+   reserved.
+
+References
+
+   1. mailto:npasswd-support@www.utexas.edu
+   2. file://localhost/./TOC_std.html
+   3. file://localhost/./TOC_std.html
+   4. mailto:c.hoover@cc.utexas.edu
+   5. http://www.utexas.edu/cc
+   6. http://www.utexas.edu/
+   7. file://localhost/./Copyright.html

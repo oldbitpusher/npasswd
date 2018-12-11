@@ -1,0 +1,34 @@
+CRACK_TOLOWER	rules.c	/^#define CRACK_TOLOWER(a) 	(isupper(a)?tolower(a):(/
+CRACK_TOUPPER	rules.c	/^#define CRACK_TOUPPER(a) 	(islower(a)?toupper(a):(/
+Capitalise	rules.c	/^Capitalise(str)$/
+Char2Int	rules.c	/^Char2Int(character)$/
+Chop	stringlib.c	/^Chop(string)$/
+Clone	stringlib.c	/^Clone(string)$/
+Debug	rules.c	/^Debug(a, b, c, d, e, f, g)$/
+FascistCheck	fascist.c	/^FascistCheck(password, path)$/
+FascistGecos	fascist.c	/^FascistGecos(password, uid, pwin)$/
+FascistLook	fascist.c	/^FascistLook(pwp, instring)$/
+FascistNpasswd	fascist.c	/^FascistNpasswd(pwl, instring)$/
+FindPW	packlib.c	/^FindPW(pwp, string)$/
+GTry	fascist.c	/^GTry(rawtext, password)$/
+GetPW	packlib.c	/^GetPW(pwp, number)$/
+ISSKIP	fascist.c	/^#define ISSKIP(x) (isspace(x) || ispunct(x))$/
+Lowercase	rules.c	/^Lowercase(str)$/
+Mangle	rules.c	/^Mangle(input, control)$/
+MatchClass	rules.c	/^MatchClass(class, input)$/
+PMatch	rules.c	/^PMatch(control, string)$/
+PWClose	packlib.c	/^PWClose(pwp)$/
+PWOpen	packlib.c	/^PWOpen(prefix, mode)$/
+PW_WORDS	packer.h	/^#define PW_WORDS(x) ((x)->header.pih_numwords)$/
+Pluralise	rules.c	/^Pluralise(string)		\/* returns a pointer to a plura/
+PolyPurge	rules.c	/^PolyPurge(string, class)$/
+PolyStrchr	rules.c	/^PolyStrchr(string, class)$/
+PolySubst	rules.c	/^PolySubst(string, class, new)$/
+Purge	rules.c	/^Purge(string, target)		\/* returns pointer to a pur/
+PutPW	packlib.c	/^PutPW(pwp, string)$/
+Reverse	rules.c	/^Reverse(str)$/
+STRCMP	rules.c	/^#define STRCMP(a,b)		strcmp((a),(b))$/
+Substitute	rules.c	/^Substitute(string, old, new)$/
+Suffix	rules.c	/^Suffix(myword, suffix)$/
+Trim	stringlib.c	/^Trim(string)$/
+Uppercase	rules.c	/^Uppercase(str)$/

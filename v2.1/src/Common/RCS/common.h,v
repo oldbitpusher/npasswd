@@ -1,0 +1,517 @@
+head	1.14;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.14
+date	2002.10.02.15.58.53;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.11.17.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.10.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.04.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	97.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.09.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.08.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	96.08.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	96.08.07.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.14
+log
+@Put under GPL
+@
+text
+@/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ * $Id: common.h,v 1.13 1998/11/17 00:00:00 clyde Exp clyde $
+ *
+ * Function declarations for routines in the common module library
+ *
+ */
+#ifndef	common_h
+#define	common_h 1
+
+/*
+ * Some compilers (AIX 4) don't like seeing the prototype and the declaration
+ * at the same time, especially when the prototype has ellipses (...)
+ * So these are gaurded against with #define and #ifndef
+ */
+
+typedef struct {
+	char	*name;
+	int	level;
+	char	*help;
+} debug_table;
+
+/*
+ * Routines in messages.c
+ */
+#ifndef	_messages_c
+ int	get_debug();
+ void	init_debug _((int));
+ void	set_debug _((char *, debug_table *));
+ void	set_die_callback _((void(*)()));
+ void	set_debug_tag _((char *));
+ void	debug _((int, char *, ...));
+ void	die _((char *, ...));
+ void	warn _((char *, ...));
+ void	logdie _((char *, ...));
+ void	logerr _((char *, ...));
+#endif
+
+#ifdef	npasswd_h
+/*
+ * Routines in singals.c
+ */
+#ifndef	_signals_c
+  void	block_signals _((struct sigblk *, ...));
+  void	unblock_signals _((struct sigblk *));
+#endif
+
+/*
+ * Routines in mpw_util.c
+ */
+struct mpasswd *copympwent _((struct mpasswd *, struct mpasswd *));
+void printmpwent _((struct mpasswd *));
+
+#endif	/* npasswd_h */
+
+/*
+ * Routines in pw_util.c
+ */
+#ifndef HAS_PUTPWENT
+ void	putpwent _((struct passwd *p, FILE *));
+#endif
+
+#ifndef HAS_FGETPWENT
+ struct passwd *fgetpwent _((FILE *));
+#endif
+
+#ifndef HAS_SPUTPWENT
+ char *sputpwent _((struct passwd *, char *));
+#endif
+
+struct passwd *sgetpwent _((char *));
+struct passwd *copypwent _((struct passwd *, struct passwd *));
+struct passwd *fgetpwnam _((char *, char *));
+
+/*
+ * Routines in getpass.c
+ */
+void	get_password _((char *, char *, char *, int));
+char	*np_getpass _((char *));
+int	password_cmp _((char *, char *));
+
+/*
+ * Routines in file_utils.c
+ */
+size_t	FileSize _((char *));
+int	OpenWithLock _((char *));
+int	MakeLockTemp _((char *));
+void	FixPwFileMode _((char *, char *));
+
+/*
+ * Routines in term.c
+ */
+int	term_get_fd();
+void	term_set_fd _((int));
+void	term_save();
+void	term_restore();
+void	term_echo _((int));
+void	term_raw _((int));
+int	term_read _((char *, size_t));
+
+/*
+ * Routines in other modules
+ */
+void	pager _((FILE *));
+char	**split _((char *, char, char *, char));
+int	xatoi _((char *, char **, int *));
+int	decode_boolean _((char *));
+int	decode_int _((char *));
+void	decode_string _((char *, char *, int));
+void	chop_nl _((char *));
+
+#ifndef HAS_STRCASECMP
+ int	strcasecmp _((char*, char *));
+ int	strncasecmp _((char*, char *));
+#endif
+
+#ifndef	HAS_STRDUP
+ char	*strdup _((char *));
+#endif
+
+#endif	/* common_h */
+/* End $RCSfile: common.h,v $ */
+@
+
+
+1.13
+log
+@Add copyright notice
+@
+text
+@d2 1
+a2 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d4 4
+a7 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d9 4
+a12 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d14 6
+a19 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d23 1
+a23 1
+ * $Id$ (cc.utexas.edu) %P%
+d142 1
+a142 1
+/* End $RCSfile$ */
+@
+
+
+1.12
+log
+@Add routines from pager.c and term.c
+@
+text
+@d2 44
+@
+
+
+1.11
+log
+@1. Change FileSizeDiff() to FileSize() 2. Add OpenWithLock()
+@
+text
+@d90 11
+d103 1
+@
+
+
+1.10
+log
+@1. Add help field to debug table 2. Rename debug_levels to debug_table 3. Add protos for set_debug(), set_debug_tag(), get_debug() and init_debug()
+@
+text
+@d84 2
+a85 1
+size_t	FileSizeDiff _((char *, char *));
+@
+
+
+1.9
+log
+@1. Add set_debug() 2. Add debug_table typedef
+@
+text
+@d19 2
+a20 1
+} debug_levels;
+d26 3
+d30 1
+a30 1
+ void	setdebug _((char *, debug_levels *));
+@
+
+
+1.8
+log
+@Add definitions of new comobj routines
+@
+text
+@d16 5
+d26 1
+@
+
+
+1.7
+log
+@1. Group decls by what file they are for 2. Wrap some decls in guard #ifdefs (keep AIX cc happy)
+@
+text
+@d43 1
+a43 1
+#endif
+d65 14
+d97 1
+a97 1
+#endif
+@
+
+
+1.6
+log
+@Fix declaration of set_die_callback()
+@
+text
+@d10 5
+a14 4
+#ifndef	HAS_STRDUP
+char	*strdup _((char *));
+#endif
+void	chop_nl _((char *));
+d19 8
+a26 6
+void	set_die_callback _((void(*)()));
+void	debug _((int, char *, ...));
+void	die _((char *, ...));
+void	warn _((char *, ...));
+void	logdie _((char *, ...));
+void	logerr _((char *, ...));
+d28 1
+d32 4
+a35 1
+#ifdef	npasswd_h
+d37 3
+a39 3
+void	block_signals _((struct sigblk *, ...));
+void	unblock_signals _((struct sigblk *));
+
+d45 3
+a47 5
+#ifndef HAS_STRCASECMP
+int	strcasecmp _((char*, char *));
+int	strncasecmp _((char*, char *));
+#endif
+
+d49 1
+a49 1
+void	putpwent _((struct passwd *p, FILE *));
+d53 1
+a53 1
+struct passwd *fgetpwent _((FILE *));
+d57 1
+a57 1
+char *sputpwent _((struct passwd *, char *));
+d64 3
+a68 1
+
+d72 1
+d74 3
+d78 6
+@
+
+
+1.5
+log
+@Remove 'const' declarations (too much compiler pain)
+@
+text
+@d18 1
+a18 1
+void	set_die_callback _((void *));
+@
+
+
+1.4
+log
+@add set_die_callback()
+@
+text
+@d31 1
+a31 1
+void	unblock_signals _((const struct sigblk *));
+d33 2
+a34 2
+struct mpasswd *copympwent _((const struct mpasswd *, struct mpasswd *));
+void printmpwent _((const struct mpasswd *));
+d44 1
+a44 1
+void	putpwent _((const struct passwd *p, FILE *));
+d52 1
+a52 1
+char *sputpwent _((const struct passwd *, char *));
+d55 3
+a57 3
+struct passwd *sgetpwent _((const char *));
+struct passwd *copypwent _((const struct passwd *, struct passwd *));
+struct passwd *fgetpwnam _((const char *, const char *));
+d59 2
+a60 2
+char	**split _((const char *, const char, const char *, const char));
+int	xatoi _((const char *, char **, int *));
+d62 3
+a64 3
+int	decode_boolean _((const char *));
+int	decode_int _((const char *));
+void	decode_string _((const char *, const char *, int));
+@
+
+
+1.3
+log
+@Add const declarations where useful
+@
+text
+@d18 1
+@
+
+
+1.2
+log
+@Beta 3 development checkin 2
+@
+text
+@d30 1
+a30 1
+void	unblock_signals _((struct sigblk *));
+d32 2
+a33 2
+struct mpasswd *copympwent _((struct mpasswd *));
+void printmpwent _((struct mpasswd *));
+d43 1
+a43 1
+void	putpwent _((struct passwd *p, FILE *));
+d51 1
+a51 1
+char *sputpwent _((struct passwd *, char *));
+d54 3
+a56 3
+struct passwd *sgetpwent _((char *));
+struct passwd *copypwent _((struct passwd *, struct passwd *));
+struct passwd *fgetpwnam _((char *, char *));
+d58 2
+a59 2
+char	**split _((char *, char, char *, char));
+int	xatoi _((char *, char **, int *));
+d61 3
+a63 3
+int	decode_boolean _((char *));
+int	decode_int _((char *));
+void	decode_string _((char *, char *, int));
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d27 2
+d32 5
+a57 3
+struct mpasswd *copympwent _((struct mpasswd *));
+void printmpwent _((struct mpasswd *));
+
+@

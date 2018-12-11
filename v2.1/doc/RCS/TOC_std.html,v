@@ -1,0 +1,280 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@Fix spelling of a link target
+@
+text
+@<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Npasswd Documentation Roadmap</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m) [Netscape]">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, UT Austin">
+</HEAD>
+<BODY>
+
+<HR WIDTH="100%"></P>
+
+<H1 ALIGN=CENTER>Npasswd Documentation Roadmap</H1>
+
+<P>
+<HR WIDTH="100%">
+<P>
+This is the on-line documentation for version 2.0 of <i>npasswd</i>.
+
+<HR>
+<UL>
+<LI><A HREF="Main.html#Introduction">Introduction</A><BR>
+Introduction.</LI>
+
+<LI> <A HREF="Main.html#History" target="Content">History</A><BR>
+How <I>npasswd</I> came about.</LI>
+
+<LI><A HREF="BuildInstall.html">Build and install</A><BR>
+Building and installing <i>npasswd</i>.</LI>
+
+<LI><A HREF="Support.html#Trouble">Troubleshooting</A></BR>
+How to help yourself.</LI>
+
+<LI><A HREF="Support.html#Support">Support Guide</A></BR>
+How to get help.</LI>
+
+<LI><A HREF="Main.html#Future">The future</a><br>
+Where <i>npasswd</i> might be going.</LI>
+
+<LI> <A HREF="Main.html#Acknowledgments" target="Content">
+Acknowledgments</A><BR>
+Credit where credit is due.</LI>
+
+<LI><A HREF="Main.html#Bibliography">Bibliography</A><br>
+Other things of interest.
+</LI>
+
+<LI><A HREF="QNA.html">Questions and Answers</A><br>
+Answers to what I think are common questions.
+</LI>
+
+<LI><A HREF="ManPages.html" target="Content">Manual pages</A><br>
+Traditional UNIX manual pages.
+
+<LI><A HREF="Reference_index.html">Reference Manual</A><BR>
+The big hairy reference manual.</LI>
+
+<LI><A HREF="AdminGuide.html">Administration Guide</A><br>
+What the system administrator needs to know.
+</LI>
+
+<LI><A HREF="MiscNotes.html">Notes</A><br>
+Ruminations and relevations. </LI>
+
+</UL>
+<P>
+<HR WIDTH="100%">
+<P>
+Document id %Z% $RCSfile$ $Revision$<BR>
+Version $Revision$<BR>
+Last modified $Date$<P>
+<ADDRESS>
+  <A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A><br>
+  <A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</a><br>
+  <A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 1998</a>,
+The University of Texas at Austin.  All rights reserved.</font>
+</ADDRESS>
+</BODY></HTML>
+@
+
+
+1.6
+log
+@Change some doc titles and filenames
+@
+text
+@d39 1
+a39 1
+<LI> <A HREF="Main.html#Acknowledgements" target="Content">
+@
+
+
+1.5
+log
+@Update for new doc names
+@
+text
+@a17 2
+Most of the documentation is in HTML. 
+Any Web browser (including <b>lynx</b>) can be used to display it.</P>
+a18 2
+<P>A text-only version of this documentation is also provided.</P>
+
+d33 2
+a34 2
+<LI><A HREF="Support.html#Support">Support</A></BR>
+Where to find help.</LI>
+d36 1
+a36 1
+<LI><A HREF="Main.html#Future" >The future</a><br>
+d47 1
+a47 1
+<LI><A HREF="FAQ.html">Frequently Asked Questions</A><br>
+a50 2
+<hr width="50%" align=left>
+
+d52 1
+a52 1
+Traditional looking UNIX documentation.
+d62 1
+a62 1
+Various ruminations and relevations.  </LI>
+@
+
+
+1.4
+log
+@More twiddling
+@
+text
+@d4 1
+a4 1
+   <TITLE>Npasswd: Documentation Table of contents</TITLE>
+d12 1
+a12 1
+<H1 ALIGN=CENTER>Npasswd: Documentation table of contents</H1>
+d25 1
+a25 1
+<LI><A HREF="Introduction.html">Introduction</A><BR>
+d28 2
+a29 2
+<LI> <A HREF="Introduction.html#History" target="Content">History</A><BR>
+How npasswd came about and where it's going.</LI>
+d31 1
+a31 1
+<LI><A HREF="Build.html">Build and install</A><BR>
+d34 4
+a37 1
+<LI><A HREF="Introduction.html#Support">Support</A></BR>
+d40 1
+a40 1
+<LI><A HREF="Introduction.html#Future" >The future</a><br>
+d43 1
+a43 1
+<LI> <A HREF="Introduction.html#Acknowledgements" target="Content">
+d47 1
+a47 1
+<LI><A HREF="Introduction.html#Bibliography">Bibliography</A><br>
+d63 1
+a63 1
+<LI><A HREF="AdminGuide.html">Administrator's Guide</A><br>
+d67 2
+a68 2
+<LI><A HREF="ProgrammerGuide.html">Programmer's Guide</A><BR>
+What a programmer needs to know.</LI>
+a69 7
+<LI><A HREF="PlatformNotes.html">Platform-specific notes</A><br>
+Ruminations about <i>npasswd</i> on various UNIX platforms.  </LI>
+
+<LI><A HREF="OpenIssues.html">Open issues</A><BR>
+Unfinished work and caveats.</LI>
+</LI>
+
+@
+
+
+1.3
+log
+@Change Reference Manual link
+@
+text
+@d4 1
+a4 1
+   <TITLE>Npasswd reference manual</TITLE>
+d12 1
+a12 2
+<H1 ALIGN=CENTER>Npasswd version 2<BR>
+Table of Contents</H1>
+d16 4
+a19 4
+This is the on-line documentation for npasswd version
+2. Most of the documentation is in HTML format and should be viewed with
+a Web browser. No fancy HTML is used, so any Web browser should be up to
+the task of displaying it.</P>
+d60 1
+a60 1
+<LI><A HREF="AdminGuide.html">Administrator Guide</A><br>
+d64 1
+a64 1
+<LI><A HREF="ProgrammerGuide.html">Programmers Guide</A><BR>
+@
+
+
+1.2
+log
+@Fix copyright notice
+@
+text
+@d58 2
+a59 2
+<LI><A HREF="Reference.html">Reference Manual</A><BR>
+The big hairy  reference manual.</LI>
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d83 1
+a83 1
+  <A HREF="mailto:c.hoover@@cc.utexas.edu">Clyde Hoover</A></address>
+d91 1
+@

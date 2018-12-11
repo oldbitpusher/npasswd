@@ -1,0 +1,754 @@
+head	1.15;
+access;
+symbols;
+locks; strict;
+comment	@ * @;
+
+
+1.15
+date	2002.10.02.15.46.34;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2000.08.11.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.04.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.03.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	97.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	96.08.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	96.08.13.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	96.08.09.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	96.04.03.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	94.10.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	94.09.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	94.07.28.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Use GNU General License
+@
+text
+@/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ * 
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ *	This program duplicates the manual page behavior of the 4.XBSD
+ *	chfn(1) command.
+ */
+#include "npasswd.h"
+#include "Methods/pwm_defs.h"
+
+#ifndef lint
+static char sccsid[] = "$Id: chfn.c,v 1.14 2000/08/11 00:00:00 clyde Exp clyde $ (cc.utexas.edu) %P%";
+#endif
+
+Config_Value char	*Chfn_Help = CHFN_HELP,
+			*Chfn_Motd = CHFN_MOTD;
+
+#define	GECOS_SIZE	128
+
+private int	check_name _((char *));
+private int	check_roomnum _((char *));
+private int	check_phone _((char *));
+
+struct gecosFields {
+	char	*label;
+	int	(*check)();
+	char	*oldvalue;
+};
+
+/* These must be in the right order */
+private struct gecosFields Fields[] = {
+	{ "Name",		check_name },
+	{ "Office number",	check_roomnum },
+	{ "Office phone",	check_phone },
+	{ "Home phone",		check_phone },
+	{ 0 },
+};
+
+public void chfn(theUser, theCaller)
+struct mpasswd	*theUser,
+		*theCaller;
+{
+	char	newGecos[GECOS_SIZE];
+	char	*t;
+	char	**oldGecos;
+	char	**x;
+	int	field;
+	int	ismore = 1;
+	struct gecosFields *gptr;
+	struct mpasswd	*newUser;
+
+#ifdef	USE_NIS
+	yp_password(theUser);	/* If a NIS client get user password */
+#endif
+	if (theCaller->mpw_uid &&
+	    strcmp(theCaller->mpw_name, theUser->mpw_name))
+		die("Permission denied.\n");
+
+	motd(Chfn_Motd, 0);
+	newGecos[0] = 0;
+
+	if (!XSwitches[Xsw_UseStdin]) {
+		printf("Changing finger information for %s on %s\n",
+			theUser->mpw_name, theUser->pws_loc);
+		printf("Default values are printed inside of '[]'\n");
+		printf("To accept the default, type <return>\n");
+		printf("To have a blank entry, type the word 'none'\n");
+		printf("For more information, type '?'\n");
+		fflush(stdout);
+	}
+	oldGecos = split(theUser->mpw_gecos, ',', 0, 0);
+
+	for (gptr = Fields, x = oldGecos; gptr->label; gptr++) {
+		if (x && *x) gptr->oldvalue = *x++;
+		else gptr->oldvalue = "";
+	}
+
+	for (field = 0; (&Fields[field])->label; field++) {
+		char	inbuf[GECOS_SIZE];
+
+		gptr = &Fields[field];
+		if (!XSwitches[Xsw_UseStdin])
+			printf("%s [%s]: ", gptr->label, gptr->oldvalue);
+
+		if (fgets(inbuf, GECOS_SIZE, stdin) == NULL) {
+			if (feof(stdin)) {
+				printf("\nFinger information unchanged\n");
+				return;
+			}
+			else {
+				die("Error while reading stdin.\n");
+			}
+		}
+		chop_nl(inbuf);
+		if (strcmp(inbuf, "?") == 0) {
+			motd(Chfn_Help, "Sorry, there is no help.\n");
+			field--;
+			continue;
+		} else if (*inbuf == '\0') {
+			(void) strncpy(inbuf, gptr->oldvalue, sizeof inbuf);
+		} else if (strcasecmp(inbuf, "none") == 0) {
+			inbuf[0] = 0;
+		} else {
+			if (!(gptr->check)(inbuf)) {
+				printf("Invalid %s: %s\n", gptr->label, inbuf);
+				fflush(stdout);
+				field--;
+				continue;
+			}
+		}
+		(void) strcat(newGecos, inbuf);
+		(void) strcat(newGecos, ",");
+	}
+	t = strrchr(newGecos, ',');
+	*t = 0;
+
+	newUser = copympwent(theUser, (struct mpasswd *)0);
+	newUser->mpw_gecos = newGecos;
+
+	pw_replace(theUser, newUser, CHG_GECOS);
+	syslog(LOG_INFO,
+	       "Finger information changed on %s for %s by %s\n",
+	       theUser->pws_loc, theUser->mpw_name, theCaller->mpw_name);
+}
+
+/*
+ *	check_name	- check for valid user name
+ *	check_roomnum	- check for valid room number
+ *	check_phone	- check for valid phone number
+ *
+ *	These three routines can be used to provide sanity checks for 
+ *	 values to be stored in the password file gecos fields.
+ *
+ *	Return 1 if field is OK
+ *	       0 if not.
+ */
+
+private int
+check_name (name)
+	char	*name;
+{
+	for ( ; *name; name++ ) {
+		if (*name == ':' || *name == ',' || !isprint(*name)) {
+			return(0);
+		}
+	}
+	return(1);
+}
+
+private int
+check_roomnum (num)
+char	*num;
+{
+	for ( ; *num != '\0' ; num++ ) {
+		if (*num == ':' || *num == ',' || !isprint(*num)) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+private int
+check_phone (phonenum)
+char	*phonenum;
+{
+	for ( ; *phonenum != '\0' ; phonenum++ ) {
+		if (!isdigit (*phonenum) && *phonenum != '-' &&
+		    *phonenum != '(' && *phonenum != ')') {
+			return 0;
+		}
+		/* Space is ok */
+	}
+	return 1;
+}
+/*
+ * End $RCSfile: chfn.c,v $
+ */
+@
+
+
+1.14
+log
+@Fix bug with gecos data read
+@
+text
+@d2 6
+a7 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d9 4
+a12 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d14 3
+a16 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d18 2
+a19 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d30 1
+a30 1
+static char sccsid[] = "$Id$ (cc.utexas.edu) %P%";
+d194 1
+a194 1
+ * End $RCSfile$
+@
+
+
+1.13
+log
+@Add copyright notice
+@
+text
+@d101 1
+@
+
+
+1.12
+log
+@Change name of help & motd file
+@
+text
+@d2 44
+@
+
+
+1.11
+log
+@More careful string copying
+@
+text
+@d12 2
+a13 2
+Config_Value char	*ChfnHelpFile = CHFN_HELP,
+			*ChfnMotdFile = CHFN_MOTD;
+d56 1
+a56 1
+	motd(ChfnMotdFile, 0);
+d92 1
+a92 1
+			motd(ChfnHelpFile, "Sorry, there is no help.\n");
+@
+
+
+1.10
+log
+@Change missing help file message
+@
+text
+@d96 1
+a96 1
+			(void) strcpy(inbuf, gptr->oldvalue);
+@
+
+
+1.9
+log
+@Fix punctutation for die() messages
+@
+text
+@d92 1
+a92 1
+			motd(ChfnHelpFile, "Missing help file");
+@
+
+
+1.8
+log
+@1. Change configuration var names 2. Deal with missing GECOS fields
+@
+text
+@d87 1
+a87 1
+				die("Error while reading stdin\n");
+@
+
+
+1.7
+log
+@Beta 3 development checkin 2
+@
+text
+@d12 2
+a13 2
+Config_Value char	*chfn_help = CHFN_HELP,
+			*chfn_motd = CHFN_MOTD;
+d24 1
+d27 1
+d43 1
+d45 1
+d52 2
+a53 1
+	if (theCaller->mpw_uid && strcmp(theCaller->mpw_name, theUser->mpw_name)) {
+a54 2
+	}
+	motd(chfn_motd, 0);
+d56 2
+d69 5
+d78 3
+a80 3
+		if (!XSwitches[Xsw_UseStdin]) {
+			printf("%s [%s]: ", gptr->label, oldGecos[field]);
+		}
+d92 1
+a92 1
+			motd(chfn_help, "Missing help file");
+d96 2
+a97 2
+			(void) strcpy(inbuf, oldGecos[field]);
+		} else if (strcasecmp(inbuf, "none")) {
+d113 1
+a113 1
+	newUser = copympwent(theUser);
+@
+
+
+1.6
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d6 1
+a6 1
+#include "pwm_defs.h"
+@
+
+
+1.5
+log
+@Reflect new mpasswd structure element names
+@
+text
+@d12 2
+a13 7
+#ifdef __STDC__
+private enum chg_perm can_change_finfo (struct mpasswd *, struct mpasswd *);
+private int is_none (char *field);
+#else
+private enum chg_perm can_change_finfo ();
+private int is_none ();
+#endif
+d15 1
+d17 3
+a19 3
+#ifndef CHFN_HELP
+# define	CHFN_HELP	"/usr/adm/chfn.help"
+#endif
+d21 4
+a24 3
+#ifndef CHFN_MOTD
+# define	CHFN_MOTD	"/usr/adm/chfn.motd"
+#endif
+d26 6
+a31 10
+public char	chfn_help[MAXPATHLEN] = { CHFN_HELP },
+		chfn_motd[MAXPATHLEN] = { CHFN_MOTD };
+
+#define NUM_GECOS_ENTRIES 4
+#define GECOS_SIZE 200
+char *gecosLabels[NUM_GECOS_ENTRIES] = {
+	"Name",
+	"Office number",
+	"Office phone",
+	"Home phone"
+d34 3
+a36 10
+typedef int (*GecosCheckFun)();
+private int check_name(), check_roomnum(), check_phone();
+
+GecosCheckFun check_gecos[NUM_GECOS_ENTRIES] = {
+	check_name, check_roomnum, check_phone, check_phone
+};
+	
+public void chfn(user, caller)
+struct mpasswd	*user,
+		*caller;
+a37 1
+	enum	chg_perm	perm;
+d39 5
+a43 6
+	char	oldGecos[GECOS_SIZE];
+	char	*gecosValues[NUM_GECOS_ENTRIES];
+	char	*gecosPtr = newGecos;
+	char	*rptr;
+	char	*tptr;
+	int	cnt;
+d45 4
+a48 1
+	if ((perm = can_change_finfo (user, caller)) == deny) {
+d51 1
+d53 8
+a60 11
+	motd(chfn_motd, (char *)0);
+
+	if (!ProgramInput) {
+		fprintf(stderr,
+			"Changing finger information for %s on %s\n",
+			user->mpw_name, user->pws_loc);
+		fprintf(stderr,	"Default values are printed inside of '[]'\n");
+		fprintf(stderr, "To accept the default, type <return>\n");
+		fprintf(stderr, "To have a blank entry, type the word 'none'\n");
+		fprintf(stderr, "For more information, type '?'\n");
+		fflush(stderr);
+d62 1
+d64 2
+a65 16
+	strcpy(oldGecos, user->mpw_gecos);
+	for (tptr = oldGecos, cnt = 0; *tptr != '\0'; tptr++) {
+		if (*tptr == ',') {
+			cnt++;
+		}
+	}
+	for ( ; cnt < NUM_GECOS_ENTRIES ; cnt++ ) {
+		strcat(oldGecos, ",");
+	}
+	tptr = oldGecos;
+	
+	for (cnt = 0; cnt < NUM_GECOS_ENTRIES; cnt++) {
+		gecosValues[cnt] = tptr;
+		for ( ; *tptr != ',' ; tptr++ ) ;
+		*tptr++ = '\0';
+	}
+d67 3
+a69 7
+	tptr = newGecos;
+	for (cnt = 0; cnt < NUM_GECOS_ENTRIES; cnt++) {
+		if (!ProgramInput) {
+			fprintf (stderr, "%s [%s]: ",
+				 gecosLabels[cnt],
+				 gecosValues[cnt]);
+			fflush(stderr);
+d71 1
+a71 3
+
+		rptr = fgets(tptr, GECOS_SIZE, stdin);
+		if (rptr == NULL) {
+d73 1
+a73 3
+				fprintf (stderr,
+					 "\nFinger information unchanged\n");
+				fflush(stderr);
+d77 1
+a77 1
+				die ("Error while reading stdin\n");
+d80 2
+a81 11
+		if (rptr = index(tptr, '\n'))
+			*rptr = '\0';
+
+		if (*tptr == '\0') {
+			(void) strcpy(tptr, gecosValues[cnt]);
+			for ( ; *tptr != '\0'; tptr++) ;
+			*tptr++ = ',';
+			continue;
+		}
+
+		if (strcmp(tptr, "?") == 0) {
+d83 1
+a83 1
+			cnt--;
+d85 11
+d97 5
+d103 2
+a104 12
+		if (is_none(tptr)) {
+			*tptr++ = ',';
+			continue;
+		}
+		
+		if (! (check_gecos[cnt])(tptr)) {
+			fprintf (stderr, "Invalid %s: %s\n", 
+				 gecosLabels[cnt], tptr);
+			fflush (stderr);
+			cnt--;
+			continue;
+		}
+d106 1
+a106 6
+		while ( *tptr++ != '\0') ;
+		*(tptr-1) = ',';
+	}
+	*--tptr = '\0';
+
+	pw_replace(user, (char *)0, newGecos, (char *)0);
+d109 1
+a109 6
+	       user->pws_loc, user->mpw_name, caller->mpw_name);
+
+#ifdef	USE_NIS
+	yp_sync();
+#endif
+	return;
+a112 32
+ *	can_change_finfo - check finger information change permission
+ *
+ *	Returns 1 if finger information can be changed
+ *		0 if not
+ */
+private enum chg_perm can_change_finfo (theUser, theCaller)
+struct mpasswd	*theUser,
+		*theCaller;
+{
+	Uid_t	calluid = getuid();
+
+	if (calluid == 0)	/* Su can change anybody's finger info */
+		return(other);
+
+	if (strcmp(theCaller->mpw_name, theUser->mpw_name))
+		return(deny);		/* I'm not root and target isn't me */
+
+	return(self);			/* I can always change my finger info */
+}
+
+private int is_none (field)
+char	*field;
+{
+	if (field[0] != 'n' && field[0] != 'N') return 0;
+	if (field[1] != 'o' && field[1] != 'O') return 0;
+	if (field[2] != 'n' && field[2] != 'N') return 0;
+	if (field[3] != 'e' && field[3] != 'E') return 0;
+	if (field[4] != '\0' && field[4] != '\0') return 0;
+	return 1;
+}
+
+/*
+d124 3
+a126 2
+private int check_name (name)
+char *name;
+d128 1
+a128 1
+	for ( ; *name != '\0' ; name++ ) {
+d130 1
+a130 1
+			return 0;
+d133 1
+a133 1
+	return 1;
+d136 3
+a138 2
+private int check_roomnum (num)
+char *num;
+d148 3
+a150 2
+private int check_phone (phonenum)
+char *phonenum;
+d157 1
+@
+
+
+1.4
+log
+@Beta 3 development checkin
+@
+text
+@d70 1
+a70 1
+			user->mpw_name, user->where);
+d153 1
+a153 1
+	       user->where, user->mpw_name, caller->mpw_name);
+@
+
+
+1.3
+log
+@Change YP_PASSWD to YP_SUPPORT
+@
+text
+@d116 1
+a116 1
+		if (rptr = INDEX(tptr, '\n'))
+d151 1
+a151 3
+
+#ifdef	USE_SYSLOG
+	syslog(MESSAGE_LOG_LEVEL,
+a153 1
+#endif
+d155 1
+a155 1
+#ifdef	YP_SUPPORT
+d171 1
+a171 1
+	uid_t	calluid = getuid();
+@
+
+
+1.2
+log
+@Fix include file
+@
+text
+@d158 1
+a158 1
+#ifdef	YP_PASSWD
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+a6 2
+#include "pw_defs.h"
+#include "pw_nis.h"
+a7 2
+#include TIME_H
+
+@

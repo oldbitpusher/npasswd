@@ -1,0 +1,59 @@
+
+Passwd help file				Version 1.1 of 06/25/98
+
+The object when choosing a password is to make it as difficult as possible
+for a cracker to make educated guesses about what you've chosen.
+
+A password will NOT be accepted if it:
+
+	* Is less than 6 characters long.
+	* Matches anything in your account information, such as your login
+	  name, office phone number, etc.
+	* Has more than 3 repeated characters -- thus "aaa" would be rejected.
+	* Matches or resembles any word found in various dictionaries.
+
+Picking good passwords:
+
+	* It should contain at least one upper case letter (A-Z), digit (0-9),
+	  or punctuation character (such as `.', `,' or  `-').
+
+	* It should NOT be simply an English word or a name -- 
+	  crackers have online dictionaries, and names relevant to you can be
+	  obtained from publically-available records.
+
+	* The password should NOT be only lower-case or upper-case letters;
+	  it should NOT be only digits. 
+
+	* The password should be MORE THAN 6 characters long.
+
+	* It should be easy to remember, so you don't have to write it down. 
+
+	* You should be able to type the password quickly, without having to
+	  look at the keyboard.  This makes it harder for someone to steal
+	  your password by watching over your shoulder.
+
+Ways to come up with a hard to guess (but easy to remember) password:
+
+	* Misspell a word.
+	* Take two short words, capitalize one or more letters and put them
+	  together with punctuation marks or numbers in between.
+	* Choose a line or two from a song or poem and use the first letter of
+	  each word.
+	* Create words which mimic easily remembered sounds.
+
+Password security:
+
+1) Change your password every 6-12 months.  (That way, if someone has
+   guessed your password, they'll lose the ability to use your account.)
+
+2) NEVER TELL *ANYONE* ELSE YOUR PASSWORD. Don't tell anyone who asks for
+   it -- NO ONE ELSE has a legitimate reason to know it.  Don't share
+   your account with other people -- if you share your account, then you'll
+   never know how far the password has spread, and YOU'LL be responsible
+   for whatever is done with your account.)
+
+3) Don't write your password down.  In particular, don't write it down on
+   anything in your work area, and especially not online in a file.
+   (Keeping it in your wallet is acceptable, but don't show it to others.)
+
+@(#)passwd.help	1.1 06/25/98

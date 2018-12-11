@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+compress="gzip -c"
+csuff="gz"
+level=2.05		# Need to do this better
+product="npasswd-${level}"
+if [ ! -f MANIFEST ]; then
+	echo No MANIFEST file found
+	exit 1
+fi
+
+cd ..
+if [ ! -d $product ]; then
+	echo Product symlink $product missing
+	exit 1
+fi
+
+userkit=${product}.tar.$csuff
+
+getfilelist()
+{
+	egrep -v -e '^#' -e '^$' $product/$1 | awk '{ print "'$product'/"$1 }'
+}
+
+rotate()
+{
+	for t in 8 7 6 5 4 3 2 1 0; do
+		[ -f $1.$t ] && mv -f $1.$t $1.`expr $t + 1`
+	done
+	mv -f $1 $1.0
+}
+
+if [ -z "$1" ]; then
+	echo Usage: $0 user words dev
+	exit 1
+fi
+
+for f do
+	case $f in
+	user)	echo Making empty Makefile.local
+		getfilelist MANIFEST | grep Makefile.local | \
+			awk '{ print "cp /dev/null "$1 }' | sh -x
+
+		rotate $product/$userkit
+		echo Building end-user kit $userkit
+		tar cfv - `getfilelist MANIFEST` | $compress > $product/$userkit
+		;;
+
+	dev)	devkit=${product}-developer.tar.$csuff
+		echo Building developer kit $devkit
+		rotate $devkit
+		tar cfv - `getfilelist MANIFEST.developer` | $compress > $product/$devkit
+		;;
+
+	words)	words=npasswd-words.tar.$csuff
+		echo Building word list package $words
+		tar cfv - `getfilelist MANIFEST.dicts` | $compress > $product/$words
+		;;
+	esac
+done
+exit 0

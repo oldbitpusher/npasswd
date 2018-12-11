@@ -1,0 +1,231 @@
+h36689
+s 00002/00000/00085
+d D 1.11 98/11/17 15:33:01 clyde 11 10
+c Add term.c and pager.c
+e
+s 00005/00002/00080
+d D 1.10 98/07/14 16:24:09 clyde 10 9
+c Major rework
+e
+s 00055/00011/00027
+d D 1.9 98/06/23 11:00:36 clyde 9 8
+c 1. Add copyright message
+c 2. Add pw_svc.c to source list
+c 3. Add more local stuff
+e
+s 00002/00000/00036
+d D 1.8 98/03/26 13:41:10 clyde 8 7
+c Add file_util.c and getpass.c
+e
+s 00001/00001/00034
+d D 1.7 96/09/12 16:19:38 clyde 7 6
+c Add ../.. to INCLUDE_PATH
+e
+s 00005/00001/00030
+d D 1.6 96/08/15 10:44:33 clyde 6 5
+c Add INCLUDE_PATH for CC and mkdep
+e
+s 00001/00001/00030
+d D 1.5 96/08/14 17:08:38 clyde 5 4
+c Change svc_info to pw_svc
+e
+s 00005/00001/00026
+d D 1.4 96/08/09 16:18:57 clyde 4 3
+c Beta 3 development checkin 2
+e
+s 00002/00000/00025
+d D 1.3 96/08/08 16:41:24 clyde 3 2
+c Add 'depend' target
+e
+s 00007/00003/00018
+d D 1.2 96/08/07 15:21:28 clyde 2 1
+c beta 3 development checkin
+e
+s 00021/00000/00000
+d D 1.1 96/04/01 16:15:04 clyde 1 0
+c date and time created 96/04/01 16:15:04 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+D 9
+/*
+ * Jmakefile for npasswd utility library
+ */
+E 9
+;#
+D 9
+;# %W% %G% (cc.utexas.edu) %P%
+E 9
+I 9
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+E 9
+;#
+I 6
+D 7
+Initialize(INCLUDE_PATH, -I..)
+E 7
+I 7
+D 9
+Initialize(INCLUDE_PATH, -I.. -I../..)
+E 9
+I 9
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# %W% %G% (cc.utexas.edu)
+;#
+E 9
+E 7
+
+E 6
+D 9
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+D 6
+Initialize(CFLAGS, -I.. $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 6
+I 6
+Initialize(CFLAGS, $(INCLUDE_PATH) $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 9
+I 9
+;#
+;# Makefile for npasswd commom object library
+;#
+#include "../../Jmake.local"
+E 9
+E 6
+
+I 6
+D 9
+Initialize(DPFLAGS, $(INCLUDE_PATH))
+E 9
+I 9
+Initialize(INCLUDE_PATH, -I.. -I../..)
+E 9
+
+E 6
+SOURCES = \
+D 2
+	messages.c \
+	pw_utils.c \
+	svc_get.c
+E 2
+I 2
+D 4
+	compatibility.c \
+E 4
+	chop_nl.c \
+I 4
+	compatibility.c \
+I 8
+	file_util.c \
+	getpass.c \
+E 8
+E 4
+	instring.c \
+I 4
+	messages.c \
+	mpw_util.c \
+I 11
+	pager.c \
+E 11
+I 9
+	pw_svc.c \
+E 9
+	pw_util.c \
+	signals.c \
+E 4
+	split.c \
+I 11
+	term.c \
+E 11
+D 5
+	svc_info.c \
+E 5
+I 5
+	pw_svc.c \
+E 5
+	xatoi.c \
+	xdecode.c
+E 2
+
+OBJECTS = \
+|expand f!$(SOURCES)!
+	!f:\.c=\.o \
+-expand \\
+
+I 9
+Describe(libcomobj.a, Build npasswd common object library)
+E 9
+NormalLibraryTarget(comobj, $(SOURCES), $(OBJECTS))
+I 3
+
+D 9
+DependTarget()
+E 3
+/*  End %M% */
+E 9
+I 9
+D 10
+LocalDebug()
+E 10
+I 10
+DependTarget()
+E 10
+
+D 10
+LocalEnd()
+E 10
+I 10
+DebugTarget()
+E 10
+
+I 10
+Describe(lint, Check C sources with lint)
+LintTarget()
+
+E 10
+/* End %M% */
+E 9
+E 1

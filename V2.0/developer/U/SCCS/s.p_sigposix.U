@@ -1,0 +1,47 @@
+h07389
+s 00001/00001/00025
+d D 1.2 97/05/05 17:06:01 clyde 2 1
+c Put evaled strings in ""
+e
+s 00026/00000/00000
+d D 1.1 95/04/05 16:09:55 clyde 1 0
+c date and time created 95/04/05 16:09:55 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_sigposix' - see if POSIX signal routines exist
+?RCS:
+?MAKE:p_sigposix: Inlibc Setvar
+?MAKE:	-pick add $@ %<
+?LINT:set p_sigposix
+?S:p_sigposix:
+?S:    This variable is set to 'true' if the POSIX signal routines exist
+?S:.
+?C:HAS_POSIX_SIGNALS:
+?C:	This symbol, if defined, indicates that the POSIX signal routines exist.
+?C:.
+?H:#$p_sigposix	HAS_POSIX_SIGNALS	/**/
+?H:.
+: see if sigprocmask exists
+echo " "
+D 2
+if set sigprocmask val -f p_sigposix; eval $csym; $val; then
+E 2
+I 2
+if set sigprocmask val -f p_sigposix; eval "$csym"; $val; then
+E 2
+        echo 'POSIX signal routines found.' >&4
+        p_sigposix="$define"
+else
+        echo 'No POSIX signal routines.' >&4
+        p_sigposix="$undef"
+fi
+
+E 1

@@ -1,0 +1,34 @@
+?bcmp:#ifndef HAS_BCMP
+?bcmp:#ifndef bcmp
+?bcmp:#define bcmp(s,d,l) memcmp((s),(d),(l))
+?bcmp:#endif
+?bcmp:#endif
+?bcmp:
+?bcopy:#ifndef HAS_BCOPY
+?bcopy:#ifndef bcopy
+?bcopy:#define bcopy(s,d,l) memcpy((d),(s),(l))
+?bcopy:#endif
+?bcopy:#endif
+?bcopy:
+?bzero:#ifndef HAS_BZERO
+?bzero:#ifndef bzero
+?bzero:#define bzero(s,l) memset((s),0,(l))
+?bzero:#endif
+?bzero:#endif
+?bzero:
+?index:#ifndef HAS_INDEX
+?index:#ifndef index
+?index:#define index strchr
+?index:#endif
+?index:#endif
+?index:
+?rindex:#ifndef HAS_INDEX
+?rindex:#ifndef rindex
+?rindex:#define rindex strrchr
+?rindex:#endif
+?rindex:#endif
+?rindex:
+?vfork:#ifndef HAS_VFORK
+?vfork:#define vfork fork
+?vfork:#endif
+?vfork:

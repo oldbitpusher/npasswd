@@ -1,0 +1,226 @@
+#!/bin/sh
+
+DEFAULT="/usr/lib/passwd/system"		# Where to stash things by default
+MV=/bin/mv
+
+#
+# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+# All rights reserved.
+#
+# By using this software the USER indicates that he or she has read,
+# understood and will comply with the following:
+#
+# U. T. Austin hereby grants USER permission to use, copy, modify, and
+# distribute this software and its documentation for any purpose and
+# without fee, provided that:
+#
+# 1. the above copyright notice appears in all copies of the software
+#    and its documentation, or portions thereof, and 
+# 2. a full copy of this notice is included with the software and its
+#    documentation, or portions thereof, and 
+# 3. neither the software nor its documentation, nor portions thereof,
+#    is sold for profit. Any commercial sale or license of this software,
+#    copies of the software, its associated documentation and/or
+#    modifications of either is strictly prohibited without the prior
+#    consent of U. T. Austin. 
+# 
+# Title to copyright to this software and its associated documentation
+# shall at all times remain with U. T. Austin. No right is granted to
+# use in advertising, publicity or otherwise any trademark, service
+# mark, or the name of U. T. Austin.
+# 
+# This software and any associated documentation are provided "as is,"
+# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+# University of Texas System, its Regents, officers, and employees shall
+# not be liable under any circumstances for any direct, indirect, special,
+# incidental, or consequential damages with respect to any claim by USER
+# or any third party on account of or arising from the use, or inability
+# to use, this software or its associated documentation, even if U. T.
+# Austin has been advised of the possibility of those damages.
+# 
+# Submit commercialization requests to: Office of the Executive Vice
+# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+# 78712, ATTN: Technology Licensing Specialist.
+#
+# @(#)savefiles.SH	1.6 06/30/98 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Scripts/SCCS/s.savefiles.SH
+#
+# savefiles.SH Move files, retaining hard links
+#
+# Usage:
+#	$0 [-n] [destination] file ... file"
+#
+# Exits with the number of errors encountered
+#
+EXEC=''
+
+#
+# filetype
+#	Sets 'type' to what kind of object $1 is
+# Usage
+#	filetype file
+#
+filetype()
+{
+	type=''
+	[ -z "$1" ] && return
+	type=`ls -dl $1 | sed 's/^\(.\)\(.*\)/\1/'`
+	[ X"$type" = "X-" ] && type='f'
+}
+
+savelink()
+{
+	(
+	umask 022
+	_dx=$1
+	shift
+	echo $* >> $_dx.MARK
+	)
+}
+
+#
+# movefile
+#	Move a file to directory $dest
+#
+# Usage
+#	movefile source-file
+#
+movefile()
+{
+	_bn=`basename $1`
+	if [ -f $dest/$_bn ]; then
+		echo File \"$dest/$_bn\" already exists
+		return			# File already exists at target
+	fi
+	filetype $1
+	if [ $type = l ]; then
+		target=`ls -l $1 | awk '{ print $NF }'`
+		echo \"$1\" is a symbolic link to \"$target\" - not moved
+		return
+	fi
+	if $EXEC $MV $1 $dest; then
+		echo Moved \"$1\" to \"$dest/$_bn\"
+		savelink $dest/$_bn $1
+	else
+		echo Failed to move \"$1\" to \"$dest/$_bn\"
+		errors=`expr $errors + 1`
+	fi
+}
+
+#
+# install_links
+#	Install file and make links
+#
+# Usage
+#	install_links file link1 ... linkN
+#
+install_links()
+{
+	[ -z "$1" ] && return		# No arguments
+	_first=$1
+	shift
+	movefile $_first
+	_sx=`basename $_first`
+	for _f in $*; do
+		_t=`basename $_f`
+		[ -f $dest/$_t ] && continue
+		if $EXEC ln $dest/$_sx $dest/$_t; then
+			echo Linked \"$dest/$_sx\" to \"$dest/$_t\"
+			savelink $dest/$_sx $_f
+			savelink $dest/$_t
+			$EXEC rm -f $_f
+		else
+			errors=`expr $errors + 1`
+		fi
+	done
+}
+
+#
+# Main program
+#
+if [ -z "$1" ]; then
+	echo "Usage: $0 [-n] [-d destination] file ... file"
+	exit 1
+fi
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-n)	EXEC=echo ;;
+	-d)	dest=$2; shift ;;
+	*)	break ;;
+	esac
+	shift
+done
+#
+# The first argument is the destination directory
+#
+if [ -z "$dest" ]; then
+	dest=$DEFAULT
+fi
+if [ ! -d "$dest" ]; then
+	echo No destination directory
+	exit 1
+fi
+#
+# Process files from command line
+#
+ls -id $* | sort -n | (
+	errors=0		# Error count
+	#
+	# Input is ordered by inode number
+	#
+	while read inum file; do
+		[ -d $file ] && continue
+		links=`ls -l $file | awk '{ print $2 }'`
+		#
+		# File has one link - just move it
+		#
+		if [ $links -eq 1 ]; then
+			movefile $file
+			continue
+		fi
+		#
+		# Files has multiple links - collect link information
+		# (the output of df does not matter, as long as it
+		# is related to the filesystem)
+		#
+		fs=`df $file | tail -1`
+		if [ -z "$fs" ]; then
+			echo Cannot determine filesystem for \"$file\"
+			movefile $file
+			continue
+		fi
+		#
+		# Build link lists
+		#  Name = "links_<basename of first file>"
+		#   e.g. "links_passwd"
+		#
+		bn=`basename $file`
+		if [ "$inum" = "$in_last" -a "$fs" = "$fs_last" ]; then
+			# Same inode and filesystem
+			[ -z "$bnlast" ] && bnlast=$bn
+			ln=links_$bnlast		# Make list name
+			eval "$ln=\"\$$ln \$file\""	# Add to list
+		else
+			ln=links_$bn		# Make list name
+			eval "$ln=\"$file\""	# Init list
+			lnx="$lnx $ln"		# Remember list name
+			bnlast=$bn		# Save state hooks
+			in_last=$inum
+			fs_last=$fs
+		fi
+	done
+	#
+	# Traverse the list of link lists
+	#
+	for it in $lnx; do
+		eval "tmp=\"\$$it\""
+		install_links $tmp
+	done
+	exit $errors
+)
+exit		# Exit status will be that of the child process
+#
+# end savefiles.SH

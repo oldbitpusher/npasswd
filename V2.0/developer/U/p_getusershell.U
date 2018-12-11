@@ -1,0 +1,20 @@
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_getusershell' - see if the getusershell routine exists
+?RCS:
+?MAKE:p_getusershell: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_getusershell
+?S:p_getusershell:
+?S:	This variable is set to 'true' if the getusershell
+?S:	routines exists in libc.
+?S:.
+?C:HAS_GETUSERSHELL:
+?C:	This symbol, if defined, indicates that getusershell exists.
+?C:.
+?H:#$p_getusershell	HAS_GETUSERSHELL	/**/
+?H:.
+set getusershell p_getusershell
+eval "$inlibc"
+

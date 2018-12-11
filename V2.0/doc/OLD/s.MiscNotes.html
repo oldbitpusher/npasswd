@@ -1,0 +1,376 @@
+h29355
+s 00010/00013/00206
+d D 1.6 98/07/20 15:36:12 clyde 6 5
+c Update with latest stuff, spell check
+e
+s 00011/00002/00208
+d D 1.5 98/07/16 09:09:23 clyde 5 4
+c Update OS notes
+e
+s 00002/00003/00208
+d D 1.4 98/07/08 09:37:19 clyde 4 3
+c Minor revisions
+e
+s 00061/00017/00150
+d D 1.3 98/07/02 15:43:24 clyde 3 2
+c Suck in old "Open Issues" text
+e
+s 00005/00001/00162
+d D 1.2 98/06/26 09:56:22 clyde 2 1
+c Fix signature
+e
+s 00163/00000/00000
+d D 1.1 98/06/24 17:15:25 clyde 1 0
+c date and time created 98/06/24 17:15:25 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, UT Austin">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (X11; I; SunOS 5.5 sun4m) [Netscape]">
+D 3
+	<title>Npasswd: Platform-specific issues</title>
+E 3
+I 3
+	<title>Npasswd Miscellaneous Notes</title>
+E 3
+</HEAD>
+<BODY>
+I 2
+<A NAME="top"></A>
+E 2
+
+<HR WIDTH="100%">
+<CENTER>
+<H1>
+D 3
+Platform-specific issues</H1></CENTER>
+E 3
+I 3
+Npasswd Miscellaneous Notes</H1></CENTER>
+E 3
+
+<HR WIDTH="100%">
+D 3
+<P>
+The following table lists the features and UNIX systems
+that <I>npasswd</I> is known to support. </P>
+E 3
+I 3
+<P><font size=+1>
+UNIX platforms and features
+which <I>npasswd</I> is known to support: </P></font>
+E 3
+
+D 3
+<TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 CAPTION="Npasswd 2.0 OS/Feature supp
+ort matrix" >
+E 3
+I 3
+<CENTER><TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2>
+E 3
+<TR>
+<TH> UNIX platform </TH>
+<TH> Supported features </TH>
+</TR>
+
+<TR>
+<TD align=center>
+SunOS 5<br>
+(Solaris 2)
+</TD>
+
+<TD align=center>
+Shadow passwords<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+SunOS 4<br>
+(Solaris 1)
+</TD>
+<TD align=center>
+Adjunct passwords<BR>
+Secure RPC<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+Digital UNIX<br>
+(OSF/1) 3.X and 4.X
+</TD>
+<TD align=center>
+Enhanced security<BR>
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+HP-UX<br>
+</TD>
+<TD align=center>
+D 3
+Enhanced security<BR>
+E 3
+I 3
+Enhanced security<b>*</b><BR>
+E 3
+NIS passwords
+</TD>
+</TR>
+
+<TR>
+<TD align=center>
+AIX 4<br>
+</TD>
+<TD align=center>
+D 3
+Shadow passwords<BR>
+E 3
+I 3
+Shadow passwords<b>*</b><BR>
+E 3
+NIS passwords
+</TD>
+</TR>
+I 3
+<tr>
+<td colspan=2 align=center><b>*</b>See below</td>
+</tr>
+E 3
+
+</TABLE></CENTER>
+
+<P>
+<H3>SunOS 4 (Solaris 1)</H2>
+
+<UL>
+Support for SunOS 4 is still included, but I have ceased development.
+Secure RPC and adjunct passwords are supported, though not thoroughly tested.
+I 5
+<I>Npasswd</I> will build with either the standard (/usr/ucb/cc) compiler
+or the Sun (/usr/lang/acc) compiler.
+E 5
+
+</UL>
+
+<H3> SunOS 5 (Solaris 2)</H3>
+
+D 3
+<UL>See the <A HREF="OpenIssues.html"><B>Open Issues</b></a> document
+concerning Solaris 2.
+
+E 3
+I 3
+<UL>
+<P>
+D 5
+<I>Npasswd</i> does not support Solaris 2 NIS+.
+E 5
+I 5
+D 6
+<I>Npasswd</i> does not support NIS+.
+E 6
+I 6
+<I>Npasswd</i> <B>does not</B> support NIS+.
+E 6
+E 5
+<P>
+Getting passwords out of
+NIS+ is easy, and even updating them is straightforward.
+NIS+ credentials are complicated to manage.
+<P>
+It is possible but not a good idea to have the login
+password and the NIS+ key phrase be different.  Hence, when
+the login password is changed, the key phrase should be  updated.
+The API for doing this has changed in every version of Solaris, and was
+undocumented.
+<P>
+There is an application which does this (nisaddcred), but either
+takes the key phrase from the command line or reads it from /dev/tty.
+Neither choice is suitable for use by <i>npasswd</i>.
+D 6
+<P>
+Probably the Pluggable Authentication Module (PAM) facility
+D 4
+could be used to do this.  Once again, documentation of this API is scarce.
+E 4
+I 4
+could be used to do this.
+E 6
+E 4
+E 3
+</UL>
+
+<H3> Digital UNIX (aka OSF/1) 3 and 4</H3>
+
+<UL>Support for enhanced security is included, though it has
+not been extensively
+tested.  Do <b>not</b> interchange binaries between Digital UNIX versions
+3 and 4 - the shadow password structure is different.
+</UL>
+
+D 6
+<H2>
+AIX 4</H2>
+E 6
+I 6
+<H2> AIX 4</H2>
+E 6
+
+<UL>
+<P>
+D 4
+Support for changing shadow passwords is included, but has been only
+lightly tested.
+E 4
+I 4
+Support for shadow passwords is included, but has been only lightly tested.
+E 4
+
+<P>AIX 4.1 has many password restrictions which can be set per-user or
+system wide.  These include lexical requirements, dictionary searches
+(though not nearly as vigorous that done by <I>npasswd</I>) and a
+hook for external password check modules.  Judicious use  of
+these restrictions should result in passwords which are harder to crack.
+I 3
+<P>
+You may desire to tune these password restrictions first <B>before</B>
+converting to <I>npasswd</I>.
+E 3
+
+D 3
+I suggest that you tune the system password restrictions first <B>before</B>
+using <I>npasswd</I>.
+
+E 3
+<P>The words lists from this distribution could be used as password check 
+dictionaries.
+
+D 6
+<P>A future release may have a password check module which can be inserted
+into the external password check hook.
+
+E 6
+<P>There are a number of other password restrictions available on AIX 4,
+D 6
+and a password history mechansim, none of which are supported by <I>npasswd</I>.</UL>
+E 6
+I 6
+and a password history mechanism, none of which are supported by
+<I>npasswd</I>.
+
+<P>
+</UL>
+E 6
+ 
+D 5
+<H3>HP-UX </H3>
+E 5
+I 5
+<H3>HP-UX</H3>
+E 5
+
+<UL>
+The support for HP-UX
+enhanced security was contributed by Mike Stute (mstute@compucom.com).
+D 3
+I do not have a HP-UX system available to verify these changes or
+debug problems.  Caveat administrator.
+E 3
+I 3
+I do not have a HP-UX system available to verify these changes or fix bugs.
+E 3
+</UL>
+
+I 5
+<H3>IRIX</H3>
+
+<UL>
+D 6
+Compiles and links under IRIX 6.3.  The <B>-Wl,-w</B> compiler option 
+is needed to suppress superflous loader warning messages.
+E 6
+I 6
+Works under IRIX 6.3.  The <B>-Wl,-w</B> compiler option 
+is needed to suppress superfluous loader warning messages.
+E 6
+</UL>
+
+E 5
+I 3
+<H2> Password history</H2>
+
+D 6
+<UL>The code which maitains password history in a NIS map is untested.
+E 6
+I 6
+<UL>The code which maintains password history in a NIS map is untested.
+E 6
+This can only
+be used if Secure RPC is being used (e.g. SunOS 4 system with C2 security
+active).
+<P>
+Password history in a NIS map (or NIS+ table) would work much better
+for a cluster, rather than sharing a history file with NFS.  One
+approach would be to define an RPC service to query and update
+password history, and provide a daemon, which would be
+started at boot time on the system having the password file.
+</UL>
+
+<H2>Enhanced security support</H2>
+<UL>
+<P>
+The major UNIX vendors have security facilities which
+<b>should</b> facilitate the development of programs
+such as <i>npasswd</i>.
+The mechanisms are often complex, sometimes the API is not
+well documented, nor is sample code available.
+<P>
+Hence, <I>npasswd</I> makes minimal use of such facilities.
+</UL>
+
+E 3
+<P>
+<HR WIDTH="100%">
+<P>
+D 2
+<A HREF="TOC_std.html"><IMG SRC="home.gif" align=middle>Manual Home</A>
+E 2
+I 2
+<A HREF="#top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+E 2
+<P>
+I 2
+
+E 2
+<HR WIDTH="100%">
+<P>
+Document id %Z% %M% %I%<BR>
+Version %I%<BR>
+Last modified %G%<P>
+<ADDRESS>
+  <A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</a><br>
+  <A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 1998</a>,
+The University of Texas at Austin.  All rights reserved.</font>
+</ADDRESS>
+</BODY></HTML>
+E 1

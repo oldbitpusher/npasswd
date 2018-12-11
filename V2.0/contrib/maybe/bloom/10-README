@@ -1,0 +1,22 @@
+                        Bloom Filter
+
+A bit-array which makes it possible to test whether a word is in the
+list, with a fast lookup time which is essentially independent of the
+size of the list.  Cf. Bloom, B. H., "Space-time tradeoffs in hash
+coding with allowable errors."  Communications of the ACM 13, 422-426,
+1970.
+
+Each word in the input list is hashed m times and the corresponding
+bits of the array are set; then a word for which all m bits are set is
+deemed to be on the list.  Except for details of the hash coding, this
+is the same algorithm the Unix "spell" program uses.
+
+The expected false-positive rate f depends on he multiplicty m and the
+ratio of the size of the filter to the number of list items.  If r is
+the ratio of the number of bits in the filter to the number of words in
+the list, the expected rate will be approximately
+    f = (1 - exp(-m/r))^m .
+With optimal multiplicity, about half of the bits in the filter will be
+set, and the expected rate will be about
+    f = exp(-kr)
+where k = (log 2)^2 = .48.

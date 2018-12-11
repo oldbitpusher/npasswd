@@ -1,0 +1,40 @@
+h53577
+s 00001/00001/00018
+d D 1.2 97/05/05 17:05:54 clyde 2 1
+c Put evaled strings in ""
+e
+s 00019/00000/00000
+d D 1.1 95/04/05 16:09:47 clyde 1 0
+c date and time created 95/04/05 16:09:47 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_clntsperrno' - see if p_clntsperrno routine exists
+?RCS:
+?MAKE:p_clnt_sperrno: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_clnt_sperrno
+?S:p_clnt_sperrno:
+?S:    This variable is set to 'true' if the clnt_sperrno routine exists.
+?S:.
+?C:HAS_CLNT_SPERRNO:
+?C:	This symbol, if defined, indicates that clnt_sperrno exists.
+?C:.
+?H:#$p_clnt_sperrno	HAS_CLNT_SPERRNO	/**/
+?H:.
+set clnt_sperrno p_clnt_sperrno
+D 2
+eval $inlibc
+E 2
+I 2
+eval "$inlibc"
+E 2
+
+E 1

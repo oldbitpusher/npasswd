@@ -1,0 +1,162 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06088
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:05:45 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA00906
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:05:42 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13529
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:05:33 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08699; Wed, 10 Dec 1997 10:07:25 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101707.KAA08699@zlin.Colorado.EDU>
+Subject: Changes #2
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:07:24 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+X-Status: Applied rev 1.24 & 1.31
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 3998
+
+@@@@@@@@@@@@@@   Start of diffs  @@@@@@@@@@@@@@@
+*** pwck_main.c.orig	Fri Nov 21 13:19:34 1997
+--- pwck_main.c	Wed Dec 10 09:38:09 1997
+***************
+*** 58,63 ****
+--- 58,64 ----
+  	"MonocaseOK	yes",		/* Allow mono case */
+  	"PrintableOnly 	no",		/* Printable ASCII chars only */
+  	"MaxRepeat 	3",		/* How long chars runs can be */
++ 	"MinCharClass	1",		/* default min # of char class */
+  #ifdef	SYSTEM_PASSWD_MIN
+  	"MinPassword 	SYSTEM_PASSWD_MIN",	/* Minimum length */
+  #else
+***************
+*** 68,74 ****
+  #else
+  	"MaxPassword 	8",			/* Maximum effective length */
+  #endif
+- 	"Dictionaries	@",
+  	0
+  };
+  
+--- 69,74 ----
+***************
+*** 122,127 ****
+--- 122,128 ----
+  	char		*mesgbuf;	/* Where to stash message */
+  {
+  	int		rcode;		/* General purpose scratch */
++ 	int		pwlen;		/* password length */
+  	checkproc	*checkfunc;	/* Check function pointer */
+  	static char	elucidate[BUFSIZ];	/* Expanded error message */
+  	static char	xpasswd[BUFSIZ];	/* Temporary storage for candidate */
+***************
+*** 141,149 ****
+  	 * Cut to length *after* checkpasword_init(),
+  	 * since max_length may be set therein
+  	 */
+  	(void) strcpy(xpasswd, password);
+! 	if (Config.max_length)
+  		xpasswd[Config.max_length] = 0;
+  
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+--- 142,154 ----
+  	 * Cut to length *after* checkpasword_init(),
+  	 * since max_length may be set therein
+  	 */
++ 	pwlen = strlen(password);  /* used for warning messages below */
+  	(void) strcpy(xpasswd, password);
+! 	if (Config.max_length) {
+  		xpasswd[Config.max_length] = 0;
++ 		/* cut the original too. */
++ 		password[Config.max_length] = 0;
++ 	}
+  
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+***************
+*** 155,164 ****
+--- 160,184 ----
+  			debug(DB_LOOKUP,
+  				"checkpassword: return %d, message \"%s\"\n",
+  					rcode, mesgbuf);
++ 
++ 			/*
++ 			 * check to see if password length > Config.max_length
++ 			 * if so append warning to any other message.
++ 			 */
++ 			if ( pwlen > Config.max_length ) {
++ 				sprintf(elucidate,
++ 					"\nWarning only the first %d key strokes are used",Config.max_length);
++ 				(void) strcat(mesgbuf, elucidate);
++ 			}
+  			return(rcode);
+  		}
+  	}
+  	debug(DB_VERBOSE, "checkpassword: password OK\n");
++ 	/* warning slightly modified when password passes */
++ 	if ( pwlen > Config.max_length )
++ 		sprintf(mesgbuf,
++ 			"Warning only the first %d key strokes are used.\n"
++ 				,Config.max_length);
+  	return(PWCK_OK);
+  }
+  
+***************
+*** 248,253 ****
+--- 268,278 ----
+  	/*
+  	 * Token matching
+  	 */
++ 	if (strcasecmp(item, "mincharclass") == 0) {
++ 		if (!data[1]) cf_error("Missing value");
++ 		Config.min_char_class = decode_int(data[1]);
++ 		cf_ok;
++ 	}
+  	if (strcasecmp(item, "monocaseok") == 0) {
+  		if (!data[1]) cf_error("Missing value");
+  		Config.single_case = decode_boolean(data[1]);
+***************
+*** 304,311 ****
+--- 329,339 ----
+  	}
+  	if (strcasecmp(item, "passwordchecks") == 0) {
+  		char	**pp = &data[1];
++ 		int   i;
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		for(i=0; i < NCHECKPROCS; i++)	/* clear out checkprocs */
++ 			Config.checkprocs[i] = 0;
+  		while (*pp)
+  			add_proc(*pp++);
+  		cf_ok;
+***************
+*** 379,385 ****
+  	Direntry_t	*dp;			/* Directory entry */
+  	int		found = 0;		/* Counter */
+  
+! 	if (*where = '@')
+  		where = DICTIONARIES;
+  	debug(DB_CONFIG, "add_all_dicts: \"%s\"\n", where);
+  #ifdef	HAS_READDIR
+--- 407,413 ----
+  	Direntry_t	*dp;			/* Directory entry */
+  	int		found = 0;		/* Counter */
+  
+! 	if (*where == '@')
+  		where = DICTIONARIES;
+  	debug(DB_CONFIG, "add_all_dicts: \"%s\"\n", where);
+  #ifdef	HAS_READDIR
+@@@@@@@@@@@@@@    end            @@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

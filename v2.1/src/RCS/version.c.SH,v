@@ -1,0 +1,395 @@
+head	1.15;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.15
+date	2002.10.02.15.56.04;	author clyde;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	98.10.14.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	98.09.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.09.22.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.09.18.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.06.23.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	97.10.29.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	97.08.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	97.06.18.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	97.05.27.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	97.05.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	96.08.06.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	95.04.05.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Put under GPL
+@
+text
+@case $CONFIG in
+'')
+	if test -f config.sh; then TOP=.;
+	elif test -f ../config.sh; then TOP=..;
+	elif test -f ../../config.sh; then TOP=../..;
+	elif test -f ../../../config.sh; then TOP=../../..;
+	elif test -f ../../../../config.sh; then TOP=../../../..;
+	else
+		echo "Can't find config.sh."; exit 1
+	fi
+	. $TOP/config.sh
+	;;
+esac
+: This forces SH files to create target in same directory as SH file.
+: This is so that make depend always knows where to find SH derivatives.
+case "$0" in
+*/*) cd `expr X$0 : 'X\(.*\)/'` ;;
+esac
+echo "Extracting version.c (with variable substitutions)"
+: This section of the file will have variable substitutions done on it.
+: Move anything that needs config subs from !NO!SUBS! section to !GROK!THIS!.
+: Protect any dollar signs and backticks that you do not want interpreted
+: by putting a backslash in front.  You may delete these comments.
+: In the following dollars and backticks do not need the extra backslash.
+
+$spitshell >version.c <<'!NO!SUBS!'
+/*
+ * Copyright (C) 2002  The University of Texas at Austin ("U. T. Austin").
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *  Contact: npasswd-support@@www.utexas.edu
+ *
+ */
+
+/*
+ *	npasswd version information
+ *	$Id: version.c.SH,v 1.14 1998/10/14 00:00:00 clyde Exp clyde $
+ */
+!NO!SUBS!
+$spitshell >>version.c <<!GROK!THIS!
+
+char	*build_info =
+"Environment:	$myuname\n\
+Configured by:	$cf_by@@$myhostname $cf_time\n\
+Build options:	$cc_osflags\n";
+
+char	*npasswd_version = "$package $baserev (07/01/1998)",
+	*npasswd_patchlevel = "04 (10/14/1998)";
+
+/*
+ * End $RCSfile: version.c.SH,v $
+ */
+!GROK!THIS!
+
+chmod 0644 version.c
+@
+
+
+1.14
+log
+@Bump patchlevel
+@
+text
+@d28 1
+a28 2
+ * Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+ * All rights reserved.
+d30 4
+a33 2
+ * By using this software the USER indicates that he or she has read,
+ * understood and will comply with the following:
+d35 4
+a38 3
+ * U. T. Austin hereby grants USER permission to use, copy, modify, and
+ * distribute this software and its documentation for any purpose and
+ * without fee, provided that:
+d40 6
+a45 31
+ * 1. the above copyright notice appears in all copies of the software
+ *    and its documentation, or portions thereof, and 
+ * 2. a full copy of this notice is included with the software and its
+ *    documentation, or portions thereof, and 
+ * 3. neither the software nor its documentation, nor portions thereof,
+ *    is sold for profit. Any commercial sale or license of this software,
+ *    copies of the software, its associated documentation and/or
+ *    modifications of either is strictly prohibited without the prior
+ *    consent of U. T. Austin. 
+ * 
+ * Title to copyright to this software and its associated documentation
+ * shall at all times remain with U. T. Austin. No right is granted to
+ * use in advertising, publicity or otherwise any trademark, service
+ * mark, or the name of U. T. Austin.
+ * 
+ * This software and any associated documentation are provided "as is,"
+ * and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+ * IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+ * PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+ * DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+ * OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+ * University of Texas System, its Regents, officers, and employees shall
+ * not be liable under any circumstances for any direct, indirect, special,
+ * incidental, or consequential damages with respect to any claim by USER
+ * or any third party on account of or arising from the use, or inability
+ * to use, this software or its associated documentation, even if U. T.
+ * Austin has been advised of the possibility of those damages.
+ * 
+ * Submit commercialization requests to: Office of the Executive Vice
+ * President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+ * 78712, ATTN: Technology Licensing Specialist.
+d50 1
+a50 1
+ *	$Id$ (cc.utexas.edu)
+d64 1
+a64 1
+ * End $RCSfile$
+@
+
+
+1.13
+log
+@Bump patchlevel
+@
+text
+@d84 1
+a84 1
+	*npasswd_patchlevel = "03 (09/23/1998)";
+@
+
+
+1.12
+log
+@Update patch level
+@
+text
+@d84 1
+a84 1
+	*npasswd_patchlevel = "02 (09/22/1998)";
+@
+
+
+1.11
+log
+@Bump the patch level
+@
+text
+@d84 1
+a84 1
+	*npasswd_patchlevel = "01 (09/18/1998)";
+@
+
+
+1.10
+log
+@Remove checkpassword version stamp
+@
+text
+@d84 1
+a84 1
+	*npasswd_patchlevel = "00 (07/01/1998)";
+@
+
+
+1.9
+log
+@Tweak datestamps
+@
+text
+@d84 1
+a84 1
+	*npasswd_patchlevel = "0 (07/01/1998)";
+a85 3
+char	*checkpasswd_version = "checkpasswd 2.0 (07/01/1998)",
+	*checkpasswd_patchlevel = "0 (07/01/1998)";
+
+@
+
+
+1.8
+log
+@1. Add copyright message 2. Reset version dates and numbers
+@
+text
+@d83 2
+a84 2
+char	*npasswd_version = "$package $baserev (05/01/1998)",
+	*npasswd_patchlevel = "0 (05/01/1998)";
+d86 2
+a87 2
+char	*checkpasswd_version = "checkpasswd 2.0 (05/01/1998)",
+	*checkpasswd_patchlevel = "0 (05/01/1998)";
+@
+
+
+1.7
+log
+@Bump patch levels for npasswd and checkpasswd
+@
+text
+@d28 44
+d83 2
+a84 2
+char	*npasswd_version = "$package $baserev (5/1/97)",
+	*npasswd_patchlevel = "4 (10/29/97)";
+d86 2
+a87 2
+char	*checkpasswd_version = "checkpasswd 2.0 (5/1/97)",
+	*checkpasswd_patchlevel = "1 (10/29/97)";
+@
+
+
+1.6
+log
+@Increment npasswd patch level
+@
+text
+@d40 1
+a40 1
+	*npasswd_patchlevel = "3 (8/26/97)";
+d43 1
+a43 1
+	*checkpasswd_patchlevel = "0 (5/1/97)";
+@
+
+
+1.5
+log
+@Bump npasswd patch level
+@
+text
+@d40 1
+a40 1
+	*npasswd_patchlevel = "2 (6/18/97)";
+@
+
+
+1.4
+log
+@Update patch level for npasswd
+@
+text
+@d40 1
+a40 1
+	*npasswd_patchlevel = "1 (5/27/97)";
+@
+
+
+1.3
+log
+@Use more tokens from config.sh
+@
+text
+@d40 1
+a40 1
+	*npasswd_patchlevel = "0 (5/1/97)";
+@
+
+
+1.2
+log
+@beta 3 cycle 1 checkin
+@
+text
+@d29 1
+a29 1
+*	$Id$ (cc.utexas.edu)
+d39 2
+a40 1
+!GROK!THIS!
+d42 2
+a43 1
+$spitshell >>version.c <<'!NO!SUBS!'
+a44 6
+char	*npasswd_version = "npasswd 2.0b4 (3/1/94)",
+	*npasswd_patchlevel = "0 (12/20/93)";
+
+char	*checkpasswd_version = "checkpasswd 2.0 (1/7/94)",
+	*checkpasswd_patchlevel = "0 (1/7/94)";
+
+d48 1
+a48 1
+!NO!SUBS!
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@@

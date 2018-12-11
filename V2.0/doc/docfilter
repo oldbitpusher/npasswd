@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# docfilter - replace pathname tokens in documentation files
+#
+# @(#)docfilter.SH	1.4 07/16/98 (cc.utexas.edu)
+#
+sed 	-e "s!@NPASSWD-HOME@!!g" \
+	-e "s!@NPASSWD-DOCS@!!g" \
+	-e "s!@NPASSWD-DICT@!!g" \
+	-e "s!@NPASSWD-HIST@!!g" \
+	-e "s!@NPASSWD-XBIN@!/usr/lib/passwd/xbin!g" \
+	-e "s!@NPASSWD-UTIL@!!g" \
+	-e "s!@NPASSWD-SRC@!/tmp_mnt/usr/share/src/private/ut/share/bin/passwd/V2.0!g" $*
+exit 0
+#
+# End docfilter.SH

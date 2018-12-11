@@ -1,0 +1,125 @@
+
+   ______________________________________________________________________
+   
+                        Npasswd Miscellaneous Notes
+   ______________________________________________________________________
+   
+   UNIX platforms and features which npasswd is known to support:
+   
+   UNIX platform Supported features
+   SunOS 5
+   (Solaris 2) Shadow passwords
+   NIS passwords
+   SunOS 4
+   (Solaris 1) Adjunct passwords
+   Secure RPC
+   NIS passwords
+   Digital UNIX
+   (OSF/1) 3.X and 4.X Enhanced security
+   NIS passwords
+   HP-UX
+   Enhanced security*
+   NIS passwords
+   AIX 4
+   Shadow passwords*
+   NIS passwords
+   *See below
+   
+  SunOS 4 (Solaris 1)
+  
+   Support for SunOS 4 is still included, but I have ceased development.
+       Secure RPC and adjunct passwords are supported, though not
+       thoroughly tested. Npasswd will build with either the standard
+       (/usr/ucb/cc) compiler or the Sun (/usr/lang/acc) compiler.
+       
+  SunOS 5 (Solaris 2)
+  
+       Npasswd does not support NIS+.
+       Getting passwords out of NIS+ is easy, and even updating them is
+       straightforward. NIS+ credentials are complicated to manage.
+       It is possible but not a good idea to have the login password and
+       the NIS+ key phrase be different. Hence, when the login password
+       is changed, the key phrase should be updated. The API for doing
+       this has changed in every version of Solaris, and was
+       undocumented.
+       There is an application which does this (nisaddcred), but either
+       takes the key phrase from the command line or reads it from
+       /dev/tty. Neither choice is suitable for use by npasswd.
+       
+  Digital UNIX (aka OSF/1) 3 and 4
+  
+   Support for enhanced security is included, though it has not been
+       extensively tested. Do not interchange binaries between Digital
+       UNIX versions 3 and 4 - the shadow password structure is
+       different.
+       
+AIX 4
+
+       Support for shadow passwords is included, but has been only
+       lightly tested.
+       AIX 4.1 has many password restrictions which can be set per-user
+       or system wide. These include lexical requirements, dictionary
+       searches (though not nearly as vigorous that done by npasswd) and
+       a hook for external password check modules. Judicious use of these
+       restrictions should result in passwords which are harder to crack.
+       You may desire to tune these password restrictions first before
+       converting to npasswd.
+       The words lists from this distribution could be used as password
+       check dictionaries.
+       There are a number of other password restrictions available on AIX
+       4, and a password history mechanism, none of which are supported
+       by npasswd.
+       
+  HP-UX
+  
+   The support for HP-UX enhanced security was contributed by Mike Stute
+       (mstute@compucom.com). I do not have a HP-UX system available to
+       verify these changes or fix bugs.
+       
+  IRIX
+  
+   Works under IRIX 6.3. The -Wl,-w compiler option is needed to suppress
+       superfluous loader warning messages.
+       
+Password history
+
+   The code which maintains password history in a NIS map is untested.
+       This can only be used if Secure RPC is being used (e.g. SunOS 4
+       system with C2 security active).
+       Password history in a NIS map (or NIS+ table) would work much
+       better for a cluster, rather than sharing a history file with NFS.
+       One approach would be to define an RPC service to query and update
+       password history, and provide a daemon, which would be started at
+       boot time on the system having the password file.
+       
+Enhanced security support
+
+       The major UNIX vendors have security facilities which should
+       facilitate the development of programs such as npasswd. The
+       mechanisms are often complex, sometimes the API is not well
+       documented, nor is sample code available.
+       Hence, npasswd makes minimal use of such facilities.
+   ______________________________________________________________________
+   
+   [1][LINK]Top    [2][LINK]Home
+   ______________________________________________________________________
+   
+   Document id @(#) MiscNotes.html 1.6
+   Version 1.6
+   Last modified 07/20/98
+   
+   
+    [3]Clyde Hoover
+    [4]Academic Computing Services and Instructional Technology Services
+    [5]The University of Texas at Austin
+    [6]Copyright 1998, The University of Texas at Austin. All rights
+    reserved.
+
+References
+
+   1. file://localhost/./MiscNotes.html#top
+   2. file://localhost/./TOC_std.html
+   3. mailto:c.hoover@cc.utexas.edu
+   4. http://www.utexas.edu/cc
+   5. http://www.utexas.edu/
+   6. file://localhost/./Copyright.html

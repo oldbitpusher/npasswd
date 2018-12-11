@@ -1,0 +1,43 @@
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id LAA06418
+	for <clyde@motown.cc.utexas.edu>; Wed, 10 Dec 1997 11:12:08 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id LAA01040
+	for <clyde@sirius.cc.utexas.edu>; Wed, 10 Dec 1997 11:12:06 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id LAA13664
+	for <c.hoover@cc.utexas.edu>; Wed, 10 Dec 1997 11:12:03 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id KAA08731; Wed, 10 Dec 1997 10:14:04 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199712101714.KAA08731@zlin.Colorado.EDU>
+Subject: Changes #4
+To: c.hoover@cc.utexas.edu
+Date: Wed, 10 Dec 1997 10:14:04 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (Donnie Emeson)
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 803
+
+@@@@@@@@@@@@@@@@@@@@  Start of diffs   @@@@@@@@@@@@@@@@@@@
+*** configure.c.orig    Thu Nov 20 13:57:16 1997
+--- configure.c Fri Dec  5 11:04:27 1997
+***************
+*** 55,60 ****
+--- 55,61 ----
+  
+        /* Configuration for checkpassword() */
+        { "passwd.Dictionaries",        PWCHECK_PASSTHRU,       NONE },
++       { "passwd.MinCharClass",        PWCHECK_PASSTHRU,       NONE },
+        { "passwd.MonocaseOK",          PWCHECK_PASSTHRU,       NONE },
+        { "passwd.AlphaOnly",           PWCHECK_PASSTHRU,       NONE },
+        { "passwd.MinPassword",         PWCHECK_PASSTHRU,       NONE },
+@@@@@@@@@@@@@@@@@@@@     end           @@@@@@@@@@@@@@@@@@@
+-- 
+Donnie Emeson
+Information Technology Services         Donnie.Emeson@Colorado.EDU
+University of Colorado at Boulder       303.492.0764

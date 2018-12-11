@@ -1,0 +1,42 @@
+h53217
+s 00001/00001/00020
+d D 1.2 97/05/05 17:06:02 clyde 2 1
+c Put evaled strings in ""
+e
+s 00021/00000/00000
+d D 1.1 95/04/05 16:09:57 clyde 1 0
+c date and time created 95/04/05 16:09:57 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+?RCS:
+?RCS: %W% %G%
+?RCS:
+?RCS: Unit 'p_sysinfo' - see if sysinfo routines exist
+?RCS:
+?MAKE:p_sysinfo: Inlibc
+?MAKE:	-pick add $@ %<
+?LINT:set p_sysinfo
+?S:p_sysinfo:
+?S:    This variable is set to 'true' if the sysinfo and ungetrlimit 
+?S:	routines exist in libc.
+?S:.
+?C:HAS_SYSINFO:
+?C:	This symbol, if defined, indicates that the
+?C:	sysinfo and ugetrlimit routines can be used.
+?C:.
+?H:#$p_sysinfo	HAS_SYSINFO	/**/
+?H:.
+set sysinfo p_sysinfo
+D 2
+eval $inlibc
+E 2
+I 2
+eval "$inlibc"
+E 2
+
+E 1

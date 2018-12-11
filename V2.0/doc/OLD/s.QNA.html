@@ -1,0 +1,283 @@
+h13585
+s 00002/00002/00147
+d D 1.5 98/07/20 15:57:06 clyde 5 4
+c Spell check
+e
+s 00030/00021/00119
+d D 1.4 98/07/08 17:02:46 clyde 4 3
+c Update eidt
+e
+s 00001/00002/00139
+d D 1.3 98/06/30 10:31:40 clyde 3 2
+c Change title & header
+e
+s 00006/00006/00134
+d D 1.2 98/06/26 09:55:17 clyde 2 1
+c Fix top & signatures
+e
+s 00140/00000/00000
+d D 1.1 98/06/24 16:48:11 clyde 1 0
+c date and time created 98/06/24 16:48:11 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; SunOS 5.6 sun4m) [Netscape]">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, University of Texas, Austin[">
+D 4
+   <TITLE>Npasswd Frequently Asked Questions</TITLE>
+E 4
+I 4
+   <TITLE>Npasswd Questions And Answers</TITLE>
+E 4
+</HEAD>
+<BODY>
+D 2
+
+<HR>
+E 2
+<A NAME="top">
+I 2
+<HR>
+E 2
+<CENTER>
+D 3
+<H1>Frequently Asked Questions</H1></CENTER> </A>
+E 3
+I 3
+D 4
+<H1>Npasswd Frequently Asked Questions</H1></CENTER> </A>
+E 4
+I 4
+<H1>Npasswd Questions And Answers</H1></CENTER> </A>
+E 4
+E 3
+<HR>
+<P>
+D 4
+<h2>General issues</H2>
+E 4
+I 4
+<H2>General issues</H2>
+E 4
+<P>
+<HR ALIGN=left WIDTH="50%">
+
+D 4
+<P><b>Q.</b> Is npasswd compatible with the passwd program supplied by my system
+E 4
+I 4
+<P><B>Q.</B> My system has shadow passwords.  Why would I need <I>npasswd</I>?
+<P><B>A.</B> Shadow passwords makes it <B>harder</B> for a bad guy
+to obtain encrypted passwords.  But that protection is a function of
+the UNIX file system.  There are a number of "root kits" available
+D 5
+for intruders to gain super-user privleges on your system so
+E 5
+I 5
+for intruders to gain super-user privileges on your system so
+E 5
+they can get a copy of your password and shadow files.
+<P>Combining intelligent password checking with a shadow database provides
+the best protection short of one-time use passwords or challenge/response
+smart card systems. 
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P><B>Q.</B> Is npasswd compatible with the passwd program supplied by my system
+E 4
+vendor?
+<P><B>A.</B> The basic functionality of the passwd program (changing passwords)
+D 4
+is the same as any version.  However, many vendor passwd programs
+have specialty options that npasswd does not, usually because the
+option is ill-documented and hard to replicate or very esoteric and a lot
+of trouble to replicate. The initial npasswd installation will attempt
+to preserve the vendor programs in the npasswd installation directory.
+The original program will be invoked to what npasswd cannot.
+E 4
+I 4
+is the same.  However, many vendor passwd programs
+have specialty options that npasswd does not. This is usually because the
+option is ill-documented or very esoteric and a hard
+to replicate. The <I>npasswd</I> installation procedure will
+preserve the vendor programs in the npasswd installation directory.
+These programs will be invoked to do what <I>npasswd</I> cannot.
+E 4
+<P>
+<HR ALIGN=left WIDTH=50%>
+D 4
+<P> <B>Q.</B> Are there npasswd binaries that I can just drop in?
+<P> <B>A.</B> Npasswd is distributed in source for the following reasons:
+E 4
+I 4
+<P> <B>Q.</B> Are there npasswd binaries that I can drop in?
+<P> <B>A.</B> <I>Npasswd</I> is distributed in source for the following reasons:
+E 4
+<UL>
+<LI>
+There are customizations which must be chosen at compilation time.
+I consider these options important for the installer 
+to be aware of, even though they probably will not need to be changed.</LI>
+<LI>
+I did not want to arbitrarily decide where you want to install <I>npasswd</i>.
+You have the option of changing the default
+to suit your needs.  For example, the location of the password
+history database is dependent upon system configuration.
+</UL>
+<P>
+<HR ALIGN=left WIDTH=50%>
+<P> <B>Q.</B> How much do I need to know to build and install npasswd?
+<P> <B>A.</B> A lot of work has gone into making npasswd easier to build,
+install and maintain. However, this is not a "turn the crank and go" process.
+D 4
+You should be familiar with your C compiler and make.
+E 4
+I 4
+You should be familiar with your C compiler and <I>make</I>.
+E 4
+<P>
+<HR ALIGN=left WIDTH=50%>
+<P> <B>Q.</B> What support is available?
+<P> <B>A.</B> Bug reports will be investigated on a time-available basis.
+D 4
+I have a limited variety of UNIX platforms available for porting and testing.
+The more specific the bug report, the better chance of getting a fix.
+E 4
+I 4
+See the <A HREF="Support.html"><B>Npasswd Support Guide</B></A>.
+E 4
+<P>
+D 4
+See <A HREF="Introduction.html#Support">support</a> section of the 
+D 2
+<A HREF="Reference_frame.html"><b>Npasswd Reference Manual</b></a>.
+E 2
+I 2
+<A HREF="Reference_index.html" target="new"><b>Npasswd Reference Manual</b></a>.
+E 2
+<P>
+E 4
+<HR ALIGN=left WIDTH=50%>
+<P><B>Q.</B> Is there any maintenance required?
+<P> <B>A.</B> The password history database must be purged periodically.  
+Use the <I>history_admin</i> program for this purpose.
+D 4
+See the <A HREF="history_admin_man.html">manual page</A> for details.
+E 4
+I 4
+See <A HREF="history_admin_1.html"><I>history_admin</I>(1)</A>.
+E 4
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P>
+<A NAME="pasword_check"></A><H2> Password checking</H2>
+<P>
+<HR ALIGN=left WIDTH="50%">
+<BR> <B>Q.</B> Can I use Crack dictionaries with npasswd?
+<P> <B>A.</B> Yes, but not directly.  The dictionary hash format used by Crack
+is optimized to conserve disk space. The <i>npasswd</i> dictionary hash format
+is optimized for lookup speed.
+Crack dictionaries can be converted for use by <I>npasswd</I>.
+<P>
+D 2
+See the <A HREF="SysAdmin.html"><b>System Administrator's Manual</b></a>
+E 2
+I 2
+D 4
+See the <A HREF="AdminGuide.html"><b>System Administrator's Manual</b></a>
+E 4
+I 4
+See the <A HREF="AdminGuide.html"><B>Npasswd Administration Guide</B></A>
+E 4
+E 2
+for the conversion procedure.
+
+</UL>
+<HR ALIGN=left WIDTH="50%">
+<P> <B>Q.</B> How many dictionaries do I need or want?
+<P> <B>A.</B> As many as you can stand. You can have multiple
+dictionaries, each generated from a distinct word list, or one large combined
+dictionary.  A number of smaller dictionaries allows easier customization
+than one big dictionary.
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P> <B>Q.</B> How does the size of my dictionaries affect password security?
+
+<P> <B>A.</B> More dictionary words equals greater password security.
+It may also mean greater frustration in your user community because
+<i>npasswd</i> will reject more passwords.
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P> <B>Q.</B> Why are there words in the dictionary which are shorter than the
+minimum password length?  Wouldn't it save disk space to remove these short
+words from the dictionaries?
+<P> <B>A.</B> Several permutations are made on each dictionary word. 
+For example, "quick" is too short to be a password, (minimum length is 6),
+D 4
+"quickly" is long enough and would be found
+E 4
+I 4
+but "quickly" is long enough and would be found
+E 4
+by the test of the plural form of the word "quick" from the dictionary.
+I 4
+D 5
+If bad guys have "quick" in their Crack dicitionaries, and you don't -
+E 5
+I 5
+If bad guys have "quick" in their Crack dictionaries, and you don't -
+E 5
+your system can be in trouble.
+E 4
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P> <B>Q.</B> Why is npasswd so picky about accepting passwords?
+<P> <B>A.</B> Because the bad guys who are trying to get your passwords are using
+some very thorough tools like Crack.  The dictionary check code in
+npasswd was written by the author of Crack, and performs the same checks. 
+Given sufficient dictionaries, if <i>npasswd</i> accepts a password there is a
+good chance that Crack will not guess it.
+<P>
+<HR ALIGN=left WIDTH="50%">
+<P> <B>Q.</B> What kind of passwords <B>will</B> <i>npasswd</i> accept?
+<P> <B>A.</B> A mixture of upper and lower case alphas,
+with a sprinkling of punctuation
+characters and digits will usually pass muster.  Control  and
+whitespace characters can also be included, but should be used with caution
+- some applications which read passwords may not deal with these very well.
+<P>
+<HR>
+<P>
+D 2
+<A HREF="TOC_std.html"><IMG SRC="home.gif" align=middle> Manual Home</A>
+<A HREF="#top"><IMG SRC="top.gif" align=middle> Top of page</A>
+E 2
+I 2
+<A HREF="#top"><IMG SRC="top.gif" align=middle>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" align=middle>Home</A>
+E 2
+<P>
+<HR WIDTH="100%">
+<P>
+Document id %Z% %M% %I%<BR>
+Version %I%<BR>
+Last modified %G%<P>
+<ADDRESS>
+  <A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A><BR>
+  <A HREF="http://www.utexas.edu/cc">
+Academic Computing Services and Instructional Technology Services</a><br>
+  <A HREF="http://www.utexas.edu/">
+ The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 1998</a>,
+The University of Texas at Austin.  All rights reserved.</font>
+</ADDRESS>
+</BODY></HTML>
+E 1

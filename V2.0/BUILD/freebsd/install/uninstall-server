@@ -1,0 +1,120 @@
+#!/bin/ksh
+###
+#
+# Strong Password Server UN-Installation Script
+#
+# Copyright 1998-2001, Texas Instruments. All rights reserved.
+#
+# By using this software the USER indicates that he or she has read,
+# understood and will comply with the following:
+#
+# 1. the above copyright notice appears in all copies of the software
+#    and its documentation, or portions thereof, and 
+# 2. a full copy of this notice is included with the software and its
+#    documentation, or portions thereof, and 
+# 3. neither the software nor its documentation, nor portions thereof,
+#    is sold for profit. Any commercial sale or license of this software,
+#    copies of the software, its associated documentation and/or
+#    modifications of either is strictly prohibited without the prior
+#    consent of Texas Instruments.
+# 4. This software and any associated documentation are provided "as is,"
+#    and any issues, problems are yours to deal with. The USER takes
+#    full responsibility for the performance of this software.
+#
+#
+#  Author: Victor Burns
+#          Texas Instruments, 2001
+#
+#
+###
+#
+
+export PATH=/usr/bin:/usr/ucb
+
+### Source Config File
+. ${0%/*}/install-settings
+
+
+### Remove Server Files
+
+if [ ! -e "${REALPATH}" ]
+then
+	print
+	print "  WARNING - Sorry no installation found at [ ${REALPATH} ]"
+	print
+	exit 0
+fi
+
+if [ -h "${REALPATH}" ]
+then
+	### Remove Remote Linked Installation
+
+	LNKVAL=`ls -ld ${REALPATH}`
+	LNKVAL=${LNKVAL##* }
+
+	print
+	print "  INFO - Installation detected as symbolic link."
+	print "         [ ${REALPATH} ] to [ ${LNKVAL} ]"
+	print
+
+	if [ -h ${LNKVAL} -o -f ${LNKVAL} ]
+	then
+		print " ERROR - [ ${LNKVAL} ] expected to be a directory."
+		print "         Un-expected error exiting."
+		print
+		exit -1
+	fi
+
+	print "Remove (Y/[N])? \c"
+	read ans
+	print
+
+	case "X$ans" in
+	Xy | XY )
+		rm -rf ${LNKVAL}
+		rm -f  ${REALPATH}
+		break;;
+	*)
+		exit -1;
+	esac
+else
+	### Remove Local Installation
+
+	if [ -d "${REALPATH}" ]
+	then
+		print
+		print "  INFO - Installation detected at [ ${REALPATH} ]"
+		print
+		print "Remove (Y/[N])? \c"
+		read ans
+		print
+
+		case "X$ans" in
+		Xy | XY )
+			rm -rf ${REALPATH}
+			break;;
+		*)
+			exit -1;
+		esac
+	fi
+fi
+
+### Stop Running Daemon
+
+[ -f /etc/init.d/pwstrongd    ] && sh /etc/init.d/pwstrongd  stop
+[ -f /sbin/init.d/pwstrongd   ] && sh /sbin/init.d/pwstrongd stop
+
+
+### Remove daemon rc starup scripts
+
+[ -f /etc/init.d/pwstrongd    ] && rm -f /etc/init.d/pwstrongd
+[ -f /etc/rc2.d/S99pwstrongd  ] && rm -f /etc/rc2.d/S99pwstrongd
+[ -f /sbin/init.d/pwstrongd   ] && rm -f /sbin/init.d/pwstrongd
+[ -f /sbin/rc2.d/S99pwstrongd ] && rm -f /sbin/rc2.d/S99pwstrongd
+
+### Done
+
+print "  INFO - Removal Complete"
+print
+
+### END

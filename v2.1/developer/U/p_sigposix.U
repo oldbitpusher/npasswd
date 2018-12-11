@@ -1,0 +1,26 @@
+?RCS:
+?RCS: @(#)p_sigposix.U	1.2 05/05/97
+?RCS:
+?RCS: Unit 'p_sigposix' - see if POSIX signal routines exist
+?RCS:
+?MAKE:p_sigposix: Inlibc Setvar
+?MAKE:	-pick add $@ %<
+?LINT:set p_sigposix
+?S:p_sigposix:
+?S:    This variable is set to 'true' if the POSIX signal routines exist
+?S:.
+?C:HAS_POSIX_SIGNALS:
+?C:	This symbol, if defined, indicates that the POSIX signal routines exist.
+?C:.
+?H:#$p_sigposix	HAS_POSIX_SIGNALS	/**/
+?H:.
+: see if sigprocmask exists
+echo " "
+if set sigprocmask val -f p_sigposix; eval "$csym"; $val; then
+        echo 'POSIX signal routines found.' >&4
+        p_sigposix="$define"
+else
+        echo 'No POSIX signal routines.' >&4
+        p_sigposix="$undef"
+fi
+

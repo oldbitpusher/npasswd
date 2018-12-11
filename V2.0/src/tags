@@ -1,0 +1,45 @@
+BCOPY	./SCCS/s.npasswd.h	/^# define	BCOPY(s, d, l)	memcpy(d, s, l)$/
+BZERO	./SCCS/s.npasswd.h	/^# define	BZERO(a, l)	memset(a, 0, l)$/
+CRACK_TOLOWER	./PasswordCheck/cracklib/SCCS/s.packer.h	/^#define CRACK_TOLOWER(a) 	(isupper(a)?tolower(a):(/
+CRACK_TOUPPER	./PasswordCheck/cracklib/SCCS/s.packer.h	/^#define CRACK_TOUPPER(a) 	(islower(a)?toupper(a):(/
+FascistNpasswd	./PasswordCheck/cracklib/SCCS/s.packer.h	/^c Add FascistNpasswd()$/
+INDEX	./SCCS/s.npasswd.h	/^# define	INDEX(s, c)	strchr(s, c)$/
+PW_WORDS	./PasswordCheck/cracklib/SCCS/s.packer.h	/^#define PW_WORDS(x) ((x)->header.pih_numwords)$/
+RINDEX	./SCCS/s.npasswd.h	/^# define	RINDEX(s, c)	strrchr(s, c)$/
+STRCMP	./PasswordCheck/cracklib/SCCS/s.packer.h	/^#define STRCMP(a,b)		strcmp((a),(b))$/
+VA_DCL	./SCCS/s.npasswd.h	/^# define	VA_DCL(_X_)	(char *_X_, ...)$/
+VA_START	./SCCS/s.npasswd.h	/^# define	VA_START(X,Y)	va_start(X,Y)$/
+_flipstring	./PasswordCheck/SCCS/s.checkpassword.h	/^c Add forward decl of _flipstring()$/
+bcopy	./SCCS/s.compatibility.h	/^# define bcopy(s, d, l)	memcpy((d),(s),(l))$/
+bzero	./SCCS/s.compatibility.h	/^# define bzero(a, l)	memset((a),0,(l))$/
+checkpassword	./PasswordCheck/SCCS/s.checkpassword.h	/^c 3. Change the type of checkpassword()$/
+checkpassword_configure	./PasswordCheck/SCCS/s.checkpassword.h	/^c Add second argument to checkpassword_configure(/
+checkpassword_verify	./PasswordCheck/SCCS/s.checkpassword.h	/^c Change type of checkpassword_verify()$/
+ctran	./PasswordCheck/SCCS/s.pwck_defines.h	/^c Add ctran() and pwck_history_probe()$/
+debug	./SCCS/s.npasswd.h	/^c 3. Add prototypes for debug() routine$/
+declarations	./Methods/SCCS/s.pwm_defs.h	/^c Remove 'const' declarations (too much compiler /
+defines	./PasswordCheck/SCCS/s.pwck_defines.h	/^c Remove debug from Config block, add DB_XXX defi/
+get_debug	./Common/SCCS/s.common.h	/^c 3. Add protos for set_debug(), set_debug_tag(),/
+gethostname	./SCCS/s.compatibility.h	/^#define	gethostname(_b_, _l_) sysinfo(SI_HOSTNAME,/
+getpass	./SCCS/s.npasswd.h	/^c 1. Remove getpass() decl$/
+ifdefs	./Common/SCCS/s.common.h	/^c 2. Wrap some decls in guard #ifdefs (keep AIX c/
+index	./SCCS/s.compatibility.h	/^# define index(s, c)	strchr((s),(c))$/
+init_pwsvc	./Common/SCCS/s.pw_svc.h	/^c Add third arg to init_pwsvc()$/
+levels	./SCCS/s.constants.h	/^c Add debugging levels (taken from defines.h)$/
+memcpy	./SCCS/s.compatibility.h	/^# define memcpy(d, s, l) bcopy((s), (d), (l))$/
+mtry	./PasswordCheck/SCCS/s.pwck_defines.h	/^#define mtry(_P_,_C_,_V_)  if (instring((_P_),(_C_/
+np_getpass	./SCCS/s.npasswd.h	/^c 2. Add np_getpass() decl$/
+password_history_update	./PasswordCheck/SCCS/s.checkpassword.h	/^c Add fourth argument to password_history_update(/
+pwck_history_configure	./PasswordCheck/SCCS/s.pwck_defines.h	/^c 1. Add prototype for pwck_history_configure()$/
+rindex	./SCCS/s.compatibility.h	/^# define rindex(s, c)	strrchr((s),(c))$/
+set_debug	./Common/SCCS/s.common.h	/^c 1. Add set_debug()$/
+set_die_callback	./Common/SCCS/s.common.h	/^c Fix declaration of set_die_callback()$/
+setting	./SCCS/s.defines.h	/^c Remove const setting (already in config.sh)$/
+strchr	./SCCS/s.compatibility.h	/^# define strchr(s, c)	index((s),(c))$/
+streq	./PasswordCheck/SCCS/s.pwck_defines.h	/^#define	streq(_X_,_S_)	(strncasecmp((_X_),(_S_), s/
+strrchr	./SCCS/s.compatibility.h	/^# define strrchr(s, c)	rindex((s),(c))$/
+to	./PasswordCheck/SCCS/s.pwck_defines.h	/^c 5. Change the type of pwck_<foo> routines to (c/
+try	./PasswordCheck/SCCS/s.pwck_defines.h	/^#define try(_P_,_C_,_V_) if (strcasecmp((_P_),(_C_/
+zdcrypt	./Methods/SCCS/s.pwm_defs.h	/^#define	zdcrypt(_str_)	_str_$/
+zeromem	./SCCS/s.compatibility.h	/^c Define zeromem() macro to hide memset\/bzero dif/
+zncrypt	./Methods/SCCS/s.pwm_defs.h	/^c Replace zncrypt() and zdcrypt() macros with fun/

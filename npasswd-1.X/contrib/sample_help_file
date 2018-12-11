@@ -1,0 +1,147 @@
+Return-Path: jkimball@src.honeywell.com
+Received: from emx.cc.utexas.edu by sirius.cc.utexas.edu (5.61/1.34/CCOS 1.3)
+	id AA24181; Wed, 28 Oct 92 12:06:06 -0600
+Received: from moon.src.honeywell.com by emx.cc.utexas.edu (5.61/1.11)
+	id AA09506; Wed, 28 Oct 92 11:49:01 -0600
+Return-Path: <jkimball@src.honeywell.com>
+Received: from valiant.src.honeywell.com by src.honeywell.com (4.0/smail2.6.3/SRCv0.25);
+	Wed, 28 Oct 92 11:41:54 CST id AA19578  for npasswd-bugs@emx.cc.utexas.edu  at emx.cc.utexas.edu
+Posted-Date: Wed, 28 Oct 92 11:41:51 CST
+Received: by valiant.src.honeywell.com (4.0/SMI-3.2)
+	id AA11236; Wed, 28 Oct 92 11:41:51 CST
+Date: Wed, 28 Oct 92 11:41:51 CST
+From: jkimball@src.honeywell.com (John Kimball)
+Message-Id: <9210281741.AA11236@valiant.src.honeywell.com>
+To: npasswd-bugs@emx.cc.utexas.edu
+Subject: Sample npasswd help file
+
+
+Passwd help file                                     rev SRC-0.3 (92-10)
+
+================== RULES ENFORCED BY THE PASSWD PROGRAM =====================
+A password will NOT be accepted if it:
+    o Is less than 6 characters long.
+    o Matches anything in your account information, such as your login
+      name, office phone number, etc.
+    o Has more than 3 repeated characters -- thus "aaa" would be rejected.
+    o Is found in the system's spelling dictionary.  However, if it has
+      some uppercase letters in the middle of it, it will be accepted.
+      Example:  "Explain" would be rejected but "exPlain" would be
+      accepted.
+
+
+==================== Commonsense password guidelines: ======================
+
+1) Pick a password that is hard to guess (see below).
+
+2) Change your password every 6-12 months.  (That way, if someone has
+   guessed your password, they'll lose the ability to use your account.)
+
+3) NEVER TELL *ANYONE* ELSE YOUR PASSWORD. Don't tell anyone who asks for
+   it -- NO ONE ELSE has a legitimate reason to know it.  Don't share
+   your account with other people -- if you share your account, then you'll
+   never know how far the password has spread, and YOU'LL be responsible
+   for whatever is done with your account.)
+
+4) Don't write your password down.  In particular, don't write it down on
+   anything in your work area, and especially not online in a file.
+   (Keeping it in your wallet is acceptable, but don't show it to others.)
+
+============== To make your password harder to guess: =====================
+
+o The password should be MORE THAN 6 characters long.
+
+o The password should NOT be simply an English word or a name -- 
+  crackers have online dictionaries, and names relevant to you can be
+  obtained from publically-available records.
+
+o The password should NOT be only lower-case letters; it should NOT be
+  only numbers.  Mix in one or more of the following:  punctuation marks; 
+  upper and lower case letters; numbers.
+
+For example, one good way to come up with a password which is hard to guess
+is to misspell a word (eg, belleebutton, scienze, missyssippi).  Another
+way is to take a word and capitalize a couple of random letters inside it
+(eg, RaInboW, attRitiOn).  One effective way is to put together two short
+words, capitalize one or more letters, and then put them together with some
+punctuation marks or numbers in between them (eg, hey!Jude, Renier?!?,
+therm0stat, VikesR#1). (But don't use any of those examples!)
+
+This is the key point:
+ ----------------------------------------------------------------------------
+ |  Your password should be something which, to the best of your knowledge, |
+ |  has never been written down before, anywhere in the world.              |
+ ----------------------------------------------------------------------------
+
+
+============= Discussion: Gory Details on Selecting Passwords =============
+
+The object when choosing a password is to make it as difficult as possible
+for a cracker to make educated guesses about what you've chosen.  This
+leaves him no alternative but a brute-force search, trying every possible
+combination of letters, numbers, and punctuation.  A search of this sort,
+even conducted on a machine that could try one million passwords per second
+(most machines can try less than one hundred per second), would require, on
+the average, over one hundred years to complete.  With this as our goal,
+and by using the information in the preceding text, a set of guidelines for
+password selection can be constructed:
+
+o DON'T use your login name in any form (as-is, reversed, capitalized,
+  doubled, etc.).  
+
+o DON'T use your first or last name in any form. DON'T use your spouse's or
+  child's name. DON'T use other information easily obtained about you.
+  This includes license plate numbers, telephone numbers, social security
+  numbers, the brand of your automobile, the name of the street you live
+  on, etc.
+
+o DON'T use a password of all digits, or all the same letter.
+  This significantly decreases the search time for a cracker.
+
+o DON'T use a word contained in (English or foreign language) dictionaries,
+  spelling lists, or other lists of words.
+
+o DON'T use a password shorter than six characters.
+
+o *DO* use a password with mixed-case alphabetics.
+
+o *DO* use a password with nonalphabetic characters, e.g., digits or
+  punctuation.
+
+o *DO* use a password that is easy to remember, so you don't have to write it
+  down. 
+
+o *DO* use a password that you can type quickly, without having to look at
+  the keyboard.  This makes it harder for someone to steal your password by
+  watching over your shoulder.
+
+Although this list may seem to restrict passwords to an extreme, there are
+several methods for choosing secure, easy-to-remember passwords that obey
+the above rules.  Some of these include the following:
+
+o Choose a line or two from a song or poem, and use the first letter of
+each word.  For example, "In Xanadu did Kubla Kahn a stately pleasure dome
+decree" becomes "IXdKKaspdd."
+
+o Alternate between one consonant and one or two vowels, up to eight
+  characters.  This provides nonsense words that are usually pronounceable,
+  and thus easily remembered.  Examples include ``routboo,'' ``quadpop,''
+  and so on.
+
+o Choose two short words and concatenate them together with a punctation
+  character between them.  For example: "dog;rain," "book+mug,"
+  "kid?goat."
+
+The importance of obeying these password selection rules cannot be
+overemphasized.  The Internet worm program of 1988 succeeded in
+infiltrating and paralyzing thousands of computers in the US.  As part of
+its strategy for breaking into new machines, it attempted to crack user
+passwords.  First, the worm tried simple choices such as the login name,
+user's first and last names, and so on.  Next, the worm tried each word
+present in an internal dictionary of 432 words (presumably Morris
+considered these words to be ``good'' words to try).  If all else failed,
+the worm tried going through the system dictionary, /usr/dict/words,
+trying each word [Spaf88].  The password selection rules above successfully
+guard against all three of these strategies.
+
+                                          (Source:  SRI paper by Crocker.)

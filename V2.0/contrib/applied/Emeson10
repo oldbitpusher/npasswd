@@ -1,0 +1,210 @@
+Replied: Mon, 02 Feb 1998 15:56:12 CST
+Replied: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Return-Path: emeson@zlin.Colorado.EDU 
+Received: from sirius.cc.utexas.edu (root@sirius.cc.utexas.edu [128.83.186.19])
+	by grapevine.cc.utexas.edu (8.8.5/8.8.5/cc-mt.mc-1.4) with ESMTP id PAA00954
+	for <clyde@motown.cc.utexas.edu>; Mon, 2 Feb 1998 15:52:41 -0600 (CST)
+Received: from mrzip.cc.utexas.edu (root@mrzip.cc.utexas.edu [128.83.217.16])
+	by sirius.cc.utexas.edu (8.8.5/8.8.5/cc-os.mc-1.8) with ESMTP id PAA13047
+	for <clyde@sirius.cc.utexas.edu>; Mon, 2 Feb 1998 15:52:14 -0600 (CST)
+Received: from zlin.Colorado.EDU (zlin.Colorado.EDU [128.138.129.52])
+	by mrzip.cc.utexas.edu (8.8.5/8.8.5/mrzip.mc-1.22) with ESMTP id PAA16829
+	for <c.hoover@cc.utexas.edu>; Mon, 2 Feb 1998 15:52:03 -0600 (CST)
+Received: (from emeson@localhost)
+          by zlin.Colorado.EDU (8.8.5/8.8.4/CNS-4.1p)
+	  id OAA06731; Mon, 2 Feb 1998 14:51:57 -0700 (MST)
+From: Donnie Emeson <Donnie.Emeson@Colorado.EDU>
+Message-Id: <199802022151.OAA06731@zlin.Colorado.EDU>
+Subject: npasswd, changes
+To: c.hoover@cc.utexas.edu
+Date: Mon, 2 Feb 1998 14:51:57 -0700 (MST)
+Cc: emeson@zlin.Colorado.EDU (me)
+Delivery-receipt-to: <>
+X-Mailer: ELM [version 2.5 PL0b1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Length: 6067
+
+Last time I wrote to you, I told you something was dumping core...
+
+It was in passwd.c:
+                              die((char *)0);
+
+The context with the change I made is:
+                      else
+                              printf("They don't match; try again.\n\n");
+                      if (XSwitches[Xsw_UseStdin])
+/*                            die((char *)0);         */
+                              die("");
+                      else
+                              continue;
+
+I don't understand why the original die statement dumped core.
+
+I also made a few more changes to pwck_main.c to make it compatible with
+other changes I've already sent you.  The diff included below is from your
+original, which means I have sent you some of these changes before.
+
+And the change I made to PWCK_INDICT certainly isn't important but
+we had too many complaints of "there's no way this is a dictionary
+word", so we decided to make the message more cryptic.  Actually I
+believe I ended up changeing this in facist.c since it seemed to be
+generating a message like - not acceptable because it is based on a 
+dictionary word...
+
+***** *****   START of diff -c pwck_main.c.orig pwck_main.c  ***** *****
+*** pwck_main.c.orig	Fri Nov 21 13:19:34 1997
+--- pwck_main.c	Thu Jan 15 16:03:23 1998
+***************
+*** 42,48 ****
+  	"it is empty",				/* PWCK_NULL */
+  	"it is too easy to guess",		/* PWCK_OBVIOUS */
+  	"it is part of your 'finger' information", /* PWCK_FINGER */
+! 	"it was found in a dictionary",		/* PWCK_INDICT */
+  	"it has an illegal character in it",	/* PWCK_ILLCHAR */
+  	"it is too short",			/* PWCK_SHORT */
+  	"it has been used recently ",		/* PWCK_REUSE */
+--- 42,49 ----
+  	"it is empty",				/* PWCK_NULL */
+  	"it is too easy to guess",		/* PWCK_OBVIOUS */
+  	"it is part of your 'finger' information", /* PWCK_FINGER */
+! /*	"it was found in a dictionary",  /* PWCK_INDICT */
+! 	"it is too similar to a dictionary word or current password cracking techniques reports it as vulnerable",		/* PWCK_INDICT */
+  	"it has an illegal character in it",	/* PWCK_ILLCHAR */
+  	"it is too short",			/* PWCK_SHORT */
+  	"it has been used recently ",		/* PWCK_REUSE */
+***************
+*** 58,63 ****
+--- 59,65 ----
+  	"MonocaseOK	yes",		/* Allow mono case */
+  	"PrintableOnly 	no",		/* Printable ASCII chars only */
+  	"MaxRepeat 	3",		/* How long chars runs can be */
++ 	"MinCharClass	1",		/* default min # of char class */
+  #ifdef	SYSTEM_PASSWD_MIN
+  	"MinPassword 	SYSTEM_PASSWD_MIN",	/* Minimum length */
+  #else
+***************
+*** 68,74 ****
+  #else
+  	"MaxPassword 	8",			/* Maximum effective length */
+  #endif
+- 	"Dictionaries	@",
+  	0
+  };
+  
+--- 70,75 ----
+***************
+*** 122,127 ****
+--- 123,129 ----
+  	char		*mesgbuf;	/* Where to stash message */
+  {
+  	int		rcode;		/* General purpose scratch */
++ 	int		pwlen;		/* password length */
+  	checkproc	*checkfunc;	/* Check function pointer */
+  	static char	elucidate[BUFSIZ];	/* Expanded error message */
+  	static char	xpasswd[BUFSIZ];	/* Temporary storage for candidate */
+***************
+*** 141,149 ****
+  	 * Cut to length *after* checkpasword_init(),
+  	 * since max_length may be set therein
+  	 */
+  	(void) strcpy(xpasswd, password);
+! 	if (Config.max_length)
+  		xpasswd[Config.max_length] = 0;
+  
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+--- 143,155 ----
+  	 * Cut to length *after* checkpasword_init(),
+  	 * since max_length may be set therein
+  	 */
++ 	pwlen = strlen(password);  /* used for warning messages below */
+  	(void) strcpy(xpasswd, password);
+! 	if (Config.max_length) {
+  		xpasswd[Config.max_length] = 0;
++ 		/* cut the original too. */
++ 		password[Config.max_length] = 0;
++ 	}
+  
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+***************
+*** 155,164 ****
+--- 161,185 ----
+  			debug(DB_LOOKUP,
+  				"checkpassword: return %d, message \"%s\"\n",
+  					rcode, mesgbuf);
++ 
++ 			/*
++ 			 * check to see if password length > Config.max_length
++ 			 * if so append warning to any other message.
++ 			 */
++ 			if ( pwlen > Config.max_length ) {
++ 				sprintf(elucidate,
++ 					"\nWarning only the first %d keystrokes are used",Config.max_length);
++ 				(void) strcat(mesgbuf, elucidate);
++ 			}
+  			return(rcode);
+  		}
+  	}
+  	debug(DB_VERBOSE, "checkpassword: password OK\n");
++ 	/* warning slightly modified when password passes */
++ 	if ( pwlen > Config.max_length )
++ 		sprintf(mesgbuf,
++ 			"Warning only the first %d keystrokes are used.\n"
++ 				,Config.max_length);
+  	return(PWCK_OK);
+  }
+  
+***************
+*** 248,253 ****
+--- 269,279 ----
+  	/*
+  	 * Token matching
+  	 */
++ 	if (strcasecmp(item, "mincharclass") == 0) {
++ 		if (!data[1]) cf_error("Missing value");
++ 		Config.min_char_class = decode_int(data[1]);
++ 		cf_ok;
++ 	}
+  	if (strcasecmp(item, "monocaseok") == 0) {
+  		if (!data[1]) cf_error("Missing value");
+  		Config.single_case = decode_boolean(data[1]);
+***************
+*** 304,311 ****
+--- 330,340 ----
+  	}
+  	if (strcasecmp(item, "passwordchecks") == 0) {
+  		char	**pp = &data[1];
++ 		int   i;
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		for(i=0; i < NCHECKPROCS; i++)	/* clear out checkprocs */
++ 			Config.checkprocs[i] = 0;
+  		while (*pp)
+  			add_proc(*pp++);
+  		cf_ok;
+***************
+*** 379,385 ****
+  	Direntry_t	*dp;			/* Directory entry */
+  	int		found = 0;		/* Counter */
+  
+! 	if (*where = '@')
+  		where = DICTIONARIES;
+  	debug(DB_CONFIG, "add_all_dicts: \"%s\"\n", where);
+  #ifdef	HAS_READDIR
+--- 408,414 ----
+  	Direntry_t	*dp;			/* Directory entry */
+  	int		found = 0;		/* Counter */
+  
+! 	if (*where == '@')
+  		where = DICTIONARIES;
+  	debug(DB_CONFIG, "add_all_dicts: \"%s\"\n", where);
+  #ifdef	HAS_READDIR
+*****   END  of diff -c pwck_main.c.orig pwck_main.c  *****
+
+---
+Donnie Emeson				Central & Unix Services
+Donnie.Emeson@Colorado.EDU		Information Technology Services
+303-492-0764				University of Colorado at Boulder

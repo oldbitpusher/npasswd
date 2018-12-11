@@ -1,0 +1,680 @@
+head	1.13;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.13
+date	98.10.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	98.07.22.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	98.07.16.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	98.07.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	98.07.08.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	98.07.02.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	98.06.30.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.06.26.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.06.25.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.06.24.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Pick up some implicit symbols from config.sh
+@
+text
+@;#
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+;# $Id$ (cc.utexas.edu)
+;#
+;# Makefile for npasswd documentation (mostly HTML docs)
+;#
+
+#include "../Jmake.local"
+
+/* Implicit symbols needed from config.sh */
+>CC
+>RM
+
+Initialize(DOCS, $p_docdir)
+
+Describe(NROFF,	Nroff command)
+Initialize(NROFF, $nroff)
+
+/* Use lynx to convert HTML to text */
+Describe(HTCONVERT,	Command to convert HTML to text (lynx -dump))
+Initialize(HTCONVERT, lynx -dump)
+
+/* Command to post-process lynx output */
+Initialize(HTFILTER,  sed -e s@@file://localhost`pwd`@@file://localhost/.@@) 
+
+/*
+ * Roff2HTML
+ *	Convert nroff documents to HTML.
+ */
+#define	Roff2HTML(_mac,_src,_dst) 	@@!\
+>RM		@@!\
+>NROFF		@@!\
+_dst: _src @@@@\
+	-@@if [ -f $(NROFF) ]; then \	@@@@\
+		$(RM) _dst; \	@@@@\
+		$(NROFF) -m^^_mac _src |./docfilter |./nroff2html > _dst ;\ @@@@\
+		echo "_src -> _dst"; \  @@@@\
+	else \ @@@@\
+		echo "Cannot make _dst ($(NROFF) not found)"; \ @@@@\
+	fi
+
+/*
+ * Roff2Text
+ *	Convert nroff documents to Text.
+ */
+#define	Roff2Text(_mac,_src,_dst) 	@@!\
+>RM		@@!\
+>NROFF		@@!\
+_dst: _src @@@@\
+	-@@if [ -f $(NROFF) ]; then \	@@@@\
+		$(RM) _dst; \	@@@@\
+		$(NROFF) -m^^_mac _src | ./docfilter > _dst ;\ @@@@\
+		echo "_src -> _dst"; \  @@@@\
+	else \ @@@@\
+		echo "Cannot make _dst ($(NROFF) not found)"; \ @@@@\
+	fi
+
+/*
+ * HTML2Text
+ *	Convert HTML documents to text.
+ */
+#define	HTML2Text(_src,_dst)	@@!\
+>RM		@@!\
+_dst: _src @@@@\
+	@@test -f _src 	@@@@\
+        -@@$(HTCONVERT) _src | ./docfilter | $(HTFILTER) > _dst.tmp; \ @@@@\
+	 if [ -s _dst.tmp ]; then \ @@@@\
+		$(MV) _dst.tmp _dst; \	@@@@\
+		echo "_src -> _dst"; \ @@@@\
+	else \ @@@@\
+		echo "Cannot make _dst ('$(HTCONVERT)' failed)"; \ @@@@\
+		$(RM) _dst.tmp; \ @@@@\
+	fi
+
+HTML	= \
+	AdminGuide.html \
+	BuildInstall.html \
+	BugReport.html \
+	Copyright.html \
+	QNA.html \
+	Main.html \
+	ManPages.html \
+	MiscNotes.html \
+	Support.html \
+	Reference.html \
+	Reference_TOC.html \
+	Reference_index.html \
+	TOC_frame.html \
+	TOC_std.html \
+	index.html
+
+
+HTML_TXT = \
+	AdminGuide.txt \
+	BuildInstall.txt \
+	BugReport.txt \
+	Copyright.txt \
+	QNA.txt \
+	Main.txt \
+	ManPages.txt \
+	MiscNotes.txt \
+	Support.txt \
+	Reference.txt \
+	TOC_std.txt
+
+PS	= \
+	PasswordSecurity.ps \
+	Worm-MIT.ps \
+	Worm-Utah.ps
+
+IMG	= \
+	top.gif \
+	home.gif
+
+MAN	= \
+	checkpassword.1 \
+	checkpassword.3 \
+	history_admin.1 \
+	makedict.1 \
+	npasswd.1
+
+MAN_HTML = \
+	checkpassword_1.html \
+	checkpassword_3.html \
+	history_admin_1.html \
+	makedict_1.html \
+	npasswd_1.html
+
+MAN_CAT = \
+	checkpassword.cat1 \
+	checkpassword.cat3 \
+	history_admin.cat1 \
+	makedict.cat1 \
+	npasswd.cat1
+
+Describe(all,	Make everything: nroff2html docfilter man-html man-txt hmtl-txt)
+all::	nroff2html docfilter man-html man-txt html-txt
+
+Describe(dist,	Prepare for distribution)
+dist:	man-html man-txt html-txt
+
+Describe(install,	Install everything: install-html install-man install-txt)
+Describe(deinstall,	Remove everything: deinstall-html deinstall-man deinstall-txt)
+
+MakeInstallDirectories($(DOCS))
+
+HelpTarget()
+
+;#
+;#  Program to "convert" nroff output to HTML
+;#
+
+nroff2html: nroff2html.c
+	$(CC) -o nroff2html nroff2html.c
+
+docfilter: docfilter.SH
+	$(RM) docfilter
+	sh docfilter.SH
+
+;#
+;# Transform manual pages to HTML documents
+;#
+Describe(man-html,	Make HTML versions of man pages)
+man-html:	$(MAN_HTML) docfilter nroff2html
+
+Roff2HTML(an,checkpassword.1,checkpassword_1.html)
+Roff2HTML(an,checkpassword.3,checkpassword_3.html)
+Roff2HTML(an,history_admin.1,history_admin_1.html)
+Roff2HTML(an,makedict.1,makedict_1.html)
+Roff2HTML(an,npasswd.1,npasswd_1.html)
+
+;#
+;# Transform manual pages to text documents
+;#
+Describe(man-txt,	Make text (cat) versions of man pages)
+man-txt:	$(MAN_CAT) docfilter
+
+Roff2Text(an,checkpassword.1,checkpassword.cat1)
+Roff2Text(an,checkpassword.3,checkpassword.cat3)
+Roff2Text(an,history_admin.1,history_admin.cat1)
+Roff2Text(an,makedict.1,makedict.cat1)
+Roff2Text(an,npasswd.1,npasswd.cat1)
+
+;#
+;# Transform HTML documents to text
+;#
+Describe(html-txt,	Make text versions of HTML files)
+html-txt:	$(HTML_TXT) docfilter
+
+|expand d!$(HTML_TXT)!
+HTML2Text(!d:\.txt=\.html, !d)
+
+-expand
+
+;#
+;# Install targets
+;#
+|expand d!html man txt!
+install::	install-!d
+
+deinstall::	deinstall-!d
+
+-expand
+
+/*
+ * Install documentation files
+ */
+Describe(install-html,	Install HTML documents)
+Describe(deinstall-html,	Remove HTML documents)
+
+InstallMultipleDestFlags(install-html,$(PS) $(IMG), $(DOCS), -m 0444)
+
+#define InstallDoc(_target_,_src_,_dst_) @@!\
+>RM		@@!\
+install-^^_target_^^:: _src_ docfilter	@@@@\
+	@@case '${MFLAGS}' in *[i]*) set +e;; esac; \	@@@@\
+	for f in _src_ ; do \		@@@@\
+		$(RM) /tmp/$$f.temp; \	@@@@\
+		./docfilter $$f > /tmp/$$f.temp; \	@@@@\
+		(set -x; $(INSTALL) -m 444 /tmp/$$f.temp _dst_/$$f; ); \  @@@@\
+		$(RM) /tmp/$$f.temp;	\	@@@@\
+	done
+
+#define DeinstallDoc(_target_,_src_,_dst_) @@!\
+>RM		@@!\
+deinstall-^^_target_^^::		@@@@\
+	@@case '${MFLAGS}' in *[i]*) set +e;; esac; \	@@@@\
+	for f in _src_ ; do \ 		@@@@\
+		$(RM) $(DOCS)/$$f; \	@@@@\
+	done
+
+InstallDoc(html, $(HTML), $(DOCS))
+DeinstallDoc(html, $(HTML), $(DOCS))
+
+Describe(install-man,	Install man pages)
+Describe(deinstall-man,	Remove man pages)
+InstallMultipleDestFlags(install-man, $(MAN_HTML) $(MAN_CAT), $(DOCS), -m 0444)
+
+InstallDoc(man, $(MAN), $(DOCS))
+DeinstallDoc(man, $(MAN), $(DOCS))
+
+Describe(install-txt,	Install text versions of HTML documents)
+Describe(deinstall-txt,	Remove text versions of HTML documents)
+InstallMultipleDestFlags(install-txt, $(HTML_TXT), $(DOCS), -m 0444)
+
+;#
+;# Dependancies for HTML documents
+;#
+TerminalDependancy($(HTML) $(PS) $(IMG))
+
+;#
+;# Clean the HTML docs created from man pages
+;#
+local_clobber::
+	$(RM) $(MAN_HTML) $(HTML_TXT) nroff2html docfilter
+
+NoDebug()
+NoLint()
+NoDepend()
+
+;#
+;# End Makefile
+@
+
+
+1.12
+log
+@Add BugReport to HTML documents
+@
+text
+@d51 4
+@
+
+
+1.11
+log
+@1. Change clean to clobber to discard dervied files 2. Document NROFF and HTCONVERT macros 3. Remove empty .txt temp files
+@
+text
+@d115 1
+d133 1
+@
+
+
+1.10
+log
+@Put temp files in /tmp
+@
+text
+@d53 1
+d55 1
+d57 1
+d59 1
+d109 1
+d289 1
+a289 1
+local_clean::
+@
+
+
+1.9
+log
+@1. Fix installation problems 2. Add more no-op compatibility targets
+@
+text
+@d248 4
+a251 4
+		$(RM) $$f.temp; \	@@@@\
+		./docfilter $$f > $$f.temp; \	@@@@\
+		(set -x; $(INSTALL) -m 444 $$f.temp _dst_/$$f; ); \	@@@@\
+		$(RM) $$f.temp;	\	@@@@\
+@
+
+
+1.8
+log
+@Major rewrite: 1. Don't croak if conversion programs are not available (e.g. nroff, lynx) 2. Cleanup install dependancies
+@
+text
+@d51 2
+a52 1
+Initialize(LIB, $privlibexp)
+a106 2
+DOCS	= $(LIB)/doc
+
+a276 8
+;# No C programs with dependancies here
+;#
+depend:
+	@@echo Nothing to depend on
+
+LocalNoDebug()
+
+;#
+d279 1
+a279 2
+|expand d!$(HTML) $(PS) $(IMG)!
+!d:
+a280 2
+-expand
+
+d287 4
+@
+
+
+1.7
+log
+@Filter most documents before installing in doc dir
+@
+text
+@a56 2
+/* Command to localize doc files */
+Initialize(DOCFILTER,  docfilter) 
+d62 1
+a62 1
+#define	Roff2HTML(macros,src,dst) 	@@!\
+d65 8
+a72 4
+dst: src nroff2html docfilter @@@@\
+	-@@$(RM) dst	@@@@\
+        @@$(NROFF) -m^^macros src | ./docfilter | ./nroff2html > dst @@@@\
+        @@echo "src -> dst"
+d75 16
+d94 1
+a94 1
+#define	HTML2Text(src,dst)	@@!\
+d96 9
+a104 3
+dst: src docfilter @@@@\
+	-@@$(RM) dst 	@@@@\
+        -@@$(HTCONVERT) src | ./docfilter | $(HTFILTER) > dst && echo "src -> dst"
+a105 2
+
+
+a123 6
+HTML_MAN = \
+	checkpassword_1.html \
+	checkpassword_3.html \
+	history_admin_1.html \
+	makedict_1.html \
+	npasswd_1.html
+d153 6
+a158 2
+Describe(all,	Make everything: nroff2html man-html hmtl-txt)
+all::	man-html html-txt
+d160 13
+a182 1
+all::	nroff2html docfilter
+d195 1
+a195 1
+man-html:	$(HTML_MAN)
+d204 12
+d219 1
+a219 1
+html-txt:	$(HTML_TXT)
+d246 1
+a246 1
+install-^^_target_^^:: _src_		@@@@\
+d268 1
+a268 1
+InstallMultipleDestFlags(install-man, $(HTML_MAN), $(DOCS), -m 0444)
+d297 1
+a297 1
+	$(RM) $(HTML_MAN) $(HTML_TXT) nroff2html
+@
+
+
+1.6
+log
+@Change document filenames
+@
+text
+@d57 2
+d67 1
+a67 1
+dst: src nroff2html @@@@\
+d69 1
+a69 1
+        @@$(NROFF) -m^^macros src | ./nroff2html > dst @@@@\
+d78 1
+a78 1
+dst: src @@@@\
+d80 1
+a80 1
+        -@@$(HTCONVERT) src | $(HTFILTER) > dst && echo "src -> dst"
+d82 2
+d90 1
+a90 1
+	FAQ.html \
+d113 1
+a113 1
+	FAQ.txt \
+d150 1
+a150 1
+all::	nroff2html
+d155 4
+a196 1
+InstallMultipleDestFlags(install-html,$(HTML) $(PS) $(IMG), $(DOCS), -m 0444)
+d198 24
+d224 1
+a224 1
+InstallMultipleDestFlags(install-man, $(HTML_MAN) $(MAN), $(DOCS), -m 0444)
+d226 3
+@
+
+
+1.5
+log
+@1. Build nroff2html directly (don't use macros) 2. Post-process lynx dump output to relativize local file targets
+@
+text
+@d84 1
+a84 1
+	Build.html \
+d87 1
+a87 1
+	Introduction.html \
+d89 2
+a90 3
+	OpenIssues.html \
+	PlatformNotes.html \
+	ProgrammerGuide.html \
+d107 1
+a107 1
+	Build.txt \
+d110 1
+a110 1
+	Introduction.txt \
+d112 2
+a113 3
+	OpenIssues.txt \
+	PlatformNotes.txt \
+	ProgrammerGuide.txt \
+@
+
+
+1.4
+log
+@Add more manual pages & rename them
+@
+text
+@d53 1
+d55 2
+d78 1
+a78 1
+        -@@$(HTCONVERT) src > dst && echo "src -> dst"
+d145 4
+a148 2
+/*  Program to "convert" nroff output to HTML */
+SimpleProgramTarget(nroff2html)
+d150 3
+@
+
+
+1.3
+log
+@Change some document names
+@
+text
+@d97 5
+a101 3
+	history_admin_man.html \
+	npasswd_man.html \
+	makedict_man.html
+d126 5
+a130 3
+	npasswd.man \
+	history_admin.man \
+	makedict.man
+d151 5
+a155 3
+Roff2HTML(an,history_admin.man,history_admin_man.html)
+Roff2HTML(an,npasswd.man,npasswd_man.html)
+Roff2HTML(an,makedict.man,makedict_man.html)
+@
+
+
+1.2
+log
+@Fix typo
+@
+text
+@d80 1
+a83 1
+	Internals.html \
+d85 1
+a86 1
+	PasswordChecks.html \
+d88 1
+d91 1
+a91 2
+	Reference_frame.html \
+	SysAdmin.html \
+d102 1
+a105 1
+	Internals.txt \
+d107 1
+a108 1
+	PasswordChecks.txt \
+d110 1
+a111 1
+	SysAdmin.txt \
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d77 1
+a77 1
+DOC_DIR	= $(LIB)/doc
+d134 1
+a134 1
+MakeInstallDirectories($(DOC_DIR))
+@

@@ -1,0 +1,32 @@
+    Table of -log10(expected false positive rate)
+
+
+             r = filter bits / list entry
+
+           8  10  12  14  16  18  20  22  24
+
+      4  1.6 1.9 2.2 2.4 2.6 2.8 3.0 3.1 3.3
+      5  1.7 2.0 2.3 2.6 2.9 3.1 3.3 3.5 3.6
+      6  1.7 2.1 2.4 2.7 3.0 3.3 3.5 3.7 3.9
+  M   7  1.6 2.1 2.5 2.8 3.2 3.4 3.7 4.0 4.2
+  u   8  1.6 2.1 2.5 2.9 3.2 3.6 3.9 4.1 4.4
+  l   9  1.5 2.0 2.5 2.9 3.3 3.6 4.0 4.3 4.5
+  t  10  1.5 2.0 2.5 2.9 3.3 3.7 4.1 4.4 4.7
+  i  11  1.4 1.9 2.4 2.9 3.3 3.7 4.1 4.5 4.8
+  p  12  1.3 1.9 2.4 2.9 3.3 3.8 4.1 4.5 4.9
+  l  13  1.2 1.8 2.3 2.8 3.3 3.8 4.2 4.6 4.9
+  i  14  1.2 1.7 2.3 2.8 3.3 3.7 4.2 4.6 5.0
+  c  15  1.1 1.6 2.2 2.7 3.2 3.7 4.2 4.6 5.0
+  i  16  1.0 1.6 2.1 2.7 3.2 3.7 4.1 4.6 5.0
+  t  17  0.9 1.5 2.1 2.6 3.1 3.6 4.1 4.6 5.0
+  y  18  0.9 1.4 2.0 2.5 3.1 3.6 4.1 4.5 5.0
+     19  0.8 1.3 1.9 2.5 3.0 3.5 4.0 4.5 5.0
+     20  0.7 1.3 1.8 2.4 2.9 3.5 4.0 4.5 5.0
+
+Rules of thumb:
+    for false positives < .01,   use m = 7,  at least 1.25 bytes per entry
+    for false positives < .003,  use m = 9,  at least 1.5  bytes per entry
+    for false positives < .001,  use m = 11, at least 2    bytes per entry
+    for false positives < .0001, use m = 14, at least 2.5  bytes per entry
+
+In this implementation the array size must be a power of 2.

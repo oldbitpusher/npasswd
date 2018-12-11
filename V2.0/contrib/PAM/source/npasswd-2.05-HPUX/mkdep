@@ -1,0 +1,29 @@
+#!/bin/sh
+flags=""
+case "$@" in
+*--*)
+	for arg
+	do
+		shift
+		case "$arg" in
+		--) break;;
+		*) flags="$flags $arg";;
+		esac
+	done;;
+esac
+for srcfile
+do
+	case "$srcfile" in
+	*.c) c='.c';;
+	*.y) c='.y';;
+	*.l) c='.l';;
+	esac
+	filebase=`basename $srcfile $c`
+	<$srcfile /usr/lib/cpp - -DOS_HPUX -D_HPUX_SOURCE -DOS_NAME=hpux -DOS_MAJOR_VERSION=b -DOS_MINOR_VERSION=11 -I. $flags 2>/dev/null | \
+	/usr/bin/sed -e '/^# *[0-9]/!d' \
+		-e 's/^.*"\(.*\)".*$/'$filebase'.o: \1/' \
+		-e 's|: \./|: |' \
+		-e 's|: *$|: '$srcfile'|' | \
+	/usr/bin/grep -v '^#' | /usr/bin/sort | /usr/bin/uniq
+done
+exit 0

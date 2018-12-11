@@ -1,0 +1,16 @@
+*********************************************************************
+   Your new password will be checked against obvious words like your 
+name, account name, and the computer name.  
+   Unless you use a punctuation character in your new password, it
+will also be checked against a 1.6 million word database built from 
+dictionaries of the following languages:
+   Afrikaans, Chinese, Croatian, Danish, Dutch, English, Finnish, 
+   French, German, Hungarian, Italian, Japanese, Latin, Norwegian, 
+   Polish, Spanish, Swahili, Swedish, Yiddish.  
+The database also contains placenames; biological names; given and 
+surnames for several cultures; religious, mythological and literary
+names; movie/tv related words; obscenities; computer jargon; and
+Colby-related names.  Words and reversed words (like "password" and 
+"drowssap") that are found in the database will be rejected!
+        ===> Memorize your password, don't write it down! <===
+*********************************************************************

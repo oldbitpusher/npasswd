@@ -1,0 +1,74 @@
+
+README for AIX 4.1 07/20/98
+
+AIX 4.1 has a number of password restrictions which can be set per user 
+or system wide.  These include lexical requirements and dictionary searches
+(though not nearly as vigorous that that done by npasswd).  Judicious use
+of these restrictions should result in passwords which are harder to crack.
+
+If you are having problems with cracked passwords on AIX 4 systems,
+I suggest that you tune the system password restrictions first *before*
+converting to npasswd.   Experience has shown me that it is better to make the
+vendor stuff work where possible.
+
+The plaintext dictionaries in this distribution could perhaps be added to the
+'dictionlist' field of the default stanza in "/etc/security/user".
+
+I have not experimented with these facilities, so I don't know if they
+really work :-)
+
+Npasswd DOES NOT support any of the password restrictions listed below.
+The "only root can change this password" and "force change on next
+login" flags (not mentioned below) ARE supported.
+
+------------------- Excerpt for 'man passwd' on AIX 4.1
+
+Construct locally defined passwords according to the password restrictions
+in the /etc/security/user configuration file. This file contains the
+following restrictions:
+
+minalpha	Specifies the minimum number of alphabetic characters.
+
+minother	Specifies the minimum number of other characters.
+
+minlen		Specifies the minimum number of characters.
+
+		*Note:	This value is determined by either the minalpha
+		value plus the minother value or the minlen value,
+		whichever is greater.
+
+mindiff		Specifies the minimum number of characters in the new password
+		that are not in the old password.
+
+		*Note: This restriction does not consider position. If the
+		new password is abcd and the old password is edcb,
+		the number of different characters is 1.
+
+maxrepeats	Specifies the maximum number of times a single character
+		can be used in a password.
+
+minage		Specifies the minimum age at which a password can be changed.
+		Passwords must be kept for a minimum period. This value
+		is measured in weeks.
+
+maxage		Specifies the maximum age of a password. A password must be
+		changed after a specified amount of time measured in weeks.
+
+maxexpired	Specifies the maximum number of weeks beyond the maxage
+		value that a password can be changed by the user.
+
+histexpire	Specifies the number of weeks that a user cannot reuse
+		a password.
+
+histsize	Specifies the number of previous passwords that the user
+		cannot reuse.
+
+dictionlist	Specifies the list of dictionary files checked when a
+		password is changed.
+
+pwdchecks	Specifies the list of external password restriction methods
+		invoked when a password is changed.
+
+------------------- end excerpt
+
+Document @(#)README.AIX4	1.2 07/20/98

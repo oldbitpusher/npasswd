@@ -1,0 +1,162 @@
+head	1.5;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.5
+date	99.02.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	99.02.01.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.12.10.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.10.15.00.00.00;	author clyde;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.20.00.00.00;	author clyde;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.5
+log
+@More stuff about 2.05
+@
+text
+@Latest npasswd news	$Date$
+
+Patch 05	2/1/99	A passel of little bug fixes
+	* Added copyright messages to more modules.
+	* A bit of code format cleanup.
+	* Do not enable nsswitch support unless the "nsswitch.h" include
+	  file is present.  This means that nsswitch.conf will ONLY be
+	  supported on Solaris 2.
+	  IRIX 6.5 and Redhat Linux 4.2 have /etc/nsswitch.conf but totally
+	  different API for support.
+
+	* Properly punt the '-r' option on SunOS 5.
+	* Fixed minor Makefile things throughout the distribution.
+	* Added the option "-XA" to always prompt for the old password.
+	* Fixed lexical password check to properly recoginize telephone numbers.
+	* Enhanced debug mode in checkpassword program.
+	* Use an internal pager to present help files.
+	* Reorganize terminal handling code.
+	* Fix -XI option to work right when stdin is a pipe
+	* Fix Configure password file list input loop
+	* Re-activate some Cracklib rules to be more anal about password
+	  checking.
+
+Patch 04	10/15/98	Lots of bug fixes, some feature enhacements
+	* Substantial rework of history_admin:
+		* Add 'merge' function (see manual page)
+		* Add '-i' command line option 
+		* Allow '-m' with default database
+		* Fix some more annoying bugs
+	* Modifications to the password history test suite to use
+	  and verify the above changes
+	* Clarify some issues with password history depth
+		* History depth now means "how many *old* passwords matter"
+		* Always retain the more recent password, even if too old
+	* Allow "@@" to mean the default database name in history
+	  configuration directives (and the history_admin '-f' option)
+	* Fix the "passwd.MaxRepeat" config directive
+	* Fix the "ShadowTolerance" config directive
+	* Fix the "PasswdTolerance" config directive
+	* Fix the "PasswdMatchTries" config directive
+	* Add build-time option "SHORT_FILE_WARN" to control behavior
+	  when passwd/shadow temp files come up short
+	* Support the '-r' option under SunOS 5
+	* Allow change of local passwd even if NIS client (unless SunOS 4)
+	* More run-time trace messages in various places
+
+Patch 03	9/24/98
+	* Fixes the "Cannot talk to NIS server" problem under Solaris 2. 
+
+Patch 02	9/22/98
+	* Fixes the build problems on Digital UNIX 4.0d.
+
+Patch 01	9/18/98
+	* Fixes build problems when NIS support is not enabled.
+	* Fixes a problem with the configuration directive "PrintOnly", which
+	  was renamed "PrintableOnly" during the last development cycle but
+	  the change did not get propigated everywhere.
+
+Platform status:
+
+AIX 4.1		Builds, installs, changes local passwords
+SunOS 4.1.4	Builds, installs, changes local and NIS passwords 
+SunOS 5.5	Builds, installs, changes local and NIS passwords 
+IRIX 6.1	Builds, installs, changes local passwords 
+Digital UNIX 4.0	Builds, installs
+
+@
+
+
+1.4
+log
+@Updatre patch 05 stuff
+@
+text
+@d4 2
+@
+
+
+1.3
+log
+@Update for 2.05 release
+@
+text
+@d3 2
+a4 2
+Patch 05	12/10/98	A passle of little bug fixes
+	* Do not enable nsswitch support unless the nsswitch.h include
+d6 1
+a6 1
+	  supported on Solaris for the time being.
+d8 2
+a9 2
+	  different API for support.  The IRIX documentation is scant
+	  and I don't have a Linux system at hand.
+d19 2
+@
+
+
+1.2
+log
+@Add descirption of patch 04
+@
+text
+@d3 17
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 22
+a24 1
+This is the pre-release of version 2.0 for final comments and touchup.
+d26 12
+d42 1
+a42 1
+SunOS 5.5	Builds, installs, changes local passwords 
+@

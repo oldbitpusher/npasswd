@@ -1,0 +1,17 @@
+audit:nb1z7MpvS0P4w:::::all
+root:vBvhQyvSbOgeE:::::
+nobody:*:::::
+daemon:*:::::
+sys:*:::::
+bin:*:::::
+uucp:*:::::
+news:*:::::
+ingres:*:::::
+AUpwdauthd:*:::::
+AUyppasswdd:*:::::
+sync:*:::::
+sysdiag:*:::::
+sundiag:*:::::
+clyde:SKcOK8J7xdfh.:::::
+mic:dsYiqyc/UReK2:::::
+joe:GG3aTmg1SaCWw,0:::::

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Npasswd version 1.0</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; OSF1 V3.2 alpha) [Netscape]">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, UT Austin">
+   <META NAME="Description" CONTENT="Home page for npasswd 1.0">
+</HEAD>
+<BODY>
+
+<H1>
+<HR WIDTH="100%"></H1>
+
+<H1 ALIGN=CENTER>Npasswd version 1.0</H1>
+
+<H1>
+<HR WIDTH="100%"></H1>
+
+<H2>Introduction</H2>
+
+<P>This is the version of <I>npasswd</I> that we used on our public UNIX
+systems between 1989 and 1993. </P>
+
+<P>This version was left behind when we
+upgraded to newer hardware (Alphas) and operating systems (Solaris 2).
+The port to these architectures and operating systems is
+<A HREF="http://../v2.0">npasswd 2.0</A>.
+
+<H2>Features</H2>
+
+<UL>
+<LI>Changes local and YP passwords. </LI>
+
+<LI>Can indirectly update SunOS 4 adjunct passwords.</LI>
+
+<LI>Can be compiled to modify alternate password files.</LI>
+</UL>
+
+<H2>Limitations</H2>
+
+<UL>
+<LI>Will not compile with an ANSI&nbsp;C compiler.</LI>
+
+<LI>Does not support shadow passwords.</LI>
+
+<LI>Will probably not run on 64-bit CPUs (e.g. Alphas).</LI>
+</UL>
+
+<H2>Availabilty</H2>
+
+<P>Here is the <A HREF="npasswd-1.2.4.tar.Z">compressed tar file for npasswd
+1.2.4</A>.</P>
+
+<P>This version is frozen - no more work will be done,
+and questions will be answered only on a time-available basis. 
+As soon as 2.0 goes into release, 1.2.4 will be removed.
+
+<H2>Frequently Asked Questions</H2>
+
+<P><B>1. &quot;My password file is not /etc/passwd. How do I get npasswd
+to use it?&quot; </B></P>
+
+<UL>
+<P>There is a table in the module <TT>pw_yp.c</TT> which provides a choice
+of locations for the password file. The first password file found is the
+one used. </P>
+
+<PRE>/*
+ * List of possible locations for the password file
+ */
+static struct passwdinfo pwfiles[] = {
+        . . .
+{
+        PASSWD_FILE, PASSWD_TEMP, PASSWD_SAVE,
+},
+{
+        &quot;/etc/passwd&quot;, &quot;/etc/ptmp&quot;, &quot;/etc/opasswd&quot;,
+},
+        . . .
+</PRE>
+
+<P>The macros <B>PASSWD_FILE</B>, <B>PASSWD_TEMP</B>and <B>PASSWD_SAVE</B>
+are given default values which can be set either by modifying the source
+or by changing and uncommenting the following lines in the Makefile, then
+remove <TT>pw_yp.o</TT> and rebuild. </P>
+
+<PRE>#       The password file location
+# PWF = /etc/passwd
+#       The temp and lock file for passwd file changes
+# PWT = /etc/ptmp
+#       The saved password file
+# PWS = /etc/opasswd
+
+# PWFD = -DPASSWD_FILE=\&quot;$(PWF)\&quot;
+# PWTD = -DPASSWD_TEMP=\&quot;$(PWT)\&quot;
+# PWSD = -DPASSWD_SAVE=\&quot;$(PWS)\&quot;</PRE>
+
+<P>The most common circumstances where this is wanted is on an NIS master,
+where the password file from which the NIS databases is built is not /etc/passwd.
+For this feature to work properly, the NIS master file must ONLY exist
+on the NIS master system, not the NIS clients. </P>
+</UL>
+
+<P><B>2. Does npasswd run on Solaris 2.X (or DEC OSF/1)? </B></P>
+
+<UL>
+<P>No - version 1.2 will not work on Solaris 2, DEC OSF/1 or any system
+that uses System 5 style shadow password files. (There are other problems
+with OSF/1, System 5 Release 4 and POSIX environments). </P>
+</UL>
+
+<P><B>3. Has it been/will it be ported to those systems? </B></P>
+
+<UL>
+<P>The port is called <A HREF="http://../v2.0">npasswd 2.0.</A> </P>
+</UL>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<P><A HREF="mailto:c.hoover@cc.utexas.edu">Clyde Hoover</A>, <BR>
+ACITS, UT Austin</P>
+
+</BODY>
+</HTML>

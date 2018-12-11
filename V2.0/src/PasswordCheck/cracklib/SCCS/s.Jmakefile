@@ -1,0 +1,322 @@
+h48258
+s 00001/00002/00099
+d D 1.10 98/07/16 09:25:29 clyde 10 9
+c Add dependancy for packer.h
+e
+s 00009/00005/00092
+d D 1.9 98/07/14 16:26:37 clyde 9 8
+c Major rework
+e
+s 00033/00029/00064
+d D 1.8 98/05/05 13:41:28 clyde 8 7
+c Major rewrite
+e
+s 00002/00002/00091
+d D 1.7 98/04/09 16:19:22 clyde 7 6
+c Remove NPASSWD_LIB from compile & lint flags
+e
+s 00004/00005/00089
+d D 1.6 98/04/07 13:33:17 clyde 6 5
+c 1. Remove -DCRACKLIB_IMBED
+c 2. Add debugging flags to CC_DBFLAGS
+e
+s 00004/00005/00090
+d D 1.5 98/04/07 10:16:08 clyde 5 4
+c Add lint target & flags
+e
+s 00000/00019/00095
+d D 1.4 98/04/03 13:50:19 clyde 4 3
+c Remove duplicates inadvertantly created last delta
+e
+s 00054/00003/00037
+d D 1.3 98/04/03 13:33:59 clyde 3 2
+c 1. Add legal babble 
+c 2. Add comments about making modifications & building debug versions
+c 3. Add -DUS to flags to trigger silly little check in fascist.c
+e
+s 00006/00000/00034
+d D 1.2 97/09/23 12:24:02 clyde 2 1
+c Add dependancy for packer.h (for anal makes)
+e
+s 00034/00000/00000
+d D 1.1 96/08/09 16:19:51 clyde 1 0
+c date and time created 96/08/09 16:19:51 by clyde
+e
+u
+U
+f e 0
+t
+T
+I 1
+D 8
+/*
+ * Jmakefile for Cracklib for npasswd 2.0
+ */
+E 8
+;#
+I 3
+;# Copyright 1998, The University of Texas at Austin ("U. T. Austin").
+;# All rights reserved.
+;#
+;# By using this software the USER indicates that he or she has read,
+;# understood and will comply with the following:
+;#
+;# U. T. Austin hereby grants USER permission to use, copy, modify, and
+;# distribute this software and its documentation for any purpose and
+;# without fee, provided that:
+;#
+;# 1. the above copyright notice appears in all copies of the software
+;#    and its documentation, or portions thereof, and 
+;# 2. a full copy of this notice is included with the software and its
+;#    documentation, or portions thereof, and 
+;# 3. neither the software nor its documentation, nor portions thereof,
+;#    is sold for profit. Any commercial sale or license of this software,
+;#    copies of the software, its associated documentation and/or
+;#    modifications of either is strictly prohibited without the prior
+;#    consent of U. T. Austin. 
+;# 
+;# Title to copyright to this software and its associated documentation
+;# shall at all times remain with U. T. Austin. No right is granted to
+;# use in advertising, publicity or otherwise any trademark, service
+;# mark, or the name of U. T. Austin.
+;# 
+;# This software and any associated documentation are provided "as is,"
+;# and U. T. AUSTIN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESSED OR
+;# IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+;# PURPOSE, OR THAT USE OF THE SOFTWARE, MODIFICATIONS, OR ASSOCIATED
+;# DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR
+;# OTHER INTELLECTUAL PROPERTY RIGHTS OF A THIRD PARTY. U. T. Austin, The
+;# University of Texas System, its Regents, officers, and employees shall
+;# not be liable under any circumstances for any direct, indirect, special,
+;# incidental, or consequential damages with respect to any claim by USER
+;# or any third party on account of or arising from the use, or inability
+;# to use, this software or its associated documentation, even if U. T.
+;# Austin has been advised of the possibility of those damages.
+;# 
+;# Submit commercialization requests to: Office of the Executive Vice
+;# President and Provost, U. T. Austin, 201 Main Bldg., Austin, Texas,
+;# 78712, ATTN: Technology Licensing Specialist.
+;#
+I 8
+;# ---------------------------------------------------------------
+;# Build Cracklib for inclusion in npasswd/checkpassword
+;# ---------------------------------------------------------------
+;#
+E 8
+E 3
+;# %W% %G% (cc.utexas.edu)
+;#
+I 3
+D 8
+;# This file is auto-generated from Makefile.SH - all persistent
+;# changes should be made there.
+;#
+;# The master source (Jmakefile) is part of the "Developer's Kit".
+;#
+E 8
+I 8
+#include "../../../Jmake.local"
+SetSubdirs(tools)		/* Build in tools subdirectory also */
+E 8
+E 3
+
+D 8
+SetSubdirs(tools)
+D 3
+
+E 3
+I 3
+;#
+D 6
+;# To enable debugging output from cracklib
+;# add -DCRACKLIB_DEBUG to CC_TESTFLAGS
+E 6
+I 6
+;# To enable debugging output from cracklib add CC_DBFLAGS to CFLAGS
+E 6
+;#
+;# To build a debugger-friendly cracklib add CC_DBFLAGS to CFLAGS
+;#
+E 3
+D 6
+Initialize(CC_DBFLAGS, $cc_dbflags)
+E 6
+I 6
+Initialize(CC_DBFLAGS, $cc_dbflags -DCRACKLIB_DEBUG)
+E 6
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+D 3
+Initialize(CFLAGS, -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 3
+I 3
+D 5
+Initialize(CFLAGS, -DIN_CHECKPASSWORD -DIN_CRACKLIB -DUS $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 5
+I 5
+D 6
+Initialize(CFLAGS, -DNPASSWD_LIB -DCRACKLIB_IMBED $ccflags $cc_osflags $(CC_TESTFLAGS))
+Initialize(LINTFLAGS, -DNPASSWD_LIB -DCRACKLIB_IMBED $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 6
+I 6
+D 7
+Initialize(CFLAGS, -DNPASSWD_LIB $ccflags $cc_osflags $(CC_TESTFLAGS))
+Initialize(LINTFLAGS, -DNPASSWD_LIB $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 7
+I 7
+Initialize(CFLAGS, $ccflags $cc_osflags $(CC_TESTFLAGS))
+Initialize(LINTFLAGS, $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 7
+E 6
+E 5
+E 3
+
+;# ---------------------------------------------------------------
+;# Build the Crack library for use by checkpasswd/npasswd
+;# ---------------------------------------------------------------
+
+E 8
+CRACK_LIB = libcrack.a
+CRACK_SRC = \
+	fascist.c \
+	packlib.c \
+	rules.c \
+	stringlib.c
+
+CRACK_OBJ = \
+|expand f!$(CRACK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+NormalLibraryTarget(crack, $(CRACK_SRC), $(CRACK_OBJ))
+
+I 2
+D 4
+;#
+E 4
+E 2
+D 5
+Initialize(CC_DBFLAGS, $cc_dbflags)
+Initialize(CC_TESTFLAGS, $cc_tstflags)
+D 3
+Initialize(CFLAGS, -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 3
+I 3
+Initialize(CFLAGS, -DIN_CHECKPASSWORD -DIN_CRACKLIB -DUS $ccflags $cc_osflags $(CC_TESTFLAGS))
+E 3
+
+E 5
+D 8
+;# ---------------------------------------------------------------
+D 4
+;# Build the Crack library for use by checkpasswd/npasswd
+;# ---------------------------------------------------------------
+
+CRACK_LIB = libcrack.a
+CRACK_SRC = \
+	fascist.c \
+	packlib.c \
+	rules.c \
+	stringlib.c
+
+CRACK_OBJ = \
+|expand f!$(CRACK_SRC)!
+	!f:\.c=\.o \
+-expand \\
+
+NormalLibraryTarget(crack, $(CRACK_SRC), $(CRACK_OBJ))
+
+I 2
+;# ---------------------------------------------------------------
+E 4
+;# Dependancies for .h files
+;# ---------------------------------------------------------------
+E 8
+D 10
+packer.h:
+I 9
+	@exit 0;
+E 10
+I 10
+TerminalDependancy(packer.h)
+E 10
+E 9
+
+I 5
+D 8
+LintTarget()
+E 8
+I 8
+D 9
+LocalDebug()
+E 9
+I 9
+DebugTarget()
+E 9
+E 8
+
+E 5
+D 3
+
+E 3
+E 2
+D 8
+DependTarget()
+E 8
+;#
+D 8
+;# End %M%
+E 8
+I 8
+;# The debug levels "files" and "system" are not really
+;# applicable for Cracklib.  Spew a message to that effect.
+;#
+debug-files::
+	@echo ""
+D 9
+	@echo WARNING: debug level \"files\" not effective for Cracklib
+E 9
+I 9
+	@echo WARNING: debug level \"files\" not effective in $(CURRENT)
+E 9
+	@echo ""
+
+debug-system::
+	@echo ""
+D 9
+	@echo WARNING: debug level \"system\" not effective for Cracklib
+E 9
+I 9
+	@echo WARNING: debug level \"system\" not effective in $(CURRENT)
+E 9
+	@echo ""
+
+;#
+;# Do 'make debug-cracklib' to debug Cracklib checking rules
+;#
+I 9
+Describe(debug-cracklib,	Build cracklib with rule tracing)
+E 9
+debug-cracklib:
+	@echo 'X_DEBUG_CFLAGS = ${CC_DEBUG_FLAGS} -DCRACKLIB_DEBUG' >> Makefile
+	@echo "Set $(CURRENT)/Makefile to build Cracklib with rule tracing on"
+D 9
+	@echo "Do \"make clean\" to remove old objects
+E 9
+I 9
+	@echo "Do \"make realclean\" to remove old objects
+E 9
+
+
+D 9
+LocalEnd()
+E 9
+I 9
+DependTarget()
+DependSubdirs()
+LintTarget()
+E 9
+
+;#
+;# End Makefile
+E 8
+E 1

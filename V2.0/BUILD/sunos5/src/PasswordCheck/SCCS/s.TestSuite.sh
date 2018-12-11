@@ -1,0 +1,1 @@
+../../../../../src/PasswordCheck/SCCS/s.TestSuite.sh

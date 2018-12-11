@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>The future of Npasswd</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; SunOS 5.5 sun4m) [Netscape]">
+   <META NAME="Author" CONTENT="Clyde Hoover, ACITS, University of Texas, Austin[">
+<link rel=stylesheet type="text/css" href="npasswd.css">
+</HEAD>
+<BODY>
+
+<A NAME="_top"></A>
+<hr>
+<H1 ALIGN=CENTER>The Future of Npasswd</H1>
+<HR>
+<P>
+<H2>The future - observations</H2></A>
+<div class=para>
+<P>
+The rewrite of the 1998 version of <i>npasswd</i> was 
+more complicated and took me over 5 years of off and on work.  During that time
+all the systems at  the UT Austin Computation Center
+which hosted the original <i>npasswd</i> were retired.
+<p>
+In their place came new hardware (64-bit CPUs), with
+new operating systems (Solaris 2, OSF/1), and new user databases (NIS+).
+<P>
+Said user databases are often sophisticated, but too often
+suffered from unstable and/or undocumented programming interfaces
+and raised difficult bugs to work around.
+See the commentary on NIS+ support in the <A href="FAQ.html#_NISplus">FAQ</a>.
+<p>
+Manipulating these databases is much more complex
+than updating field 2 of <B>/etc/passwd</B>.
+<p>
+We decided upon a policy of periodically running <i>Crack</i> against our
+password files and deactivating users with bad passwords by changing their
+login shell to a script that informs the user to call our Help Desk to get their
+account working again.  This approach obviated the need for <i>npasswd</i> to
+work on these new systems. The upshot of this is, sorry to say,
+that <i>npasswd</i> is not in use on our systems, removeing a considerable
+incentive for continued development.
+<P>
+On the bright side some vendor <i>passwd</i> programs are better at disallowing
+easily guessed passwords.  Combined with shadow passwords, this approach
+provides <b>some</b> insulation against typical password guessing attacks. 
+See the commentary on shadow passwords in the <A href="FAQ.html#_shadow">FAQ</a>.
+<P>
+Today the greatest vulnerability for UNIX systems is not login via guessed passwords,
+but remote root access attacks on network services - usually stack overflows due
+to malicious input data.  Why spend time cracking passwords when you can run
+a root kit and own the machine within seconds?
+<p>
+Still it is prudent (and sometimes mandatory under regulation or law) to 
+prevent users from picking dumb passwords.  This need will become more acute
+in the area of Web services.
+<p>
+UNIX vendors could make the systems administrators life
+more pleasant by allowing the interposition of a site-specific password acceptance policy.
+<P>
+</div>
+<H2>The future - specifics</H2></A>
+<div class=para>
+<p>
+The work of keeping up with new releases of UNIX systems with new features
+can take up a lot of time which I do not have.  For example there are many
+different Linux distributions on the market (and Internet), and the authentication
+functionality appears to differ between them.  To properly detect and support
+these features requires access to resources and development time that continues
+to be in short supply.
+<p>
+Therefore I rely upon the members
+of the Internet community to help <i>npasswd</i> work on more platforms. 
+<P>
+With the advent of new authentication service structures such as
+the <i>name service switch</i>, vendor utilities for user account manipulation
+have changed from monolith, know-everything do-everything programs (like <i>npasswd</i>)
+to mostly a dispatcher to run-time loaded modules to do the actual work.
+The Pluggable Authentication Module (PAM) architecture and the name service switch
+are common examples of this approach.  See the section on password aging in the 
+<A href=FAQ.html#_aging">FAQ</a> for a discussion of how PAM works.
+<p>
+Since much of the heavy lifting is done in run-time
+loaded code, two approaches emerge for the evolution of <i>npasswd</i>:
+<ol>
+<li> Have <i>npasswd</i> detect the presence of such features and use them
+for updating the user data.
+<li>
+Make the vendor programs load the password checking component of <i>npasswd</i>.
+</ol>
+<p>
+The second approach is ultimately better for it allows using the vendor-supplied
+user management utilities, thus avoiding problems with patching and upgrades.  This
+requires considerable work to transform the password check engine into a PAM library.
+Thankfully this has been contributed by Victor Burns of Texas Instruments.
+<p>
+Future versions of <i>npasswd</i> will probably be structured about the 
+shared library concept.
+The preferred configuration
+will be to use password checking engine as a PAM module which can be inserted 
+in the password management stack.  The standalone program would only be
+created on systems without PAM.
+<p>
+<HR WIDTH="100%">
+<P>
+<A HREF="#_top"><IMG SRC="top.gif" ALIGN=CENTER>Top</A>
+&nbsp;&nbsp;
+<A HREF="TOC_std.html"><IMG SRC="home.gif" ALIGN=CENTER>Home</A>
+<P>
+<HR WIDTH="100%">
+<P>
+Document id %Z% %M% %I%<BR>
+Version %I%<BR>
+Last modified %G%<P>
+<ADDRESS>
+  Clyde Hoover<BR>
+  <A HREF="http://www.utexas.edu/its/">Information Technology Services</A><BR>
+  <A HREF="http://www.utexas.edu/">The University of Texas at Austin</a><BR>
+<font size="-1">
+<A HREF="Copyright.html">Copyright 2004</A>,
+The University of Texas at Austin.  All rights reserved.</FONT>
+</ADDRESS>
+</BODY></HTML>

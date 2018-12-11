@@ -1,0 +1,2827 @@
+Only in ../beta: .config
+diff -rc ./Configure ../beta/Configure
+*** ./Configure	Wed Oct 29 15:03:30 1997
+--- ../beta/Configure	Mon Nov 24 18:14:48 1997
+***************
+*** 94,100 ****
+  if (PATH=.; alias -x) >/dev/null 2>&1; then
+  		inksh=true
+  fi
+! if test -f /hp-ux -a -f /bin/ksh; then
+  	needksh='to avoid sh bug in "here document" expansion'
+  fi
+  if test -d /usr/lpp -a -f /usr/bin/bsh -a -f /usr/bin/uname; then
+--- 94,101 ----
+  if (PATH=.; alias -x) >/dev/null 2>&1; then
+  		inksh=true
+  fi
+! OS_TEST=`uname`
+! if test "$OS_TEST" = "HP-UX"; then
+  	needksh='to avoid sh bug in "here document" expansion'
+  fi
+  if test -d /usr/lpp -a -f /usr/bin/bsh -a -f /usr/bin/uname; then
+***************
+*** 223,228 ****
+--- 224,230 ----
+  p_hesiod=''
+  p_keepdir=''
+  p_kerberos=''
++ p_hpuxauth=''
+  p_libinstall=''
+  p_netinfo=''
+  p_nis=''
+***************
+*** 244,249 ****
+--- 246,252 ----
+  p_shuid=''
+  p_svcconf=''
+  p_sysprogs=''
++ p_tcbdflt=''
+  p_u4auth=''
+  top_level=''
+  p_osMajor=''
+***************
+*** 2799,2805 ****
+  			;;
+  	aix*)		cc_osflags="-DOS_AIX $cc_osflags"
+  			;;
+! 	hp-ux*)		cc_osflags="-DOS_HPUX -D_HPUX_SOURCE $cc_osflags"
+  			;;
+  esac
+  
+--- 2802,2808 ----
+  			;;
+  	aix*)		cc_osflags="-DOS_AIX $cc_osflags"
+  			;;
+! 	hpux*)		cc_osflags="-DOS_HPUX -D_HPUX_SOURCE $cc_osflags"
+  			;;
+  esac
+  
+***************
+*** 4049,4058 ****
+  fi
+  $rm -f foo* bar* 
+  
+- 
+  p_shadow=''
+  t=`./findhdr shadow.h`
+! if $test -n "$t"; then
+  	echo '### Including support for System 5 shadow passwords' >& 4
+  	p_shadow='shm_shadow'
+  fi
+--- 4052,4060 ----
+  fi
+  $rm -f foo* bar* 
+  
+  p_shadow=''
+  t=`./findhdr shadow.h`
+! if $test -n "$t" -a !"$p_osName" = "hpux"; then
+  	echo '### Including support for System 5 shadow passwords' >& 4
+  	p_shadow='shm_shadow'
+  fi
+***************
+*** 4062,4077 ****
+  	p_shadow='shm_adjunct'
+  fi
+  p_osf1auth=$undef
+! if $test -z "$p_shadow" -a -n "`./findhdr sia.h`" ; then
+! 	echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+! 	p_shadow='shm_osf1';
+! 	p_osf1auth=$define
+  fi
+  p_u4auth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr auth.h`"; then
+! 	echo '### Including support for Ultrix 4 auth' >& 4
+! 	p_shadow='shm_ultrix';
+! 	p_u4auth=$define
+  fi
+  p_aixauth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr userpw.h`"; then
+--- 4064,4086 ----
+  	p_shadow='shm_adjunct'
+  fi
+  p_osf1auth=$undef
+! p_hpuxauth=$undef
+! if $test -z "$p_shadow" -a -n "`./findhdr prot.h`"; then
+! 	if $test -n "`./findhdr sia.h`" ; then
+! 	  echo '### Including support for OSF/1 Security Integration Architecture' >& 4
+! 	  p_shadow='shm_osf1'
+! 	  p_osf1auth=$define
+!         else
+! 	  echo '### Including support for HP-UX trusted host' >& 4
+!           p_shadow='shm_hpux'
+!           p_hpuxauth=$define	
+! 	fi
+  fi
+  p_u4auth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr auth.h`"; then
+!   	  echo '### Including support for Ultrix 4 auth' >& 4
+! 	  p_shadow='shm_ultrix';
+! 	  p_u4auth=$define
+  fi
+  p_aixauth=$undef
+  if $test -z "$p_shadow" -a -n "`./findhdr userpw.h`"; then
+***************
+*** 4098,4104 ****
+  	y*|Y*)	ans=y ;;
+  esac
+  if $test "$ans" = y; then
+! 	echo 'Enter passwd file names, end with blank line'
+  	d=''
+  	while true; do
+  		rp='Passwd file: '
+--- 4107,4113 ----
+  	y*|Y*)	ans=y ;;
+  esac
+  if $test "$ans" = y; then
+! 	echo 'Enter passwd file names, end with blank line or "done"'
+  	d=''
+  	while true; do
+  		rp='Passwd file: '
+***************
+*** 4106,4111 ****
+--- 4115,4122 ----
+  		. ./myread
+  		case $ans in
+  		/*)	;;
++                 "done") break
++                         ;;
+  		"")	break
+  			;;
+  		*)	echo 'File name must start with /'
+***************
+*** 4204,4209 ****
+--- 4215,4226 ----
+  	p_nsswitch="$define"
+  fi
+  
++ p_tcbdflt="$undef"
++ if $test -f /tcb/files/auth/system/default; then
++ 	echo "### This system uses a TCB default"
++ 	p_tcbdflt="$define"
++ fi
++ 
+  if $test "$p_svcconf" = $define -a "$p_nsswitch" = $define; then
+  	echo ' '
+  	echo 'Hmm. This system thinks it has both /etc/svc.conf' >&4
+***************
+*** 5395,5401 ****
+  	exit(1);
+  }
+  EOF
+! 	$cc fgptest.c -o fgptest
+  	if ./fgptest;  then
+  		echo 'nope (good)' >&4
+  	else
+--- 5412,5418 ----
+  	exit(1);
+  }
+  EOF
+! 	$cc -Aa +u4 +DA1.0 fgptest.c -o fgptest
+  	if ./fgptest;  then
+  		echo 'nope (good)' >&4
+  	else
+***************
+*** 6361,6366 ****
+--- 6378,6384 ----
+  p_hesiod='$p_hesiod'
+  p_keepdir='$p_keepdir'
+  p_kerberos='$p_kerberos'
++ p_hpuxauth='$p_hpuxauth'
+  p_lckpwdf='$p_lckpwdf'
+  p_libinstall='$p_libinstall'
+  p_netinfo='$p_netinfo'
+***************
+*** 6392,6397 ****
+--- 6410,6416 ----
+  p_svcconf='$p_svcconf'
+  p_sysinfo='$p_sysinfo'
+  p_sysprogs='$p_sysprogs'
++ p_tcbdflt='$p_tcbdflt'
+  p_ttyposix='$p_ttyposix'
+  p_u4auth='$p_u4auth'
+  p_xdr_passwd='$p_xdr_passwd'
+Only in ../beta: Makefile
+Common subdirectories: ./bin and ../beta/bin
+Only in ../beta: config.h
+Only in ../beta: config.sh
+Only in ../beta: config.sh.old
+diff -rc ./config_h.SH ../beta/config_h.SH
+*** ./config_h.SH	Wed Oct 29 15:03:30 1997
+--- ../beta/config_h.SH	Fri Nov 14 16:32:47 1997
+***************
+*** 363,372 ****
+  #$p_kerberos	USE_KERBEROS	/**/
+  #$p_svcconf	HAS_SVCCONF	/**/
+  #$p_nsswitch	HAS_NSSWITCH	/**/
+  #$p_dbmpw 	DBM_PASSWD	/**/
+! #$p_osf1auth OSF1_AUTH	/**/
+  #$p_u4auth 	ULTRIX_AUTH	/**/
+  #$p_aixauth 	AIX_AUTH	/**/
+  #$o_paranoid	PARANOID 	/**/
+  #$p_secure_rpc SECURE_RPC	/**/
+  #define	PASSWD_UID $p_pwuid	/**/
+--- 363,374 ----
+  #$p_kerberos	USE_KERBEROS	/**/
+  #$p_svcconf	HAS_SVCCONF	/**/
+  #$p_nsswitch	HAS_NSSWITCH	/**/
++ #$p_tcbdflt 	HAS_TCBDFLT	/**/
+  #$p_dbmpw 	DBM_PASSWD	/**/
+! #$p_osf1auth 	OSF1_AUTH	/**/
+  #$p_u4auth 	ULTRIX_AUTH	/**/
+  #$p_aixauth 	AIX_AUTH	/**/
++ #$p_hpuxauth 	HPUX_AUTH	/**/
+  #$o_paranoid	PARANOID 	/**/
+  #$p_secure_rpc SECURE_RPC	/**/
+  #define	PASSWD_UID $p_pwuid	/**/
+Common subdirectories: ./dict and ../beta/dict
+Common subdirectories: ./doc and ../beta/doc
+Common subdirectories: ./files and ../beta/files
+Common subdirectories: ./hints and ../beta/hints
+Only in ../beta: mkdep
+Common subdirectories: ./src and ../beta/src
+Only in ../beta/dict: 0-README
+Only in ../beta/dict: Antworth.Z
+Only in ../beta/dict: Antworth.time
+Only in ../beta/dict: CIS.Z
+Only in ../beta/dict: CIS.time
+Only in ../beta/dict: CRL-words.Z
+Only in ../beta/dict: Congress.Z
+Only in ../beta/dict: Congress.time
+Only in ../beta/dict: Domains.Z
+Only in ../beta/dict: Domains.time
+Only in ../beta/dict: Dosref
+Only in ../beta/dict: Dosref.Z
+Only in ../beta/dict: Dosref.time
+Only in ../beta/dict: Ethnologue
+Only in ../beta/dict: Ethnologue.Z
+Only in ../beta/dict: Ethnologue.time
+Only in ../beta/dict: Family-Names
+Only in ../beta/dict: Family-Names.Z
+Only in ../beta/dict: Family-Names.time
+Only in ../beta/dict: Ftpsites
+Only in ../beta/dict: Ftpsites.Z
+Only in ../beta/dict: Ftpsites.time
+Only in ../beta/dict: GET-WORD-LISTS
+Only in ../beta/dict: Given-Names
+Only in ../beta/dict: Given-Names.Z
+Only in ../beta/dict: Given-Names.time
+Only in ../beta/dict: Jargon
+Only in ../beta/dict: Jargon.Z
+Only in ../beta/dict: Jargon.time
+Only in ../beta/dict: Koran.Z
+Only in ../beta/dict: Koran.time
+Only in ../beta/dict: LCarrol
+Only in ../beta/dict: LCarrol.Z
+Only in ../beta/dict: LCarrol.time
+Only in ../beta/dict: Makefile
+diff -rc ./dict/Makefile.correct ../beta/dict/Makefile.correct
+*** ./dict/Makefile.correct	Mon Nov 24 18:57:09 1997
+--- ../beta/dict/Makefile.correct	Mon Oct 13 17:55:39 1997
+***************
+*** 0 ****
+--- 1,265 ----
++ ########################################################################
++ # Makefile generated from Makefile.SH on Thu Oct  9 09:06:43 CDT 1997
++ 
++ SHELL = /bin/sh
++ JMAKE = jmake
++ TOP = ../
++ CURRENT = dict
++ DIR = dict/
++ 
++ ########################################################################
++ # Parameters set by Configure -- edit config.sh if changes are needed
++ 
++ CTAGS = ctags
++ MAKE = make
++ MV = /usr/bin/mv
++ RM = /usr/bin/rm -f
++ 
++ ########################################################################
++ # Automatically generated parameters -- do not edit
++ 
++ BIN =  /user/ssg/mstute/lib/passwd
++ DICTLIB =  /user/ssg/mstute/lib/passwd/dictionaries
++ EXEC =
++ 
++ ########################################################################
++ # Jmake rules for building libraries, programs, scripts, and data files
++ # $X-Id: Jmake.rules,v 3.0.1.5 1995/09/25 09:07:19 ram Exp $
++ 
++ ########################################################################
++ # Start of Jmakefile
++ 
++ 
++ all:
++ 	@echo Do make install to install dictionaries
++ 
++ depend:
++ 	@echo Nothing to depend on
++ 
++ #
++ # Install dictionaries
++ # If WHAT is empty, use list in "WORDS-TO-USE"
++ #
++ install::
++ 	-@if [ -n "${WHAT}" ]; then\
++ 		files="${WHAT}";\
++ 	else\
++ 		files=`grep -v '^#' WORDS-TO-USE | awk '{ print $$1 }'`;\
++ 	fi;\
++ 	for f in $$files; do\
++ 		for x in '' .Z .gz; do\
++ 			if [ -f $$f$$x ]; then\
++ 				f=$$f$$x; ext="$$x"; break; \
++ 			fi;\
++ 		done;\
++ 		if [ -r $$f ]; then\
++ 			xd=`basename $$f`;\
++ 			if [ -n "$$ext" ]; then xd=`basename $$xd $$ext`; fi;\
++ 			${MAKE} ${MFLAGS} EXEC=${EXEC} DFILE=$$xd $$xd.time;\
++ 		fi;\
++ 	done
++ 
++ #
++ # Remove dictionaries
++ # If WHAT is empty, use list in "WORDS-TO-USE"
++ #
++ deinstall::
++ 	-@if [ -n "${WHAT}"]; then\
++ 		files="${WHAT}";\
++ 	else\
++ 		files=`grep -v '^#' WORDS-TO-USE | awk '{ print $$1 }'`;\
++ 	fi;\
++ 	for f in $$files; do\
++ 		xd=`basename $$f`;\
++ 		echo Removing ${DICTLIB}/$$xd;\
++ 		(cd ${DICTLIB} || exit 1; ${EXEC} ${RM} $$xd.hwm $$xd.pwd $$xd.pwi);\
++ 		rm -f $$xd.time;\
++ 	done
++ 
++ #
++ # Dependancy for indivdual dictonary files.
++ # This is to prevent "make install" from rebuilding dictionaries if
++ # the source file has not changed since the last build.
++ #
++ 
++ 
++ 
++ Antworth.time:  Antworth
++ 	-@echo Building ${DICTLIB}/Antworth
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Antworth Antworth
++ 	@touch Antworth.time
++ CIS.time:  CIS
++ 	-@echo Building ${DICTLIB}/CIS
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/CIS CIS
++ 	@touch CIS.time
++ CRL-words.time:  CRL-words
++ 	-@echo Building ${DICTLIB}/CRL-words
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/CRL-words CRL-words
++ 	@touch CRL-words
++ Congress.time:  Congress
++ 	-@echo Building ${DICTLIB}/Congress
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Congress Congress
++ 	@touch Congress.time
++ Domians.time:  Domains
++ 	-@echo Building ${DICTLIB}/Domains
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Domains Domains
++ 	@touch Domains.time
++ Dosref.time:  Dosref
++ 	-@echo Building ${DICTLIB}/Dosref
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Dosref Dosref
++ 	@touch Dosref
++ Ethnologue.time:  Ethnologue
++ 	-@echo Building ${DICTLIB}/Ethnologue
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Ethnologue Ethnologue
++ 	@touch Ethnologue
++ Family-Names.time:  Family-Names
++ 	-@echo Building ${DICTLIB}/Family-Names
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Family-Names Family-Names
++ 	@touch Family-Names
++ Ftpsites.time:  Ftpsites
++ 	-@echo Building ${DICTLIB}/Ftpsites
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Ftpsites Ftpsites
++ 	@touch Ftpsites
++ Given-Names.time:  Given-Names
++ 	-@echo Building ${DICTLIB}/Given-Names
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Given-Names Given-Names
++ 	@touch Given-Names
++ Jargon.time:  Jargon
++ 	-@echo Building ${DICTLIB}/Jargon
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Jargon Jargon
++ 	@touch Jargon
++ Koran.time:  Koran
++ 	-@echo Building ${DICTLIB}/Koran
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Koran Koran
++ 	@touch Koran.time
++ LCarrol.time:  LCarrol
++ 	-@echo Building ${DICTLIB}/LCarrol
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/LCarrol LCarrol
++ 	@touch LCarrol
++ Movies.time:  Movies
++ 	-@echo Building ${DICTLIB}/Movies
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Movies Movies
++ 	@touch Movies
++ Muffet-Words.time:  LCarrol
++ 	-@echo Building ${DICTLIB}/Muffet-Words
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Muffet-Words Muffet-Words
++ 	@touch Muffet-WOrds
++ Paradise-Lost.time:  LCarrol
++ 	-@echo Building ${DICTLIB}/Paradise-Lost
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Paradise-Lost Paradise-Lost
++ 	@touch Paradise-Lost
++ Python.time:  LCarrol
++ 	-@echo Building ${DICTLIB}/Python
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Python Python
++ 	@touch Phyton
++ Roget-Words.time:  Roget-Words
++ 	-@echo Building ${DICTLIB}/Roget-Words
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Roget-Words Roget-Words
++ 	@touch Roget-Words
++ Trek.time:  Trek
++ 	-@echo Building ${DICTLIB}/Trek
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Trek Trek
++ 	@touch Trek
++ Unabr-Dict.time:  Unabr-Dict
++ 	-@echo Building ${DICTLIB}/Unabr-Dict
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Unabr-Dict Unabr-Dict
++ 	@touch Unabr-Dict
++ Unix-Dict.time:  Unix-Dict
++ 	-@echo Building ${DICTLIB}/LCarrol
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Unix-Dict Unix-Dict
++ 	@touch Unix-Dict
++ World-Factbook.time:  World-Factbook
++ 	-@echo Building ${DICTLIB}/World-Factbook
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/World-Factbook World-Factbook
++ 	@touch World-Factbook
++ Zipcodes.time:  Zipcodes
++ 	-@echo Building ${DICTLIB}/Zipcodes
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/Zipcodes Zipcodes
++ 	@touch Zipcodes
++ cc.dict.time:  cc.dict
++ 	-@echo Building ${DICTLIB}/cc-dict
++ 	@${EXEC} ${BIN}/makedict -o ${DICTLIB}/cc.dict cc.dict
++ 	@touch cc.dict
++ 
++ Antworth:
++ CIS:
++ CRL-words:
++ Congress:
++ Domains:
++ Dosref:
++ Ethnologue:
++ Family-Names:
++ Ftpsites:
++ Given-Names:
++ Jargon:
++ Koran:
++ LCarrol:
++ Movies:
++ Muffet-Words:
++ Paradise-Lost:
++ Python:
++ Roget-Words:
++ Trek:
++ Unabr-Dict:
++ Unix-Dict:
++ World-Factbook:
++ Zipcodes:
++ cc.dict:
++ # End Jmakefile
++ 
++ ########################################################################
++ # Common rules for all Makefiles -- do not edit
++ 
++ emptyrule::
++ 
++ clean: local_clean
++ realclean: local_realclean
++ clobber: local_clobber
++ 
++ local_clean::
++ 	$(RM) core *~ *.o
++ 
++ local_realclean:: local_clean
++ 
++ local_clobber:: local_realclean
++ 	$(RM) Makefile config.sh
++ 
++ Makefile.SH: Jmakefile
++ 	-@if test -f $(TOP)/.package; then \
++ 	if test -f Makefile.SH; then \
++ 	echo "	$(RM) Makefile.SH~; $(MV) Makefile.SH Makefile.SH~"; \
++ 	$(RM) Makefile.SH~; $(MV) Makefile.SH Makefile.SH~; \
++ 	fi; \
++ 	echo "	$(JMAKE) -DTOPDIR=$(TOP) -DCURDIR=$(CURRENT)" ; \
++ 	$(JMAKE) -DTOPDIR=$(TOP) -DCURDIR=$(CURRENT) ; \
++ 	else touch $@; exit 0; fi
++ 
++ Makefile: Makefile.SH
++ 	/bin/sh Makefile.SH
++ 
++ tags::
++ 	$(CTAGS) -w *.[ch]
++ 	$(CTAGS) -xw *.[ch] > tags
++ 
++ local_clobber::
++ 	$(RM) tags
++ 
++ ########################################################################
++ # Empty rules for directories with no sub-directories -- do not edit
++ 
++ install::
++ 	@echo "install in $(CURRENT) done."
++ 
++ deinstall::
++ 	@echo "deinstall in $(CURRENT) done."
++ 
++ install.man::
++ 	@echo "install.man in $(CURRENT) done."
++ 
++ deinstall.man::
++ 	@echo "deinstall.man in $(CURRENT) done."
++ 
++ Makefiles::
++ 
++ Makefiles.SH::
++ 
+Common subdirectories: ./src/Common and ../beta/src/Common
+Only in ../beta/src: Makefile
+Only in ../beta/src: Makefile.bak
+Common subdirectories: ./src/Methods and ../beta/src/Methods
+Common subdirectories: ./src/PasswordCheck and ../beta/src/PasswordCheck
+Common subdirectories: ./src/Scripts and ../beta/src/Scripts
+diff -rc ./src/chfn.c ../beta/src/chfn.c
+*** ./src/chfn.c	Mon May  5 10:35:04 1997
+--- ../beta/src/chfn.c	Fri Nov 21 11:10:18 1997
+***************
+*** 93,99 ****
+  			field--;
+  			continue;
+  		} else if (*inbuf == '\0') {
+! 			(void) strcpy(inbuf, gptr->oldvalue);
+  		} else if (strcasecmp(inbuf, "none") == 0) {
+  			inbuf[0] = 0;
+  		} else {
+--- 93,99 ----
+  			field--;
+  			continue;
+  		} else if (*inbuf == '\0') {
+! 			(void) strncpy(inbuf, gptr->oldvalue,sizeof(inbuf));
+  		} else if (strcasecmp(inbuf, "none") == 0) {
+  			inbuf[0] = 0;
+  		} else {
+diff -rc ./src/compatibility.h ../beta/src/compatibility.h
+*** ./src/compatibility.h	Tue Sep 23 14:08:04 1997
+--- ../beta/src/compatibility.h	Thu Nov 13 16:02:16 1997
+***************
+*** 1,6 ****
+--- 1,8 ----
+  /*
+   *	Comptability and option selection defines for npasswd
+   *	@(#)compatibility.h	1.17 09/23/97 /usr/share/src/private/ut/share/bin/passwd/V2.0/src/SCCS/s.compatibility.h
++  *	09/19/97 MStute   Set up POSIX signals and SIG_LOCK for SVR4 systems.
++  *			  T. Nai orignially fixed the problem for SunOS4
+   */
+  #ifndef	_compatibility_h
+  #define	_compatibility_h 1
+***************
+*** 95,104 ****
+--- 97,109 ----
+  #define	SIG_TYPE_UNIX	'u'	/* Use traditional UNIX signals */
+  
+  #define	SIG_TYPE		SIG_TYPE_UNIX
++ 
++ 	/*MRS 09/97*/
+  #ifdef	HAS_SIGBLOCK
+  # undef	SIG_TYPE
+  # define	SIG_TYPE	SIG_TYPE_BSD
+  #endif
++ 
+  #ifdef	HAS_POSIX_SIGNALS
+  # undef	SIG_TYPE
+  # define	SIG_TYPE	SIG_TYPE_POSIX
+Only in ../beta/src: config.h
+diff -rc ./src/main.c ../beta/src/main.c
+*** ./src/main.c	Tue Sep 23 12:22:02 1997
+--- ../beta/src/main.c	Fri Nov 21 15:59:51 1997
+***************
+*** 2,7 ****
+--- 2,9 ----
+   *	This program duplicates the manual page behavior of the 4.XBSD
+   *	passwd(1) command.  It can be configured for use with a variety
+   *	of passwd systems (/etc/passwd, /etc/shadow, databases).
++  *
++  * 10/09/97 Mstute	Implemented d, e, n, and x switches for HPUX
+   */
+  
+  #include "npasswd.h"
+***************
+*** 14,19 ****
+--- 16,25 ----
+  #ifdef	OS_SUNOS_4
+  # define	SWITCHES_OS "alyd:e:n:x:F:"
+  #endif
++ 		/*MRS 10/09/97*/
++ #ifdef OS_HPUX
++ #define		SWITCHES_OS "den:x:"
++ #endif
+  
+  /*
+   * Global variables
+***************
+*** 86,92 ****
+  		(void) strncpy(savedname, pwtemp->pw_name, sizeof(savedname));
+  		temp = savedname;
+  	}
+! 	(void) strcpy(CallerLogin, temp);
+  	if ((pwtemp = getpwnam(CallerLogin)) == NULL)
+  		logdie("Cannot get user identification from name.\n");
+  	if (pwtemp->pw_uid != CallerUid && CallerUid) {
+--- 92,99 ----
+  		(void) strncpy(savedname, pwtemp->pw_name, sizeof(savedname));
+  		temp = savedname;
+  	}
+! 
+! 	(void) strncpy(CallerLogin, temp,sizeof(CallerLogin));
+  	if ((pwtemp = getpwnam(CallerLogin)) == NULL)
+  		logdie("Cannot get user identification from name.\n");
+  	if (pwtemp->pw_uid != CallerUid && CallerUid) {
+***************
+*** 292,297 ****
+--- 299,318 ----
+  		case 'F':
+  			printf("Option \"-F\" not supported.\n");
+  			exit(1);
++ #endif
++ #ifdef OS_HPUX
++ 		case 'n':
++ 			Switches[(char)opt] = strdup(optarg);
++ 			break;
++ 		case 'x':
++ 			Switches[(char)opt] = strdup(optarg);
++ 			break;
++ 		case 'd':
++ 			Switches[(char)opt] = "on";
++ 			break;
++ 		case 'e':
++ 			Switches[(char)opt] = "on";
++ 			break;
+  #endif
+  		case 'f':
+  			what_to_do = CHFN;
+Only in ../beta/src: npasswd
+diff -rc ./src/npasswd.h ../beta/src/npasswd.h
+*** ./src/npasswd.h	Tue Sep 23 12:20:28 1997
+--- ../beta/src/npasswd.h	Tue Nov 18 16:33:31 1997
+***************
+*** 3,8 ****
+--- 3,11 ----
+   *	This cleans up the Makefile
+   *
+   *	@(#)npasswd.h	1.28 09/23/97
++  *
++  * 09/12/97 MStute	Properly cast pointer-to-function in struct sigblk
++  *			for SIG_TYPE_UNIX signal processing
+   */
+  
+  #define	npasswd_h 1
+***************
+*** 91,97 ****
+   */
+  struct sigblk {
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
+! 	Signal_t	(*sigvalues[NSIG])();
+  #endif
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigset_t	sigvalues,
+--- 94,100 ----
+   */
+  struct sigblk {
+  #if	(SIG_TYPE == SIG_TYPE_UNIX)
+! 	Signal_t	(*sigvalues[NSIG])(); /*MRS 09/12/97*/
+  #endif
+  #if	(SIG_TYPE == SIG_TYPE_POSIX)
+  	sigset_t	sigvalues,
+Only in ../beta/src: options.h
+diff -rc ./src/options_h.SH ../beta/src/options_h.SH
+*** ./src/options_h.SH	Tue Sep 23 12:20:51 1997
+--- ../beta/src/options_h.SH	Mon Nov 24 18:36:49 1997
+***************
+*** 26,31 ****
+--- 26,32 ----
+   * the configuration file.
+   *
+   * @(#)options_h.SH	1.7 09/23/97 (cc.utexas.edu)
++  * 10/15/97 MStute	Added SLEEPY for ramp up
+   */
+  
+  /*
+***************
+*** 56,61 ****
+--- 57,64 ----
+   */
+  #undef	DENY_CHSH	/* Define to disable chsh */
+  #undef	DENY_CHFN	/* Define to disable chfn */
++ #define SLEEPY	2	/*Ramp-up start period, 0=OFF*/
++ #undef	DICT_DISP	/* Define to enable dict. word display*/
+  
+  !GROK!THIS
+  
+diff -rc ./src/passwd.c ../beta/src/passwd.c
+*** ./src/passwd.c	Tue Sep 23 12:21:42 1997
+--- ../beta/src/passwd.c	Fri Nov 21 12:59:07 1997
+***************
+*** 3,9 ****
+--- 3,13 ----
+   *	passwd(1) command.  It can be configured for use with a variety
+   *	of passwd systems (/etc/passwd, /etc/shadow, databases).
+   *
++  * 09/19/97 MStute	Added sleep ramp up on invalid password tries to
++  *			discourage automated attempts (especially over a modem)
++  * 10/09/97 MStute	Added code for switches d, e, n, and x for HPUX
+   */
++ 
+  #include "npasswd.h"
+  #include "Methods/pwm_defs.h"
+  #include "PasswordCheck/checkpasswd.h"
+***************
+*** 12,18 ****
+--- 16,28 ----
+  # include <auth.h>
+  #endif
+  
++ #if	defined(OS_HPUX)
++ # include <hpsecurity.h>
++ # include <prot.h>
++ #endif
++ 
+  #ifdef	AIX_AUTH
++ 
+  # include <userpw.h>
+  # include <usersec.h>
+  #endif
+***************
+*** 114,125 ****
+  			die("Permission denied.\n");
+  		if (xatoi(Switches['x'], 0, &days) == 0)
+  			die("Invalid argument to option -x\n");
+! 		newUser->pwage.must_change = ((days + DAYS_WEEK - 1) / DAYS_WEEK) * SEC_WEEK;
+  		changes |= CHG_PWAGE;
+  		goto updatepw;
+  	}
+  #endif /* OS_SUNOS_4 */
+  
+  	if ((perm = can_change_pw(theUser, theCaller)) == deny)
+  		die("Permission denied.\n");
+  
+--- 124,186 ----
+  			die("Permission denied.\n");
+  		if (xatoi(Switches['x'], 0, &days) == 0)
+  			die("Invalid argument to option -x\n");
+! 		newUser->pwage.must_change = 
+!                        ((days + DAYS_WEEK - 1) / DAYS_WEEK) * SEC_WEEK;
+  		changes |= CHG_PWAGE;
+  		goto updatepw;
+  	}
+  #endif /* OS_SUNOS_4 */
++ #ifdef OS_HPUX
++ 		if(Switches['d']) { /*Print aging information*/
++ 		  struct tm *lt;
++ 		  time_t timen = theUser->pwage.last_change * SEC_WEEK;
+  
++ 		  lt = (struct tm *)gmtime(&timen);
++ 		  if(theUser->pwage.last_change==0) {
++ 			lt->tm_mon=-1;
++ 			lt->tm_mday=lt->tm_year=0;
++ 	          }
++ 		  printf("%-10s %02d/%02d/%02d %3d %3d\n", theUser->mpw_name,
++ 		  	lt->tm_mon+1, lt->tm_mday, lt->tm_year,
++ 		  	theUser->pwage.can_change,
++ 			theUser->pwage.must_change);
++ 		  return;
++ 		}
++ 		if(Switches['e']) { /*Expire password*/
++ 		  if(myuid)
++ 		  	die("Permission denied.\n");
++ 		  if(!theUser->mpw_age)
++ 			die("Must set password age using the -x option first.\n");
++ 		  newUser->pwage.last_change = 0;
++ 		  changes |= CHG_PWAGE;
++ 		  goto updatepw;
++                 }
++ 		if(Switches['n']) { /*Set maturity*/
++ 		  int days;
++ 
++ 		  if(myuid)
++ 		  	die("Permission denied.\n");
++   		  if(theUser->mpw_age)
++ 		  	  die("Must set password age using the -x option first.\n");
++ 		  if (xatoi(Switches['n'], 0, &days) == 0)
++ 			  die("Invalid argument to option -n\n");
++ 		  newUser->pwage.can_change =
++ 			  ((days + DAYS_WEEK -1 ) / DAYS_WEEK);
++ 		  changes |= CHG_PWAGE;
++ 		  goto updatepw;
++ 		}
++ 		if(Switches['x']) { /* Set expiration time */
++ 		  int days;
++ 		  if(myuid)
++ 			  die("Permission denied\n");
++ 		  if(xatoi(Switches['x'],0,&days)==0)
++ 			  die("Invalid argument to option -n\n");
++ 		  newUser->pwage.can_change=
++ 			  ((days + DAYS_WEEK - 1) / DAYS_WEEK);
++ 		  changes |= CHG_PWAGE;
++ 		  goto updatepw;
++ 		}
++ #endif /*OS_HPUX*/
+  	if ((perm = can_change_pw(theUser, theCaller)) == deny)
+  		die("Permission denied.\n");
+  
+***************
+*** 198,204 ****
+  		strcpy(newUser->password, strdup(newpw1));
+  		(void) random_string(salt, sizeof(salt));
+  		newUser->mpw_passwd = strdup((*svc.PasswdCrypt)(newpw1, salt));
+! 		changes |= CHG_PW;
+  		break;
+  	}
+  
+--- 259,265 ----
+  		strcpy(newUser->password, strdup(newpw1));
+  		(void) random_string(salt, sizeof(salt));
+  		newUser->mpw_passwd = strdup((*svc.PasswdCrypt)(newpw1, salt));
+! 		changes |= CHG_PW | CHG_PWAGE;
+  		break;
+  	}
+  
+***************
+*** 243,248 ****
+--- 304,310 ----
+  	int	ntries = 0;	/* Match attempt counter */
+  	int	doit = 1;
+  	char	*px;		/* Temp */
++ 	int	naptime=SLEEPY;	/* Time to sleep after bad entry (guess?) */
+  
+  	while (doit) {
+  		if ((px = np_getpass(prompt)) == NULL)
+***************
+*** 251,258 ****
+  			continue;
+  		if (!password_cmp(pwd_crypt, px)) {
+  			printf("Password incorrect.\n");
+! 			if (ntries++ == PasswdMatchTries)
+  				die("Password not matched.\n");
+  			continue;
+  		}
+  		doit = 0;
+--- 313,328 ----
+  			continue;
+  		if (!password_cmp(pwd_crypt, px)) {
+  			printf("Password incorrect.\n");
+! 			if (ntries++ == PasswdMatchTries) {
+! #if(SLEEPY)
+! 				sleep(naptime);	/*Make 'em wait again*/
+! #endif
+  				die("Password not matched.\n");
++                         }
++ #if(SLEEPY)
++ 			sleep(naptime);
++ 			naptime = naptime << 1;
++ #endif
+  			continue;
+  		}
+  		doit = 0;
+***************
+*** 393,398 ****
+--- 463,469 ----
+  		}
+  	}
+  #ifdef	ULTRIX_AUTH
++ 	debug(DB_LOOKUP,"svc.SecurityLevel (Ultrix)= %d\n",svc.SecurityLevel);
+  	/*
+  	 * Check the authorization data for password change permission.
+  	 */
+***************
+*** 423,428 ****
+--- 494,500 ----
+  	}
+  #endif
+  #ifdef	OSF1_AUTH
++ 	debug(DB_LOOKUP,"svc.SecurityLevel (OSF)= %d\n",svc.SecurityLevel);
+  	/*
+  	 * Check the authorization data for password change permission.
+  	 */
+***************
+*** 432,438 ****
+  
+  		if (pw == NULL)
+  			logdie("Cannot get auth data for %s\n",
+! 				theUser->mpw_name);
+  		if (pw->sflg.fg_pick_pwd) pick = pw->sfld.fd_pick_pwd;
+  		if (pw->uflg.fg_pick_pwd) pick = pw->ufld.fd_pick_pwd;
+  		if (!pick) {
+--- 504,510 ----
+  
+  		if (pw == NULL)
+  			logdie("Cannot get auth data for %s\n",
+!      				theUser->mpw_name);
+  		if (pw->sflg.fg_pick_pwd) pick = pw->sfld.fd_pick_pwd;
+  		if (pw->uflg.fg_pick_pwd) pick = pw->ufld.fd_pick_pwd;
+  		if (!pick) {
+***************
+*** 442,451 ****
+--- 514,546 ----
+  		}
+  	}
+  #endif
++ 
++ #ifdef HPUX_AUTH
++ 	debug(DB_LOOKUP,"svc.SecurityLevel (HPUX) = %d\n",svc.SecurityLevel);
++ 	if (svc.SecurityLevel == sec_HPtrusted) {
++ 	/*
++ 	 * Check the authorization data for password change permission
++ 	 */
++ 		struct pr_passwd *pw = 
++                		(struct pr_passwd *)getprpwnam(theUser->mpw_name);
++ 		int	pick = 1;
++ 
++ 		if(pw == NULL)
++ 			logdie("!Cannot get auth data for %s\n", theUser->mpw_name);
++ 		if(pw->sflg.fg_pick_pwd) pick = pw->sfld.fd_pick_pwd;
++ 		if(pw->uflg.fg_pick_pwd) pick = pw->ufld.fd_pick_pwd;
++ 		if(!pick) {
++ 			printf("You must use a system-generated password.\n");
++ 			punt("-a");
++ 			return(deny);
++ 		}
++ 	}
++ #endif
+  #ifdef	AIX_AUTH
+          /*
+           * Check the AIX auth datbase for password flags
+           */
++ 	debug(DB_LOOKUP,"svc.SecurityLevel (AIX)= %d\n",svc.SecurityLevel);
+          if (strcmp(theUser->mpw_opasswd, "!") == 0) {
+                  struct userpw   *upw;
+  
+Only in ../beta/src: version.c
+Only in ../beta/src/Common: Makefile
+Only in ../beta/src/Common: Makefile.bak
+Only in ../beta/src/Common: chop_nl.o
+Only in ../beta/src/Common: compatibility.o
+Only in ../beta/src/Common: instring.o
+Only in ../beta/src/Common: libcomobj.a
+diff -rc ./src/Common/messages.c ../beta/src/Common/messages.c
+*** ./src/Common/messages.c	Tue Sep 23 12:30:39 1997
+--- ../beta/src/Common/messages.c	Mon Nov 24 18:55:50 1997
+***************
+*** 1,5 ****
+--- 1,7 ----
+  /*
+   * Message routines used by npasswd and checkpasswd
++  *
++  * 11/21/97 MStute	Removed all debugging if compiling non-DEBUG
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)messages.c	1.6 09/23/97 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.messages.c";
+***************
+*** 20,25 ****
+--- 22,28 ----
+  #ifdef	__STDC__
+  debug (int level, char *fmt, ...)
+  {
++ #ifdef DEBUG
+  	va_list	args;
+  
+  	if (DebugLevel < level)
+***************
+*** 28,38 ****
+--- 31,43 ----
+  	vprintf(fmt, args);
+  	fflush(stdout);
+  	va_end(args);
++ #endif
+  }
+  #else	/* __STDC__ */
+  debug (va_alist)
+  va_dcl
+  {
++ #ifdef DEBUG
+  	va_list	args;
+  	int	level;
+  	char	*fmt;
+***************
+*** 45,50 ****
+--- 50,56 ----
+  		fflush(stdout);
+  	}
+  	va_end(args);
++ #endif
+  }
+  #endif
+  
+Only in ../beta/src/Common: messages.o
+Only in ../beta/src/Common: mpw_util.o
+diff -rc ./src/Common/pw_svc.c ../beta/src/Common/pw_svc.c
+*** ./src/Common/pw_svc.c	Fri Sep 19 10:58:17 1997
+--- ../beta/src/Common/pw_svc.c	Mon Nov 24 18:55:50 1997
+***************
+*** 6,11 ****
+--- 6,15 ----
+   *
+   * Exported routines
+   *	get_pwsvc()
++  *
++  * 09/18/97 MStute	Added local and compat service to NIS get_pwsvc
++  *			service request
++  * 11/14/97 MStute	Added TCB trusted system get_pwsvc
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)pw_svc.c	1.9 09/19/97 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/Common/SCCS/s.pw_svc.c";
+***************
+*** 25,30 ****
+--- 29,38 ----
+  extern char 	*bigcrypt();	/* Really extended encryptor */
+  #endif
+  
++ #ifdef HPUX_AUTH
++ extern char	*bigcrypt();	/* Really extended encryptor */
++ #endif
++ 
+  static struct pw_svc _svcinfo = { 
+  	crypt,			/* Password encryptor */
+  	sec_std,		/* System security level */
+***************
+*** 205,211 ****
+  	char	**svlist;
+  
+  	_svcinfo.SecurityLevel = sec_std;
+! 	debug(DB_LOOKUP, "svc_get nsswitch: ");
+  
+  	/*
+  	 * TODO: Figure out what security level needed for RPC 
+--- 213,219 ----
+  	char	**svlist;
+  
+  	_svcinfo.SecurityLevel = sec_std;
+! 	debug(DB_LOOKUP, "get_svc nsswitch: ");
+  
+  	/*
+  	 * TODO: Figure out what security level needed for RPC 
+***************
+*** 236,242 ****
+  				}
+  				_svcinfo.ServiceOrder[svo++] = sv_compat;
+  				debug(DB_LOOKUP, "compat/%s ", what);
+! 			} else {
+  				_svcinfo.ServiceOrder[svo++] = srv_local;
+  				_svcinfo.ServiceOrder[svo++] = sv_compat;
+  				debug(DB_LOOKUP, "compat/%s ", what);
+--- 244,250 ----
+  				}
+  				_svcinfo.ServiceOrder[svo++] = sv_compat;
+  				debug(DB_LOOKUP, "compat/%s ", what);
+! 			} else { /*MRS 09/18/98*/
+  				_svcinfo.ServiceOrder[svo++] = srv_local;
+  				_svcinfo.ServiceOrder[svo++] = sv_compat;
+  				debug(DB_LOOKUP, "compat/%s ", what);
+***************
+*** 265,271 ****
+  #undef	SV_FILES
+  #undef	SV_PWCOMPAT
+  }
+! #endif	/* OS_SUNOS_5 */
+  
+  #ifndef	_SETUP
+  /*
+--- 273,312 ----
+  #undef	SV_FILES
+  #undef	SV_PWCOMPAT
+  }
+! #endif	/* HAS_NSSWITCH */
+! 
+! #ifdef HAS_TCBDFLT
+! #define	_SETUP	1
+! /*
+!  * get_pwsvc
+!  *	Really nothing to do, we already know we have a trusted system
+!  *	with a Trusted Computing Base.
+!  * Usage
+!  *	Call me, I'm easy.
+!  */
+! public struct pw_svc
+! get_pwsvc(argc, argv, envp, svp)
+! 	int argc;		/*NOT USED*/
+! 	char **argv;		/*NOT USED*/
+! 	char **envp;		/*NOT USED*/
+! 	struct pw_svc *svp;	/*return pointer if supplied*/
+! {
+! 	_svcinfo.SecurityLevel = sec_std;
+! 	_svcinfo.PasswordCrypt = crypt;
+! 	debug(DB_LOOKUP, "get_svc (tcbdflt) : ");
+! #  ifdef HPUX_AUTH
+! 	_svcinfo.SecurityLevel = sec_HPUXtrusted;
+! 	_svcinfo.PasswdCrypt = crypt;	/*not Secureware's bigcrypt*/
+! 	debug(DB_LOOKUP,"(security_trusted)\n");
+! 
+! #  endif /*HPUX_AUTH*/
+! 	if(svp) {
+! 		*svp = _svcinfo;
+! 		return(svp);
+! 	}
+! 	return(_svcinfo);
+! }
+! #endif /*HAS_TCBDFLT*/
+  
+  #ifndef	_SETUP
+  /*
+diff -rc ./src/Common/pw_svc.h ../beta/src/Common/pw_svc.h
+*** ./src/Common/pw_svc.h	Fri Sep 19 10:58:25 1997
+--- ../beta/src/Common/pw_svc.h	Fri Nov 14 15:59:59 1997
+***************
+*** 2,7 ****
+--- 2,8 ----
+   *	Defines for using get_svc_conf()
+   *
+   *	@(#)pw_svc.h	1.4 08/14/96 (cc.utexas.edu)
++  * 11/14/97 MStute	Added HPUX trusted system
+   */
+  #ifndef	pw_svc_h
+  #define	pw_svc_h 1
+***************
+*** 16,22 ****
+  	sec_u4upgrade,		/* Ultrix 4 'upgrade' */
+  	sec_u4enhanced,		/* Ultrix 4 'enhanced' */
+  	sec_sunC2,		/* SunOS 4 C2 security */
+! 	sec_OSFenhanced		/* Digital UNIX (OSF/1) enhanced */
+  };
+  
+  /*
+--- 17,24 ----
+  	sec_u4upgrade,		/* Ultrix 4 'upgrade' */
+  	sec_u4enhanced,		/* Ultrix 4 'enhanced' */
+  	sec_sunC2,		/* SunOS 4 C2 security */
+! 	sec_OSFenhanced,	/* Digital UNIX (OSF/1) enhanced */
+! 	sec_HPtrusted		/* HPUX trusted system*/
+  };
+  
+  /*
+Only in ../beta/src/Common: pw_svc.o
+Only in ../beta/src/Common: pw_util.o
+diff -rc ./src/Common/signals.c ../beta/src/Common/signals.c
+*** ./src/Common/signals.c	Tue Sep 23 14:08:34 1997
+--- ../beta/src/Common/signals.c	Mon Nov 24 18:55:50 1997
+***************
+*** 3,8 ****
+--- 3,11 ----
+   *
+   * Compliation: cc -c signals.c
+   * Includes: npasswd.h
++  *
++  * 09/18/97 MStute	Added provisions for standard C (sigblk=args)
++  *			Cleaned up BSD block
+   */
+  
+  #define	_signals_c
+***************
+*** 23,29 ****
+  	int	xsig;
+  
+  	VA_START(fargs, args);
+! #ifdef	__STDC__
+  	sigblk = args;
+  #else
+  	sigblk = va_arg(fargs, struct sigblk *);
+--- 26,32 ----
+  	int	xsig;
+  
+  	VA_START(fargs, args);
+! #ifdef	__STDC__	/*MRS 09/18/97*/
+  	sigblk = args;
+  #else
+  	sigblk = va_arg(fargs, struct sigblk *);
+***************
+*** 38,45 ****
+  
+  #if	(SIG_TYPE == SIG_TYPE_BSD)
+  	sigblk->savesigs = 0;
+! 	while (xsig = va_arg(fargs, int))
+  		sigblk->savesigs |= sigmask(xsig);
+  	sigblk->sigvalues = sigblock(sigblk->savesigs);
+  #endif
+  
+--- 41,49 ----
+  
+  #if	(SIG_TYPE == SIG_TYPE_BSD)
+  	sigblk->savesigs = 0;
+! 	while (xsig = va_arg(fargs, int)) {
+  		sigblk->savesigs |= sigmask(xsig);
++         }
+  	sigblk->sigvalues = sigblock(sigblk->savesigs);
+  #endif
+  
+diff -rc ./src/Common/split.c ../beta/src/Common/split.c
+*** ./src/Common/split.c	Wed Aug  7 15:22:45 1996
+--- ../beta/src/Common/split.c	Mon Nov 24 18:55:50 1997
+***************
+*** 132,139 ****
+  			qcx = *s_token;
+  			*s_token++ = '\0';
+  			e_token++;
+! 			while (*e_token && *e_token != qcx)
+  				*e_token++;
+  			/* ERROR - e_token null (no closing quote) */
+  		} else {
+  			if (separator)
+--- 132,140 ----
+  			qcx = *s_token;
+  			*s_token++ = '\0';
+  			e_token++;
+! 			while (*e_token && *e_token != qcx) {
+  				*e_token++;
++                         }
+  			/* ERROR - e_token null (no closing quote) */
+  		} else {
+  			if (separator)
+Only in ../beta/src/Common: split.o
+Only in ../beta/src/Common: xatoi.o
+Only in ../beta/src/Common: xdecode.o
+Only in ../beta/src/Methods: Makefile
+diff -rc ./src/Methods/Makefile.SH ../beta/src/Methods/Makefile.SH
+*** ./src/Methods/Makefile.SH	Wed Oct 29 15:01:13 1997
+--- ../beta/src/Methods/Makefile.SH	Fri Nov 14 15:35:12 1997
+***************
+*** 103,109 ****
+  	shm_aix.c \
+  	shm_shadow.c \
+  	shm_ultrix.c \
+! 	shm_osf1.c
+  
+  METHOD_OBJ = \
+  	pwm_main.o \
+--- 103,110 ----
+  	shm_aix.c \
+  	shm_shadow.c \
+  	shm_ultrix.c \
+! 	shm_osf1.c \
+! 	shm_hpux.c
+  
+  METHOD_OBJ = \
+  	pwm_main.o \
+Only in ../beta/src/Methods: Makefile.bak
+Only in ../beta/src/Methods: libmethod.a
+Only in ../beta/src/Methods: passwdtab.h
+diff -rc ./src/Methods/pwm_local.c ../beta/src/Methods/pwm_local.c
+*** ./src/Methods/pwm_local.c	Tue Sep 23 12:27:28 1997
+--- ../beta/src/Methods/pwm_local.c	Mon Nov 24 18:32:55 1997
+***************
+*** 17,22 ****
+--- 17,29 ----
+   *
+   * Compilation flags
+   *	cc -I.. -I../Common ...
++  * 
++  * 09/18/97 MStute	Added support for PWCOMMENT in update_dbm_passwd
++  *			Added code for DEC OSF1 to handle multiple entries
++  *			separated by NLs in put_local_user (from T. Nau)
++  * 10/17/97 MStute	Added HPUX PWAGE code
++  *			
++  *			
+   */
+  #include "npasswd.h"
+  #include "pwm_defs.h"
+***************
+*** 105,110 ****
+--- 112,131 ----
+  	(void) copypwent(pwinfo, &mp->pw);
+  	get_shadow(mp);
+  #ifdef	PWAGE
++ #ifdef	OS_HPUX
++ 	if(mp->mpw_age && *mp->mpw_age) {	/*MRS 10/97*/
++ 		extern long a64l();
++ 		char temp[10],*tmpAge;	/*ACME*/
++ 
++ 		temp[0] = mp->mpw_age[0];	/*QUICK and dirty*/
++ 		temp[1] = '\0';
++ 		mp->pwage.must_change = a64l(temp);
++ 		temp[0]=mp->mpw_age[1];
++ 		mp->pwage.can_change = a64l(temp);
++ 		tmpAge=&(mp->mpw_age[2]);	/*The portable way*/
++ 		mp->pwage.last_change = a64l(tmpAge);
++         }
++ #else /* end of HPUX*/
+  	if (mp->mpw_age && *mp->mpw_age) {
+  		time_t pwage = 0;
+  		extern long	a64l();
+***************
+*** 114,120 ****
+  		mp->pwage.can_change = ((pwage >> 6) & 077) * SEC_WEEK;
+  		mp->pwage.last_change = (pwage >> 12) * SEC_WEEK;
+  	}
+! #endif
+  	return(1);
+  }
+  
+--- 135,147 ----
+  		mp->pwage.can_change = ((pwage >> 6) & 077) * SEC_WEEK;
+  		mp->pwage.last_change = (pwage >> 12) * SEC_WEEK;
+  	}
+! #endif /* Generic age code */
+! 		debug(DB_DETAIL,"Must change: %ld\nCan Change: %ld\nLast Change: %ld\n",
+! 			mp->pwage.must_change,
+! 			mp->pwage.can_change,
+! 			mp->pwage.last_change);
+! 
+! #endif /* if PWAGE */
+  	return(1);
+  }
+  
+***************
+*** 212,218 ****
+  	struct passwd	*px;	/* Password file traversal */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  	struct sigblk	blocked;
+! 
+  	if (changes == 0)
+  		logdie("Error: put_local_user called with null changes\n");
+  
+--- 239,247 ----
+  	struct passwd	*px;	/* Password file traversal */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  	struct sigblk	blocked;
+! #ifdef OS_HPUX
+! 	char szAge[12];		/* ACME */
+! #endif
+  	if (changes == 0)
+  		logdie("Error: put_local_user called with null changes\n");
+  
+***************
+*** 220,225 ****
+--- 249,258 ----
+  	/*
+  	 * Update password aging information
+  	 */
++ 
++ 	debug(DB_DETAIL,"Updating age\nChanges: %d\nAge: %ld\n",
++ 		changes & CHG_PWAGE,newUser->pwage.must_change);
++ 
+  	if (changes & CHG_PWAGE) {
+  		if (newUser->pwage.must_change == 0) {
+  			newUser->mpw_age = '\0';
+***************
+*** 231,236 ****
+--- 264,282 ----
+  
+  			if (changes & CHG_PW)
+  				now = time((time_t *)0) / SEC_WEEK;
++ #ifdef OS_HPUX		
++ 			strcpy(szAge,l64a(newUser->pwage.must_change));
++ 			if(newUser->pwage.can_change)
++ 			  strcat(szAge,l64a(newUser->pwage.can_change));
++ 			else
++ 			  strcat(szAge,".");
++ 			strcat(szAge,l64a(now));
++ 			debug(DB_DETAIL,"HPUX Age=&s\n",szAge);
++ 			if(strlen(szAge))
++ 			  strcpy(newUser->mpw_age,szAge);
++ 			else
++ 			  newUser->mpw_age=".";
++ #else
+  			pwage = newUser->pwage.must_change
+  				+ (newUser->pwage.can_change << 6)
+  				+ (now << 12);
+***************
+*** 238,243 ****
+--- 284,290 ----
+  				newUser->mpw_age = l64a(pwage);
+  			else
+  				newUser->mpw_age = ".";
++ #endif /*Generic age*/
+  		}
+  	}
+  #endif	/* PWAGE */
+***************
+*** 290,295 ****
+--- 337,343 ----
+  #else
+  	FixPwFileMode(aux->whichPW->tempfile, "passwd");
+  #endif
++ 
+  	if ((tf = fdopen(fd, "w")) == NULL) {
+  		if (mytempfile)
+  			(void) unlink(aux->whichPW->lockfile);
+***************
+*** 306,312 ****
+--- 354,386 ----
+  #ifndef	DEBUG
+  	block_signals(&blocked, SIGHUP, SIGINT, SIGQUIT, SIGTSTP, 0);
+  #endif
++ 	/*MRS 9/97 Added DEC OSF1 code for NIS entries
++ 		   for testing. Check them since I don't
++ 		   have a clue why Thomas did this.
++         */
++ 
++ #ifdef OS_DEC_OSF1
++ 	while(1) {
++ 	  int c;
++ 
++ 	  /*handle NIS entries*/
++ 	  if((c=getc(pf)=='+') {
++ 		/*copy line*/
++ 	    for(;c!='\n' && c!=EOF;c=getc(pf))
++ 		putc(c,tf);
++   	    if(c=='\n')
++ 		  putc(c,tf);
++ 	    continue;
++ 	  } 
++ 	  if(c==EOF)
++ 	    break;
++ 	  ungetc(c,pf);
++ 	  if((px=fgetpwent(pf))!=NULL)
++ 	    break;
++ #else
++ 
+  	while ((px = fgetpwent(pf)) != NULL) {
++ #endif 
+  		if (px->pw_name == 0 || px->pw_name[0] == 0) /* Sanity check */
+  			continue;
+  		if (!repdone && strcmp(px->pw_name, theUser->mpw_name) == 0) {
+diff -rc ./src/Methods/pwm_nis.c ../beta/src/Methods/pwm_nis.c
+*** ./src/Methods/pwm_nis.c	Tue Sep 23 12:28:51 1997
+--- ../beta/src/Methods/pwm_nis.c	Mon Nov 24 18:26:57 1997
+***************
+*** 19,24 ****
+--- 19,29 ----
+   *
+   * Compilation flags
+   *	cc -I.. ... -lrpcsvc
++  *
++  * 10/16/97 MStute Changed the cpw variable from 8 to 9 characters to
++  *		   make room for the zero terminator
++  * 11/21/97 MStute Added support for password lengths longer then 8
++  *
+   */
+  #if	defined(OS_SUNOS_5) && (OS_MINOR_VERSION < 5)
+  # define	NO_STRINGS		/* Work around <strings.h> bug */
+***************
+*** 65,70 ****
+--- 70,79 ----
+  # define YP_PROBE_TIMEOUT 2			/* Timeout for YP probing */
+  #endif
+  
++ #ifndef NIS_PASSWD_MAX_LEN
++ #define NIS_PASSWD_MAX_LEN	9		/*NIS max password length
++ 						  plus zero terminator*/
++ #endif
+  /*
+   * Possible locations for YP data directory
+   */
+***************
+*** 249,261 ****
+  	int	tries;		/* How many tries to call yppasswdd */
+  	int	why;		/* RPC call return code */
+  	int	ypport;		/* Port for RPC call */
+! 	char	cpw[8];		/* Buffer for current password (cleartext) */
+  	struct yppasswd yppasswd; /* YP passwd change block */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  
+  	if (theUser->password[0] == 0 && theUser->mpw_passwd[0]) /* XXX */
+  		die("Cannot change passwd info via NIS without old password.\n");
+! #ifdef	PWAGE
+  	/*
+  	 * Update password aging information
+  	 */
+--- 258,277 ----
+  	int	tries;		/* How many tries to call yppasswdd */
+  	int	why;		/* RPC call return code */
+  	int	ypport;		/* Port for RPC call */
+! 	char	cpw[NIS_PASSWD_MAX_LEN]; 
+! 		/* ^- Buffer for current password (cleartext) */
+  	struct yppasswd yppasswd; /* YP passwd change block */
+  	struct pw_opaque *aux = (struct pw_opaque *)theUser->opaque;
+  
++ #ifdef PWAGE
++ #ifdef OS_HPUX
++ 			char szAge[12];
++ #endif
++ 
++ #endif
+  	if (theUser->password[0] == 0 && theUser->mpw_passwd[0]) /* XXX */
+  		die("Cannot change passwd info via NIS without old password.\n");
+! #ifdef PWAGE
+  	/*
+  	 * Update password aging information
+  	 */
+***************
+*** 270,292 ****
+  
+  			if (changes & CHG_PW)
+  				now = time((time_t *)0) / SEC_WEEK;
+  			pwage = newUser->pwage.must_change
+  				+ (newUser->pwage.can_change << 6)
+  				+ (now << 12);
+  			if (pwage)
+  				newUser->mpw_age = l64a(pwage);
+! 			else
+  				newUser->mpw_age = ".";
+  		}
+  	}
+! #endif
+  	(void) strncpy(cpw, theUser->password, sizeof(cpw));
+! 	cpw[8] = 0;
+  	yppasswd.oldpass = cpw;
+  	copypwent(&newUser->pw, &yppasswd.newpw);
+  
+  	debug(DB_UPDATE, "put_yp_user: yppasswd(%s, %s)\n",
+  		cpw, yppasswd.newpw.pw_passwd);
+  #ifndef	DEBUG_NOEXEC
+  #ifndef	OS_SUNOS_5
+  	if ((ypport = getrpcport(ypinfo.master, YPPASSWDPROG,
+--- 286,326 ----
+  
+  			if (changes & CHG_PW)
+  				now = time((time_t *)0) / SEC_WEEK;
++ #ifdef OS_HPUX
++ 			strcpy(szAge,l64a(newUser->pwage.must_change));
++ 			if(newUser->pwage.can_change)
++ 				strcat(szAge,l64a(newUser->pwage.can_change));
++ 			else
++ 				strcat(szAge,".");
++ 			strcat(szAge,l64a(now));
++ 
++ 			if(strlen(szAge))
++ 				strcpy(newUser->mpw_age,szAge);
++ 				
++ 			else
++ 				newUser->mpw_age=".";
++ 
++ #else /*HPUX Aging code*/
+  			pwage = newUser->pwage.must_change
+  				+ (newUser->pwage.can_change << 6)
+  				+ (now << 12);
+  			if (pwage)
+  				newUser->mpw_age = l64a(pwage);
+! 			else  /*on HPUX l64a(0) = "\0"*/
+  				newUser->mpw_age = ".";
++ #endif /*Generic Age code*/
++ 
+  		}
+  	}
+! #endif /*PWAGE*/
+  	(void) strncpy(cpw, theUser->password, sizeof(cpw));
+! 	cpw[NIS_PASSWD_MAX_LEN] = 0;
+  	yppasswd.oldpass = cpw;
+  	copypwent(&newUser->pw, &yppasswd.newpw);
+  
+  	debug(DB_UPDATE, "put_yp_user: yppasswd(%s, %s)\n",
+  		cpw, yppasswd.newpw.pw_passwd);
++ 
+  #ifndef	DEBUG_NOEXEC
+  #ifndef	OS_SUNOS_5
+  	if ((ypport = getrpcport(ypinfo.master, YPPASSWDPROG,
+Only in ../beta/src/Methods: shadowtab.h
+Only in ../beta/src/Methods: shm_aix.c
+diff -rc ./src/Methods/shm_hpux.c ../beta/src/Methods/shm_hpux.c
+*** ./src/Methods/shm_hpux.c	Mon Nov 24 18:56:47 1997
+--- ../beta/src/Methods/shm_hpux.c	Fri Nov 21 15:33:55 1997
+***************
+*** 0 ****
+--- 1,179 ----
++ /*
++  *	shm_hpux.c - Support for HPUX auth databases
++  *
++  *	Two routines need to advertised from this module:
++  *
++  *	void get_shadow(struct mpasswd *theUser)
++  *		This routine checks if the password is in a shadow database
++  *		and fetches it if so.  Information is stashed in the 
++  *		"method" data about where the shadow password was found.
++  *
++  *	void update_shadow(struct mpasswd *theUser, struct mpasswd *newUser)
++  *		Updates the shadow password for "newUser".
++  *		
++  *	Neither routine returns a value, but changes the meta-passwd record
++  *	passed in, and aborts on serious error.
++  *
++  * 10/15/97 MStute	Created - based on OSF/1 version
++  */
++ #ifndef lint
++ static char sccsid[] = "@(#)shm_hpux.c	1.5 08/15/96 (cc.utexas.edu)";
++ #endif
++ 
++ #include "npasswd.h"
++ #include "pwm_defs.h"
++ 
++ /*#include <sys/security.h>*/
++ #include <hpsecurity.h>
++ #include <prot.h>
++ 
++ Config_Value	int ShadowTolerance = 0;		/* Not used */
++ 
++ /*
++  * get_shadow
++  *      Look for a user in the auth database.
++  *      The user's shadow information is stored in <user>
++  *
++  * Usage
++  *      get_shadow(struct mpasswd *user);
++  */
++ public void
++ get_shadow(theUser)
++ 	struct mpasswd *theUser;
++ {
++ 	struct pr_passwd *pw;
++ 	struct pw_opaque *aux = theUser->opaque;
++ 
++ 	if (svc.SecurityLevel != sec_HPtrusted)
++ 		return;
++ 
++ 	if ((pw = getprpwnam(theUser->mpw_name)) == NULL) {
++ 		logdie("Cannot get auth record for %s\n",
++ 			theUser->mpw_name);
++ 	}
++ 	theUser->mpw_passwd = strdup(pw->ufld.fd_encrypt);
++ 	aux->sourceSH = srv_local;
++ 	debug(DB_LOOKUP, "get_shadow: found auth pw for %s\n",
++ 		theUser->mpw_name);
++ 
++ 	/*
++ 	 * Process password aging information
++ 	 */
++ 	/* Minimum pw change time */
++ 	if (pw->sflg.fg_min) theUser->pwage.can_change = pw->sfld.fd_min;
++ 	if (pw->uflg.fg_min) theUser->pwage.can_change = pw->ufld.fd_min;
++ 
++ 	/* Time of last password change */
++ 	if (pw->uflg.fg_schange) theUser->pwage.last_change = 
++                pw->ufld.fd_schange;
++ 
++ 	/* Password expiration time */
++ 	if (pw->sflg.fg_lifetime) theUser->pwage.must_change =
++                 pw->sfld.fd_lifetime;
++ 	if (pw->uflg.fg_lifetime) theUser->pwage.must_change = 
++                 pw->ufld.fd_lifetime;
++ 	theUser->mpw_age = "x";
++ }
++ 
++ /*
++  * update_shadow
++  *      Update auth database
++  *
++  * Usage
++  *      update_shadow(struct mpasswd *old-data, struct mpasswd *new-data);
++  * Error exits
++  *      Failure to find auth information for <theUser->mpw_name>
++  *      Failure to update auth information for <theUser->mpw_name>
++  */
++ public void
++ update_shadow(theUser, newUser)
++ 	struct mpasswd	*theUser;
++ 	struct mpasswd	*newUser;
++ {
++ 	struct pr_passwd *pw,		/* Auth password db lookup temp */
++ 			 px;		/* Auth password update temp */
++ 
++ 	if ((pw = getprpwnam(newUser->mpw_name)) == NULL) {
++ 		logdie("Cannot get shadow password for %s\n",
++ 			newUser->mpw_name);
++ 	}
++ 	debug(DB_UPDATE, "get_shadow: update auth for %s\n", newUser->mpw_name);
++ 
++ 	px = *pw;
++ 
++ 	/*
++ 	 * Plug new values into auth structure
++ 	 */
++ 	(void) strcpy(px.ufld.fd_encrypt, newUser->mpw_passwd);
++ 	px.ufld.fd_schange = time((time_t *)0);
++ 	px.ufld.fd_pwchanger = getuid();
++ 	/*
++ 	 * Set flags to indicate which values were changed
++ 	 */
++ 	px.uflg.fg_schange = 
++ 	px.uflg.fg_pwchanger = 
++ 	px.uflg.fg_encrypt = 1;
++ 	/*
++ 	 * Update the auth database
++ 	 */
++ 	if (putprpwnam(newUser->mpw_name, &px) == 0)
++ 		logdie("Could not update auth database.");
++ 	/*
++ 	 * Insert plug value for password (in case it gets written)
++ 	 */
++ 	newUser->mpw_passwd = "*";
++ 
++ 	debug(DB_UPDATE, "update_shadow: updated auth for %s\n",
++ 		newUser->mpw_name);
++ }
++ 
++ #ifdef	DEBUG
++ /*
++  * dump_authent
++  *	Dump HPUX auth database fields & flags structures
++  * Usage
++  *	dump_authent(struct pr_flag *flags, struct pr_field *fields);
++  */
++ private void
++ dump_authent(f, p)
++ 	struct pr_flag *f;
++ 	struct pr_field *p;
++ {
++ 	if (f->fg_name) printf("fd_name = %s\n", p->fd_name);
++ 	if (f->fg_uid) printf("fd_uid = %d\n", p->fd_uid);
++ 	if (f->fg_encrypt) printf("fd_encrypt = %s\n", p->fd_encrypt);
++ 	if (f->fg_owner) printf("fd_owner = %s\n", p->fd_owner);
++ 	if (f->fg_boot_auth) printf("fd_boot_auth = %c\n", p->fd_boot_auth);
++ 	if (f->fg_pw_audid) printf("fd_pw_audid = %x\n", p->fd_pw_audid);
++ 	if (f->fg_pw_audflg) printf("fd_pw_audflg = %x\n", p->fd_pw_audflg);
++ 	if (f->fg_min) printf("fd_min = %d\n", p->fd_min);
++ 	if (f->fg_maxlen) printf("fd_maxlen = %d\n", p->fd_maxlen);
++ 	if (f->fg_expire) printf("fd_expire = %d\n", p->fd_expire);
++ 	if (f->fg_lifetime) printf("fd_lifetime = %d\n", p->fd_lifetime);
++ 	if (f->fg_schange) printf("fd_schange = %s", ctime(&p->fd_schange));
++ 	if (f->fg_uchange) printf("fd_uchange = %s\n", ctime(&p->fd_uchange));
++ 	if (f->fg_acct_expire) printf("fd_acct_expire = %d\n", p->fd_acct_expire);
++ 	if (f->fg_max_llogin) printf("fd_max_llogin = %d\n", p->fd_max_llogin);
++ /*        if (f->fg_pw_expire_warning) printf("fg_pw_expire_warning = %d\n",
++                    fd_pw_expire_warning);*/
++ 	if (f->fg_pswduser) printf("fd_pswduser = %u\n", p->fd_pswduser);
++ 	if (f->fg_pick_pwd) printf("fd_pick_pwd = %d\n", p->fd_pick_pwd);
++ 	if (f->fg_gen_pwd) printf("fd_gen_pwd = %d\n", p->fd_gen_pwd);
++ 	if (f->fg_restrict) printf("fd_restrict = %d\n", p->fd_restrict);
++ 	if (f->fg_nullpw) printf("fd_nullpw = %d\n", p->fd_nullpw);
++ 	if (f->fg_pwchanger) printf("fd_pwchanger = %d\n", p->fd_pwchanger);
++ 	if (f->fg_pw_admin_num) printf("fd_pw_admin_num = %d\n", p->fd_pw_admin_num); 
++ 	if (f->fg_gen_chars) printf("fd_gen_chars = %d\n", p->fd_gen_chars);
++ 	if (f->fg_gen_letters) printf("fd_gen_letters = %d\n", p->fd_gen_letters);
++ 
++ 	if (f->fg_slogin) printf("fd_slogin = %s", ctime(&p->fd_slogin));
++ 	if (f->fg_ulogin) printf("fd_ulogin = %s", ctime(&p->fd_ulogin));
++ 	if (f->fg_suctty) printf("fd_suctty = %s\n", p->fd_suctty);
++ 	if (f->fg_unsuctty) printf("fd_unsuctty = %s\n", p->fd_unsuctty);
++ 	if (f->fg_nlogins) printf("fd_nlogins = %u\n", p->fd_nlogins);
++ 	if (f->fg_tod) printf("fd_tod = %s\n", p->fd_tod);
++ 	if (f->fg_max_tries) printf("fd_max_tries = %u\n", p->fd_max_tries);
++ 	if (f->fg_lock) printf("fd_lock = %u\n", p->fd_lock);
++ }
++ #endif	/* DEBUG */
++ /* End shm_hpux.c */
+Only in ../beta/src/PasswordCheck: Makefile
+Only in ../beta/src/PasswordCheck: Makefile.bak
+Only in ../beta/src/PasswordCheck: back
+Only in ../beta/src/PasswordCheck: checkpassword
+Common subdirectories: ./src/PasswordCheck/cracklib and ../beta/src/PasswordCheck/cracklib
+Only in ../beta/src/PasswordCheck: libpwcheck.a
+diff -rc ./src/PasswordCheck/pwck_crack.c ../beta/src/PasswordCheck/pwck_crack.c
+*** ./src/PasswordCheck/pwck_crack.c	Thu Sep 12 16:20:19 1996
+--- ../beta/src/PasswordCheck/pwck_crack.c	Fri Nov 21 14:45:18 1997
+***************
+*** 4,9 ****
+--- 4,10 ----
+   *		PWCK_INDICT if <password> was in any dictionary
+   *		PWCK_OK if password found in a dictionary
+   *		PWCK_FAIL if a dictionary cannot be opened
++  * 09/23/97 MStute	Cosmetic DEBUG changes
+   */
+  
+  #ifndef lint
+diff -rc ./src/PasswordCheck/pwck_defines.h ../beta/src/PasswordCheck/pwck_defines.h
+*** ./src/PasswordCheck/pwck_defines.h	Wed Oct 29 14:06:31 1997
+--- ../beta/src/PasswordCheck/pwck_defines.h	Wed Nov 19 10:31:23 1997
+***************
+*** 2,7 ****
+--- 2,14 ----
+   *	pwck_lib.h - definitions for checkpassword library modules
+   * 
+   *	@(#)pwck_defines.h	1.7 10/29/97 (cc.utexas.edu) /usr/share/src/private/ut/share/bin/passwd/V2.0/src/PasswordCheck/SCCS/s.pwck_defines.h
++  * 09/29/97 MStute	Added defines for _filterstring PWCK_FS_
++  *			Prototype _filterstring
++  * 10/01/97 MStute	Added DB_ options from constants.h to correct
++  *			differences
++  *			Corrected mtry macro for proper param. expansion
++  *			flipped searchin and searchfor
++  * 10/02/97 MStute	Added lowercase macro
+   */
+  
+  #include "compatibility.h"
+***************
+*** 19,24 ****
+--- 26,32 ----
+  public int	pwck_local _((char *, struct passwd *, char *));
+  public int	pwck_passwd _((char *, struct passwd *, char *));
+  public int	pwck_history _((char *, struct passwd *, char *));
++ public char	*_filterstring _((char *, char *, int));
+  
+  /*
+   *	Dictionary info
+***************
+*** 53,68 ****
+  extern struct pw_svc	svc;
+  
+  #ifndef	DB_NONE
+! # define	DB_NONE		0	/* No debug */
+! # define	DB_VERBOSE	1	/* Mild verbosity */
+! # define	DB_LEVEL2	2	/* Nothing yet */
+! # define	DB_LEVEL3	3	/* Nothing yet */
+! # define	DB_LOOKUP	4	/* Trace user lookup */
+! # define	DB_UPDATE	5	/* Trace user update */
+! # define	DB_LEVEL6	6	/* Nothing yet */
+! # define	DB_LEVEL7	7	/* Nothing yet */
+! # define	DB_CONFIG	8	/* Trace configuration processing */
+! # define	DB_ALL		99	/* Trace *everything* */
+  #endif
+  
+  /*
+--- 61,76 ----
+  extern struct pw_svc	svc;
+  
+  #ifndef	DB_NONE
+! #define	DB_NONE		0		/* No debug */
+! #define	DB_VERBOSE	1		/* Mild verbosity */
+! #define	DB_LOOKUP	2		/* Trace user lookup */
+! #define	DB_UPDATE	3		/* Trace user update */
+! #define	DB_LEVEL7	4		/* Nothing yet */
+! #define	DB_CONFIG	5		/* Trace configuration processing */
+! #define	DB_MISC1	6		/* Nothing yet */
+! #define	DB_MISC2	7		/* Nothing yet */
+! #define	DB_DETAIL	8		/* Lots of details */
+! #define	DB_ALL		9		/* Trace *everything* */
+  #endif
+  
+  /*
+***************
+*** 73,81 ****
+  #define try(_P_,_C_,_V_) if (*(_C_) && strcasecmp((_P_),(_C_)) == 0) return(_V_)
+  
+  /* Multiple string comparasion */
+! #define mtry(_P_,_C_,_V_)  if (*(_C_) && instring((_P_),(_C_))) return(_V_)
+  
+  /* Compact string compare */
+  #define	streq(_X_,_S_)	(strncasecmp((_X_),(_S_), strlen(_X_)) == 0)
+  
+  /* End pwck_defines.h */
+--- 81,98 ----
+  #define try(_P_,_C_,_V_) if (*(_C_) && strcasecmp((_P_),(_C_)) == 0) return(_V_)
+  
+  /* Multiple string comparasion */
+! #define mtry(_P_,_C_,_V_)  if (*(_C_) && instring((_C_),(_P_))) return(_V_)
+  
+  /* Compact string compare */
+  #define	streq(_X_,_S_)	(strncasecmp((_X_),(_S_), strlen(_X_)) == 0)
+  
++ /*Convert string to lowercase*/
++ #define lowercase(_S_) while(*(_S_)) *(_S_)++=tolower(*(_S_))
++ 
++ /*Character filter types*/
++ #define PWCK_FS_DIGITS	0x01	/*bitmap for _filterstring*/
++ #define PWCK_FS_WHITE	0x02
++ #define PWCK_FS_PUNCT	0x04
++ #define PWCK_FS_CNTRL	0x08
++ #define PWCK_FS_ALL	0xff
+  /* End pwck_defines.h */
+diff -rc ./src/PasswordCheck/pwck_history.c ../beta/src/PasswordCheck/pwck_history.c
+*** ./src/PasswordCheck/pwck_history.c	Tue Sep 23 12:23:05 1997
+--- ../beta/src/PasswordCheck/pwck_history.c	Mon Nov 24 18:24:43 1997
+***************
+*** 388,396 ****
+  		if (strcmp(who, ibuf) == 0) {
+  			*colon = ':';
+  			if (rdata[0])
+! 				(void) strcat(rdata, colon);
+  			else
+! 				(void) strcpy(rdata, ibuf);
+  		}
+  	}
+  	(void) fclose(histfp);
+--- 388,396 ----
+  		if (strcmp(who, ibuf) == 0) {
+  			*colon = ':';
+  			if (rdata[0])
+! 				(void) strncat(rdata, colon,sizeof(rdata) - strlen(rdata));
+  			else
+! 				(void) strncpy(rdata, ibuf,sizeof(rdata));
+  		}
+  	}
+  	(void) fclose(histfp);
+diff -rc ./src/PasswordCheck/pwck_lexical.c ../beta/src/PasswordCheck/pwck_lexical.c
+*** ./src/PasswordCheck/pwck_lexical.c	Wed Oct 29 14:39:20 1997
+--- ../beta/src/PasswordCheck/pwck_lexical.c	Fri Nov 21 16:05:22 1997
+***************
+*** 22,27 ****
+--- 22,28 ----
+   *		PWCK_OBVIOUS if password has too many repeated characters
+   *		PWCK_ILLCHAR if password has an illegal character
+   *		PWCK_OK if passwd is ok
++  * 11/03/97 Mstute	Fixed P_x array indexes (stack overflow)
+   */
+  
+  #ifndef lint
+***************
+*** 30,42 ****
+  
+  #include "pwck_defines.h"
+  
+! #define	P_U	1 	/* Upper case in password */
+! #define	P_L	2 	/* Lower case in password */
+! #define	P_C	3 	/* Control chars in password */
+! #define	P_D	4 	/* Digits in password */
+! #define	P_P	5 	/* Punctutation chars in password */
+! #define	P_S	6 	/* Whitespace chars in password */
+! #define	P_MAX	P_S
+  
+  
+  /*
+--- 31,43 ----
+  
+  #include "pwck_defines.h"
+  
+! #define	P_U	0 	/* Upper case in password */
+! #define	P_L	1 	/* Lower case in password */
+! #define	P_C	2 	/* Control chars in password */
+! #define	P_D	3 	/* Digits in password */
+! #define	P_P	4 	/* Punctutation chars in password */
+! #define	P_S	5 	/* Whitespace chars in password */
+! #define	P_MAX	P_S + 1
+  
+  
+  /*
+diff -rc ./src/PasswordCheck/pwck_local.c ../beta/src/PasswordCheck/pwck_local.c
+*** ./src/PasswordCheck/pwck_local.c	Thu Aug 29 12:59:41 1996
+--- ../beta/src/PasswordCheck/pwck_local.c	Thu Nov 20 08:32:51 1997
+***************
+*** 2,7 ****
+--- 2,12 ----
+   *	pwck_local - Perform 'local' password checks.
+   *
+   *	Returns PWCK_OBVIOUS if password flunks, else PWCK_OK
++  * 09/18/97 MStute	Added check for digits. With a prebuilt dict.
++  *			numeric-only passwords crack very quickly
++  * 10/02/97 MStute	Added new rules to hostname and rhosts vs password
++  *				1) remove PW digits versus host
++  *				2) remove PS digits and whitespace vs rhosts
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)pwck_local.c	1.8 8/29/96 (cc.utexas.edu)";
+***************
+*** 20,30 ****
+  {
+  	FILE	*rh;
+  	char	myname[MAXHOSTNAMLEN],		/* Scratch */
+! 		temp[MAXPATHLEN];	/* Scratch */
+  	struct hostent	*h;
+  
+  	(void) gethostname(myname, sizeof(myname));
+! 	try(password, myname, PWCK_OBVIOUS);
+  	/*
+  	 * Check against the full hostname and aliases
+  	 */
+--- 25,62 ----
+  {
+  	FILE	*rh;
+  	char	myname[MAXHOSTNAMLEN],		/* Scratch */
+! 		temp[MAXPATHLEN],	/* Scratch */
+! 		alphaPW[BUFSIZ],	/*Alpha only PW*/
+! 		lcPW[BUFSIZ];		/*Lowercase PW*/
+  	struct hostent	*h;
++ 	char *ptr;
+  
++ #if DEBUG
++ 	printf("pwck_local:\"%s\"\n",password);
++ #endif
++ 	ptr=password;
++ 	lowercase(ptr);
++ 	(void) _filterstring(password,lcPW,PWCK_FS_DIGITS);
++ 	(void) _filterstring(password,alphaPW,PWCK_FS_DIGITS|PWCK_FS_WHITE|
++ 					      PWCK_FS_PUNCT);
++ 	debug(DB_DETAIL,"lcPW: %s\nAlphaPW: %s\n",lcPW,alphaPW);
++ 	/*
++  	 * check against digits only
++  	 * There is another for digits in pwck_passwd 
++ 	 * since this module may not be
++  	 * included in the list of procedures
++  	 */
++  	if(*lcPW='\0') {
++ 	  (void) sprintf(mesg,"it is digits only");
++ 	  return(PWCK_OBVIOUS);
++           }
++ 
+  	(void) gethostname(myname, sizeof(myname));
+! 	ptr=myname;
+! 	lowercase(ptr);
+! 	try(password, myname, PWCK_OBVIOUS);	/*host vs PW*/
+! 	try(lcPW, myname, PWCK_OBVIOUS);	/*host vs -digits*/
+! 	try(alphaPW,myname,PWCK_OBVIOUS);	/*host PW -digits -white -punct*/
+  	/*
+  	 * Check against the full hostname and aliases
+  	 */
+***************
+*** 32,39 ****
+--- 64,77 ----
+  		char	**hh;
+  
+  		try(password, h->h_name, PWCK_OBVIOUS);
++ 		try(lcPW, h->h_name, PWCK_OBVIOUS);
+  		for (hh = h->h_aliases; *hh; hh++) {
+  			try(password, *hh, PWCK_OBVIOUS);
++ 		ptr=*hh;
++ 		lowercase(ptr);
++ 		try(password, *hh, PWCK_OBVIOUS);
++ 		try(lcPW, *hh, PWCK_OBVIOUS);
++ 		try(alphaPW, *hh, PWCK_OBVIOUS);
+  		}
+  	}
+  	/*
+***************
+*** 42,48 ****
+  	(void) sprintf(temp, "%s/.rhosts", user->pw_dir);
+  	if (rh = fopen(temp, "r")) {
+  		while (fgets(temp, sizeof(temp), rh)) {
+! 			if (instring(password, temp)) {
+  				(void) fclose(rh);
+  				return(PWCK_OBVIOUS);
+  			}
+--- 80,91 ----
+  	(void) sprintf(temp, "%s/.rhosts", user->pw_dir);
+  	if (rh = fopen(temp, "r")) {
+  		while (fgets(temp, sizeof(temp), rh)) {
+! 			ptr=temp;
+! 			lowercase(ptr);
+! 			debug(DB_DETAIL,"Trying %s\n",temp);
+! 			if (instring(password, temp) ||
+!                             instring(lcPW, temp)     ||
+! 			    instring(alphaPW,temp)) {
+  				(void) fclose(rh);
+  				return(PWCK_OBVIOUS);
+  			}
+diff -rc ./src/PasswordCheck/pwck_main.c ../beta/src/PasswordCheck/pwck_main.c
+*** ./src/PasswordCheck/pwck_main.c	Wed Oct 29 14:39:39 1997
+--- ../beta/src/PasswordCheck/pwck_main.c	Mon Nov 24 18:50:46 1997
+***************
+*** 20,25 ****
+--- 20,33 ----
+   *	The pwck_* routines are called thusly:
+   *		rc = pwck_foo(char *password, struct passwd *user,
+   *			char *mesg);
++  * 09/30/97 MStute	If "PasswordChecks" token is found in configuration file
++  *			clear current list of vectors in checkpasswd_configure.
++  *			Otherwise checks are performed multiple times
++  * 10/01/97 MStute	Added clear_proc function instead of in-line code
++  * 10/02/97 MStute	Added clear_dict to stop searching dictionaries
++  *			multiple times. If "dictionaries" token is found
++  *			clear_dict is called
++  *
+   */
+  
+  #ifndef lint
+***************
+*** 33,38 ****
+--- 41,48 ----
+  private void	add_one_dict _((char *));
+  private int	add_all_dicts _((char *));
+  private void	add_proc _((char *));
++ private void	clear_dict _((void));
++ private void	clear_proc _((void));
+  
+  /*
+   * Explanitory texts for why a password was rejected
+***************
+*** 144,150 ****
+  	(void) strcpy(xpasswd, password);
+  	if (Config.max_length)
+  		xpasswd[Config.max_length] = 0;
+- 
+  	for (checkfunc = Config.checkprocs; *checkfunc; checkfunc++) {
+  	debug(DB_LOOKUP, "checkpassword: func=%x\n", *checkfunc);
+  		if ((rcode = (*checkfunc)(xpasswd, user, elucidate)) != PWCK_OK) {
+--- 154,159 ----
+***************
+*** 287,292 ****
+--- 296,302 ----
+  		char	**pp = &data[1];
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		clear_dict(); /*Clear current list*/
+  		while (*pp) {
+  			int	rc = add_all_dicts(*pp++);
+  			if (rc < 0)
+***************
+*** 306,311 ****
+--- 316,322 ----
+  		char	**pp = &data[1];
+  
+  		if (!data[1]) cf_error("Missing value");
++ 		clear_proc(); /*If given a new list, clear old first*/
+  		while (*pp)
+  			add_proc(*pp++);
+  		cf_ok;
+***************
+*** 322,331 ****
+  		if (xcc[0] == 0)
+  			return(0);
+  		if (append)
+! 			(void) strcat(Config.badchars, xcc);
+  		else
+  			(void) strncpy(Config.badchars, xcc,
+! 				sizeof(Config.badchars));
+  		cf_ok;
+  	}
+  	free((char *)data);
+--- 333,343 ----
+  		if (xcc[0] == 0)
+  			return(0);
+  		if (append)
+! 			(void) strncat(Config.badchars, xcc,
+! 			sizeof(Config.badchars) - strlen(Config.badchars));
+  		else
+  			(void) strncpy(Config.badchars, xcc,
+! 			sizeof(Config.badchars));
+  		cf_ok;
+  	}
+  	free((char *)data);
+***************
+*** 424,430 ****
+--- 436,464 ----
+  #endif	/* HAS_READDIR */
+  }
+  
++ /*
++  * clear_dict
++  *	Clears dictionaries from current list
++  * Usage
++  *	clear_dict()
++  * Dictionaries are stored in a linked list
++  * 10/02/97 MStute 	Created
++  */
++ private void
++ clear_dict()
++ {
++  dictionary *nextDict,		/*Next dictionary in list*/
++ 	    *freeDict;		/*Dictionary to free*/
+  
++  debug(DB_CONFIG,"clear_dict:\n");
++  nextDict=Config.dictionaries;
++  while(nextDict) {
++    freeDict=nextDict;
++    nextDict=nextDict->next;
++    free(freeDict);
++    }
++ }
++ 
+  /*
+   * This is the table of password check routines
+   * If more checks are desired, add the functions to the tables below.
+***************
+*** 433,438 ****
+--- 467,473 ----
+  	char	*name;
+  	checkproc	addr;
+  };
++ 
+  private struct _procnames procnames[] = {
+  	{ "lexical",	pwck_lexical },
+  	{ "local",	pwck_local  },
+***************
+*** 467,472 ****
+--- 502,524 ----
+  }
+  
+  /*
++  * clear_proc
++  *	Clears the password check list of vectors
++  * Usage
++  *	clear_proc()
++  * 10/01/97 MStute	Created
++  */
++ private void
++ clear_proc()
++ {
++  checkproc *cp;		/*ACME Scratch Storage*/
++ 
++  debug(DB_CONFIG,"clear_proc:\n");
++  for(cp=Config.checkprocs;*cp;cp++)
++    *cp=0;  /* Clear entry*/
++ }
++ 
++ /*
+   * _flipstring 
+   *	 Reverse a string
+   * Usage
+***************
+*** 489,492 ****
+--- 541,586 ----
+  	*t = 0;
+  	return(copy);
+  }
++ 
++ /*
++  * _filterstring 
++  *	 Filter a set of characters from a string
++  * Usage
++  *	filtered = _filterstring(char *source, char *copy, int filter_type
++  * Type can be PWCK_FS_DIGITS	-	filters digits
++  * 	       PWCK_FS_WHITE	-	filters whitespace
++  *	       PWCK_FS_PUNCT	-	filters puntuation
++  *	       PWCK_FS_CNTRL    -	fitlers control codes
++  * 	       PWCK_FS_ALL      -	filters everything above
++  * Returns 
++  *	pointer to copy (char *)
++  * 09/28/97 MStute 	Created
++  */
++ public char *
++ _filterstring(string, copy, filter)
++ char *string;
++ char *copy;
++ int filter;
++ {
++  register char *tp;
++  register int i;
++ 
++  tp=copy;	                        
++  while(*string) { 
++    if(!(
++       (filter & PWCK_FS_DIGITS && isdigit(*string))   /*Remove digits*/
++       ||
++       (filter & PWCK_FS_WHITE  && isspace(*string))   /*Remove whitepace*/
++       ||
++       (filter & PWCK_FS_PUNCT  && ispunct(*string))   /*Remove punctation*/
++       ||
++       (filter & PWCK_FS_CNTRL  && iscntrl(*string))   /*Remove control*/
++       ))
++       *tp++=*string;               
++    string++;
++    }
++  *tp='\0';
++  return(copy);
++ }
++ 
+  /* End pwck_main.c */
+diff -rc ./src/PasswordCheck/pwck_passwd.c ../beta/src/PasswordCheck/pwck_passwd.c
+*** ./src/PasswordCheck/pwck_passwd.c	Thu Aug 29 12:59:41 1996
+--- ../beta/src/PasswordCheck/pwck_passwd.c	Mon Nov 24 18:46:49 1997
+***************
+*** 8,13 ****
+--- 8,18 ----
+   *		PWCK_OBVIOUS if password is part of the users' passwd info
+   *		PWCK_FINGER if password is part of the user's finger info
+   *		PWCK_OK if password is ok
++  * 09/29/97 MStute	Changed strcpy to strncpy to avoid unusual GECOS entries
++  *			Added more strigent GECOS rules. Even though try
++  *			strcasecmp's everything I lowercase it all.
++  * 11/20/97 MStute	Shame on me, users are reversing their login names
++  *			and appending a number. More checks versus passwd
+   */
+  #ifndef lint
+  static char sccsid[] = "@(#)pwck_passwd.c	1.10 8/29/96 (cc.utexas.edu)";
+***************
+*** 14,19 ****
+--- 19,25 ----
+  #endif
+  
+  #include "pwck_defines.h"
++ #include "options.h"
+  
+  public int
+  pwck_passwd(password, user, mesg)
+***************
+*** 21,48 ****
+  	struct passwd	*user;	/* Passwd info */
+  	char	*mesg;			/* Where to stash message */
+  {
+! 	char	temp[BUFSIZ];	/* Scratch */
+  	char	*tp;
+  
+  #ifdef	DEBUG
+  	printf("pwck_passwd: \"%s\"\n", password);
+  #endif
+  	(void) strcpy(mesg, "it is part of your passwd information");
+- 	try(password, user->pw_name, PWCK_OBVIOUS);
+- 			/* Checks 'name' and 'Name' */
+  
+- 	(void) strcpy(temp, user->pw_name);
+- 	(void) strcat(temp, user->pw_name);
+- 	try(password, temp, PWCK_OBVIOUS);	/* Check 'namename' */
+  
+! 	(void) strcpy(temp, user->pw_name);
+  	tp = _flipstring(user->pw_name, temp);
+! 	try(password, tp, PWCK_OBVIOUS);	/* 'eman' */
+  
+  	/*
+  	 * Try every word in user's GECOS entry
+  	 */
+! 	mtry(password, user->pw_gecos, PWCK_FINGER);
+  	return(PWCK_OK);
+  }
+  /* End pwck_passwd.c */
+--- 27,125 ----
+  	struct passwd	*user;	/* Passwd info */
+  	char	*mesg;			/* Where to stash message */
+  {
+! 	char	temp[BUFSIZ];		/* Scratch */
+! 	char	alphaPW[BUFSIZ];	/*Alpha only password*/
+! 	char 	lcGecos[BUFSIZ];	/*Lowercase GECOS entry*/
+! 	char	lcPW[BUFSIZ];		/*Lowercase password*/
+  	char	*tp;
++ 	int	i;			/*ACME*/
+  
+  #ifdef	DEBUG
+  	printf("pwck_passwd: \"%s\"\n", password);
+  #endif
++ 	strncpy(lcPW,password,sizeof(lcPW));
++ 	tp = lcPW;
++ 	lowercase(tp); /*lcPW now contains lowercase password*/
++ 	(void) strncpy(temp,user->pw_name,sizeof(temp));
++ 	tp = temp;
++ 	lowercase(tp);	/*temp now contains lc user name*/
+  	(void) strcpy(mesg, "it is part of your passwd information");
+  
+  
+!         (void) _filterstring(lcPW,alphaPW,PWCK_FS_DIGITS);
+! 	/*
+! 	 * Digit/whitespace check is
+! 	 * here in case pwck_local or pwck_crack isn't in the proc list.
+!  	 * It will probably fail the following try anyway, but this is
+! 	 * a better message.
+!          */
+!         if(*alphaPW=='\0') {
+! 		(void) strcpy(mesg,"it is all digits");
+! 	 	return(PWCK_OBVIOUS);
+! 	}
+! 
+! 				/* Checks 'name' and 'Name' */
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW, temp, PWCK_OBVIOUS); 		/*lc PW vs name*/
+! 	try(alphaPW,  temp, PWCK_OBVIOUS);	/*lc PW -digits vs name*/
+!         (void) _filterstring(lcPW,alphaPW,PWCK_FS_DIGITS|PWCK_FS_PUNCT);
+! 	try(alphaPW,  temp, PWCK_OBVIOUS);	/*lc PW -digits -punct vs name*/
+! 				/* Check 'namename' */
+! 	(void) strncat(temp, user->pw_name, sizeof(temp) - strlen(temp));
+! 	tp = temp;
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW, temp, PWCK_OBVIOUS);		/*namename vs password*/
+! 	try(alphaPW, temp, PWCK_OBVIOUS);	/*namename vs password - digits*/
+! 
+  	tp = _flipstring(user->pw_name, temp);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"Versus: %s\n",temp);
+! 	try(lcPW,    tp, PWCK_OBVIOUS);		/* lc PW vs 'eman' */
+! 	try(alphaPW, tp, PWCK_OBVIOUS);		/* lc PW -digits vs 'eman'*/
+  
++ 	/* Some new GECOS rules here - MStute 9/97
++ 	 * 1) Lower case password versus lower case GECOS
++ 	 * 2) LC password minus digits versus lowercase GECOS
++ 	 * 3) LC PW -digits -whitespace versus GECOS -whitespace -punct
++ 	 * 4) Reverse GECOS and try 1 -3 again with results
++ 	 */
++ 
+  	/*
+  	 * Try every word in user's GECOS entry
+  	 */
+! 	debug(DB_DETAIL,"GECOS:%s\n",user->pw_gecos);
+! 		/*Lowercase GECOS*/
+! 	strncpy(lcGecos,user->pw_gecos,sizeof(lcGecos));
+! 	tp=lcGecos;
+! 	lowercase(tp);
+! 
+! 	debug(DB_DETAIL,"New GECOS:%s\nNew PW:%s\nNew APW:%s\n",
+! 		lcGecos,lcPW,alphaPW);
+! 
+! 	mtry(lcPW,lcGecos,PWCK_FINGER);		/*lc PW vs GECOS*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER);	/*lc -[0..9] PW vs GECOS*/
+! 	
+! 		/*Remove whitespace and punct in GECOS*/
+! 	tp=_filterstring(user->pw_gecos,lcGecos,PWCK_FS_WHITE|PWCK_FS_PUNCT);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New GECOS:%s\n",lcGecos);
+! 	
+! 	mtry(password,lcGecos,PWCK_FINGER);	/*lc PW vs GECOS -ws -punct*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER);	/*lc -[0..9] PW vs above*/
+! 
+! 	/*Reverse GECOS and try the previous rules*/
+! 	tp=_flipstring(user->pw_gecos,temp);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New rGECOS:%s\n",temp);
+! 	mtry(password,temp,PWCK_FINGER);	/*lc PW vs rGECOS*/
+! 	mtry(alphaPW,temp,PWCK_FINGER);	/*lc -[0..9] PW vs rGECOS*/
+! 
+! 	tp=_filterstring(temp,lcGecos,PWCK_FS_WHITE|PWCK_FS_PUNCT);
+! 	lowercase(tp);
+! 	debug(DB_DETAIL,"New rGECOS:%s\n",lcGecos);
+! 	mtry(lcPW,lcGecos,PWCK_FINGER);	   /*lc PW vs rGECOS -ws -punct*/
+! 	mtry(alphaPW,lcGecos,PWCK_FINGER); /*lc -[0..9] PW vs rGECOS -ws -punct*/
+  	return(PWCK_OK);
+  }
+  /* End pwck_passwd.c */
+Common subdirectories: ./src/PasswordCheck/cracklib/CREDITS and ../beta/src/PasswordCheck/cracklib/CREDITS
+Only in ../beta/src/PasswordCheck/cracklib: Makefile
+diff -rc ./src/PasswordCheck/cracklib/Makefile.SH ../beta/src/PasswordCheck/cracklib/Makefile.SH
+*** ./src/PasswordCheck/cracklib/Makefile.SH	Wed Oct 29 15:01:05 1997
+--- ../beta/src/PasswordCheck/cracklib/Makefile.SH	Fri Nov 21 09:28:45 1997
+***************
+*** 51,59 ****
+  # Automatically generated parameters -- do not edit
+  
+  SUBDIRS = tools
+  CC_DBFLAGS =  $cc_dbflags
+  CC_TESTFLAGS =  $cc_tstflags
+! CFLAGS =  -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags \$(CC_TESTFLAGS)
+  OBJECTS =   \$(CRACK_OBJ)
+  SOURCES =   \$(CRACK_SRC)
+  
+--- 51,61 ----
+  # Automatically generated parameters -- do not edit
+  
+  SUBDIRS = tools
++ INCLUDE_PATH =  -I.. -I../.. -I../Common
+  CC_DBFLAGS =  $cc_dbflags
+  CC_TESTFLAGS =  $cc_tstflags
+! CFLAGS =  \$(INCLUDE_PATH) -DIN_CHECKPASSWORD -DIN_CRACKLIB $ccflags $cc_osflags \$(CC_TESTFLAGS)
+! DPFLAGS =  \$(INCLUDE_PATH)
+  OBJECTS =   \$(CRACK_OBJ)
+  SOURCES =   \$(CRACK_SRC)
+  
+Only in ../beta/src/PasswordCheck/cracklib: Makefile.bak
+diff -rc ./src/PasswordCheck/cracklib/fascist.c ../beta/src/PasswordCheck/cracklib/fascist.c
+*** ./src/PasswordCheck/cracklib/fascist.c	Tue Sep 23 12:24:52 1997
+--- ../beta/src/PasswordCheck/cracklib/fascist.c	Fri Nov 21 15:54:25 1997
+***************
+*** 4,9 ****
+--- 4,13 ----
+   * upon hardware or computer systems, and maintains copyright as set out 
+   * in the "LICENCE" document which accompanies distributions of Crack v4.0 
+   * and upwards.
++  *
++  * 09/19/97 MStute 	Added DICT_DISP option to show dictionary word
++  *			on a failed attempt
++  *			Added two more transmorgifying rules
+   */
+  
+  static char vers_id[] = "fascist.c : v2.3p2 Alec Muffett 18 May 1993";
+***************
+*** 13,18 ****
+--- 17,23 ----
+  #include <ctype.h>
+  #include <sys/types.h>
+  #include <pwd.h>
++ #include "options.h"
+  
+  #define ISSKIP(x) (isspace(x) || ispunct(x))
+  
+***************
+*** 40,45 ****
+--- 45,52 ----
+      "/3s3e",
+      "/0s0o",
+      "/1s1i",
++     "/!s!i",
++     "/!s!i/1s1i",
+      "/4s4h",
+      "/1s1l",
+      "/$s$s/1s1l",
+***************
+*** 138,143 ****
+--- 145,153 ----
+  
+  #define	EM_NAME		"it is based upon your user name"
+  #define	EM_PASSWD	"it is based upon your user information"
++ #ifdef DICT_DISP
++ #define EM_WDICT	"it is based on the word:"
++ #endif
+  #define	EM_DICT		"it is based upon a dictionary word"
+  #define	EM_SSN		"it looks like a Social Security Number"
+  #define	EM_RDICT	EM_DICT
+***************
+*** 231,237 ****
+  	return (EM_PASSWD);
+      }
+  
+!     strcpy(gbuffer, Lowercase(pwp->pw_gecos));
+  
+      wc = 0;
+      ptr = gbuffer;
+--- 241,247 ----
+  	return (EM_PASSWD);
+      }
+  
+!     strncpy(gbuffer, Lowercase(pwp->pw_gecos),sizeof(gbuffer));
+  
+      wc = 0;
+      ptr = gbuffer;
+***************
+*** 287,301 ****
+      {
+  	for (i = 0; i < j; i++)
+  	{
+! 	    strcpy(buffer, uwords[i]);
+! 	    strcat(buffer, uwords[j]);
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+  	    }
+  
+! 	    strcpy(buffer, uwords[j]);
+! 	    strcat(buffer, uwords[i]);
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+--- 297,311 ----
+      {
+  	for (i = 0; i < j; i++)
+  	{
+! 	    strncpy(buffer, uwords[i], sizeof(buffer));
+! 	    strncat(buffer, uwords[j], sizeof(buffer) - strlen(buffer));
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+  	    }
+  
+! 	    strncpy(buffer, uwords[j], sizeof(buffer));
+! 	    strncat(buffer, uwords[i], sizeof(buffer) - strlen(buffer));
+  	    if (GTry(buffer, password))
+  	    {
+  		return (EM_PASSWD);
+***************
+*** 335,340 ****
+--- 345,353 ----
+      char rpassword[STRINGSIZE];
+      register char *password;
+      int32 notfound;
++ #ifdef DICT_DISP
++     static char message[101];
++ #endif
+  
+      notfound = PW_WORDS(pwp);
+      password = rpassword;
+***************
+*** 430,436 ****
+--- 443,456 ----
+  	}
+  	if (FindPW(pwp, a) != notfound)
+  	{
++ #ifdef DICT_DISP
++ 	    if(strlen(EM_DICT)+strlen(a)+1>100)	/*MRS 09/97*/
++ 		return(EM_DICT);
++ 	    sprintf(message,"%s %s",EM_WDICT,a);
++ 	    return(message);
++ #else
+  	    return (EM_DICT);
++ #endif
+  	}
+      }
+  
+***************
+*** 447,453 ****
+--- 467,480 ----
+  
+  	if (FindPW(pwp, a) != notfound)
+  	{
++ #ifdef DICT_DISP
++ 	    if(strlen(EM_DICT)+strlen(a)+1>100)	/*MRS 09/97*/
++ 		return(EM_DICT);
++ 	    sprintf(message,"%s %s",EM_WDICT,a);
++ 	    return(message);
++ #else
+  	    return (EM_RDICT);
++ #endif
+  	}
+      }
+  
+diff -rc ./src/PasswordCheck/cracklib/rules.c ../beta/src/PasswordCheck/cracklib/rules.c
+*** ./src/PasswordCheck/cracklib/rules.c	Tue Sep 23 12:23:51 1997
+--- ../beta/src/PasswordCheck/cracklib/rules.c	Fri Nov 21 14:48:29 1997
+***************
+*** 4,9 ****
+--- 4,14 ----
+   * upon hardware or computer systems, and maintains copyright as set out 
+   * in the "LICENCE" document which accompanies distributions of Crack v4.0 
+   * and upwards.
++  *
++  * 11/21/97 MStute	Made string handling more robust on the assumption
++  *			that if someone comprimeses the dictionaries
++  *			that can't use long words to stack smash npasswd
++  *			Rule) NEVER MAKE ASSUMPTIONS IN A SUID PROGRAM
+   */
+  
+  static char vers_id[] = "rules.c : v5.0p3 Alec Muffett 20 May 1993";
+***************
+*** 141,147 ****
+      register int length;
+      static char area[STRINGSIZE];
+      length = strlen(string);
+!     strcpy(area, string);
+  
+      if (!Suffix(string, "ch") ||
+  	!Suffix(string, "ex") ||
+--- 146,152 ----
+      register int length;
+      static char area[STRINGSIZE];
+      length = strlen(string);
+!     strncpy(area, string,sizeof(area));
+  
+      if (!Suffix(string, "ch") ||
+  	!Suffix(string, "ex") ||
+***************
+*** 150,156 ****
+  	!Suffix(string, "ss"))
+      {
+  	/* bench -> benches */
+! 	strcat(area, "es");
+      } else if (length > 2 && string[length - 1] == 'y')
+      {
+  	if (strchr("aeiou", string[length - 2]))
+--- 155,161 ----
+  	!Suffix(string, "ss"))
+      {
+  	/* bench -> benches */
+! 	strncat(area, "es",sizeof(area) - strlen(area));
+      } else if (length > 2 && string[length - 1] == 'y')
+      {
+  	if (strchr("aeiou", string[length - 2]))
+***************
+*** 160,175 ****
+  	} else
+  	{
+  	    /* gully -> gullies */
+! 	    strcpy(area + length - 1, "ies");
+  	}
+      } else if (string[length - 1] == 's')
+      {
+  	/* bias -> biases */
+! 	strcat(area, "es");
+      } else
+      {
+  	/* catchall */
+! 	strcat(area, "s");
+      }
+  
+      return (area);
+--- 165,180 ----
+  	} else
+  	{
+  	    /* gully -> gullies */
+! 	    strncpy(area + length - 1, "ies",sizeof(area));
+  	}
+      } else if (string[length - 1] == 's')
+      {
+  	/* bias -> biases */
+! 	strncat(area, "es",sizeof(area) - strlen(area));
+      } else
+      {
+  	/* catchall */
+! 	strncat(area, "s",sizeof(area));
+      }
+  
+      return (area);
+***************
+*** 421,427 ****
+      static char area[STRINGSIZE];
+      char area2[STRINGSIZE];
+      area[0] = '\0';
+!     strcpy(area, input);
+  
+      for (ptr = control; *ptr; ptr++)
+      {
+--- 426,432 ----
+      static char area[STRINGSIZE];
+      char area2[STRINGSIZE];
+      area[0] = '\0';
+!     strncpy(area, input,sizeof(area));
+  
+      for (ptr = control; *ptr; ptr++)
+      {
+***************
+*** 448,455 ****
+  	    strcat(area, Reverse(area));
+  	    break;
+  	case RULE_DUPLICATE:
+! 	    strcpy(area2, area);
+! 	    strcat(area, area2);
+  	    break;
+  	case RULE_GT:
+  	    if (!ptr[1])
+--- 453,460 ----
+  	    strcat(area, Reverse(area));
+  	    break;
+  	case RULE_DUPLICATE:
+! 	    strncpy(area2, area, sizeof(area));
+! 	    strncat(area, area2, sizeof(area) - strlen(area));
+  	    break;
+  	case RULE_GT:
+  	    if (!ptr[1])
+***************
+*** 497,504 ****
+  	    } else
+  	    {
+  		area2[0] = *(++ptr);
+! 		strcpy(area2 + 1, area);
+! 		strcpy(area, area2);
+  	    }
+  	    break;
+  	case RULE_APPEND:
+--- 502,509 ----
+  	    } else
+  	    {
+  		area2[0] = *(++ptr);
+! 		strncpy(area2 + 1, area, sizeof(area2) - 1);
+! 		strncpy(area, area2,sizeof(area));
+  	    }
+  	    break;
+  	case RULE_APPEND:
+***************
+*** 532,538 ****
+  		    Debug(1, "Mangle: extract: weird argument in '%s'\n", control);
+  		    return ((char *) 0);
+  		}
+! 		strcpy(area2, area);
+  		for (i = 0; length-- && area2[start + i]; i++)
+  		{
+  		    area[i] = area2[start + i];
+--- 537,543 ----
+  		    Debug(1, "Mangle: extract: weird argument in '%s'\n", control);
+  		    return ((char *) 0);
+  		}
+! 		strncpy(area2, area,sizeof(area2));
+  		for (i = 0; length-- && area2[start + i]; i++)
+  		{
+  		    area[i] = area2[start + i];
+***************
+*** 590,597 ****
+  		    *(p2++) = *(p1++);
+  		}
+  		*(p2++) = *(++ptr);
+! 		strcpy(p2, p1);
+! 		strcpy(area, area2);
+  	    }
+  	    break;
+  	    /* THE FOLLOWING RULES REQUIRE CLASS MATCHING */
+--- 595,602 ----
+  		    *(p2++) = *(p1++);
+  		}
+  		*(p2++) = *(++ptr);
+! 		strncpy(p2, p1, sizeof(p2));
+! 		strncpy(area, area2, sizeof(area));
+  	    }
+  	    break;
+  	    /* THE FOLLOWING RULES REQUIRE CLASS MATCHING */
+***************
+*** 603,612 ****
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strcpy(area, Purge(area, *(++ptr)));
+  	    } else
+  	    {
+! 		strcpy(area, PolyPurge(area, ptr[2]));
+  		ptr += 2;
+  	    }
+  	    break;
+--- 608,617 ----
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strncpy(area, Purge(area, *(++ptr)), sizeof(area));
+  	    } else
+  	    {
+! 		strncpy(area, PolyPurge(area, ptr[2]), sizeof(area));
+  		ptr += 2;
+  	    }
+  	    break;
+***************
+*** 617,627 ****
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strcpy(area, Substitute(area, ptr[1], ptr[2]));
+  		ptr += 2;
+  	    } else
+  	    {
+! 		strcpy(area, PolySubst(area, ptr[2], ptr[3]));
+  		ptr += 3;
+  	    }
+  	    break;
+--- 622,632 ----
+  		return ((char *) 0);
+  	    } else if (ptr[1] != RULE_CLASS)
+  	    {
+! 		strncpy(area, Substitute(area, ptr[1], ptr[2]),sizeof(area));
+  		ptr += 2;
+  	    } else
+  	    {
+! 		strncpy(area, PolySubst(area, ptr[2], ptr[3]),sizeof(area));
+  		ptr += 3;
+  	    }
+  	    break;
+Common subdirectories: ./src/PasswordCheck/cracklib/tools and ../beta/src/PasswordCheck/cracklib/tools
+Only in ../beta/src/PasswordCheck/cracklib/tools: Makefile
+Only in ../beta/src/PasswordCheck/cracklib/tools: Makefile.bak
+Only in ../beta/src/PasswordCheck/cracklib/tools: makedict
+Only in ../beta/src/PasswordCheck/cracklib/tools: makedict.sh
+Only in ../beta/src/PasswordCheck/cracklib/tools: packer
+Only in ../beta/src/PasswordCheck/cracklib/tools: testlib
+Only in ../beta/src/PasswordCheck/cracklib/tools: testnum
+Only in ../beta/src/PasswordCheck/cracklib/tools: teststr
+Only in ../beta/src/PasswordCheck/cracklib/tools: unpacker
+Only in ../beta/src/Scripts: Makefile
