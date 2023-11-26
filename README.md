@@ -31,6 +31,5 @@ I could write an entire treatise about the "Old Days of UNIX" where every vendor
 
 Writing software is akin to building sand castles on the beach - except you never know when the next high tide is, nor how high it will be - but you can be sure the tide will rise and your fine castle of silica grains will be swept away, leaving only a project archived on GitHub.
 
-But you know - I build damn fine sand castles, have for 40 years and as of January of 2020, I ain't nowhere near done yet.
-
+But you know - I spent 43 years building some damn fine sand castles.  Proud of every one of them.
 
