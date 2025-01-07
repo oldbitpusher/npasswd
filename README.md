@@ -19,7 +19,7 @@ A lot of those mods were useful and/or neat, and were working their way into ver
 
 Soon the [Pluggable Authenticaion Module|https://en.wikipedia.org/wiki/Pluggable_authentication_module] architecture came along, and a module version of [Crack|https://en.wikipedia.org/wiki/Crack_(password_software)] appeared which did pretty much everything **npasswd** did in the way of filtering out dumb passwords but was an easy drop in instead of build from source and hope for the best.
 
-There was one quite good side-effect of **npasswd** - the technology commericialization office of the University of Texas licensed **npasswd** out to two companies who wanted better password integrity in their products - and I got half of the fee - somewhere around $12,000 in total (long gone to pay early childhood expenses for our nearly 21 year old offspring).
+There was one quite good side-effect of **npasswd** - the technology commericialization office of the University of Texas licensed **npasswd** out to two companies who wanted better password integrity in their products - and I got half of the fee - somewhere around $12,000 in total (long gone to pay early childhood expenses for our then quite young daughter).
 
 I spent a lot of time working on **npasswd** and remain proud of my work.  It made a difference for UNIX login security on our handful of systems and countless more in the wild.  But finally the UNIX world caught up with me and rendered the program which should never have been needed obsolete.  I did not weep because this meant that all UNIX systems (and their later Linux semi-descendants) would have more secure passwords - and that was all I wanted.
 
